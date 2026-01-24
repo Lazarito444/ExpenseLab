@@ -1,3 +1,4 @@
+import 'package:expense_lab/core/lang/app_translations.dart';
 import 'package:expense_lab/presentation/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      title: "Expense Lab",
       debugShowCheckedModeBanner: false,
+      translations: AppTranslations(),
+      supportedLocales: AppLocales.supportedLocales,
+      localizationsDelegates: AppLocales.localizationDelegates,
       initialRoute: AppPages.initial,
       getPages: AppPages.pages,
     );
