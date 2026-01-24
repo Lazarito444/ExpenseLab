@@ -16,4 +16,24 @@ class Account {
     this.id,
     this.isArchived = false,
   });
+
+  Account copyWith({
+    int? id,
+    String? name,
+    String? currencyCode,
+    double? currentBalance,
+    String? colorHex,
+    int? iconCodePoint,
+    bool? isArchived,
+  }) {
+    return Account(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      currencyCode: currencyCode ?? this.currencyCode,
+      currentBalance: currentBalance ?? this.currentBalance,
+      colorHex: colorHex ?? this.colorHex,
+      iconCodePoint: iconCodePoint ?? this.iconCodePoint,
+      isArchived: isArchived ?? this.isArchived,
+    );
+  }
 }
