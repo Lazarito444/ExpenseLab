@@ -1,14 +1,14 @@
-import 'package:expense_lab/data/datasources/local/isar_repository.dart';
-import 'package:expense_lab/data/models/account/account_model.dart';
+import 'package:drift/drift.dart';
+import 'package:expense_lab/data/datasources/local/database.dart';
 import 'package:expense_lab/domain/entities/account.dart';
 import 'package:expense_lab/domain/repositories/i_account_repository.dart';
-import 'package:isar/isar.dart';
 
-class AccountRepositoryImpl extends IsarRepository<Account, AccountModel> implements IAccountRepository {
-  AccountRepositoryImpl(Isar isar) : super(isar, isar.accountModels);
+class AccountRepositoryImpl implements IAccountRepository {
+  final AppDatabase _db;
 
-  @override
-  Account mapToEntity(AccountModel model) {
+  AccountRepositoryImpl(this._db);
+
+  Account _mapToEntity(AccountDbModel model) {
     return Account(
       id: model.id,
       name: model.name,
@@ -20,18 +20,39 @@ class AccountRepositoryImpl extends IsarRepository<Account, AccountModel> implem
     );
   }
 
-  @override
-  AccountModel mapToModel(Account entity) {
-    return AccountModel()
-      ..id = entity.id ?? Isar.autoIncrement
-      ..name = entity.name
-      ..currencyCode = entity.currencyCode
-      ..currentBalance = entity.currentBalance
-      ..colorHex = entity.colorHex
-      ..iconCodePoint = entity.iconCodePoint
-      ..isArchived = entity.isArchived;
+  AccountsCompanion _mapToCompanion(Account entity) {
+    return AccountsCompanion(
+      id: entity.id != null ? Value(entity.id!) : const Value.absent(),
+      name: Value(entity.name),
+      currencyCode: Value(entity.currencyCode),
+      currentBalance: Value(entity.currentBalance),
+      colorHex: Value(entity.colorHex),
+      iconCodePoint: Value(entity.iconCodePoint),
+      isArchived: Value(entity.isArchived),
+    );
   }
 
   @override
-  int getModelId(AccountModel model) => model.id;
+  Future<List<Account>> getAll() async {
+    final models = await _db.select(_db.accounts).get();
+    return models.map(_mapToEntity).toList();
+  }
+
+  @override
+  Future<Account?> getById(int id) async {
+    final model = await (_db.select(_db.accounts)..where((t) => t.id.equals(id))).getSingleOrNull();
+    return model != null ? _mapToEntity(model) : null;
+  }
+
+  @override
+  Future<int> upsert(Account entity) async {
+    final companion = _mapToCompanion(entity);
+    return await _db.into(_db.accounts).insertOnConflictUpdate(companion);
+  }
+
+  @override
+  Future<bool> delete(int id) async {
+    final rowsAffected = await (_db.delete(_db.accounts)..where((t) => t.id.equals(id))).go();
+    return rowsAffected > 0;
+  }
 }

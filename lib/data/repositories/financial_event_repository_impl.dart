@@ -1,13 +1,12 @@
 import 'dart:convert';
-
-import 'package:expense_lab/data/models/event/financial_event_model.dart';
+import 'package:drift/drift.dart';
+import 'package:expense_lab/data/datasources/local/database.dart';
 import 'package:expense_lab/domain/repositories/i_event_repository.dart';
-import 'package:isar/isar.dart';
 
 class FinancialEventRepositoryImpl implements IEventRepository {
-  final Isar _isar;
+  final AppDatabase _db;
 
-  FinancialEventRepositoryImpl(this._isar);
+  FinancialEventRepositoryImpl(this._db);
 
   @override
   Future<void> recordEvent({
@@ -15,19 +14,27 @@ class FinancialEventRepositoryImpl implements IEventRepository {
     required String eventType,
     required Map<String, dynamic> payload,
   }) async {
-    await _isar.writeTxn(() async {
-      final FinancialEventModel? lastEvent = await _isar.financialEventModels.where().aggregateIdEqualTo(aggregateId).sortByVersionDesc().findFirst();
+    await _db.transaction(() async {
+      final lastEvent =
+          await (_db.select(_db.financialEvents)
+                ..where((t) => t.aggregateId.equals(aggregateId))
+                ..orderBy([(t) => OrderingTerm(expression: t.version, mode: OrderingMode.desc)])
+                ..limit(1))
+              .getSingleOrNull();
 
       final int nextVersion = (lastEvent?.version ?? 0) + 1;
 
-      final FinancialEventModel eventRecord = FinancialEventModel()
-        ..aggregateId = aggregateId
-        ..eventType = eventType
-        ..timestamp = DateTime.now()
-        ..payloadJson = jsonEncode(payload)
-        ..version = nextVersion;
-
-      await _isar.financialEventModels.put(eventRecord);
+      await _db
+          .into(_db.financialEvents)
+          .insert(
+            FinancialEventsCompanion(
+              aggregateId: Value(aggregateId),
+              eventType: Value(eventType),
+              timestamp: Value(DateTime.now()),
+              payloadJson: Value(jsonEncode(payload)),
+              version: Value(nextVersion),
+            ),
+          );
     });
   }
 }

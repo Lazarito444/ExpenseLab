@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "Expense Lab",
+      title: "ExpenseLab",
       debugShowCheckedModeBanner: false,
       translations: AppTranslations(),
       theme: AppTheme.light().themeData,
