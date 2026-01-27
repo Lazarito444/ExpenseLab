@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   final Brightness brightness;
@@ -39,22 +40,22 @@ class AppTheme {
       warning: Color(0xFFD4AF37),
       error: Color(0xFFDC3545),
       surface: Color(0xFFF4F4F9),
-      onSurface: Color(0xFF000000),
+      onSurface: Color(0xFF121212),
     );
   }
 
   factory AppTheme.dark() {
     return const AppTheme(
       brightness: Brightness.dark,
-      primary: Color(0xFF3388FF),
+      primary: Color(0xFF2D8CFF),
       onPrimary: Color(0xFFFFFFFF),
       secondary: Color(0xFFADB5BD),
-      onSecondary: Color(0xFFFFFFFF),
+      onSecondary: Color(0xFF121212),
       success: Color(0xFF43D767),
       info: Color(0xFF17A2B8),
       warning: Color(0xFFD4AF37),
       error: Color(0xFFFF5C5C),
-      surface: Color(0xFF121212),
+      surface: Color(0xFF0A0B10),
       onSurface: Color(0xFFFFFFFF),
     );
   }
@@ -74,7 +75,23 @@ class AppTheme {
       surface: surface,
       onSurface: onSurface,
     ),
-
     scaffoldBackgroundColor: surface,
+    fontFamily: GoogleFonts.inter().fontFamily,
+    textTheme: GoogleFonts.interTextTheme(
+      ThemeData(brightness: brightness).textTheme,
+    ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: surface,
+      foregroundColor: onSurface,
+      elevation: 0,
+    ),
+    cardTheme: CardThemeData(
+      color: brightness == Brightness.dark ? const Color(0xFF11141D) : Colors.white,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: brightness == Brightness.dark ? BorderSide(color: Colors.white.withValues(alpha: 0.05)) : BorderSide.none,
+      ),
+    ),
   );
 }

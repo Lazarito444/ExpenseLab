@@ -20,6 +20,8 @@ class MainApp extends StatelessWidget {
       theme: AppTheme.light().themeData,
       darkTheme: AppTheme.dark().themeData,
       themeMode: ThemeMode.system,
+      locale: const Locale('es'),
+      fallbackLocale: const Locale('en'),
       supportedLocales: AppLocales.supportedLocales,
       localizationsDelegates: AppLocales.localizationDelegates,
       initialRoute: AppPages.initial,

@@ -1,3 +1,4 @@
+import 'package:expense_lab/presentation/modules/accounts/bindings/accounts_binding.dart';
 import 'package:expense_lab/presentation/modules/accounts/pages/accounts_page.dart';
 import 'package:expense_lab/presentation/modules/categories/pages/categories_page.dart';
 import 'package:expense_lab/presentation/routes/app_routes.dart';
@@ -10,6 +11,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.accounts,
       page: () => const AccountsPage(),
+      binding: AccountsBinding(),
     ),
     GetPage(
       name: AppRoutes.categories,
