@@ -1,0 +1,40 @@
+{
+  "app": {
+    "name": "ExpenseLab"
+  },
+  "settings": {
+    "title": "Configuración",
+    "theme": {
+      "title": "Tema",
+      "system": "Sistema",
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "language": {
+      "title": "Idioma"
+    },
+    "currency": {
+      "title": "Moneda"
+    }
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar"
+  },
+  "accounts": {
+    "title": "Cuentas"
+  },
+  "transactions": {
+    "title": "Transacciones"
+  },
+  "budgets": {
+    "title": "Presupuestos"
+  },
+  "savings": {
+    "title": "Ahorros"
+  }
+}
