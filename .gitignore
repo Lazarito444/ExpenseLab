@@ -1,3 +1,8 @@
+# AI
+.claude/
+.agent/
+.agents/
+
 # Miscellaneous
 *.class
 *.log

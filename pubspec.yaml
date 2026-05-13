@@ -1,5 +1,8 @@
 name: expenselab
-description: "ExpenseLab is a mobile-first personal finance management application designed to help users track income, expenses, savings, and budgets with an organic, modern, and intuitive interface. The app focuses on visual clarity and actionable insights to promote financial well-being."
+description: "ExpenseLab is a mobile-first personal finance management
+  application designed to help users track income, expenses, savings, and
+  budgets with an organic, modern, and intuitive interface. The app focuses on
+  visual clarity and actionable insights to promote financial well-being."
 
 publish_to: "none"
 
@@ -10,10 +13,16 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.8
+  drift: ^2.33.0
   flutter:
     sdk: flutter
+  path: ^1.9.1
+  path_provider: ^2.1.5
+  uuid: ^4.5.3
 
 dev_dependencies:
+  build_runner: ^2.15.0
+  drift_dev: ^2.33.0
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
