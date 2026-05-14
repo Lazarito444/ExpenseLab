@@ -5,9 +5,12 @@ import 'package:drift/drift.dart';
 mixin SoftDeleteTable on Table {
   TextColumn get id => text()();
 
-  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+  /// Set automatically on insert via [clientDefault]; always stored in UTC.
+  DateTimeColumn get createdAt => dateTime().clientDefault(() => DateTime.now().toUtc())();
 
-  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
+  /// Set automatically on insert via [clientDefault]; always stored in UTC.
+  /// Must be updated manually on every subsequent write using [DateTime.now().toUtc()].
+  DateTimeColumn get updatedAt => dateTime().clientDefault(() => DateTime.now().toUtc())();
 
   BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
 
@@ -22,9 +25,12 @@ mixin SoftDeleteTable on Table {
 mixin TimestampedTable on Table {
   TextColumn get id => text()();
 
-  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+  /// Set automatically on insert via [clientDefault]; always stored in UTC.
+  DateTimeColumn get createdAt => dateTime().clientDefault(() => DateTime.now().toUtc())();
 
-  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
+  /// Set automatically on insert via [clientDefault]; always stored in UTC.
+  /// Must be updated manually on every subsequent write using [DateTime.now().toUtc()].
+  DateTimeColumn get updatedAt => dateTime().clientDefault(() => DateTime.now().toUtc())();
 
   @override
   Set<Column> get primaryKey => {id};
