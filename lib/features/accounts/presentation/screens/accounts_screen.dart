@@ -1,4 +1,5 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
+import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,9 +30,12 @@ class AccountsScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: .stretch,
             children: [
-              const Text("My Accounts"),
-              const Text("Your financial overview at a glance"),
-              _totalNetWorthCard(),
+              const SizedBox(height: 16),
+              Text(t.accounts.title, style: context.textTheme.headlineLarge),
+              const SizedBox(height: 8),
+              Text(t.accounts.subtitle, style: context.textTheme.headlineSmall),
+              const SizedBox(height: 16),
+              _totalNetWorthCard(context),
               _accountsList(),
             ],
           ),
@@ -40,8 +44,30 @@ class AccountsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _totalNetWorthCard() {
-    return const SizedBox(height: 150, child: Placeholder());
+  Widget _totalNetWorthCard(BuildContext context) {
+    return Container(
+      height: 150,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: context.colorScheme.primaryFixed,
+      ),
+      child: Column(
+        crossAxisAlignment: .stretch,
+        children: [
+          const SizedBox(height: 8),
+          Text(
+            t.accounts.total_net_worth,
+            style: context.textTheme.labelSmall,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            r"$12,345.67",
+            style: context.textTheme.displayMedium,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _accountsList() {

@@ -93,7 +93,9 @@ class _TranslationsAccountsEs extends TranslationsAccountsEn {
 	final TranslationsEs _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Cuentas';
+	@override String get title => 'Mis cuentas';
+	@override String get subtitle => 'Tu resumen financiero de un vistazo.';
+	@override String get total_net_worth => 'Patrimonio neto total';
 }
 
 // Path: transactions
@@ -181,7 +183,9 @@ extension on TranslationsEs {
 			'common.delete' => 'Eliminar',
 			'common.edit' => 'Editar',
 			'common.close' => 'Cerrar',
-			'accounts.title' => 'Cuentas',
+			'accounts.title' => 'Mis cuentas',
+			'accounts.subtitle' => 'Tu resumen financiero de un vistazo.',
+			'accounts.total_net_worth' => 'Patrimonio neto total',
 			'transactions.title' => 'Transacciones',
 			'budgets.title' => 'Presupuestos',
 			'savings.title' => 'Ahorros',

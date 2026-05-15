@@ -26,7 +26,9 @@
     "close": "Cerrar"
   },
   "accounts": {
-    "title": "Cuentas"
+    "title": "Mis cuentas",
+    "subtitle": "Tu resumen financiero de un vistazo.",
+    "total_net_worth": "Patrimonio neto total"
   },
   "transactions": {
     "title": "Transacciones"
