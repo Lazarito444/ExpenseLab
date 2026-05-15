@@ -1,5 +1,5 @@
 import 'package:expenselab/core/database/app_database.dart';
-import 'package:expenselab/core/providers/database_providers.dart';
+import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/features/budgets/data/datasources/budgets_local_datasource.dart';
 import 'package:expenselab/features/budgets/data/datasources/budgets_local_datasource_impl.dart';
 import 'package:expenselab/features/budgets/data/repositories/budgets_repository.dart';
@@ -35,7 +35,6 @@ final budgetByIdProvider = StreamProvider.family<Budget?, String>((ref, id) {
 /// Streams all non-deleted budgets for [categoryId]. Re-emits on every change.
 ///
 /// Usage: `ref.watch(budgetsByCategoryProvider('category-id'))`.
-final budgetsByCategoryProvider =
-    StreamProvider.family<List<Budget>, String>((ref, categoryId) {
+final budgetsByCategoryProvider = StreamProvider.family<List<Budget>, String>((ref, categoryId) {
   return ref.watch(budgetsRepositoryProvider).watchByCategoryId(categoryId);
 });

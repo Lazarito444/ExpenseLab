@@ -1,4 +1,4 @@
-import 'package:expenselab/core/providers/settings_providers.dart';
+import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/core/theme/app_theme.dart';
 import 'package:expenselab/i18n/strings.g.dart';
 import 'package:flutter/material.dart';

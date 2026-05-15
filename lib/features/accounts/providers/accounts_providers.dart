@@ -1,5 +1,5 @@
 import 'package:expenselab/core/database/app_database.dart';
-import 'package:expenselab/core/providers/database_providers.dart';
+import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/features/accounts/data/datasources/accounts_local_datasource.dart';
 import 'package:expenselab/features/accounts/data/datasources/accounts_local_datasource_impl.dart';
 import 'package:expenselab/features/accounts/data/repositories/accounts_repository.dart';

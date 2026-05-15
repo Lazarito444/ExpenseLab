@@ -1,5 +1,5 @@
 import 'package:expenselab/core/database/app_database.dart';
-import 'package:expenselab/core/providers/database_providers.dart';
+import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/features/categories/data/datasources/categories_local_datasource.dart';
 import 'package:expenselab/features/categories/data/datasources/categories_local_datasource_impl.dart';
 import 'package:expenselab/features/categories/data/repositories/categories_repository.dart';
@@ -37,8 +37,7 @@ final categoryByIdProvider = StreamProvider.family<Category?, String>((ref, id) 
 /// Re-emits on every change.
 ///
 /// Usage: `ref.watch(categoriesByTypeProvider(CategoryType.expense))`.
-final categoriesByTypeProvider =
-    StreamProvider.family<List<Category>, CategoryType>((ref, type) {
+final categoriesByTypeProvider = StreamProvider.family<List<Category>, CategoryType>((ref, type) {
   return ref.watch(categoriesRepositoryProvider).watchByType(type);
 });
 

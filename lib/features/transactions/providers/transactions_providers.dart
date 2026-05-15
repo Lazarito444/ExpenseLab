@@ -1,5 +1,5 @@
 import 'package:expenselab/core/database/app_database.dart';
-import 'package:expenselab/core/providers/database_providers.dart';
+import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/features/transactions/data/datasources/transaction_images_local_datasource.dart';
 import 'package:expenselab/features/transactions/data/datasources/transaction_images_local_datasource_impl.dart';
 import 'package:expenselab/features/transactions/data/datasources/transactions_local_datasource.dart';
@@ -42,8 +42,7 @@ final transactionByIdProvider = StreamProvider.family<Transaction?, String>((ref
 /// matches [accountId]. Re-emits on every change.
 ///
 /// Usage: `ref.watch(transactionsByAccountProvider('account-id'))`.
-final transactionsByAccountProvider =
-    StreamProvider.family<List<Transaction>, String>((ref, accountId) {
+final transactionsByAccountProvider = StreamProvider.family<List<Transaction>, String>((ref, accountId) {
   return ref.watch(transactionsRepositoryProvider).watchByAccountId(accountId);
 });
 
@@ -51,8 +50,7 @@ final transactionsByAccountProvider =
 
 /// Provides [TransactionImagesLocalDataSourceImpl] bound to the
 /// [TransactionImagesLocalDataSource] interface.
-final transactionImagesLocalDataSourceProvider =
-    Provider<TransactionImagesLocalDataSource>((ref) {
+final transactionImagesLocalDataSourceProvider = Provider<TransactionImagesLocalDataSource>((ref) {
   return TransactionImagesLocalDataSourceImpl(ref.watch(appDatabaseProvider));
 });
 
@@ -66,9 +64,6 @@ final transactionImagesRepositoryProvider = Provider<TransactionImagesRepository
 /// Re-emits on every change.
 ///
 /// Usage: `ref.watch(transactionImagesByTransactionProvider('tx-id'))`.
-final transactionImagesByTransactionProvider =
-    StreamProvider.family<List<TransactionImage>, String>((ref, transactionId) {
-  return ref
-      .watch(transactionImagesRepositoryProvider)
-      .watchByTransactionId(transactionId);
+final transactionImagesByTransactionProvider = StreamProvider.family<List<TransactionImage>, String>((ref, transactionId) {
+  return ref.watch(transactionImagesRepositoryProvider).watchByTransactionId(transactionId);
 });

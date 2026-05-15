@@ -1,5 +1,5 @@
 import 'package:expenselab/core/database/app_database.dart';
-import 'package:expenselab/core/providers/database_providers.dart';
+import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/features/savings/data/datasources/savings_contributions_local_datasource.dart';
 import 'package:expenselab/features/savings/data/datasources/savings_contributions_local_datasource_impl.dart';
 import 'package:expenselab/features/savings/data/datasources/savings_goals_local_datasource.dart';
@@ -44,17 +44,14 @@ final savingsGoalByIdProvider = StreamProvider.family<SavingsGoal?, String>((ref
 /// [SavingsContributionsLocalDataSource] interface. Swap the implementation
 /// here to change the storage backend without touching any repository or UI
 /// code.
-final savingsContributionsLocalDataSourceProvider =
-    Provider<SavingsContributionsLocalDataSource>((ref) {
+final savingsContributionsLocalDataSourceProvider = Provider<SavingsContributionsLocalDataSource>((ref) {
   return SavingsContributionsLocalDataSourceImpl(ref.watch(appDatabaseProvider));
 });
 
 /// Provides the singleton [SavingsContributionsRepository], wired to
 /// [savingsContributionsLocalDataSourceProvider].
-final savingsContributionsRepositoryProvider =
-    Provider<SavingsContributionsRepository>((ref) {
-  return SavingsContributionsRepository(
-      ref.watch(savingsContributionsLocalDataSourceProvider));
+final savingsContributionsRepositoryProvider = Provider<SavingsContributionsRepository>((ref) {
+  return SavingsContributionsRepository(ref.watch(savingsContributionsLocalDataSourceProvider));
 });
 
 /// Streams all non-deleted [SavingsContribution] records. Automatically
@@ -70,7 +67,6 @@ final savingsContributionsProvider = StreamProvider<List<SavingsContribution>>((
 /// change.
 ///
 /// Usage: `ref.watch(contributionsByGoalProvider('goal-id'))`.
-final contributionsByGoalProvider =
-    StreamProvider.family<List<SavingsContribution>, String>((ref, goalId) {
+final contributionsByGoalProvider = StreamProvider.family<List<SavingsContribution>, String>((ref, goalId) {
   return ref.watch(savingsContributionsRepositoryProvider).watchByGoalId(goalId);
 });
