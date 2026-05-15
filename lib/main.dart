@@ -6,19 +6,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  LocaleSettings.useDeviceLocale();
-  runApp(
-    ProviderScope(
-      child: TranslationProvider(
-        child: const MyApp(),
-      ),
-    ),
-  );
+  launchExpenseLabApp();
 }
 
-class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+class ExpenseLabApp extends ConsumerWidget {
+  const ExpenseLabApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,4 +29,16 @@ class MyApp extends ConsumerWidget {
       home: const Placeholder(),
     );
   }
+}
+
+void launchExpenseLabApp() {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocaleSettings.useDeviceLocale();
+  runApp(
+    ProviderScope(
+      child: TranslationProvider(
+        child: const ExpenseLabApp(),
+      ),
+    ),
+  );
 }
