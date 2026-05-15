@@ -112,8 +112,32 @@ class TranslationsAccountsEn {
 
 	// Translations
 
-	/// en: 'Accounts'
-	String get title => 'Accounts';
+	/// en: 'My Accounts'
+	String get title => 'My Accounts';
+
+	/// en: 'Your financial overview at a glance.'
+	String get subtitle => 'Your financial overview at a glance.';
+
+	/// en: 'Total Net Worth'
+	String get net_worth => 'Total Net Worth';
+
+	/// en: '{percent} this month'
+	String get monthly_change => '{percent} this month';
+
+	/// en: 'Asset Accounts'
+	String get asset_accounts => 'Asset Accounts';
+
+	/// en: 'Checking'
+	String get checking => 'Checking';
+
+	/// en: 'Main Spending Account'
+	String get checking_subtitle => 'Main Spending Account';
+
+	/// en: 'Savings'
+	String get savings => 'Savings';
+
+	/// en: 'Emergency Fund'
+	String get savings_subtitle => 'Emergency Fund';
 }
 
 // Path: transactions
@@ -219,7 +243,15 @@ extension on Translations {
 			'common.delete' => 'Delete',
 			'common.edit' => 'Edit',
 			'common.close' => 'Close',
-			'accounts.title' => 'Accounts',
+			'accounts.title' => 'My Accounts',
+			'accounts.subtitle' => 'Your financial overview at a glance.',
+			'accounts.net_worth' => 'Total Net Worth',
+			'accounts.monthly_change' => '{percent} this month',
+			'accounts.asset_accounts' => 'Asset Accounts',
+			'accounts.checking' => 'Checking',
+			'accounts.checking_subtitle' => 'Main Spending Account',
+			'accounts.savings' => 'Savings',
+			'accounts.savings_subtitle' => 'Emergency Fund',
 			'transactions.title' => 'Transactions',
 			'budgets.title' => 'Budgets',
 			'savings.title' => 'Savings',

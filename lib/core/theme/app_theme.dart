@@ -11,7 +11,18 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: seedColor,
       brightness: Brightness.light,
+      primary: const Color(0xFF2D6831),
+      primaryFixed: const Color(0xFF4E8A4F),
     ),
+    textTheme: const TextTheme(
+      titleMedium: TextStyle(
+        fontFamily: 'Epilogue',
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF2D6831),
+        fontSize: 24,
+      ),
+    ),
+    scaffoldBackgroundColor: const Color(0xFFF8F9F8),
   );
 
   static ThemeData get dark => ThemeData(
