@@ -1,7 +1,7 @@
+import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/settings/domain/models/app_settings.dart';
 import 'package:expenselab/features/settings/domain/models/currency.dart';
 import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
-import 'package:expenselab/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';

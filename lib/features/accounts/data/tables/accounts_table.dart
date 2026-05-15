@@ -1,7 +1,11 @@
 import 'package:drift/drift.dart';
 import 'package:expenselab/core/database/base_table.dart';
 
-enum AccountType { cash, debit, credit, investment }
+enum AccountType {
+  cash,
+  bankAccount,
+  creditCard,
+}
 
 class Accounts extends Table with SoftDeleteTable {
   TextColumn get name => text()();

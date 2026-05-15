@@ -1,6 +1,6 @@
+import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/settings/domain/models/currency.dart';
 import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
-import 'package:expenselab/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,8 +27,7 @@ class AppSettings {
     };
 
     final localeTag = prefs.getString(_keyLocale);
-    final locale =
-        localeTag != null ? AppLocaleUtils.parse(localeTag) : AppLocale.en;
+    final locale = localeTag != null ? AppLocaleUtils.parse(localeTag) : AppLocale.en;
 
     final currencyCode = prefs.getString(_keyCurrency);
     final currency = currencyCode != null
@@ -51,10 +50,9 @@ class AppSettings {
     ThemeMode? themeMode,
     AppLocale? locale,
     Currency? currency,
-  }) =>
-      AppSettings(
-        themeMode: themeMode ?? this.themeMode,
-        locale: locale ?? this.locale,
-        currency: currency ?? this.currency,
-      );
+  }) => AppSettings(
+    themeMode: themeMode ?? this.themeMode,
+    locale: locale ?? this.locale,
+    currency: currency ?? this.currency,
+  );
 }

@@ -3,6 +3,8 @@ import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/features/accounts/data/datasources/accounts_local_datasource.dart';
 import 'package:expenselab/features/accounts/data/datasources/accounts_local_datasource_impl.dart';
 import 'package:expenselab/features/accounts/data/repositories/accounts_repository.dart';
+import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
+import 'package:expenselab/features/transactions/providers/transactions_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Provides [AccountsLocalDataSourceImpl] bound to the [AccountsLocalDataSource]
@@ -33,4 +35,42 @@ final accountsProvider = StreamProvider<List<Account>>((ref) {
 /// `AsyncValue<Account?>`.
 final accountByIdProvider = StreamProvider.family<Account?, String>((ref, id) {
   return ref.watch(accountsRepositoryProvider).watchById(id);
+});
+
+/// Computes the running balance for a single account by summing its transactions.
+///
+/// - income credited to [accountId]: `+ amount`
+/// - expense debited from [accountId]: `- amount`
+/// - transfer from [accountId]: `- amount`; transfer to [accountId]: `+ amount`
+///
+/// Returns `0.0` while loading or on error so the UI stays non-null.
+final accountBalanceProvider = Provider.family<double, String>((ref, accountId) {
+  final txsAsync = ref.watch(transactionsByAccountProvider(accountId));
+  return txsAsync.when(
+    data: (txs) {
+      var balance = 0.0;
+      for (final tx in txs) {
+        switch (tx.type) {
+          case TransactionType.income:
+            balance += tx.amount;
+          case TransactionType.expense:
+            balance -= tx.amount;
+          case TransactionType.transfer:
+            balance += tx.accountId == accountId ? -tx.amount : tx.amount;
+        }
+      }
+      return balance;
+    },
+    loading: () => 0.0,
+    error: (e, s) => 0.0,
+  );
+});
+
+/// Total net worth: algebraic sum of every account's balance.
+final totalNetWorthProvider = Provider<double>((ref) {
+  final accounts = switch (ref.watch(accountsProvider)) {
+    AsyncData(:final value) => value,
+    _ => <Account>[],
+  };
+  return accounts.fold(0.0, (sum, a) => sum + ref.watch(accountBalanceProvider(a.id)));
 });
