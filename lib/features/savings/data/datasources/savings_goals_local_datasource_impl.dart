@@ -14,22 +14,16 @@ class SavingsGoalsLocalDataSourceImpl implements SavingsGoalsLocalDataSource {
   final AppDatabase _db;
 
   @override
-  Stream<List<SavingsGoal>> watchAll() =>
-      (_db.select(_db.savingsGoals)..where((t) => t.isDeleted.equals(false))).watch();
+  Stream<List<SavingsGoal>> watchAll() => (_db.select(_db.savingsGoals)..where((t) => t.isDeleted.equals(false))).watch();
 
   @override
-  Stream<SavingsGoal?> watchById(String id) => (_db.select(_db.savingsGoals)
-        ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-      .watchSingleOrNull();
+  Stream<SavingsGoal?> watchById(String id) => (_db.select(_db.savingsGoals)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).watchSingleOrNull();
 
   @override
-  Future<List<SavingsGoal>> getAll() =>
-      (_db.select(_db.savingsGoals)..where((t) => t.isDeleted.equals(false))).get();
+  Future<List<SavingsGoal>> getAll() => (_db.select(_db.savingsGoals)..where((t) => t.isDeleted.equals(false))).get();
 
   @override
-  Future<SavingsGoal?> getById(String id) => (_db.select(_db.savingsGoals)
-        ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-      .getSingleOrNull();
+  Future<SavingsGoal?> getById(String id) => (_db.select(_db.savingsGoals)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).getSingleOrNull();
 
   @override
   Future<String> create(SavingsGoalsCompanion data) async {
@@ -39,9 +33,7 @@ class SavingsGoalsLocalDataSourceImpl implements SavingsGoalsLocalDataSource {
   }
 
   @override
-  Future<void> update(String id, SavingsGoalsCompanion data) =>
-      (_db.update(_db.savingsGoals)..where((t) => t.id.equals(id)))
-          .write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
+  Future<void> update(String id, SavingsGoalsCompanion data) => (_db.update(_db.savingsGoals)..where((t) => t.id.equals(id))).write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
 
   @override
   Future<void> delete(String id) {

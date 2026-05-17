@@ -2,6 +2,7 @@ import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class AccountsScreen extends ConsumerWidget {
   const AccountsScreen({super.key});
@@ -19,7 +20,7 @@ class AccountsScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => context.push('/accounts/create'),
             icon: const Icon(Icons.add),
           ),
         ],

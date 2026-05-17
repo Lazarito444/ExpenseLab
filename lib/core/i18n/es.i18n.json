@@ -17,6 +17,29 @@
       "title": "Moneda"
     }
   },
+  "currencies(map)": {
+    "USD": "Dólar estadounidense",
+    "EUR": "Euro",
+    "GBP": "Libra esterlina",
+    "ARS": "Peso argentino",
+    "BRL": "Real brasileño",
+    "MXN": "Peso mexicano",
+    "DOP": "Peso dominicano",
+    "CLP": "Peso chileno",
+    "COP": "Peso colombiano",
+    "PEN": "Sol peruano",
+    "UYU": "Peso uruguayo",
+    "PYG": "Guaraní paraguayo",
+    "BOB": "Boliviano boliviano",
+    "JPY": "Yen japonés",
+    "CNY": "Yuan chino",
+    "CAD": "Dólar canadiense",
+    "AUD": "Dólar australiano",
+    "CHF": "Franco suizo",
+    "INR": "Rupia india",
+    "KRW": "Won surcoreano",
+    "ZAR": "Rand sudafricano"
+  },
   "common": {
     "save": "Guardar",
     "cancel": "Cancelar",
@@ -29,6 +52,26 @@
     "title": "Mis cuentas",
     "subtitle": "Tu resumen financiero de un vistazo.",
     "total_net_worth": "Patrimonio neto total"
+  },
+  "create_account": {
+    "title": "Nueva cuenta",
+    "icon": "Icono de cuenta",
+    "name": "Nombre de cuenta",
+    "name_hint": "ej., Ahorros principales",
+    "type": "Tipo de cuenta",
+    "type_savings": "Cuenta bancaria",
+    "type_cash": "Efectivo",
+    "type_credit_card": "Tarjeta de crédito",
+    "currency": "Moneda",
+    "select_currency_title": "Seleccionar moneda",
+    "search_currency_hint": "Buscar código o nombre de moneda...",
+    "no_currencies_found": "No se encontraron monedas",
+    "initial_balance": "Saldo inicial",
+    "pro_tip": "Consejo profesional: Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.",
+    "create_button": "Crear cuenta",
+    "name_required": "Por favor ingresa un nombre de cuenta",
+    "balance_invalid": "Por favor ingresa un saldo válido",
+    "success": "Cuenta creada con éxito"
   },
   "transactions": {
     "title": "Transacciones"

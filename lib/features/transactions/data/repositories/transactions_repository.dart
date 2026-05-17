@@ -28,20 +28,17 @@ class TransactionsRepository {
 
   /// Streams all non-deleted transactions for [accountId] (source or
   /// destination).
-  Stream<List<Transaction>> watchByAccountId(String accountId) =>
-      _local.watchByAccountId(accountId);
+  Stream<List<Transaction>> watchByAccountId(String accountId) => _local.watchByAccountId(accountId);
 
   /// Streams all non-deleted transactions within the inclusive date range
   /// [[from], [to]].
-  Stream<List<Transaction>> watchByDateRange(DateTime from, DateTime to) =>
-      _local.watchByDateRange(from, to);
+  Stream<List<Transaction>> watchByDateRange(DateTime from, DateTime to) => _local.watchByDateRange(from, to);
 
   /// Inserts a new transaction and returns its generated [id].
   Future<String> create(TransactionsCompanion data) => _local.create(data);
 
   /// Overwrites the mutable fields of the transaction identified by [id].
-  Future<void> update(String id, TransactionsCompanion data) =>
-      _local.update(id, data);
+  Future<void> update(String id, TransactionsCompanion data) => _local.update(id, data);
 
   /// Soft-deletes the transaction identified by [id].
   Future<void> delete(String id) => _local.delete(id);

@@ -8,41 +8,26 @@ import 'package:expenselab/features/savings/data/datasources/savings_contributio
 /// All read methods exclude soft-deleted rows (`isDeleted = true`).
 /// [create] only assigns [id]; [createdAt], [updatedAt], and [isDeleted] are
 /// handled by the [SoftDeleteTable] client defaults.
-class SavingsContributionsLocalDataSourceImpl
-    implements SavingsContributionsLocalDataSource {
+class SavingsContributionsLocalDataSourceImpl implements SavingsContributionsLocalDataSource {
   const SavingsContributionsLocalDataSourceImpl(this._db);
 
   final AppDatabase _db;
 
   @override
-  Stream<List<SavingsContribution>> watchAll() =>
-      (_db.select(_db.savingsContributions)..where((t) => t.isDeleted.equals(false)))
-          .watch();
+  Stream<List<SavingsContribution>> watchAll() => (_db.select(_db.savingsContributions)..where((t) => t.isDeleted.equals(false))).watch();
 
   @override
-  Stream<SavingsContribution?> watchById(String id) =>
-      (_db.select(_db.savingsContributions)
-            ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-          .watchSingleOrNull();
+  Stream<SavingsContribution?> watchById(String id) => (_db.select(_db.savingsContributions)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).watchSingleOrNull();
 
   @override
-  Future<List<SavingsContribution>> getAll() =>
-      (_db.select(_db.savingsContributions)..where((t) => t.isDeleted.equals(false)))
-          .get();
+  Future<List<SavingsContribution>> getAll() => (_db.select(_db.savingsContributions)..where((t) => t.isDeleted.equals(false))).get();
 
   @override
-  Future<SavingsContribution?> getById(String id) =>
-      (_db.select(_db.savingsContributions)
-            ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-          .getSingleOrNull();
+  Future<SavingsContribution?> getById(String id) => (_db.select(_db.savingsContributions)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).getSingleOrNull();
 
   @override
   Stream<List<SavingsContribution>> watchByGoalId(String savingsGoalId) =>
-      (_db.select(_db.savingsContributions)
-            ..where((t) =>
-                t.isDeleted.equals(false) &
-                t.savingsGoalId.equals(savingsGoalId)))
-          .watch();
+      (_db.select(_db.savingsContributions)..where((t) => t.isDeleted.equals(false) & t.savingsGoalId.equals(savingsGoalId))).watch();
 
   @override
   Future<String> create(SavingsContributionsCompanion data) async {
@@ -53,8 +38,7 @@ class SavingsContributionsLocalDataSourceImpl
 
   @override
   Future<void> update(String id, SavingsContributionsCompanion data) =>
-      (_db.update(_db.savingsContributions)..where((t) => t.id.equals(id)))
-          .write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
+      (_db.update(_db.savingsContributions)..where((t) => t.id.equals(id))).write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
 
   @override
   Future<void> delete(String id) {

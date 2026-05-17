@@ -29,20 +29,17 @@ class TransactionImagesRepository {
 
   /// Streams all image records for [transactionId], re-emitting on every
   /// change.
-  Stream<List<TransactionImage>> watchByTransactionId(String transactionId) =>
-      _local.watchByTransactionId(transactionId);
+  Stream<List<TransactionImage>> watchByTransactionId(String transactionId) => _local.watchByTransactionId(transactionId);
 
   /// Inserts a new image record and returns its generated [id].
   Future<String> create(TransactionImagesCompanion data) => _local.create(data);
 
   /// Overwrites the mutable fields of the image record identified by [id].
-  Future<void> update(String id, TransactionImagesCompanion data) =>
-      _local.update(id, data);
+  Future<void> update(String id, TransactionImagesCompanion data) => _local.update(id, data);
 
   /// Permanently deletes the image record identified by [id].
   Future<void> delete(String id) => _local.delete(id);
 
   /// Permanently deletes all image records associated with [transactionId].
-  Future<void> deleteByTransactionId(String transactionId) =>
-      _local.deleteByTransactionId(transactionId);
+  Future<void> deleteByTransactionId(String transactionId) => _local.deleteByTransactionId(transactionId);
 }

@@ -31,15 +31,13 @@ class SavingsContributionsRepository {
 
   /// Streams all non-deleted contributions for [savingsGoalId], re-emitting on
   /// every change.
-  Stream<List<SavingsContribution>> watchByGoalId(String savingsGoalId) =>
-      _local.watchByGoalId(savingsGoalId);
+  Stream<List<SavingsContribution>> watchByGoalId(String savingsGoalId) => _local.watchByGoalId(savingsGoalId);
 
   /// Inserts a new contribution and returns its generated [id].
   Future<String> create(SavingsContributionsCompanion data) => _local.create(data);
 
   /// Overwrites the mutable fields of the contribution identified by [id].
-  Future<void> update(String id, SavingsContributionsCompanion data) =>
-      _local.update(id, data);
+  Future<void> update(String id, SavingsContributionsCompanion data) => _local.update(id, data);
 
   /// Soft-deletes the contribution identified by [id].
   Future<void> delete(String id) => _local.delete(id);

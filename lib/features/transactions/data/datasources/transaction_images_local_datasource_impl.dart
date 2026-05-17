@@ -17,28 +17,19 @@ class TransactionImagesLocalDataSourceImpl implements TransactionImagesLocalData
   final AppDatabase _db;
 
   @override
-  Stream<List<TransactionImage>> watchAll() =>
-      _db.select(_db.transactionImages).watch();
+  Stream<List<TransactionImage>> watchAll() => _db.select(_db.transactionImages).watch();
 
   @override
-  Stream<TransactionImage?> watchById(String id) =>
-      (_db.select(_db.transactionImages)..where((t) => t.id.equals(id)))
-          .watchSingleOrNull();
+  Stream<TransactionImage?> watchById(String id) => (_db.select(_db.transactionImages)..where((t) => t.id.equals(id))).watchSingleOrNull();
 
   @override
-  Future<List<TransactionImage>> getAll() =>
-      _db.select(_db.transactionImages).get();
+  Future<List<TransactionImage>> getAll() => _db.select(_db.transactionImages).get();
 
   @override
-  Future<TransactionImage?> getById(String id) =>
-      (_db.select(_db.transactionImages)..where((t) => t.id.equals(id)))
-          .getSingleOrNull();
+  Future<TransactionImage?> getById(String id) => (_db.select(_db.transactionImages)..where((t) => t.id.equals(id))).getSingleOrNull();
 
   @override
-  Stream<List<TransactionImage>> watchByTransactionId(String transactionId) =>
-      (_db.select(_db.transactionImages)
-            ..where((t) => t.transactionId.equals(transactionId)))
-          .watch();
+  Stream<List<TransactionImage>> watchByTransactionId(String transactionId) => (_db.select(_db.transactionImages)..where((t) => t.transactionId.equals(transactionId))).watch();
 
   @override
   Future<String> create(TransactionImagesCompanion data) async {
@@ -48,17 +39,11 @@ class TransactionImagesLocalDataSourceImpl implements TransactionImagesLocalData
   }
 
   @override
-  Future<void> update(String id, TransactionImagesCompanion data) =>
-      (_db.update(_db.transactionImages)..where((t) => t.id.equals(id)))
-          .write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
+  Future<void> update(String id, TransactionImagesCompanion data) => (_db.update(_db.transactionImages)..where((t) => t.id.equals(id))).write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
 
   @override
-  Future<void> delete(String id) =>
-      (_db.delete(_db.transactionImages)..where((t) => t.id.equals(id))).go();
+  Future<void> delete(String id) => (_db.delete(_db.transactionImages)..where((t) => t.id.equals(id))).go();
 
   @override
-  Future<void> deleteByTransactionId(String transactionId) =>
-      (_db.delete(_db.transactionImages)
-            ..where((t) => t.transactionId.equals(transactionId)))
-          .go();
+  Future<void> deleteByTransactionId(String transactionId) => (_db.delete(_db.transactionImages)..where((t) => t.transactionId.equals(transactionId))).go();
 }

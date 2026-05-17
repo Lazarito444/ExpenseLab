@@ -18,39 +18,24 @@ class TransactionsLocalDataSourceImpl implements TransactionsLocalDataSource {
   final AppDatabase _db;
 
   @override
-  Stream<List<Transaction>> watchAll() =>
-      (_db.select(_db.transactions)..where((t) => t.isDeleted.equals(false))).watch();
+  Stream<List<Transaction>> watchAll() => (_db.select(_db.transactions)..where((t) => t.isDeleted.equals(false))).watch();
 
   @override
-  Stream<Transaction?> watchById(String id) => (_db.select(_db.transactions)
-        ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-      .watchSingleOrNull();
+  Stream<Transaction?> watchById(String id) => (_db.select(_db.transactions)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).watchSingleOrNull();
 
   @override
-  Future<List<Transaction>> getAll() =>
-      (_db.select(_db.transactions)..where((t) => t.isDeleted.equals(false))).get();
+  Future<List<Transaction>> getAll() => (_db.select(_db.transactions)..where((t) => t.isDeleted.equals(false))).get();
 
   @override
-  Future<Transaction?> getById(String id) => (_db.select(_db.transactions)
-        ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-      .getSingleOrNull();
+  Future<Transaction?> getById(String id) => (_db.select(_db.transactions)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).getSingleOrNull();
 
   @override
   Stream<List<Transaction>> watchByAccountId(String accountId) =>
-      (_db.select(_db.transactions)
-            ..where((t) =>
-                t.isDeleted.equals(false) &
-                (t.accountId.equals(accountId) | t.toAccountId.equals(accountId))))
-          .watch();
+      (_db.select(_db.transactions)..where((t) => t.isDeleted.equals(false) & (t.accountId.equals(accountId) | t.toAccountId.equals(accountId)))).watch();
 
   @override
   Stream<List<Transaction>> watchByDateRange(DateTime from, DateTime to) =>
-      (_db.select(_db.transactions)
-            ..where((t) =>
-                t.isDeleted.equals(false) &
-                t.date.isBiggerOrEqualValue(from) &
-                t.date.isSmallerOrEqualValue(to)))
-          .watch();
+      (_db.select(_db.transactions)..where((t) => t.isDeleted.equals(false) & t.date.isBiggerOrEqualValue(from) & t.date.isSmallerOrEqualValue(to))).watch();
 
   @override
   Future<String> create(TransactionsCompanion data) async {
@@ -60,9 +45,7 @@ class TransactionsLocalDataSourceImpl implements TransactionsLocalDataSource {
   }
 
   @override
-  Future<void> update(String id, TransactionsCompanion data) =>
-      (_db.update(_db.transactions)..where((t) => t.id.equals(id)))
-          .write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
+  Future<void> update(String id, TransactionsCompanion data) => (_db.update(_db.transactions)..where((t) => t.id.equals(id))).write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
 
   @override
   Future<void> delete(String id) {

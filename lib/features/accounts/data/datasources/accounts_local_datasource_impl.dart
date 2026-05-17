@@ -14,22 +14,16 @@ class AccountsLocalDataSourceImpl implements AccountsLocalDataSource {
   final AppDatabase _db;
 
   @override
-  Stream<List<Account>> watchAll() =>
-      (_db.select(_db.accounts)..where((t) => t.isDeleted.equals(false))).watch();
+  Stream<List<Account>> watchAll() => (_db.select(_db.accounts)..where((t) => t.isDeleted.equals(false))).watch();
 
   @override
-  Stream<Account?> watchById(String id) => (_db.select(_db.accounts)
-        ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-      .watchSingleOrNull();
+  Stream<Account?> watchById(String id) => (_db.select(_db.accounts)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).watchSingleOrNull();
 
   @override
-  Future<List<Account>> getAll() =>
-      (_db.select(_db.accounts)..where((t) => t.isDeleted.equals(false))).get();
+  Future<List<Account>> getAll() => (_db.select(_db.accounts)..where((t) => t.isDeleted.equals(false))).get();
 
   @override
-  Future<Account?> getById(String id) => (_db.select(_db.accounts)
-        ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-      .getSingleOrNull();
+  Future<Account?> getById(String id) => (_db.select(_db.accounts)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).getSingleOrNull();
 
   @override
   Future<String> create(AccountsCompanion data) async {
@@ -39,9 +33,7 @@ class AccountsLocalDataSourceImpl implements AccountsLocalDataSource {
   }
 
   @override
-  Future<void> update(String id, AccountsCompanion data) =>
-      (_db.update(_db.accounts)..where((t) => t.id.equals(id)))
-          .write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
+  Future<void> update(String id, AccountsCompanion data) => (_db.update(_db.accounts)..where((t) => t.id.equals(id))).write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
 
   @override
   Future<void> delete(String id) {

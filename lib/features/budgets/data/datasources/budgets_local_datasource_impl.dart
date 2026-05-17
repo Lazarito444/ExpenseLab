@@ -14,29 +14,19 @@ class BudgetsLocalDataSourceImpl implements BudgetsLocalDataSource {
   final AppDatabase _db;
 
   @override
-  Stream<List<Budget>> watchAll() =>
-      (_db.select(_db.budgets)..where((t) => t.isDeleted.equals(false))).watch();
+  Stream<List<Budget>> watchAll() => (_db.select(_db.budgets)..where((t) => t.isDeleted.equals(false))).watch();
 
   @override
-  Stream<Budget?> watchById(String id) => (_db.select(_db.budgets)
-        ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-      .watchSingleOrNull();
+  Stream<Budget?> watchById(String id) => (_db.select(_db.budgets)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).watchSingleOrNull();
 
   @override
-  Future<List<Budget>> getAll() =>
-      (_db.select(_db.budgets)..where((t) => t.isDeleted.equals(false))).get();
+  Future<List<Budget>> getAll() => (_db.select(_db.budgets)..where((t) => t.isDeleted.equals(false))).get();
 
   @override
-  Future<Budget?> getById(String id) => (_db.select(_db.budgets)
-        ..where((t) => t.id.equals(id) & t.isDeleted.equals(false)))
-      .getSingleOrNull();
+  Future<Budget?> getById(String id) => (_db.select(_db.budgets)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).getSingleOrNull();
 
   @override
-  Stream<List<Budget>> watchByCategoryId(String categoryId) =>
-      (_db.select(_db.budgets)
-            ..where((t) =>
-                t.isDeleted.equals(false) & t.categoryId.equals(categoryId)))
-          .watch();
+  Stream<List<Budget>> watchByCategoryId(String categoryId) => (_db.select(_db.budgets)..where((t) => t.isDeleted.equals(false) & t.categoryId.equals(categoryId))).watch();
 
   @override
   Future<String> create(BudgetsCompanion data) async {
@@ -46,9 +36,7 @@ class BudgetsLocalDataSourceImpl implements BudgetsLocalDataSource {
   }
 
   @override
-  Future<void> update(String id, BudgetsCompanion data) =>
-      (_db.update(_db.budgets)..where((t) => t.id.equals(id)))
-          .write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
+  Future<void> update(String id, BudgetsCompanion data) => (_db.update(_db.budgets)..where((t) => t.id.equals(id))).write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
 
   @override
   Future<void> delete(String id) {

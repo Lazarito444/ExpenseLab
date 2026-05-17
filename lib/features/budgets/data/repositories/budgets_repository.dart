@@ -27,8 +27,7 @@ class BudgetsRepository {
 
   /// Streams all non-deleted budgets for [categoryId], re-emitting on every
   /// change.
-  Stream<List<Budget>> watchByCategoryId(String categoryId) =>
-      _local.watchByCategoryId(categoryId);
+  Stream<List<Budget>> watchByCategoryId(String categoryId) => _local.watchByCategoryId(categoryId);
 
   /// Inserts a new budget and returns its generated [id].
   Future<String> create(BudgetsCompanion data) => _local.create(data);

@@ -30,8 +30,7 @@ class CategoriesRepository {
   Stream<List<Category>> watchByType(CategoryType type) => _local.watchByType(type);
 
   /// Streams all non-deleted direct children of [parentId].
-  Stream<List<Category>> watchSubcategories(String parentId) =>
-      _local.watchSubcategories(parentId);
+  Stream<List<Category>> watchSubcategories(String parentId) => _local.watchSubcategories(parentId);
 
   /// Inserts a new category and returns its generated [id].
   Future<String> create(CategoriesCompanion data) => _local.create(data);

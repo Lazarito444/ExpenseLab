@@ -32,8 +32,7 @@ class SavingsGoalsRepository {
   Future<String> create(SavingsGoalsCompanion data) => _local.create(data);
 
   /// Overwrites the mutable fields of the savings goal identified by [id].
-  Future<void> update(String id, SavingsGoalsCompanion data) =>
-      _local.update(id, data);
+  Future<void> update(String id, SavingsGoalsCompanion data) => _local.update(id, data);
 
   /// Soft-deletes the savings goal identified by [id].
   Future<void> delete(String id) => _local.delete(id);

@@ -11,8 +11,7 @@ class Currency {
   final String symbol;
   final String name;
 
-  String format(double amount) =>
-      NumberFormat.currency(symbol: symbol, decimalDigits: 2).format(amount);
+  String format(double amount) => NumberFormat.currency(symbol: symbol, decimalDigits: 2).format(amount);
 
   @override
   bool operator ==(Object other) => other is Currency && other.code == code;

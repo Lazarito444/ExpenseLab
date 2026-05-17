@@ -17,6 +17,29 @@
       "title": "Currency"
     }
   },
+  "currencies(map)": {
+    "USD": "US Dollar",
+    "EUR": "Euro",
+    "GBP": "British Pound",
+    "ARS": "Argentine Peso",
+    "BRL": "Brazilian Real",
+    "MXN": "Mexican Peso",
+    "DOP": "Dominican Peso",
+    "CLP": "Chilean Peso",
+    "COP": "Colombian Peso",
+    "PEN": "Peruvian Sol",
+    "UYU": "Uruguayan Peso",
+    "PYG": "Paraguayan Guaraní",
+    "BOB": "Bolivian Boliviano",
+    "JPY": "Japanese Yen",
+    "CNY": "Chinese Yuan",
+    "CAD": "Canadian Dollar",
+    "AUD": "Australian Dollar",
+    "CHF": "Swiss Franc",
+    "INR": "Indian Rupee",
+    "KRW": "South Korean Won",
+    "ZAR": "South African Rand"
+  },
   "common": {
     "save": "Save",
     "cancel": "Cancel",
@@ -29,6 +52,26 @@
     "title": "My Accounts",
     "subtitle": "Your financial overview at a glance.",
     "total_net_worth": "Total Net Worth"
+  },
+  "create_account": {
+    "title": "New Account",
+    "icon": "Account Icon",
+    "name": "Account Name",
+    "name_hint": "e.g., Main Savings",
+    "type": "Account Type",
+    "type_savings": "Bank Account",
+    "type_cash": "Cash",
+    "type_credit_card": "Credit Card",
+    "currency": "Currency",
+    "select_currency_title": "Select Currency",
+    "search_currency_hint": "Search currency code or name...",
+    "no_currencies_found": "No currencies found",
+    "initial_balance": "Initial Balance",
+    "pro_tip": "Pro Tip: Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.",
+    "create_button": "Create Account",
+    "name_required": "Please enter an account name",
+    "balance_invalid": "Please enter a valid balance",
+    "success": "Account created successfully"
   },
   "transactions": {
     "title": "Transactions"
