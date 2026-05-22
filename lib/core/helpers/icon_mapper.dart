@@ -24,6 +24,18 @@ const _icons = <String, IconData>{
   'trending_up': Icons.trending_up,
   'wallet': Icons.wallet,
   'work': Icons.work,
+  'restaurant': Icons.restaurant,
+  'directions_car': Icons.directions_car,
+  'bolt': Icons.bolt,
+  'school': Icons.school,
+  'health_and_safety': Icons.health_and_safety,
+  'movie': Icons.movie,
+  'flight': Icons.flight,
+  'pets': Icons.pets,
+  'fitness_center': Icons.fitness_center,
+  'construction': Icons.construction,
+  'volunteer_activism': Icons.volunteer_activism,
+  'local_grocery_store': Icons.local_grocery_store,
 };
 
 IconData iconFromName(String name, {IconData fallback = Icons.account_balance_wallet}) {

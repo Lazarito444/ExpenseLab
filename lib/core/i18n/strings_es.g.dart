@@ -70,6 +70,9 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsTransactionsEs transactions = _TranslationsTransactionsEs._(_root);
 	@override late final _TranslationsBudgetsEs budgets = _TranslationsBudgetsEs._(_root);
 	@override late final _TranslationsSavingsEs savings = _TranslationsSavingsEs._(_root);
+	@override late final _TranslationsEditAccountEs edit_account = _TranslationsEditAccountEs._(_root);
+	@override late final _TranslationsAccountDetailsEs account_details = _TranslationsAccountDetailsEs._(_root);
+	@override late final _TranslationsMyCategoriesEs my_categories = _TranslationsMyCategoriesEs._(_root);
 }
 
 // Path: app
@@ -120,6 +123,15 @@ class _TranslationsAccountsEs extends TranslationsAccountsEn {
 	@override String get title => 'Mis cuentas';
 	@override String get subtitle => 'Tu resumen financiero de un vistazo.';
 	@override String get total_net_worth => 'Patrimonio neto total';
+	@override String get this_month => 'este mes';
+	@override String get asset_accounts => 'Cuentas de activos';
+	@override String get liability_accounts => 'Cuentas de pasivos';
+	@override String get due_soon => 'Vence pronto';
+	@override String get due_in_5_days => 'Vence en 5 días';
+	@override String get limit => 'Límite: {limit}';
+	@override String get cash_accounts => 'Cuentas de efectivo';
+	@override String get bank_accounts => 'Cuentas bancarias';
+	@override String get credit_cards => 'Tarjetas de crédito';
 }
 
 // Path: create_account
@@ -177,6 +189,73 @@ class _TranslationsSavingsEs extends TranslationsSavingsEn {
 
 	// Translations
 	@override String get title => 'Ahorros';
+}
+
+// Path: edit_account
+class _TranslationsEditAccountEs extends TranslationsEditAccountEn {
+	_TranslationsEditAccountEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Editar cuenta';
+	@override String get edit_button => 'Editar cuenta';
+	@override String get delete_button => 'Eliminar cuenta';
+	@override String get delete_title => 'Eliminar cuenta';
+	@override String get delete_message => '¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.';
+	@override String get error_loading => 'Error al cargar la cuenta';
+	@override String get success_update => 'Cuenta actualizada con éxito';
+	@override String get success_delete => 'Cuenta eliminada con éxito';
+}
+
+// Path: account_details
+class _TranslationsAccountDetailsEs extends TranslationsAccountDetailsEn {
+	_TranslationsAccountDetailsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Detalles de la cuenta';
+	@override String get edit_account => 'Editar cuenta';
+	@override String get delete_account => 'Eliminar cuenta';
+	@override String get recent_transactions => 'Transacciones recientes';
+	@override String get view_all => 'Ver todo';
+	@override String get no_transactions => 'No se encontraron transacciones';
+	@override String get growth_this_month => '{percentage} este mes';
+	@override String get error_loading => 'Error al cargar detalles';
+}
+
+// Path: my_categories
+class _TranslationsMyCategoriesEs extends TranslationsMyCategoriesEn {
+	_TranslationsMyCategoriesEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Mis Categorías';
+	@override String get subtitle => 'Lleva al día en qué se te está volando la plata.';
+	@override String get expenses => 'Gastos';
+	@override String get income => 'Ingresos';
+	@override String get category => 'Categoría';
+	@override String get subcategory => 'Subcategoría';
+	@override String get add_category => 'Añadir Categoría';
+	@override String get edit_category => 'Editar Categoría';
+	@override String get delete_category => 'Eliminar Categoría';
+	@override String get delete_message => '¿Estás seguro de que deseas eliminar esta categoría? Todas sus subcategorías pasarán a ser categorías principales.';
+	@override String get empty_state => '¡No hay cajoncitos! No dejes que la lana se te esfume.';
+	@override String get empty_subcategories => 'Sin subcategorías aún. ¡Toca + para agregar!';
+	@override String get name => 'Nombre de la Categoría';
+	@override String get name_hint => 'ej., Tragadera, Tigres...';
+	@override String get type => 'Tipo de Categoría';
+	@override String get color => 'Color de la Categoría';
+	@override String get icon => 'Icono de la Categoría';
+	@override String get parent => 'Categoría Padre';
+	@override String get parent_none => 'Ninguno (Principal)';
+	@override String get pro_tip => 'Consejo: ¡Organiza tu lana en cajonecitos para no gastarte toda la plata de un solo jalón!';
+	@override String get success_create => '¡Categoría creada con éxito!';
+	@override String get success_update => '¡Categoría actualizada con éxito!';
+	@override String get success_delete => '¡Categoría eliminada con éxito!';
+	@override String get name_required => 'Por favor ingresa un nombre para la categoría';
 }
 
 // Path: settings.theme
@@ -258,6 +337,15 @@ extension on TranslationsEs {
 			'accounts.title' => 'Mis cuentas',
 			'accounts.subtitle' => 'Tu resumen financiero de un vistazo.',
 			'accounts.total_net_worth' => 'Patrimonio neto total',
+			'accounts.this_month' => 'este mes',
+			'accounts.asset_accounts' => 'Cuentas de activos',
+			'accounts.liability_accounts' => 'Cuentas de pasivos',
+			'accounts.due_soon' => 'Vence pronto',
+			'accounts.due_in_5_days' => 'Vence en 5 días',
+			'accounts.limit' => 'Límite: {limit}',
+			'accounts.cash_accounts' => 'Cuentas de efectivo',
+			'accounts.bank_accounts' => 'Cuentas bancarias',
+			'accounts.credit_cards' => 'Tarjetas de crédito',
 			'create_account.title' => 'Nueva cuenta',
 			'create_account.icon' => 'Icono de cuenta',
 			'create_account.name' => 'Nombre de cuenta',
@@ -279,6 +367,46 @@ extension on TranslationsEs {
 			'transactions.title' => 'Transacciones',
 			'budgets.title' => 'Presupuestos',
 			'savings.title' => 'Ahorros',
+			'edit_account.title' => 'Editar cuenta',
+			'edit_account.edit_button' => 'Editar cuenta',
+			'edit_account.delete_button' => 'Eliminar cuenta',
+			'edit_account.delete_title' => 'Eliminar cuenta',
+			'edit_account.delete_message' => '¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.',
+			'edit_account.error_loading' => 'Error al cargar la cuenta',
+			'edit_account.success_update' => 'Cuenta actualizada con éxito',
+			'edit_account.success_delete' => 'Cuenta eliminada con éxito',
+			'account_details.title' => 'Detalles de la cuenta',
+			'account_details.edit_account' => 'Editar cuenta',
+			'account_details.delete_account' => 'Eliminar cuenta',
+			'account_details.recent_transactions' => 'Transacciones recientes',
+			'account_details.view_all' => 'Ver todo',
+			'account_details.no_transactions' => 'No se encontraron transacciones',
+			'account_details.growth_this_month' => '{percentage} este mes',
+			'account_details.error_loading' => 'Error al cargar detalles',
+			'my_categories.title' => 'Mis Categorías',
+			'my_categories.subtitle' => 'Lleva al día en qué se te está volando la plata.',
+			'my_categories.expenses' => 'Gastos',
+			'my_categories.income' => 'Ingresos',
+			'my_categories.category' => 'Categoría',
+			'my_categories.subcategory' => 'Subcategoría',
+			'my_categories.add_category' => 'Añadir Categoría',
+			'my_categories.edit_category' => 'Editar Categoría',
+			'my_categories.delete_category' => 'Eliminar Categoría',
+			'my_categories.delete_message' => '¿Estás seguro de que deseas eliminar esta categoría? Todas sus subcategorías pasarán a ser categorías principales.',
+			'my_categories.empty_state' => '¡No hay cajoncitos! No dejes que la lana se te esfume.',
+			'my_categories.empty_subcategories' => 'Sin subcategorías aún. ¡Toca + para agregar!',
+			'my_categories.name' => 'Nombre de la Categoría',
+			'my_categories.name_hint' => 'ej., Tragadera, Tigres...',
+			'my_categories.type' => 'Tipo de Categoría',
+			'my_categories.color' => 'Color de la Categoría',
+			'my_categories.icon' => 'Icono de la Categoría',
+			'my_categories.parent' => 'Categoría Padre',
+			'my_categories.parent_none' => 'Ninguno (Principal)',
+			'my_categories.pro_tip' => 'Consejo: ¡Organiza tu lana en cajonecitos para no gastarte toda la plata de un solo jalón!',
+			'my_categories.success_create' => '¡Categoría creada con éxito!',
+			'my_categories.success_update' => '¡Categoría actualizada con éxito!',
+			'my_categories.success_delete' => '¡Categoría eliminada con éxito!',
+			'my_categories.name_required' => 'Por favor ingresa un nombre para la categoría',
 			_ => null,
 		};
 	}

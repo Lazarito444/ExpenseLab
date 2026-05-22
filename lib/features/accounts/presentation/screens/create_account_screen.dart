@@ -23,7 +23,7 @@ class CreateAccountScreen extends ConsumerStatefulWidget {
 class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _balanceController = TextEditingController(text: '0.00');
+  final _balanceController = TextEditingController();
 
   // Form values
   String _selectedIconName = 'wallet';
@@ -188,13 +188,6 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
       }
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.t.create_account.success),
-            backgroundColor: context.colorScheme.primary,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
         context.pop();
       }
     } catch (e) {
@@ -516,6 +509,10 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                           keyboardType: const TextInputType.numberWithOptions(decimal: true),
                           style: balanceTextStyle,
                           decoration: InputDecoration(
+                            hintText: '0.00',
+                            hintStyle: balanceTextStyle.copyWith(
+                              color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                            ),
                             prefixText: '${_getCurrencySymbol(_selectedCurrency)} ',
                             prefixStyle: balanceTextStyle,
                             filled: true,

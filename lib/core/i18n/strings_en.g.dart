@@ -71,6 +71,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsTransactionsEn transactions = TranslationsTransactionsEn.internal(_root);
 	late final TranslationsBudgetsEn budgets = TranslationsBudgetsEn.internal(_root);
 	late final TranslationsSavingsEn savings = TranslationsSavingsEn.internal(_root);
+	late final TranslationsEditAccountEn edit_account = TranslationsEditAccountEn.internal(_root);
+	late final TranslationsAccountDetailsEn account_details = TranslationsAccountDetailsEn.internal(_root);
+	late final TranslationsMyCategoriesEn my_categories = TranslationsMyCategoriesEn.internal(_root);
 }
 
 // Path: app
@@ -144,6 +147,33 @@ class TranslationsAccountsEn {
 
 	/// en: 'Total Net Worth'
 	String get total_net_worth => 'Total Net Worth';
+
+	/// en: 'this month'
+	String get this_month => 'this month';
+
+	/// en: 'Asset Accounts'
+	String get asset_accounts => 'Asset Accounts';
+
+	/// en: 'Liability Accounts'
+	String get liability_accounts => 'Liability Accounts';
+
+	/// en: 'Due soon'
+	String get due_soon => 'Due soon';
+
+	/// en: 'Due in 5 days'
+	String get due_in_5_days => 'Due in 5 days';
+
+	/// en: 'Limit: {limit}'
+	String get limit => 'Limit: {limit}';
+
+	/// en: 'Cash Accounts'
+	String get cash_accounts => 'Cash Accounts';
+
+	/// en: 'Bank Accounts'
+	String get bank_accounts => 'Bank Accounts';
+
+	/// en: 'Credit Cards'
+	String get credit_cards => 'Credit Cards';
 }
 
 // Path: create_account
@@ -245,6 +275,153 @@ class TranslationsSavingsEn {
 	String get title => 'Savings';
 }
 
+// Path: edit_account
+class TranslationsEditAccountEn {
+	TranslationsEditAccountEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Edit Account'
+	String get title => 'Edit Account';
+
+	/// en: 'Edit Account'
+	String get edit_button => 'Edit Account';
+
+	/// en: 'Delete Account'
+	String get delete_button => 'Delete Account';
+
+	/// en: 'Delete Account'
+	String get delete_title => 'Delete Account';
+
+	/// en: 'Are you sure you want to delete this account? This action cannot be undone.'
+	String get delete_message => 'Are you sure you want to delete this account? This action cannot be undone.';
+
+	/// en: 'Error loading account'
+	String get error_loading => 'Error loading account';
+
+	/// en: 'Account updated successfully'
+	String get success_update => 'Account updated successfully';
+
+	/// en: 'Account deleted successfully'
+	String get success_delete => 'Account deleted successfully';
+}
+
+// Path: account_details
+class TranslationsAccountDetailsEn {
+	TranslationsAccountDetailsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Account Details'
+	String get title => 'Account Details';
+
+	/// en: 'Edit Account'
+	String get edit_account => 'Edit Account';
+
+	/// en: 'Delete Account'
+	String get delete_account => 'Delete Account';
+
+	/// en: 'Recent Transactions'
+	String get recent_transactions => 'Recent Transactions';
+
+	/// en: 'View All'
+	String get view_all => 'View All';
+
+	/// en: 'No transactions found'
+	String get no_transactions => 'No transactions found';
+
+	/// en: '{percentage} this month'
+	String get growth_this_month => '{percentage} this month';
+
+	/// en: 'Error loading details'
+	String get error_loading => 'Error loading details';
+}
+
+// Path: my_categories
+class TranslationsMyCategoriesEn {
+	TranslationsMyCategoriesEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'My Categories'
+	String get title => 'My Categories';
+
+	/// en: 'Keep track of where your hard-earned paper is going.'
+	String get subtitle => 'Keep track of where your hard-earned paper is going.';
+
+	/// en: 'Expenses'
+	String get expenses => 'Expenses';
+
+	/// en: 'Income'
+	String get income => 'Income';
+
+	/// en: 'Category'
+	String get category => 'Category';
+
+	/// en: 'Subcategory'
+	String get subcategory => 'Subcategory';
+
+	/// en: 'Add Category'
+	String get add_category => 'Add Category';
+
+	/// en: 'Edit Category'
+	String get edit_category => 'Edit Category';
+
+	/// en: 'Delete Category'
+	String get delete_category => 'Delete Category';
+
+	/// en: 'Are you sure you want to delete this category? All its subcategories will become top-level categories.'
+	String get delete_message => 'Are you sure you want to delete this category? All its subcategories will become top-level categories.';
+
+	/// en: 'No categories here! Don't let your moolah vanish.'
+	String get empty_state => 'No categories here! Don\'t let your moolah vanish.';
+
+	/// en: 'No subcategories yet. Tap + to add some!'
+	String get empty_subcategories => 'No subcategories yet. Tap + to add some!';
+
+	/// en: 'Category Name'
+	String get name => 'Category Name';
+
+	/// en: 'e.g., Munchies & Grub, Side Hustle...'
+	String get name_hint => 'e.g., Munchies & Grub, Side Hustle...';
+
+	/// en: 'Category Type'
+	String get type => 'Category Type';
+
+	/// en: 'Category Color'
+	String get color => 'Category Color';
+
+	/// en: 'Category Icon'
+	String get icon => 'Category Icon';
+
+	/// en: 'Parent Category'
+	String get parent => 'Parent Category';
+
+	/// en: 'None (Top-level)'
+	String get parent_none => 'None (Top-level)';
+
+	/// en: 'Pro Tip: Split your outgoings so you don't burn through all your dough at once!'
+	String get pro_tip => 'Pro Tip: Split your outgoings so you don\'t burn through all your dough at once!';
+
+	/// en: 'Category created successfully!'
+	String get success_create => 'Category created successfully!';
+
+	/// en: 'Category updated successfully!'
+	String get success_update => 'Category updated successfully!';
+
+	/// en: 'Category deleted successfully!'
+	String get success_delete => 'Category deleted successfully!';
+
+	/// en: 'Please enter a category name'
+	String get name_required => 'Please enter a category name';
+}
+
 // Path: settings.theme
 class TranslationsSettingsThemeEn {
 	TranslationsSettingsThemeEn.internal(this._root);
@@ -336,6 +513,15 @@ extension on Translations {
 			'accounts.title' => 'My Accounts',
 			'accounts.subtitle' => 'Your financial overview at a glance.',
 			'accounts.total_net_worth' => 'Total Net Worth',
+			'accounts.this_month' => 'this month',
+			'accounts.asset_accounts' => 'Asset Accounts',
+			'accounts.liability_accounts' => 'Liability Accounts',
+			'accounts.due_soon' => 'Due soon',
+			'accounts.due_in_5_days' => 'Due in 5 days',
+			'accounts.limit' => 'Limit: {limit}',
+			'accounts.cash_accounts' => 'Cash Accounts',
+			'accounts.bank_accounts' => 'Bank Accounts',
+			'accounts.credit_cards' => 'Credit Cards',
 			'create_account.title' => 'New Account',
 			'create_account.icon' => 'Account Icon',
 			'create_account.name' => 'Account Name',
@@ -357,6 +543,46 @@ extension on Translations {
 			'transactions.title' => 'Transactions',
 			'budgets.title' => 'Budgets',
 			'savings.title' => 'Savings',
+			'edit_account.title' => 'Edit Account',
+			'edit_account.edit_button' => 'Edit Account',
+			'edit_account.delete_button' => 'Delete Account',
+			'edit_account.delete_title' => 'Delete Account',
+			'edit_account.delete_message' => 'Are you sure you want to delete this account? This action cannot be undone.',
+			'edit_account.error_loading' => 'Error loading account',
+			'edit_account.success_update' => 'Account updated successfully',
+			'edit_account.success_delete' => 'Account deleted successfully',
+			'account_details.title' => 'Account Details',
+			'account_details.edit_account' => 'Edit Account',
+			'account_details.delete_account' => 'Delete Account',
+			'account_details.recent_transactions' => 'Recent Transactions',
+			'account_details.view_all' => 'View All',
+			'account_details.no_transactions' => 'No transactions found',
+			'account_details.growth_this_month' => '{percentage} this month',
+			'account_details.error_loading' => 'Error loading details',
+			'my_categories.title' => 'My Categories',
+			'my_categories.subtitle' => 'Keep track of where your hard-earned paper is going.',
+			'my_categories.expenses' => 'Expenses',
+			'my_categories.income' => 'Income',
+			'my_categories.category' => 'Category',
+			'my_categories.subcategory' => 'Subcategory',
+			'my_categories.add_category' => 'Add Category',
+			'my_categories.edit_category' => 'Edit Category',
+			'my_categories.delete_category' => 'Delete Category',
+			'my_categories.delete_message' => 'Are you sure you want to delete this category? All its subcategories will become top-level categories.',
+			'my_categories.empty_state' => 'No categories here! Don\'t let your moolah vanish.',
+			'my_categories.empty_subcategories' => 'No subcategories yet. Tap + to add some!',
+			'my_categories.name' => 'Category Name',
+			'my_categories.name_hint' => 'e.g., Munchies & Grub, Side Hustle...',
+			'my_categories.type' => 'Category Type',
+			'my_categories.color' => 'Category Color',
+			'my_categories.icon' => 'Category Icon',
+			'my_categories.parent' => 'Parent Category',
+			'my_categories.parent_none' => 'None (Top-level)',
+			'my_categories.pro_tip' => 'Pro Tip: Split your outgoings so you don\'t burn through all your dough at once!',
+			'my_categories.success_create' => 'Category created successfully!',
+			'my_categories.success_update' => 'Category updated successfully!',
+			'my_categories.success_delete' => 'Category deleted successfully!',
+			'my_categories.name_required' => 'Please enter a category name',
 			_ => null,
 		};
 	}

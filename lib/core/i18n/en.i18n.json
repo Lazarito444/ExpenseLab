@@ -51,7 +51,16 @@
   "accounts": {
     "title": "My Accounts",
     "subtitle": "Your financial overview at a glance.",
-    "total_net_worth": "Total Net Worth"
+    "total_net_worth": "Total Net Worth",
+    "this_month": "this month",
+    "asset_accounts": "Asset Accounts",
+    "liability_accounts": "Liability Accounts",
+    "due_soon": "Due soon",
+    "due_in_5_days": "Due in 5 days",
+    "limit": "Limit: {limit}",
+    "cash_accounts": "Cash Accounts",
+    "bank_accounts": "Bank Accounts",
+    "credit_cards": "Credit Cards"
   },
   "create_account": {
     "title": "New Account",
@@ -81,5 +90,51 @@
   },
   "savings": {
     "title": "Savings"
+  },
+  "edit_account": {
+    "title": "Edit Account",
+    "edit_button": "Edit Account",
+    "delete_button": "Delete Account",
+    "delete_title": "Delete Account",
+    "delete_message": "Are you sure you want to delete this account? This action cannot be undone.",
+    "error_loading": "Error loading account",
+    "success_update": "Account updated successfully",
+    "success_delete": "Account deleted successfully"
+  },
+  "account_details": {
+    "title": "Account Details",
+    "edit_account": "Edit Account",
+    "delete_account": "Delete Account",
+    "recent_transactions": "Recent Transactions",
+    "view_all": "View All",
+    "no_transactions": "No transactions found",
+    "growth_this_month": "{percentage} this month",
+    "error_loading": "Error loading details"
+  },
+  "my_categories": {
+    "title": "My Categories",
+    "subtitle": "Keep track of where your hard-earned paper is going.",
+    "expenses": "Expenses",
+    "income": "Income",
+    "category": "Category",
+    "subcategory": "Subcategory",
+    "add_category": "Add Category",
+    "edit_category": "Edit Category",
+    "delete_category": "Delete Category",
+    "delete_message": "Are you sure you want to delete this category? All its subcategories will become top-level categories.",
+    "empty_state": "No categories here! Don't let your moolah vanish.",
+    "empty_subcategories": "No subcategories yet. Tap + to add some!",
+    "name": "Category Name",
+    "name_hint": "e.g., Munchies & Grub, Side Hustle...",
+    "type": "Category Type",
+    "color": "Category Color",
+    "icon": "Category Icon",
+    "parent": "Parent Category",
+    "parent_none": "None (Top-level)",
+    "pro_tip": "Pro Tip: Split your outgoings so you don't burn through all your dough at once!",
+    "success_create": "Category created successfully!",
+    "success_update": "Category updated successfully!",
+    "success_delete": "Category deleted successfully!",
+    "name_required": "Please enter a category name"
   }
 }
