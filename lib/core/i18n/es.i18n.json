@@ -136,5 +136,11 @@
     "success_update": "¡Categoría actualizada con éxito!",
     "success_delete": "¡Categoría eliminada con éxito!",
     "name_required": "Por favor ingresa un nombre para la categoría"
+  },
+  "nav": {
+    "home": "Inicio",
+    "budgets": "Presupuestos",
+    "goals": "Metas",
+    "settings": "Ajustes"
   }
 }

@@ -73,6 +73,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsEditAccountEs edit_account = _TranslationsEditAccountEs._(_root);
 	@override late final _TranslationsAccountDetailsEs account_details = _TranslationsAccountDetailsEs._(_root);
 	@override late final _TranslationsMyCategoriesEs my_categories = _TranslationsMyCategoriesEs._(_root);
+	@override late final _TranslationsNavEs nav = _TranslationsNavEs._(_root);
 }
 
 // Path: app
@@ -258,6 +259,19 @@ class _TranslationsMyCategoriesEs extends TranslationsMyCategoriesEn {
 	@override String get name_required => 'Por favor ingresa un nombre para la categoría';
 }
 
+// Path: nav
+class _TranslationsNavEs extends TranslationsNavEn {
+	_TranslationsNavEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get home => 'Inicio';
+	@override String get budgets => 'Presupuestos';
+	@override String get goals => 'Metas';
+	@override String get settings => 'Ajustes';
+}
+
 // Path: settings.theme
 class _TranslationsSettingsThemeEs extends TranslationsSettingsThemeEn {
 	_TranslationsSettingsThemeEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -407,6 +421,10 @@ extension on TranslationsEs {
 			'my_categories.success_update' => '¡Categoría actualizada con éxito!',
 			'my_categories.success_delete' => '¡Categoría eliminada con éxito!',
 			'my_categories.name_required' => 'Por favor ingresa un nombre para la categoría',
+			'nav.home' => 'Inicio',
+			'nav.budgets' => 'Presupuestos',
+			'nav.goals' => 'Metas',
+			'nav.settings' => 'Ajustes',
 			_ => null,
 		};
 	}

@@ -74,6 +74,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsEditAccountEn edit_account = TranslationsEditAccountEn.internal(_root);
 	late final TranslationsAccountDetailsEn account_details = TranslationsAccountDetailsEn.internal(_root);
 	late final TranslationsMyCategoriesEn my_categories = TranslationsMyCategoriesEn.internal(_root);
+	late final TranslationsNavEn nav = TranslationsNavEn.internal(_root);
 }
 
 // Path: app
@@ -422,6 +423,27 @@ class TranslationsMyCategoriesEn {
 	String get name_required => 'Please enter a category name';
 }
 
+// Path: nav
+class TranslationsNavEn {
+	TranslationsNavEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Home'
+	String get home => 'Home';
+
+	/// en: 'Budgets'
+	String get budgets => 'Budgets';
+
+	/// en: 'Goals'
+	String get goals => 'Goals';
+
+	/// en: 'Settings'
+	String get settings => 'Settings';
+}
+
 // Path: settings.theme
 class TranslationsSettingsThemeEn {
 	TranslationsSettingsThemeEn.internal(this._root);
@@ -583,6 +605,10 @@ extension on Translations {
 			'my_categories.success_update' => 'Category updated successfully!',
 			'my_categories.success_delete' => 'Category deleted successfully!',
 			'my_categories.name_required' => 'Please enter a category name',
+			'nav.home' => 'Home',
+			'nav.budgets' => 'Budgets',
+			'nav.goals' => 'Goals',
+			'nav.settings' => 'Settings',
 			_ => null,
 		};
 	}
