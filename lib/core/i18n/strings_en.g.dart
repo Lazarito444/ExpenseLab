@@ -130,6 +130,9 @@ class TranslationsCommonEn {
 
 	/// en: 'Close'
 	String get close => 'Close';
+
+	/// en: 'Error'
+	String get error => 'Error';
 }
 
 // Path: accounts
@@ -421,6 +424,12 @@ class TranslationsMyCategoriesEn {
 
 	/// en: 'Please enter a category name'
 	String get name_required => 'Please enter a category name';
+
+	/// en: '(one) {1 Category} (other) {{n} Categories}'
+	String count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
+		one: '1 Category',
+		other: '{n} Categories',
+	);
 }
 
 // Path: nav
@@ -532,6 +541,7 @@ extension on Translations {
 			'common.delete' => 'Delete',
 			'common.edit' => 'Edit',
 			'common.close' => 'Close',
+			'common.error' => 'Error',
 			'accounts.title' => 'My Accounts',
 			'accounts.subtitle' => 'Your financial overview at a glance.',
 			'accounts.total_net_worth' => 'Total Net Worth',
@@ -605,6 +615,7 @@ extension on Translations {
 			'my_categories.success_update' => 'Category updated successfully!',
 			'my_categories.success_delete' => 'Category deleted successfully!',
 			'my_categories.name_required' => 'Please enter a category name',
+			'my_categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '1 Category', other: '{n} Categories', ), 
 			'nav.home' => 'Home',
 			'nav.budgets' => 'Budgets',
 			'nav.goals' => 'Goals',

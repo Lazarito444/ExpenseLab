@@ -46,7 +46,8 @@
     "confirm": "Confirm",
     "delete": "Delete",
     "edit": "Edit",
-    "close": "Close"
+    "close": "Close",
+    "error": "Error"
   },
   "accounts": {
     "title": "My Accounts",
@@ -135,7 +136,11 @@
     "success_create": "Category created successfully!",
     "success_update": "Category updated successfully!",
     "success_delete": "Category deleted successfully!",
-    "name_required": "Please enter a category name"
+    "name_required": "Please enter a category name",
+    "count": {
+      "one": "1 Category",
+      "other": "{n} Categories"
+    }
   },
   "nav": {
     "home": "Home",

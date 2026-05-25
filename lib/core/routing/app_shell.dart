@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
-/// The persistent app shell that hosts the bottom nav bar.
-/// All top-level tab routes are rendered as children via [ShellRoute].
 class AppShell extends StatelessWidget {
   const AppShell({required this.child, super.key});
 
@@ -24,7 +22,6 @@ class AppShell extends StatelessWidget {
       activeIcon: Icons.wallet_rounded,
       path: '/budgets',
     ),
-    // index 2 is the FAB — no entry here
     _NavDestination(
       label: 'goals',
       icon: Icons.savings_outlined,
@@ -39,13 +36,12 @@ class AppShell extends StatelessWidget {
     ),
   ];
 
-  /// Maps the current route location to a 0-based tab index (0-3, skipping FAB)
   int _currentIndex(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
     if (location.startsWith('/budgets')) return 1;
     if (location.startsWith('/goals')) return 2;
     if (location.startsWith('/settings')) return 3;
-    return 0; // default → Home / Accounts
+    return 0;
   }
 
   void _onTap(BuildContext context, int index) {
@@ -64,13 +60,11 @@ class AppShell extends StatelessWidget {
 
   void _onFabTap(BuildContext context) {
     HapticFeedback.mediumImpact();
-    // TODO: open a transaction creation sheet
     context.push('/accounts/create');
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final current = _currentIndex(context);
     final t = context.t;
 
@@ -82,11 +76,9 @@ class AppShell extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
-      extendBody: true, // lets the page content slide behind the floating bar
+      extendBody: true,
       body: child,
-      bottomNavigationBar: _FloatingNavBar(
-        isDark: isDark,
+      bottomNavigationBar: _NavBar(
         currentIndex: current,
         labels: labels,
         destinations: _destinations,
@@ -97,13 +89,8 @@ class AppShell extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Floating nav bar widget
-// ---------------------------------------------------------------------------
-
-class _FloatingNavBar extends StatelessWidget {
-  const _FloatingNavBar({
-    required this.isDark,
+class _NavBar extends StatelessWidget {
+  const _NavBar({
     required this.currentIndex,
     required this.labels,
     required this.destinations,
@@ -111,7 +98,6 @@ class _FloatingNavBar extends StatelessWidget {
     required this.onFabTap,
   });
 
-  final bool isDark;
   final int currentIndex;
   final List<String> labels;
   final List<_NavDestination> destinations;
@@ -120,102 +106,100 @@ class _FloatingNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Background + margin to make it "float"
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-        child: Container(
-          height: 72,
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E2420) : Colors.white,
-            borderRadius: BorderRadius.circular(28),
-            border: Border.all(
-              color: isDark ? Colors.white10 : const Color(0xFFEAF0EB),
-              width: 1.5,
+    final cs = context.colorScheme;
+    const double fabSize = 52;
+    // Capturamos el padding del sistema para asegurar que no se solape en dispositivos con notch inferior
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
+    return Padding(
+      // Añadimos un margen constante a los lados y abajo para el efecto flotante
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom: bottomPadding > 0 ? bottomPadding : 16,
+      ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            height: 72,
+            decoration: BoxDecoration(
+              color: cs.surfaceContainerLow,
+              // Bordes completamente redondeados
+              borderRadius: BorderRadius.circular(24),
+              // Borde sutil opcional alrededor de todo el contenedor (estilo la segunda imagen)
+              border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.5)),
+              // Añadimos una pequeña sombra para darle el efecto de elevación flotante
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.08),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
-              ),
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.04),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              // Left two items
-              Expanded(
-                child: Row(
-                  children: [
-                    _NavItem(
-                      isDark: isDark,
-                      icon: destinations[0].icon,
-                      activeIcon: destinations[0].activeIcon,
-                      label: labels[0],
-                      isActive: currentIndex == 0,
-                      onTap: () => onTap(0),
-                    ),
-                    _NavItem(
-                      isDark: isDark,
-                      icon: destinations[1].icon,
-                      activeIcon: destinations[1].activeIcon,
-                      label: labels[1],
-                      isActive: currentIndex == 1,
-                      onTap: () => onTap(1),
-                    ),
-                  ],
+            child: Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      _NavItem(
+                        icon: destinations[0].icon,
+                        activeIcon: destinations[0].activeIcon,
+                        label: labels[0],
+                        isActive: currentIndex == 0,
+                        onTap: () => onTap(0),
+                      ),
+                      _NavItem(
+                        icon: destinations[1].icon,
+                        activeIcon: destinations[1].activeIcon,
+                        label: labels[1],
+                        isActive: currentIndex == 1,
+                        onTap: () => onTap(1),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-
-              // Center FAB
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: _FabButton(onTap: onFabTap),
-              ),
-
-              // Right two items
-              Expanded(
-                child: Row(
-                  children: [
-                    _NavItem(
-                      isDark: isDark,
-                      icon: destinations[2].icon,
-                      activeIcon: destinations[2].activeIcon,
-                      label: labels[2],
-                      isActive: currentIndex == 2,
-                      onTap: () => onTap(2),
-                    ),
-                    _NavItem(
-                      isDark: isDark,
-                      icon: destinations[3].icon,
-                      activeIcon: destinations[3].activeIcon,
-                      label: labels[3],
-                      isActive: currentIndex == 3,
-                      onTap: () => onTap(3),
-                    ),
-                  ],
+                const SizedBox(width: 60),
+                Expanded(
+                  child: Row(
+                    children: [
+                      _NavItem(
+                        icon: destinations[2].icon,
+                        activeIcon: destinations[2].activeIcon,
+                        label: labels[2],
+                        isActive: currentIndex == 2,
+                        onTap: () => onTap(2),
+                      ),
+                      _NavItem(
+                        icon: destinations[3].icon,
+                        activeIcon: destinations[3].activeIcon,
+                        label: labels[3],
+                        isActive: currentIndex == 3,
+                        onTap: () => onTap(3),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+          Positioned(
+            top: -(fabSize / 4),
+            left: 0,
+            right: 0,
+            child: Center(
+              child: _FabButton(onTap: onFabTap),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-// ---------------------------------------------------------------------------
-// Individual nav item
-// ---------------------------------------------------------------------------
-
 class _NavItem extends StatelessWidget {
   const _NavItem({
-    required this.isDark,
     required this.icon,
     required this.activeIcon,
     required this.label,
@@ -223,7 +207,6 @@ class _NavItem extends StatelessWidget {
     required this.onTap,
   });
 
-  final bool isDark;
   final IconData icon;
   final IconData activeIcon;
   final String label;
@@ -232,7 +215,9 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primary = context.colorScheme.primary;
+    final cs = context.colorScheme;
+    final activeColor = cs.primary;
+    final inactiveColor = cs.onSurfaceVariant;
 
     return Expanded(
       child: GestureDetector(
@@ -244,11 +229,7 @@ class _NavItem extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           decoration: BoxDecoration(
-            color: isActive
-                ? (isDark
-                    ? primary.withValues(alpha: 0.15)
-                    : primary.withValues(alpha: 0.09))
-                : Colors.transparent,
+            color: isActive ? cs.primary.withValues(alpha: 0.12) : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -261,9 +242,7 @@ class _NavItem extends StatelessWidget {
                   isActive ? activeIcon : icon,
                   key: ValueKey(isActive),
                   size: 22,
-                  color: isActive
-                      ? primary
-                      : (isDark ? Colors.white38 : const Color(0xFF9EAEA2)),
+                  color: isActive ? activeColor : inactiveColor,
                 ),
               ),
               const SizedBox(height: 3),
@@ -273,9 +252,7 @@ class _NavItem extends StatelessWidget {
                   fontFamily: 'Epilogue',
                   fontSize: 11,
                   fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-                  color: isActive
-                      ? primary
-                      : (isDark ? Colors.white38 : const Color(0xFF9EAEA2)),
+                  color: isActive ? activeColor : inactiveColor,
                 ),
                 child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
               ),
@@ -286,10 +263,6 @@ class _NavItem extends StatelessWidget {
     );
   }
 }
-
-// ---------------------------------------------------------------------------
-// Center FAB button
-// ---------------------------------------------------------------------------
 
 class _FabButton extends StatelessWidget {
   const _FabButton({required this.onTap});
@@ -308,7 +281,7 @@ class _FabButton extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: LinearGradient(
-            colors: [primary, const Color(0xFF4C8D5B)],
+            colors: [primary, Color.lerp(primary, Colors.white, 0.15)!],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -334,10 +307,6 @@ class _FabButton extends StatelessWidget {
     );
   }
 }
-
-// ---------------------------------------------------------------------------
-// Data class
-// ---------------------------------------------------------------------------
 
 class _NavDestination {
   const _NavDestination({

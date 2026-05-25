@@ -190,7 +190,6 @@ class AccountsScreen extends ConsumerWidget {
                           return _buildAccountItem(context, ref, account, balance);
                         },
                       ),
-                      const SizedBox(height: 24),
                     ],
 
                     // Bank Accounts Section

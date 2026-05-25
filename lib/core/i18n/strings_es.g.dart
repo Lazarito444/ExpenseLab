@@ -112,6 +112,7 @@ class _TranslationsCommonEs extends TranslationsCommonEn {
 	@override String get delete => 'Eliminar';
 	@override String get edit => 'Editar';
 	@override String get close => 'Cerrar';
+	@override String get error => 'Error';
 }
 
 // Path: accounts
@@ -257,6 +258,10 @@ class _TranslationsMyCategoriesEs extends TranslationsMyCategoriesEn {
 	@override String get success_update => '¡Categoría actualizada con éxito!';
 	@override String get success_delete => '¡Categoría eliminada con éxito!';
 	@override String get name_required => 'Por favor ingresa un nombre para la categoría';
+	@override String count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n,
+		one: '1 Categoría',
+		other: '{n} Categorías',
+	);
 }
 
 // Path: nav
@@ -348,6 +353,7 @@ extension on TranslationsEs {
 			'common.delete' => 'Eliminar',
 			'common.edit' => 'Editar',
 			'common.close' => 'Cerrar',
+			'common.error' => 'Error',
 			'accounts.title' => 'Mis cuentas',
 			'accounts.subtitle' => 'Tu resumen financiero de un vistazo.',
 			'accounts.total_net_worth' => 'Patrimonio neto total',
@@ -421,6 +427,7 @@ extension on TranslationsEs {
 			'my_categories.success_update' => '¡Categoría actualizada con éxito!',
 			'my_categories.success_delete' => '¡Categoría eliminada con éxito!',
 			'my_categories.name_required' => 'Por favor ingresa un nombre para la categoría',
+			'my_categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '1 Categoría', other: '{n} Categorías', ), 
 			'nav.home' => 'Inicio',
 			'nav.budgets' => 'Presupuestos',
 			'nav.goals' => 'Metas',
