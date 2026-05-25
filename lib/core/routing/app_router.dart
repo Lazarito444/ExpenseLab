@@ -1,8 +1,4 @@
 import 'package:expenselab/core/routing/app_shell.dart';
-import 'package:expenselab/features/accounts/presentation/screens/account_details_screen.dart';
-import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
-import 'package:expenselab/features/accounts/presentation/screens/create_account_screen.dart';
-import 'package:expenselab/features/accounts/presentation/screens/edit_account_screen.dart';
 import 'package:expenselab/features/budgets/presentation/screens/budgets_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/goals_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/settings_screen.dart';
@@ -16,7 +12,7 @@ final routerConfig = GoRouter(
       routes: [
         GoRoute(
           path: '/accounts',
-          builder: (context, state) => const AccountsScreen(),
+          builder: (context, state) => const BudgetsScreen(),
         ),
         GoRoute(
           path: '/budgets',
@@ -31,25 +27,6 @@ final routerConfig = GoRouter(
           builder: (context, state) => const SettingsScreen(),
         ),
       ],
-    ),
-
-    GoRoute(
-      path: '/accounts/create',
-      builder: (context, state) => const CreateAccountScreen(),
-    ),
-    GoRoute(
-      path: '/accounts/details/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return AccountDetailsScreen(accountId: id);
-      },
-    ),
-    GoRoute(
-      path: '/accounts/edit/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return EditAccountScreen(accountId: id);
-      },
     ),
   ],
 );
