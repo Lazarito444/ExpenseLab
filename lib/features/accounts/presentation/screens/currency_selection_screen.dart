@@ -54,7 +54,7 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
           ),
         ),
         title: Text(
-          t.create_account.select_currency_title,
+          t.accounts.create.select_currency_title,
           style: context.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -80,7 +80,7 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
                   color: isDark ? Colors.white : const Color(0xFF1C221E),
                 ),
                 decoration: InputDecoration(
-                  hintText: t.create_account.search_currency_hint,
+                  hintText: t.accounts.create.search_currency_hint,
                   hintStyle: TextStyle(
                     color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
                     fontFamily: 'Epilogue',
@@ -142,7 +142,7 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            t.create_account.no_currencies_found,
+                            t.accounts.create.no_currencies_found,
                             style: TextStyle(
                               fontFamily: 'Epilogue',
                               fontSize: 16,

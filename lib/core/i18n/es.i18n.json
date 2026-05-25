@@ -2,6 +2,21 @@
   "app": {
     "name": "ExpenseLab"
   },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "error": "Error"
+  },
+  "nav": {
+    "home": "Inicio",
+    "budgets": "Presupuestos",
+    "goals": "Metas",
+    "settings": "Ajustes"
+  },
   "settings": {
     "title": "Configuración",
     "theme": {
@@ -40,48 +55,57 @@
     "KRW": "Won surcoreano",
     "ZAR": "Rand sudafricano"
   },
-  "common": {
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "confirm": "Confirmar",
-    "delete": "Eliminar",
-    "edit": "Editar",
-    "close": "Cerrar",
-    "error": "Error"
-  },
   "accounts": {
     "title": "Mis cuentas",
     "subtitle": "Tu resumen financiero de un vistazo.",
     "total_net_worth": "Patrimonio neto total",
     "this_month": "este mes",
-    "asset_accounts": "Cuentas de activos",
-    "liability_accounts": "Cuentas de pasivos",
     "due_soon": "Vence pronto",
     "due_in_5_days": "Vence en 5 días",
     "limit": "Límite: {limit}",
     "cash_accounts": "Cuentas de efectivo",
     "bank_accounts": "Cuentas bancarias",
-    "credit_cards": "Tarjetas de crédito"
-  },
-  "create_account": {
-    "title": "Nueva cuenta",
-    "icon": "Icono de cuenta",
-    "name": "Nombre de cuenta",
-    "name_hint": "ej., Ahorros principales",
-    "type": "Tipo de cuenta",
-    "type_savings": "Cuenta bancaria",
-    "type_cash": "Efectivo",
-    "type_credit_card": "Tarjeta de crédito",
-    "currency": "Moneda",
-    "select_currency_title": "Seleccionar moneda",
-    "search_currency_hint": "Buscar código o nombre de moneda...",
-    "no_currencies_found": "No se encontraron monedas",
-    "initial_balance": "Saldo inicial",
-    "pro_tip": "Consejo profesional: Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.",
-    "create_button": "Crear cuenta",
-    "name_required": "Por favor ingresa un nombre de cuenta",
-    "balance_invalid": "Por favor ingresa un saldo válido",
-    "success": "Cuenta creada con éxito"
+    "credit_cards": "Tarjetas de crédito",
+    "create": {
+      "title": "Nueva cuenta",
+      "icon": "Icono de cuenta",
+      "name": "Nombre de cuenta",
+      "name_hint": "ej., Ahorros principales",
+      "type": "Tipo de cuenta",
+      "type_savings": "Cuenta bancaria",
+      "type_cash": "Efectivo",
+      "type_credit_card": "Tarjeta de crédito",
+      "currency": "Moneda",
+      "select_currency_title": "Seleccionar moneda",
+      "search_currency_hint": "Buscar código o nombre de moneda...",
+      "no_currencies_found": "No se encontraron monedas",
+      "initial_balance": "Saldo inicial",
+      "pro_tip": "Consejo profesional: Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.",
+      "create_button": "Crear cuenta",
+      "name_required": "Por favor ingresa un nombre de cuenta",
+      "balance_invalid": "Por favor ingresa un saldo válido",
+      "success": "Cuenta creada con éxito"
+    },
+    "edit": {
+      "title": "Editar cuenta",
+      "edit_button": "Editar cuenta",
+      "delete_button": "Eliminar cuenta",
+      "delete_title": "Eliminar cuenta",
+      "delete_message": "¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.",
+      "error_loading": "Error al cargar la cuenta",
+      "success_update": "Cuenta actualizada con éxito",
+      "success_delete": "Cuenta eliminada con éxito"
+    },
+    "details": {
+      "title": "Detalles de la cuenta",
+      "edit_account": "Editar cuenta",
+      "delete_account": "Eliminar cuenta",
+      "recent_transactions": "Transacciones recientes",
+      "view_all": "Ver todo",
+      "no_transactions": "No se encontraron transacciones",
+      "growth_this_month": "{percentage} este mes",
+      "error_loading": "Error al cargar detalles"
+    }
   },
   "transactions": {
     "title": "Transacciones"
@@ -92,27 +116,7 @@
   "savings": {
     "title": "Ahorros"
   },
-  "edit_account": {
-    "title": "Editar cuenta",
-    "edit_button": "Editar cuenta",
-    "delete_button": "Eliminar cuenta",
-    "delete_title": "Eliminar cuenta",
-    "delete_message": "¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.",
-    "error_loading": "Error al cargar la cuenta",
-    "success_update": "Cuenta actualizada con éxito",
-    "success_delete": "Cuenta eliminada con éxito"
-  },
-  "account_details": {
-    "title": "Detalles de la cuenta",
-    "edit_account": "Editar cuenta",
-    "delete_account": "Eliminar cuenta",
-    "recent_transactions": "Transacciones recientes",
-    "view_all": "Ver todo",
-    "no_transactions": "No se encontraron transacciones",
-    "growth_this_month": "{percentage} este mes",
-    "error_loading": "Error al cargar detalles"
-  },
-  "my_categories": {
+  "categories": {
     "title": "Mis Categorías",
     "subtitle": "Lleva al día en qué se te está volando la plata.",
     "expenses": "Gastos",
@@ -141,11 +145,5 @@
       "one": "1 Categoría",
       "other": "{n} Categorías"
     }
-  },
-  "nav": {
-    "home": "Inicio",
-    "budgets": "Presupuestos",
-    "goals": "Metas",
-    "settings": "Ajustes"
   }
 }

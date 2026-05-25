@@ -89,7 +89,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    context.t.create_account.icon,
+                    context.t.accounts.create.icon,
                     style: const TextStyle(
                       fontFamily: 'Epilogue',
                       fontWeight: FontWeight.bold,
@@ -248,7 +248,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
           ),
         ),
         title: Text(
-          t.create_account.title,
+          t.accounts.create.title,
           style: context.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -284,7 +284,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // Account Icon
-                        Text(t.create_account.icon, style: labelStyle),
+                        Text(t.accounts.create.icon, style: labelStyle),
                         const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -340,13 +340,13 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         const SizedBox(height: 20),
 
                         // Account Name
-                        Text(t.create_account.name, style: labelStyle),
+                        Text(t.accounts.create.name, style: labelStyle),
                         const SizedBox(height: 8),
                         TextFormField(
                           controller: _nameController,
                           style: inputTextStyle,
                           decoration: InputDecoration(
-                            hintText: t.create_account.name_hint,
+                            hintText: t.accounts.create.name_hint,
                             hintStyle: TextStyle(
                               color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
                               fontFamily: 'Epilogue',
@@ -383,7 +383,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return t.create_account.name_required;
+                              return t.accounts.create.name_required;
                             }
                             return null;
                           },
@@ -391,7 +391,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         const SizedBox(height: 20),
 
                         // Account Type
-                        Text(t.create_account.type, style: labelStyle),
+                        Text(t.accounts.create.type, style: labelStyle),
                         const SizedBox(height: 8),
                         DropdownButtonFormField<AccountType>(
                           initialValue: _selectedType,
@@ -424,15 +424,15 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                           items: [
                             DropdownMenuItem(
                               value: AccountType.bankAccount,
-                              child: Text(t.create_account.type_savings),
+                              child: Text(t.accounts.create.type_savings),
                             ),
                             DropdownMenuItem(
                               value: AccountType.cash,
-                              child: Text(t.create_account.type_cash),
+                              child: Text(t.accounts.create.type_cash),
                             ),
                             DropdownMenuItem(
                               value: AccountType.creditCard,
-                              child: Text(t.create_account.type_credit_card),
+                              child: Text(t.accounts.create.type_credit_card),
                             ),
                           ],
                           onChanged: (value) {
@@ -446,7 +446,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         const SizedBox(height: 20),
 
                         // Currency
-                        Text(t.create_account.currency, style: labelStyle),
+                        Text(t.accounts.create.currency, style: labelStyle),
                         const SizedBox(height: 8),
                         InkWell(
                           onTap: () async {
@@ -502,7 +502,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         const SizedBox(height: 20),
 
                         // Initial Balance
-                        Text(t.create_account.initial_balance, style: labelStyle),
+                        Text(t.accounts.create.initial_balance, style: labelStyle),
                         const SizedBox(height: 8),
                         TextFormField(
                           controller: _balanceController,
@@ -548,7 +548,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                             if (value != null && value.trim().isNotEmpty) {
                               final parsed = double.tryParse(value.trim());
                               if (parsed == null) {
-                                return t.create_account.balance_invalid;
+                                return t.accounts.create.balance_invalid;
                               }
                             }
                             return null;
@@ -594,7 +594,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: t.create_account.pro_tip.replaceFirst('Pro Tip: ', ''),
+                                        text: t.accounts.create.pro_tip.replaceFirst('Pro Tip: ', ''),
                                       ),
                                     ],
                                   ),
@@ -628,7 +628,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         )
                       : const Icon(Icons.add_card, color: Colors.white, size: 22),
                   label: Text(
-                    t.create_account.create_button,
+                    t.accounts.create.create_button,
                     style: const TextStyle(
                       fontFamily: 'Epilogue',
                       fontWeight: FontWeight.bold,

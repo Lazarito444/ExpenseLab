@@ -26,11 +26,11 @@ class AccountsScreen extends ConsumerWidget {
     final t = context.t;
     switch (type ?? AccountType.bankAccount) {
       case AccountType.cash:
-        return t.create_account.type_cash;
+        return t.accounts.create.type_cash;
       case AccountType.bankAccount:
-        return t.create_account.type_savings;
+        return t.accounts.create.type_savings;
       case AccountType.creditCard:
-        return t.create_account.type_credit_card;
+        return t.accounts.create.type_credit_card;
     }
   }
 
@@ -103,7 +103,7 @@ class AccountsScreen extends ConsumerWidget {
               color: context.colorScheme.primary,
               size: 26,
             ),
-            tooltip: t.my_categories.title,
+            tooltip: t.categories.title,
           ),
           IconButton(
             onPressed: () => context.push('/accounts/create'),

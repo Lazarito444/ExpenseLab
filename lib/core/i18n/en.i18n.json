@@ -2,6 +2,21 @@
   "app": {
     "name": "ExpenseLab"
   },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "error": "Error"
+  },
+  "nav": {
+    "home": "Home",
+    "budgets": "Budgets",
+    "goals": "Goals",
+    "settings": "Settings"
+  },
   "settings": {
     "title": "Settings",
     "theme": {
@@ -40,15 +55,6 @@
     "KRW": "South Korean Won",
     "ZAR": "South African Rand"
   },
-  "common": {
-    "save": "Save",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "delete": "Delete",
-    "edit": "Edit",
-    "close": "Close",
-    "error": "Error"
-  },
   "accounts": {
     "title": "My Accounts",
     "subtitle": "Your financial overview at a glance.",
@@ -61,27 +67,47 @@
     "limit": "Limit: {limit}",
     "cash_accounts": "Cash Accounts",
     "bank_accounts": "Bank Accounts",
-    "credit_cards": "Credit Cards"
-  },
-  "create_account": {
-    "title": "New Account",
-    "icon": "Account Icon",
-    "name": "Account Name",
-    "name_hint": "e.g., Main Savings",
-    "type": "Account Type",
-    "type_savings": "Bank Account",
-    "type_cash": "Cash",
-    "type_credit_card": "Credit Card",
-    "currency": "Currency",
-    "select_currency_title": "Select Currency",
-    "search_currency_hint": "Search currency code or name...",
-    "no_currencies_found": "No currencies found",
-    "initial_balance": "Initial Balance",
-    "pro_tip": "Pro Tip: Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.",
-    "create_button": "Create Account",
-    "name_required": "Please enter an account name",
-    "balance_invalid": "Please enter a valid balance",
-    "success": "Account created successfully"
+    "credit_cards": "Credit Cards",
+    "create": {
+      "title": "New Account",
+      "icon": "Account Icon",
+      "name": "Account Name",
+      "name_hint": "e.g., Main Savings",
+      "type": "Account Type",
+      "type_savings": "Bank Account",
+      "type_cash": "Cash",
+      "type_credit_card": "Credit Card",
+      "currency": "Currency",
+      "select_currency_title": "Select Currency",
+      "search_currency_hint": "Search currency code or name...",
+      "no_currencies_found": "No currencies found",
+      "initial_balance": "Initial Balance",
+      "pro_tip": "Pro Tip: Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.",
+      "create_button": "Create Account",
+      "name_required": "Please enter an account name",
+      "balance_invalid": "Please enter a valid balance",
+      "success": "Account created successfully"
+    },
+    "edit": {
+      "title": "Edit Account",
+      "edit_button": "Edit Account",
+      "delete_button": "Delete Account",
+      "delete_title": "Delete Account",
+      "delete_message": "Are you sure you want to delete this account? This action cannot be undone.",
+      "error_loading": "Error loading account",
+      "success_update": "Account updated successfully",
+      "success_delete": "Account deleted successfully"
+    },
+    "details": {
+      "title": "Account Details",
+      "edit_account": "Edit Account",
+      "delete_account": "Delete Account",
+      "recent_transactions": "Recent Transactions",
+      "view_all": "View All",
+      "no_transactions": "No transactions found",
+      "growth_this_month": "{percentage} this month",
+      "error_loading": "Error loading details"
+    }
   },
   "transactions": {
     "title": "Transactions"
@@ -92,27 +118,7 @@
   "savings": {
     "title": "Savings"
   },
-  "edit_account": {
-    "title": "Edit Account",
-    "edit_button": "Edit Account",
-    "delete_button": "Delete Account",
-    "delete_title": "Delete Account",
-    "delete_message": "Are you sure you want to delete this account? This action cannot be undone.",
-    "error_loading": "Error loading account",
-    "success_update": "Account updated successfully",
-    "success_delete": "Account deleted successfully"
-  },
-  "account_details": {
-    "title": "Account Details",
-    "edit_account": "Edit Account",
-    "delete_account": "Delete Account",
-    "recent_transactions": "Recent Transactions",
-    "view_all": "View All",
-    "no_transactions": "No transactions found",
-    "growth_this_month": "{percentage} this month",
-    "error_loading": "Error loading details"
-  },
-  "my_categories": {
+  "categories": {
     "title": "My Categories",
     "subtitle": "Keep track of where your hard-earned paper is going.",
     "expenses": "Expenses",
@@ -141,11 +147,5 @@
       "one": "1 Category",
       "other": "{n} Categories"
     }
-  },
-  "nav": {
-    "home": "Home",
-    "budgets": "Budgets",
-    "goals": "Goals",
-    "settings": "Settings"
   }
 }

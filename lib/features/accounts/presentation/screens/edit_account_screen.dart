@@ -96,7 +96,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    context.t.create_account.icon,
+                    context.t.accounts.create.icon,
                     style: const TextStyle(
                       fontFamily: 'Epilogue',
                       fontWeight: FontWeight.bold,
@@ -168,7 +168,9 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       final double newBalance = double.tryParse(_balanceController.text.trim()) ?? 0.0;
 
       // 1. Update the account row in database
-      await ref.read(accountsRepositoryProvider).update(
+      await ref
+          .read(accountsRepositoryProvider)
+          .update(
             widget.accountId,
             AccountsCompanion(
               name: Value(name),
@@ -182,7 +184,9 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       if (_initialBalanceTxId != null) {
         if (newBalance > 0.0) {
           // Update existing transaction
-          await ref.read(transactionsRepositoryProvider).update(
+          await ref
+              .read(transactionsRepositoryProvider)
+              .update(
                 _initialBalanceTxId!,
                 TransactionsCompanion(
                   amount: Value(newBalance),
@@ -195,7 +199,9 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       } else {
         if (newBalance > 0.0) {
           // Insert a brand new initial balance transaction
-          await ref.read(transactionsRepositoryProvider).create(
+          await ref
+              .read(transactionsRepositoryProvider)
+              .create(
                 TransactionsCompanion(
                   type: const Value(TransactionType.income),
                   amount: Value(newBalance),
@@ -243,14 +249,14 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
           ),
           backgroundColor: isDark ? const Color(0xFF1E2420) : Colors.white,
           title: Text(
-            t.edit_account.delete_title,
+            t.accounts.edit.delete_title,
             style: const TextStyle(
               fontFamily: 'Epilogue',
               fontWeight: FontWeight.bold,
             ),
           ),
           content: Text(
-            t.edit_account.delete_message,
+            t.accounts.edit.delete_message,
             style: const TextStyle(
               fontFamily: 'Epilogue',
             ),
@@ -350,14 +356,14 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       error: (err, stack) => Scaffold(
         backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
         appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
-        body: Center(child: Text('${t.edit_account.error_loading}: $err')),
+        body: Center(child: Text('${t.accounts.edit.error_loading}: $err')),
       ),
       data: (account) {
         if (account == null) {
           return Scaffold(
             backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
             appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
-            body: Center(child: Text(t.edit_account.error_loading)),
+            body: Center(child: Text(t.accounts.edit.error_loading)),
           );
         }
 
@@ -398,7 +404,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
               ),
             ),
             title: Text(
-              t.edit_account.title,
+              t.accounts.edit.title,
               style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontWeight: FontWeight.bold,
@@ -436,7 +442,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           // Icon Picker Section
-                          Text(t.create_account.icon, style: labelStyle),
+                          Text(t.accounts.create.icon, style: labelStyle),
                           const SizedBox(height: 12),
                           Row(
                             children: [
@@ -496,13 +502,13 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                           const SizedBox(height: 24),
 
                           // Name Input
-                          Text(t.create_account.name, style: labelStyle),
+                          Text(t.accounts.create.name, style: labelStyle),
                           const SizedBox(height: 8),
                           TextFormField(
                             controller: _nameController,
                             style: const TextStyle(fontFamily: 'Epilogue', fontSize: 16),
                             decoration: InputDecoration(
-                              hintText: t.create_account.name_hint,
+                              hintText: t.accounts.create.name_hint,
                               filled: true,
                               fillColor: isDark ? const Color(0xFF171B18) : const Color(0xFFFAFAFA),
                               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -534,7 +540,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                             ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return t.create_account.name_required;
+                                return t.accounts.create.name_required;
                               }
                               return null;
                             },
@@ -542,7 +548,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                           const SizedBox(height: 24),
 
                           // Account Type Select Dropdown
-                          Text(t.create_account.type, style: labelStyle),
+                          Text(t.accounts.create.type, style: labelStyle),
                           const SizedBox(height: 8),
                           Container(
                             decoration: BoxDecoration(
@@ -570,15 +576,15 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                                 items: [
                                   DropdownMenuItem(
                                     value: AccountType.bankAccount,
-                                    child: Text(t.create_account.type_savings),
+                                    child: Text(t.accounts.create.type_savings),
                                   ),
                                   DropdownMenuItem(
                                     value: AccountType.cash,
-                                    child: Text(t.create_account.type_cash),
+                                    child: Text(t.accounts.create.type_cash),
                                   ),
                                   DropdownMenuItem(
                                     value: AccountType.creditCard,
-                                    child: Text(t.create_account.type_credit_card),
+                                    child: Text(t.accounts.create.type_credit_card),
                                   ),
                                 ],
                                 onChanged: (value) {
@@ -594,7 +600,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                           const SizedBox(height: 24),
 
                           // Currency Selection Screen Push Trigger
-                          Text(t.create_account.currency, style: labelStyle),
+                          Text(t.accounts.create.currency, style: labelStyle),
                           const SizedBox(height: 8),
                           InkWell(
                             onTap: () async {
@@ -643,7 +649,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                           const SizedBox(height: 24),
 
                           // Initial Balance Input
-                          Text(t.create_account.initial_balance, style: labelStyle),
+                          Text(t.accounts.create.initial_balance, style: labelStyle),
                           const SizedBox(height: 8),
                           TextFormField(
                             controller: _balanceController,
@@ -689,7 +695,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                               if (value != null && value.trim().isNotEmpty) {
                                 final parsed = double.tryParse(value.trim());
                                 if (parsed == null) {
-                                  return t.create_account.balance_invalid;
+                                  return t.accounts.create.balance_invalid;
                                 }
                               }
                               return null;
@@ -734,7 +740,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                                           ),
                                         ),
                                         TextSpan(
-                                          text: t.create_account.pro_tip.substring(9),
+                                          text: t.accounts.create.pro_tip.substring(9),
                                         ),
                                       ],
                                     ),
@@ -796,7 +802,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                                     const Icon(Icons.edit_note_rounded, size: 24),
                                     const SizedBox(width: 8),
                                     Text(
-                                      t.edit_account.edit_button,
+                                      t.accounts.edit.edit_button,
                                       style: const TextStyle(
                                         fontFamily: 'Epilogue',
                                         fontWeight: FontWeight.bold,
@@ -823,7 +829,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                               Icon(Icons.delete_outline_rounded, color: context.colorScheme.error, size: 20),
                               const SizedBox(width: 8),
                               Text(
-                                t.edit_account.delete_button,
+                                t.accounts.edit.delete_button,
                                 style: TextStyle(
                                   color: context.colorScheme.error,
                                   fontFamily: 'Epilogue',

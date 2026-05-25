@@ -34,11 +34,11 @@ class AccountDetailsScreen extends ConsumerWidget {
     final t = context.t;
     switch (type ?? AccountType.bankAccount) {
       case AccountType.cash:
-        return t.create_account.type_cash;
+        return t.accounts.create.type_cash;
       case AccountType.bankAccount:
-        return t.create_account.type_savings;
+        return t.accounts.create.type_savings;
       case AccountType.creditCard:
-        return t.create_account.type_credit_card;
+        return t.accounts.create.type_credit_card;
     }
   }
 
@@ -104,14 +104,14 @@ class AccountDetailsScreen extends ConsumerWidget {
       error: (err, stack) => Scaffold(
         backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
         appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
-        body: Center(child: Text('${t.account_details.error_loading}: $err')),
+        body: Center(child: Text('${t.accounts.details.error_loading}: $err')),
       ),
       data: (account) {
         if (account == null) {
           return Scaffold(
             backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
             appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
-            body: Center(child: Text(t.account_details.error_loading)),
+            body: Center(child: Text(t.accounts.details.error_loading)),
           );
         }
 
@@ -129,7 +129,7 @@ class AccountDetailsScreen extends ConsumerWidget {
               ),
             ),
             title: Text(
-              t.account_details.title,
+              t.accounts.details.title,
               style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontWeight: FontWeight.bold,
@@ -164,7 +164,7 @@ class AccountDetailsScreen extends ConsumerWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          t.account_details.edit_account,
+                          t.accounts.details.edit_account,
                           style: const TextStyle(
                             fontFamily: 'Epilogue',
                             fontSize: 14,
@@ -220,9 +220,7 @@ class AccountDetailsScreen extends ConsumerWidget {
 
                           return Container(
                             decoration: BoxDecoration(
-                              color: isPositive
-                                  ? context.colorScheme.primary.withValues(alpha: isDark ? 0.2 : 0.08)
-                                  : context.colorScheme.error.withValues(alpha: isDark ? 0.2 : 0.08),
+                              color: isPositive ? context.colorScheme.primary.withValues(alpha: isDark ? 0.2 : 0.08) : context.colorScheme.error.withValues(alpha: isDark ? 0.2 : 0.08),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
@@ -236,8 +234,9 @@ class AccountDetailsScreen extends ConsumerWidget {
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
-                                  t.account_details.growth_this_month.replaceAll(
-                                    '{percentage}', '${isPositive ? '+' : ''}${pct.toStringAsFixed(1)}%',
+                                  t.accounts.details.growth_this_month.replaceAll(
+                                    '{percentage}',
+                                    '${isPositive ? '+' : ''}${pct.toStringAsFixed(1)}%',
                                   ),
                                   style: TextStyle(
                                     fontFamily: 'Epilogue',
@@ -261,7 +260,7 @@ class AccountDetailsScreen extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      t.account_details.recent_transactions,
+                      t.accounts.details.recent_transactions,
                       style: TextStyle(
                         fontFamily: 'Epilogue',
                         fontWeight: FontWeight.bold,
@@ -281,7 +280,7 @@ class AccountDetailsScreen extends ConsumerWidget {
                           fontSize: 14,
                         ),
                       ),
-                      child: Text(t.account_details.view_all),
+                      child: Text(t.accounts.details.view_all),
                     ),
                   ],
                 ),
@@ -333,17 +332,11 @@ class AccountDetailsScreen extends ConsumerWidget {
 
                               // Mapped properties for styling
                               final isIncome = tx.type == TransactionType.income || (tx.type == TransactionType.transfer && tx.toAccountId == accountId);
-                              final color = category != null
-                                  ? Color(category.color)
-                                  : (isIncome ? context.colorScheme.primary : context.colorScheme.error);
-                              
-                              final icon = category != null
-                                  ? iconFromName(category.icon)
-                                  : (isIncome ? Icons.trending_up_rounded : Icons.trending_down_rounded);
+                              final color = category != null ? Color(category.color) : (isIncome ? context.colorScheme.primary : context.colorScheme.error);
 
-                              final title = tx.note?.isNotEmpty == true
-                                  ? tx.note!
-                                  : (category?.name ?? (isIncome ? t.create_account.type_cash : t.create_account.type_savings));
+                              final icon = category != null ? iconFromName(category.icon) : (isIncome ? Icons.trending_up_rounded : Icons.trending_down_rounded);
+
+                              final title = tx.note?.isNotEmpty == true ? tx.note! : (category?.name ?? (isIncome ? t.accounts.create.type_cash : t.accounts.create.type_savings));
 
                               final dateStr = DateFormat.yMMMd().format(tx.date);
                               final subLabel = category?.name != null ? '$dateStr • ${category!.name}' : dateStr;
@@ -448,7 +441,7 @@ class AccountDetailsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              context.t.account_details.no_transactions,
+              context.t.accounts.details.no_transactions,
               style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontWeight: FontWeight.bold,
