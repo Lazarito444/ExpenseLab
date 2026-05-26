@@ -2,14 +2,13 @@ import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ExpenseLabNavBar extends ConsumerWidget {
   const ExpenseLabNavBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Translations t = context.t;
-
     const double fabOverflow = 28.0;
     const double navBarHeight = 72.0;
 
@@ -18,24 +17,34 @@ class ExpenseLabNavBar extends ConsumerWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          _navBarItems(t),
+          _navBarItems(context, ref),
           _fabButton(context),
         ],
       ),
     );
   }
 
-  Widget _navBarItems(Translations t) {
+  Widget _navBarItems(BuildContext context, WidgetRef ref) {
+    final t = context.t;
+    final routes = ["/", "/budgets", "add-transaction", "/goals", "/settings"];
+
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(24.0),
         topRight: Radius.circular(24.0),
       ),
       child: NavigationBar(
+        selectedIndex: ref.watch(navIndexProvider),
         indicatorColor: Colors.transparent,
         onDestinationSelected: (int index) {
-          if (index == 2) return;
-          // ref.read(navIndexProvider.notifier).state = index;
+          if (index == 2) {
+            return;
+          }
+          context.go(routes[index]);
+          if (index == 4) {
+            return;
+          }
+          ref.read(navIndexProvider.notifier).setIndex(index);
         },
         destinations: [
           NavigationDestination(
@@ -74,7 +83,9 @@ class ExpenseLabNavBar extends ConsumerWidget {
           height: 56.0,
           child: FloatingActionButton(
             backgroundColor: context.theme.primaryColor,
-            onPressed: () {},
+            onPressed: () {
+              context.go("/add-transaction");
+            },
             elevation: 4.0,
             shape: const CircleBorder(),
             child: const Icon(Icons.add, color: Colors.white, size: 28.0),
@@ -84,3 +95,16 @@ class ExpenseLabNavBar extends ConsumerWidget {
     );
   }
 }
+
+class NavIndexNotifier extends Notifier<int> {
+  @override
+  int build() {
+    return 0;
+  }
+
+  void setIndex(int index) {
+    state = index;
+  }
+}
+
+final navIndexProvider = NotifierProvider<NavIndexNotifier, int>(NavIndexNotifier.new);

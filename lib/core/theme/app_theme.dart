@@ -55,6 +55,15 @@ class AppTheme {
     scaffoldBackgroundColor: const Color(0xFFF8F8F8),
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: Colors.white,
+      overlayColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.pressed)) {
+          return Colors.transparent;
+        }
+        if (states.contains(WidgetState.hovered)) {
+          return Colors.transparent;
+        }
+        return null;
+      }),
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return const TextStyle(color: seedColor, fontFamily: 'Epilogue', fontWeight: FontWeight.bold);

@@ -5,13 +5,13 @@ import 'package:expenselab/widgets/scaffold/main_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 final routerConfig = GoRouter(
-  initialLocation: '/accounts',
+  initialLocation: '/',
   routes: [
     ShellRoute(
       builder: (context, state, child) => MainScaffold(child: child),
       routes: [
         GoRoute(
-          path: '/accounts',
+          path: '/',
           builder: (context, state) => const BudgetsScreen(),
         ),
         GoRoute(
@@ -22,11 +22,15 @@ final routerConfig = GoRouter(
           path: '/goals',
           builder: (context, state) => const GoalsScreen(),
         ),
-        GoRoute(
-          path: '/settings',
-          builder: (context, state) => const SettingsScreen(),
-        ),
       ],
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/add-transaction',
+      builder: (context, state) => const SettingsScreen(),
     ),
   ],
 );
