@@ -1,14 +1,14 @@
-import 'package:expenselab/core/routing/app_shell.dart';
 import 'package:expenselab/features/budgets/presentation/screens/budgets_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/goals_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/settings_screen.dart';
+import 'package:expenselab/widgets/scaffold/main_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 final routerConfig = GoRouter(
   initialLocation: '/accounts',
   routes: [
     ShellRoute(
-      builder: (context, state, child) => AppShell(child: child),
+      builder: (context, state, child) => MainScaffold(child: child),
       routes: [
         GoRoute(
           path: '/accounts',

@@ -1,5 +1,4 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
-import 'package:expenselab/widgets/expense_lab_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class BudgetsScreen extends StatelessWidget {
@@ -10,7 +9,6 @@ class BudgetsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: const ExpenseLabAppBar(),
       backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
       body: SafeArea(
         child: Center(

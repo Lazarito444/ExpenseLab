@@ -52,7 +52,23 @@ class AppTheme {
       //   fontSize: 15,
       // ),
     ),
-    scaffoldBackgroundColor: const Color(0xFFF8F9F8),
+    scaffoldBackgroundColor: const Color(0xFFF8F8F8),
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: Colors.white,
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const TextStyle(color: seedColor, fontFamily: 'Epilogue', fontWeight: FontWeight.bold);
+        }
+        return TextStyle(color: Colors.grey.shade700, fontFamily: 'Epilogue');
+      }),
+      // Color del ícono según el estado
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const IconThemeData(color: seedColor);
+        }
+        return IconThemeData(color: Colors.grey.shade700);
+      }),
+    ),
   );
 
   static ThemeData get dark => ThemeData(

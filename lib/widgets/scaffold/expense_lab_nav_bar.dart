@@ -1,0 +1,86 @@
+import 'package:expenselab/core/extensions/context_extensions.dart';
+import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class ExpenseLabNavBar extends ConsumerWidget {
+  const ExpenseLabNavBar({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Translations t = context.t;
+
+    const double fabOverflow = 28.0;
+    const double navBarHeight = 72.0;
+
+    return SizedBox(
+      height: navBarHeight + fabOverflow,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          _navBarItems(t),
+          _fabButton(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _navBarItems(Translations t) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(24.0),
+        topRight: Radius.circular(24.0),
+      ),
+      child: NavigationBar(
+        indicatorColor: Colors.transparent,
+        onDestinationSelected: (int index) {
+          if (index == 2) return;
+          // ref.read(navIndexProvider.notifier).state = index;
+        },
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(Icons.home_outlined),
+            label: t.nav.home,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.account_balance_wallet_outlined),
+            label: t.nav.budgets,
+          ),
+          const NavigationDestination(
+            icon: SizedBox.shrink(),
+            label: "",
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.savings_outlined),
+            label: t.nav.goals,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.settings_outlined),
+            label: t.nav.settings,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Positioned _fabButton(BuildContext context) {
+    return Positioned(
+      top: -12,
+      left: 0,
+      right: 0,
+      child: Center(
+        child: SizedBox(
+          width: 56.0,
+          height: 56.0,
+          child: FloatingActionButton(
+            backgroundColor: context.theme.primaryColor,
+            onPressed: () {},
+            elevation: 4.0,
+            shape: const CircleBorder(),
+            child: const Icon(Icons.add, color: Colors.white, size: 28.0),
+          ),
+        ),
+      ),
+    );
+  }
+}
