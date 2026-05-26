@@ -35,7 +35,13 @@ class ExpenseLabNavBar extends ConsumerWidget {
       ),
       child: NavigationBar(
         selectedIndex: ref.watch(navIndexProvider),
-        indicatorColor: Colors.transparent,
+        indicatorColor: context.colorScheme.primary.withValues(alpha: 0.1),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return TextStyle(color: context.colorScheme.primary, fontFamily: 'Epilogue', fontWeight: FontWeight.bold);
+          }
+          return TextStyle(color: Colors.grey.shade700, fontFamily: 'Epilogue');
+        }),
         onDestinationSelected: (int index) {
           if (index == 2) {
             return;
