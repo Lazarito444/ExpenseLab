@@ -26,7 +26,7 @@ class ExpenseLabNavBar extends ConsumerWidget {
 
   Widget _navBarItems(BuildContext context, WidgetRef ref) {
     final t = context.t;
-    final routes = ["/", "/budgets", "add-transaction", "/goals", "/settings"];
+    final routes = ["/", "/budgets", "/add-transaction", "/goals", "/settings"];
 
     return ClipRRect(
       borderRadius: const BorderRadius.only(
@@ -46,10 +46,11 @@ class ExpenseLabNavBar extends ConsumerWidget {
           if (index == 2) {
             return;
           }
-          context.go(routes[index]);
           if (index == 4) {
+            context.push(routes[index]);
             return;
           }
+          context.go(routes[index]);
           ref.read(navIndexProvider.notifier).setIndex(index);
         },
         destinations: [
@@ -90,7 +91,7 @@ class ExpenseLabNavBar extends ConsumerWidget {
           child: FloatingActionButton(
             backgroundColor: context.theme.primaryColor,
             onPressed: () {
-              context.go("/add-transaction");
+              context.push("/add-transaction");
             },
             elevation: 4.0,
             shape: const CircleBorder(),

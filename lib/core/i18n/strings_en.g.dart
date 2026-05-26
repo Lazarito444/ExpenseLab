@@ -151,9 +151,14 @@ class TranslationsSettingsEn {
 	/// en: 'Preferences'
 	String get preferences => 'Preferences';
 
+	/// en: 'App'
+	String get app => 'App';
+
 	late final TranslationsSettingsThemeEn theme = TranslationsSettingsThemeEn.internal(_root);
 	late final TranslationsSettingsLanguageEn language = TranslationsSettingsLanguageEn.internal(_root);
 	late final TranslationsSettingsCurrencyEn currency = TranslationsSettingsCurrencyEn.internal(_root);
+	late final TranslationsSettingsAccountsEn accounts = TranslationsSettingsAccountsEn.internal(_root);
+	late final TranslationsSettingsCategoriesEn categories = TranslationsSettingsCategoriesEn.internal(_root);
 }
 
 // Path: accounts
@@ -373,6 +378,30 @@ class TranslationsSettingsCurrencyEn {
 	String get title => 'Currency';
 }
 
+// Path: settings.accounts
+class TranslationsSettingsAccountsEn {
+	TranslationsSettingsAccountsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Accounts'
+	String get title => 'Accounts';
+}
+
+// Path: settings.categories
+class TranslationsSettingsCategoriesEn {
+	TranslationsSettingsCategoriesEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Categories'
+	String get title => 'Categories';
+}
+
 // Path: accounts.create
 class TranslationsAccountsCreateEn {
 	TranslationsAccountsCreateEn.internal(this._root);
@@ -524,12 +553,15 @@ extension on Translations {
 			'nav.settings' => 'Settings',
 			'settings.title' => 'Settings',
 			'settings.preferences' => 'Preferences',
+			'settings.app' => 'App',
 			'settings.theme.title' => 'Theme',
 			'settings.theme.system' => 'System',
 			'settings.theme.light' => 'Light',
 			'settings.theme.dark' => 'Dark',
 			'settings.language.title' => 'Language',
 			'settings.currency.title' => 'Currency',
+			'settings.accounts.title' => 'Accounts',
+			'settings.categories.title' => 'Categories',
 			'currencies.USD' => 'US Dollar',
 			'currencies.EUR' => 'Euro',
 			'currencies.GBP' => 'British Pound',

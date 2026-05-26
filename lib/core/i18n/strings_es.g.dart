@@ -121,9 +121,12 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 	// Translations
 	@override String get title => 'Configuración';
 	@override String get preferences => 'Preferencias';
+	@override String get app => 'App';
 	@override late final _TranslationsSettingsThemeEs theme = _TranslationsSettingsThemeEs._(_root);
 	@override late final _TranslationsSettingsLanguageEs language = _TranslationsSettingsLanguageEs._(_root);
 	@override late final _TranslationsSettingsCurrencyEs currency = _TranslationsSettingsCurrencyEs._(_root);
+	@override late final _TranslationsSettingsAccountsEs accounts = _TranslationsSettingsAccountsEs._(_root);
+	@override late final _TranslationsSettingsCategoriesEs categories = _TranslationsSettingsCategoriesEs._(_root);
 }
 
 // Path: accounts
@@ -248,6 +251,26 @@ class _TranslationsSettingsCurrencyEs extends TranslationsSettingsCurrencyEn {
 	@override String get title => 'Moneda';
 }
 
+// Path: settings.accounts
+class _TranslationsSettingsAccountsEs extends TranslationsSettingsAccountsEn {
+	_TranslationsSettingsAccountsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Cuentas';
+}
+
+// Path: settings.categories
+class _TranslationsSettingsCategoriesEs extends TranslationsSettingsCategoriesEn {
+	_TranslationsSettingsCategoriesEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Categorías';
+}
+
 // Path: accounts.create
 class _TranslationsAccountsCreateEs extends TranslationsAccountsCreateEn {
 	_TranslationsAccountsCreateEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -331,12 +354,15 @@ extension on TranslationsEs {
 			'nav.settings' => 'Ajustes',
 			'settings.title' => 'Configuración',
 			'settings.preferences' => 'Preferencias',
+			'settings.app' => 'App',
 			'settings.theme.title' => 'Tema',
 			'settings.theme.system' => 'Sistema',
 			'settings.theme.light' => 'Claro',
 			'settings.theme.dark' => 'Oscuro',
 			'settings.language.title' => 'Idioma',
 			'settings.currency.title' => 'Moneda',
+			'settings.accounts.title' => 'Cuentas',
+			'settings.categories.title' => 'Categorías',
 			'currencies.USD' => 'Dólar estadounidense',
 			'currencies.EUR' => 'Euro',
 			'currencies.GBP' => 'Libra esterlina',

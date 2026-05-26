@@ -20,7 +20,6 @@ class LanguageSelectionScreen extends ConsumerWidget {
     ];
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

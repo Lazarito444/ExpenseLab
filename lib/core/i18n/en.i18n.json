@@ -20,6 +20,7 @@
   "settings": {
     "title": "Settings",
     "preferences": "Preferences",
+    "app": "App",
     "theme": {
       "title": "Theme",
       "system": "System",
@@ -31,6 +32,12 @@
     },
     "currency": {
       "title": "Currency"
+    },
+    "accounts": {
+      "title": "Accounts"
+    },
+    "categories": {
+      "title": "Categories"
     }
   },
   "currencies(map)": {

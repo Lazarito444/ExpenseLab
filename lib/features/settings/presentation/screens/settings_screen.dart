@@ -4,8 +4,10 @@ import 'package:expenselab/features/settings/presentation/screens/language_selec
 import 'package:expenselab/features/settings/presentation/screens/theme_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/widgets/settings_widgets.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
+import 'package:expenselab/widgets/scaffold/expense_lab_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -30,7 +32,16 @@ class SettingsScreen extends ConsumerWidget {
     };
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+      appBar: ExpenseLabAppBar(
+        title: t.settings.title,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: context.colorScheme.primary,
+          ),
+          onPressed: () => context.pop(),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -47,7 +58,6 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 24),
-
               buildSectionHeader(t.settings.preferences, isDark),
               const SizedBox(height: 12),
               buildSettingsCard(
@@ -72,6 +82,42 @@ class SettingsScreen extends ConsumerWidget {
                       label: t.settings.language.title,
                       currentValue: currentLocaleLabel,
                       icon: Icons.language_rounded,
+                      isDark: isDark,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (_) => const LanguageSelectionScreen(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              buildSectionHeader(t.settings.app, isDark),
+              const SizedBox(height: 12),
+              buildSettingsCard(
+                isDark,
+                child: Column(
+                  children: [
+                    buildNavTile(
+                      context: context,
+                      label: t.settings.accounts.title,
+                      currentValue: currentThemeLabel,
+                      icon: Icons.account_balance_wallet_outlined,
+                      isDark: isDark,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (_) => const ThemeSelectionScreen(),
+                        ),
+                      ),
+                    ),
+                    buildNavTile(
+                      context: context,
+                      label: t.settings.categories.title,
+                      currentValue: currentLocaleLabel,
+                      icon: Icons.bar_chart_rounded,
                       isDark: isDark,
                       onTap: () => Navigator.push(
                         context,
