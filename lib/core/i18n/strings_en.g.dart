@@ -148,6 +148,9 @@ class TranslationsSettingsEn {
 	/// en: 'Settings'
 	String get title => 'Settings';
 
+	/// en: 'Preferences'
+	String get preferences => 'Preferences';
+
 	late final TranslationsSettingsThemeEn theme = TranslationsSettingsThemeEn.internal(_root);
 	late final TranslationsSettingsLanguageEn language = TranslationsSettingsLanguageEn.internal(_root);
 	late final TranslationsSettingsCurrencyEn currency = TranslationsSettingsCurrencyEn.internal(_root);
@@ -520,6 +523,7 @@ extension on Translations {
 			'nav.goals' => 'Goals',
 			'nav.settings' => 'Settings',
 			'settings.title' => 'Settings',
+			'settings.preferences' => 'Preferences',
 			'settings.theme.title' => 'Theme',
 			'settings.theme.system' => 'System',
 			'settings.theme.light' => 'Light',

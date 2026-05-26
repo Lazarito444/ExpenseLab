@@ -120,6 +120,7 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 
 	// Translations
 	@override String get title => 'Configuración';
+	@override String get preferences => 'Preferencias';
 	@override late final _TranslationsSettingsThemeEs theme = _TranslationsSettingsThemeEs._(_root);
 	@override late final _TranslationsSettingsLanguageEs language = _TranslationsSettingsLanguageEs._(_root);
 	@override late final _TranslationsSettingsCurrencyEs currency = _TranslationsSettingsCurrencyEs._(_root);
@@ -329,6 +330,7 @@ extension on TranslationsEs {
 			'nav.goals' => 'Metas',
 			'nav.settings' => 'Ajustes',
 			'settings.title' => 'Configuración',
+			'settings.preferences' => 'Preferencias',
 			'settings.theme.title' => 'Tema',
 			'settings.theme.system' => 'Sistema',
 			'settings.theme.light' => 'Claro',
