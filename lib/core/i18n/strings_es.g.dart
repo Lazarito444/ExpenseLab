@@ -97,6 +97,8 @@ class _TranslationsCommonEs extends TranslationsCommonEn {
 	@override String get edit => 'Editar';
 	@override String get close => 'Cerrar';
 	@override String get error => 'Error';
+	@override String get see_all => 'Ver Todo';
+	@override String get preview => 'Vista Previa';
 }
 
 // Path: nav
@@ -195,12 +197,13 @@ class _TranslationsCategoriesEs extends TranslationsCategoriesEn {
 	@override String get income => 'Ingresos';
 	@override String get category => 'Categoría';
 	@override String get subcategory => 'Subcategoría';
+	@override String get subcategories => 'Subcategorías';
 	@override String get add_category => 'Añadir Categoría';
 	@override String get edit_category => 'Editar Categoría';
 	@override String get delete_category => 'Eliminar Categoría';
 	@override String get delete_message => '¿Estás seguro de que deseas eliminar esta categoría? Todas sus subcategorías pasarán a ser categorías principales.';
-	@override String get empty_state => '¡No hay cajoncitos! No dejes que la lana se te esfume.';
-	@override String get empty_subcategories => 'Sin subcategorías aún. ¡Toca + para agregar!';
+	@override String get empty_state => '¡No hay categorías! Intenta agregar una.';
+	@override String get empty_subcategories => 'Sin subcategorías aún.';
 	@override String get name => 'Nombre de la Categoría';
 	@override String get name_hint => 'ej., Tragadera, Tigres...';
 	@override String get type => 'Tipo de Categoría';
@@ -213,9 +216,16 @@ class _TranslationsCategoriesEs extends TranslationsCategoriesEn {
 	@override String get success_update => '¡Categoría actualizada con éxito!';
 	@override String get success_delete => '¡Categoría eliminada con éxito!';
 	@override String get name_required => 'Por favor ingresa un nombre para la categoría';
+	@override String get total_monthly_spend => 'Gasto total del mes';
+	@override String get total_monthly_income => 'Ingreso total del mes';
 	@override String count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n,
 		one: '1 Categoría',
-		other: '{n} Categorías',
+		other: '${n} Categorías',
+	);
+	@override String subcategory_count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n,
+		zero: 'Sin subcategorías',
+		one: '1 subcategoría',
+		other: '${n} subcategorías',
 	);
 }
 
@@ -350,6 +360,8 @@ extension on TranslationsEs {
 			'common.edit' => 'Editar',
 			'common.close' => 'Cerrar',
 			'common.error' => 'Error',
+			'common.see_all' => 'Ver Todo',
+			'common.preview' => 'Vista Previa',
 			'nav.home' => 'Inicio',
 			'nav.budgets' => 'Presupuestos',
 			'nav.goals' => 'Metas',
@@ -441,12 +453,13 @@ extension on TranslationsEs {
 			'categories.income' => 'Ingresos',
 			'categories.category' => 'Categoría',
 			'categories.subcategory' => 'Subcategoría',
+			'categories.subcategories' => 'Subcategorías',
 			'categories.add_category' => 'Añadir Categoría',
 			'categories.edit_category' => 'Editar Categoría',
 			'categories.delete_category' => 'Eliminar Categoría',
 			'categories.delete_message' => '¿Estás seguro de que deseas eliminar esta categoría? Todas sus subcategorías pasarán a ser categorías principales.',
-			'categories.empty_state' => '¡No hay cajoncitos! No dejes que la lana se te esfume.',
-			'categories.empty_subcategories' => 'Sin subcategorías aún. ¡Toca + para agregar!',
+			'categories.empty_state' => '¡No hay categorías! Intenta agregar una.',
+			'categories.empty_subcategories' => 'Sin subcategorías aún.',
 			'categories.name' => 'Nombre de la Categoría',
 			'categories.name_hint' => 'ej., Tragadera, Tigres...',
 			'categories.type' => 'Tipo de Categoría',
@@ -459,7 +472,10 @@ extension on TranslationsEs {
 			'categories.success_update' => '¡Categoría actualizada con éxito!',
 			'categories.success_delete' => '¡Categoría eliminada con éxito!',
 			'categories.name_required' => 'Por favor ingresa un nombre para la categoría',
-			'categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '1 Categoría', other: '{n} Categorías', ), 
+			'categories.total_monthly_spend' => 'Gasto total del mes',
+			'categories.total_monthly_income' => 'Ingreso total del mes',
+			'categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '1 Categoría', other: '${n} Categorías', ), 
+			'categories.subcategory_count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, zero: 'Sin subcategorías', one: '1 subcategoría', other: '${n} subcategorías', ), 
 			_ => null,
 		};
 	}

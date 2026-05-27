@@ -13,6 +13,7 @@ class AppTheme {
       seedColor: seedColor,
       primary: seedColor,
       primaryFixed: const Color(0xFF4E8A4F),
+      secondaryContainer: Colors.white,
       scrim: Colors.grey.shade900,
       outline: const Color(0xFF508952),
     ),

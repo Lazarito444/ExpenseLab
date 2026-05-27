@@ -1,6 +1,7 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
+import 'package:expenselab/features/categories/presentation/screens/categories_screen.dart';
 import 'package:expenselab/features/settings/domain/models/app_settings.dart';
 import 'package:expenselab/features/settings/presentation/screens/language_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/theme_selection_screen.dart';
@@ -113,7 +114,7 @@ class SettingsScreen extends ConsumerWidget {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (_) => const LanguageSelectionScreen(),
+                          builder: (_) => const CategoriesScreen(),
                         ),
                       ),
                     ),

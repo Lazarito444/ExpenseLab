@@ -114,6 +114,12 @@ class TranslationsCommonEn {
 
 	/// en: 'Error'
 	String get error => 'Error';
+
+	/// en: 'See All'
+	String get see_all => 'See All';
+
+	/// en: 'Preview'
+	String get preview => 'Preview';
 }
 
 // Path: nav
@@ -275,6 +281,9 @@ class TranslationsCategoriesEn {
 	/// en: 'Subcategory'
 	String get subcategory => 'Subcategory';
 
+	/// en: 'Subcategories'
+	String get subcategories => 'Subcategories';
+
 	/// en: 'Add Category'
 	String get add_category => 'Add Category';
 
@@ -287,11 +296,11 @@ class TranslationsCategoriesEn {
 	/// en: 'Are you sure you want to delete this category? All its subcategories will become top-level categories.'
 	String get delete_message => 'Are you sure you want to delete this category? All its subcategories will become top-level categories.';
 
-	/// en: 'No categories here! Don't let your moolah vanish.'
-	String get empty_state => 'No categories here! Don\'t let your moolah vanish.';
+	/// en: 'No categories here! Try to create one!'
+	String get empty_state => 'No categories here! Try to create one!';
 
-	/// en: 'No subcategories yet. Tap + to add some!'
-	String get empty_subcategories => 'No subcategories yet. Tap + to add some!';
+	/// en: 'No subcategories yet.'
+	String get empty_subcategories => 'No subcategories yet.';
 
 	/// en: 'Category Name'
 	String get name => 'Category Name';
@@ -329,10 +338,23 @@ class TranslationsCategoriesEn {
 	/// en: 'Please enter a category name'
 	String get name_required => 'Please enter a category name';
 
-	/// en: '(one) {1 Category} (other) {{n} Categories}'
+	/// en: 'Total Monthly Spend'
+	String get total_monthly_spend => 'Total Monthly Spend';
+
+	/// en: 'Total Monthly Income'
+	String get total_monthly_income => 'Total Monthly Income';
+
+	/// en: '(one) {1 Category} (other) {$n Categories}'
 	String count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
 		one: '1 Category',
-		other: '{n} Categories',
+		other: '${n} Categories',
+	);
+
+	/// en: '(zero) {No subcategories} (one) {1 subcategory} (other) {$n subcategories}'
+	String subcategory_count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
+		zero: 'No subcategories',
+		one: '1 subcategory',
+		other: '${n} subcategories',
 	);
 }
 
@@ -553,6 +575,8 @@ extension on Translations {
 			'common.edit' => 'Edit',
 			'common.close' => 'Close',
 			'common.error' => 'Error',
+			'common.see_all' => 'See All',
+			'common.preview' => 'Preview',
 			'nav.home' => 'Home',
 			'nav.budgets' => 'Budgets',
 			'nav.goals' => 'Goals',
@@ -646,12 +670,13 @@ extension on Translations {
 			'categories.income' => 'Income',
 			'categories.category' => 'Category',
 			'categories.subcategory' => 'Subcategory',
+			'categories.subcategories' => 'Subcategories',
 			'categories.add_category' => 'Add Category',
 			'categories.edit_category' => 'Edit Category',
 			'categories.delete_category' => 'Delete Category',
 			'categories.delete_message' => 'Are you sure you want to delete this category? All its subcategories will become top-level categories.',
-			'categories.empty_state' => 'No categories here! Don\'t let your moolah vanish.',
-			'categories.empty_subcategories' => 'No subcategories yet. Tap + to add some!',
+			'categories.empty_state' => 'No categories here! Try to create one!',
+			'categories.empty_subcategories' => 'No subcategories yet.',
 			'categories.name' => 'Category Name',
 			'categories.name_hint' => 'e.g., Munchies & Grub, Side Hustle...',
 			'categories.type' => 'Category Type',
@@ -664,7 +689,10 @@ extension on Translations {
 			'categories.success_update' => 'Category updated successfully!',
 			'categories.success_delete' => 'Category deleted successfully!',
 			'categories.name_required' => 'Please enter a category name',
-			'categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '1 Category', other: '{n} Categories', ), 
+			'categories.total_monthly_spend' => 'Total Monthly Spend',
+			'categories.total_monthly_income' => 'Total Monthly Income',
+			'categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '1 Category', other: '${n} Categories', ), 
+			'categories.subcategory_count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, zero: 'No subcategories', one: '1 subcategory', other: '${n} subcategories', ), 
 			_ => null,
 		};
 	}

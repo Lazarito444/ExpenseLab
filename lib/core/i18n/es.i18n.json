@@ -9,7 +9,9 @@
     "delete": "Eliminar",
     "edit": "Editar",
     "close": "Cerrar",
-    "error": "Error"
+    "error": "Error",
+    "see_all": "Ver Todo",
+    "preview": "Vista Previa"
   },
   "nav": {
     "home": "Inicio",
@@ -133,12 +135,13 @@
     "income": "Ingresos",
     "category": "Categoría",
     "subcategory": "Subcategoría",
+    "subcategories": "Subcategorías",
     "add_category": "Añadir Categoría",
     "edit_category": "Editar Categoría",
     "delete_category": "Eliminar Categoría",
     "delete_message": "¿Estás seguro de que deseas eliminar esta categoría? Todas sus subcategorías pasarán a ser categorías principales.",
-    "empty_state": "¡No hay cajoncitos! No dejes que la lana se te esfume.",
-    "empty_subcategories": "Sin subcategorías aún. ¡Toca + para agregar!",
+    "empty_state": "¡No hay categorías! Intenta agregar una.",
+    "empty_subcategories": "Sin subcategorías aún.",
     "name": "Nombre de la Categoría",
     "name_hint": "ej., Tragadera, Tigres...",
     "type": "Tipo de Categoría",
@@ -151,9 +154,16 @@
     "success_update": "¡Categoría actualizada con éxito!",
     "success_delete": "¡Categoría eliminada con éxito!",
     "name_required": "Por favor ingresa un nombre para la categoría",
+    "total_monthly_spend": "Gasto total del mes",
+    "total_monthly_income": "Ingreso total del mes",
     "count": {
       "one": "1 Categoría",
-      "other": "{n} Categorías"
+      "other": "$n Categorías"
+    },
+    "subcategory_count": {
+      "zero": "Sin subcategorías",
+      "one": "1 subcategoría",
+      "other": "$n subcategorías"
     }
   }
 }
