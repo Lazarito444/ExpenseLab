@@ -452,8 +452,11 @@ class TranslationsAccountsCreateEn {
 	/// en: 'Initial Balance'
 	String get initial_balance => 'Initial Balance';
 
-	/// en: 'Pro Tip: Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.'
-	String get pro_tip => 'Pro Tip: Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.';
+	/// en: 'Pro Tip'
+	String get pro_tip_label => 'Pro Tip';
+
+	/// en: 'Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.'
+	String get pro_tip => 'Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.';
 
 	/// en: 'Create Account'
 	String get create_button => 'Create Account';
@@ -612,7 +615,8 @@ extension on Translations {
 			'accounts.create.search_currency_hint' => 'Search currency code or name...',
 			'accounts.create.no_currencies_found' => 'No currencies found',
 			'accounts.create.initial_balance' => 'Initial Balance',
-			'accounts.create.pro_tip' => 'Pro Tip: Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.',
+			'accounts.create.pro_tip_label' => 'Pro Tip',
+			'accounts.create.pro_tip' => 'Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.',
 			'accounts.create.create_button' => 'Create Account',
 			'accounts.create.name_required' => 'Please enter an account name',
 			'accounts.create.balance_invalid' => 'Please enter a valid balance',

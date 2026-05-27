@@ -1,3 +1,6 @@
+import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
+import 'package:expenselab/features/accounts/presentation/screens/create_account_screen.dart';
+import 'package:expenselab/features/accounts/presentation/screens/edit_account_screen.dart';
 import 'package:expenselab/features/budgets/presentation/screens/budgets_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/goals_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/settings_screen.dart';
@@ -31,6 +34,22 @@ final routerConfig = GoRouter(
     GoRoute(
       path: '/add-transaction',
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/accounts',
+      builder: (context, state) => const AccountsScreen(),
+      routes: [
+        GoRoute(
+          path: 'create',
+          builder: (context, state) => const CreateAccountScreen(),
+        ),
+        GoRoute(
+          path: ':id/edit',
+          builder: (context, state) => EditAccountScreen(
+            accountId: state.pathParameters['id']!,
+          ),
+        ),
+      ],
     ),
   ],
 );

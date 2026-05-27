@@ -292,7 +292,8 @@ class _TranslationsAccountsCreateEs extends TranslationsAccountsCreateEn {
 	@override String get search_currency_hint => 'Buscar código o nombre de moneda...';
 	@override String get no_currencies_found => 'No se encontraron monedas';
 	@override String get initial_balance => 'Saldo inicial';
-	@override String get pro_tip => 'Consejo profesional: Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.';
+	@override String get pro_tip_label => 'Consejo profesional';
+	@override String get pro_tip => 'Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.';
 	@override String get create_button => 'Crear cuenta';
 	@override String get name_required => 'Por favor ingresa un nombre de cuenta';
 	@override String get balance_invalid => 'Por favor ingresa un saldo válido';
@@ -409,7 +410,8 @@ extension on TranslationsEs {
 			'accounts.create.search_currency_hint' => 'Buscar código o nombre de moneda...',
 			'accounts.create.no_currencies_found' => 'No se encontraron monedas',
 			'accounts.create.initial_balance' => 'Saldo inicial',
-			'accounts.create.pro_tip' => 'Consejo profesional: Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.',
+			'accounts.create.pro_tip_label' => 'Consejo profesional',
+			'accounts.create.pro_tip' => 'Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.',
 			'accounts.create.create_button' => 'Crear cuenta',
 			'accounts.create.name_required' => 'Por favor ingresa un nombre de cuenta',
 			'accounts.create.balance_invalid' => 'Por favor ingresa un saldo válido',

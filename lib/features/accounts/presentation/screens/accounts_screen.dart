@@ -33,6 +33,12 @@ class AccountsScreen extends ConsumerWidget {
           ),
           onPressed: () => context.pop(),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => context.push('/accounts/create'),
+            icon: Icon(Icons.add_rounded, color: context.colorScheme.primary),
+          ),
+        ],
       ),
       body: accountsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -91,7 +97,7 @@ class _NetWorthCard extends StatelessWidget {
   const _NetWorthCard({
     required this.totalNetWorth,
     required this.currency,
-    this.monthlyChangePct,
+    this.monthlyChangePct, // ignore: unused_element_parameter
   });
 
   final double totalNetWorth;
@@ -210,70 +216,73 @@ class _AccountCard extends StatelessWidget {
     final formatted = formatCurrency(model.balance, model.currencyCode);
     final iconData = iconFromName(model.icon);
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: context.colorScheme.primary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: () => context.push('/accounts/${model.id}/edit'),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.primary.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    iconData,
+                    color: context.colorScheme.primary,
+                    size: 22,
+                  ),
                 ),
-                child: Icon(
-                  iconData,
-                  color: context.colorScheme.primary,
-                  size: 22,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      model.name,
-                      style: TextStyle(
-                        fontFamily: 'Epilogue',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: context.colorScheme.scrim,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        model.name,
+                        style: TextStyle(
+                          fontFamily: 'Epilogue',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: context.colorScheme.scrim,
+                        ),
                       ),
-                    ),
-                    Text(
-                      t.currencies[model.currencyCode.toUpperCase()]!,
-                      style: const TextStyle(
-                        fontFamily: 'Epilogue',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                        color: Color(0xFF9EAEA2),
+                      Text(
+                        t.currencies[model.currencyCode.toUpperCase()]!,
+                        style: const TextStyle(
+                          fontFamily: 'Epilogue',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: Color(0xFF9EAEA2),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Icon(Icons.chevron_right_rounded, color: Colors.grey.shade400),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            formatted,
-            style: TextStyle(
-              fontFamily: 'Epilogue',
-              fontWeight: FontWeight.w700,
-              fontSize: 22,
-              color: context.colorScheme.outline,
+                Icon(Icons.chevron_right_rounded, color: Colors.grey.shade400),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 12),
+            Text(
+              formatted,
+              style: TextStyle(
+                fontFamily: 'Epilogue',
+                fontWeight: FontWeight.w700,
+                fontSize: 22,
+                color: context.colorScheme.outline,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
