@@ -5,10 +5,7 @@
   "common": {
     "save": "Save",
     "cancel": "Cancel",
-    "confirm": "Confirm",
     "delete": "Delete",
-    "edit": "Edit",
-    "close": "Close",
     "error": "Error",
     "see_all": "See All",
     "preview": "Preview"
@@ -31,9 +28,6 @@
     },
     "language": {
       "title": "Language"
-    },
-    "currency": {
-      "title": "Currency"
     },
     "accounts": {
       "title": "Accounts"
@@ -67,15 +61,9 @@
   },
   "accounts": {
     "title": "My Accounts",
-    "subtitle": "Your financial overview at a glance.",
     "empty_state": "No accounts yet. Add one to get started!",
     "total_net_worth": "Total Net Worth",
     "this_month": "this month",
-    "asset_accounts": "Asset Accounts",
-    "liability_accounts": "Liability Accounts",
-    "due_soon": "Due soon",
-    "due_in_5_days": "Due in 5 days",
-    "limit": "Limit: {limit}",
     "cash_accounts": "Cash Accounts",
     "bank_accounts": "Bank Accounts",
     "credit_cards": "Credit Cards",
@@ -91,8 +79,6 @@
       "type_credit_card": "Credit Card",
       "currency": "Currency",
       "select_currency_title": "Select Currency",
-      "search_currency_hint": "Search currency code or name...",
-      "no_currencies_found": "No currencies found",
       "initial_balance": "Initial Balance",
       "pro_tip_label": "Pro Tip",
       "pro_tip": "Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.",
@@ -110,30 +96,10 @@
       "error_loading": "Error loading account",
       "success_update": "Account updated successfully",
       "success_delete": "Account deleted successfully"
-    },
-    "details": {
-      "title": "Account Details",
-      "edit_account": "Edit Account",
-      "delete_account": "Delete Account",
-      "recent_transactions": "Recent Transactions",
-      "view_all": "View All",
-      "no_transactions": "No transactions found",
-      "growth_this_month": "{percentage} this month",
-      "error_loading": "Error loading details"
     }
-  },
-  "transactions": {
-    "title": "Transactions"
-  },
-  "budgets": {
-    "title": "Budgets"
-  },
-  "savings": {
-    "title": "Savings"
   },
   "categories": {
     "title": "My Categories",
-    "subtitle": "Keep track of where your hard-earned paper is going.",
     "expenses": "Expenses",
     "income": "Income",
     "category": "Category",
@@ -152,7 +118,6 @@
     "icon": "Category Icon",
     "parent": "Parent Category",
     "parent_none": "None (Top-level)",
-    "pro_tip": "Pro Tip: Split your outgoings so you don't burn through all your dough at once!",
     "success_create": "Category created successfully!",
     "success_update": "Category updated successfully!",
     "success_delete": "Category deleted successfully!",

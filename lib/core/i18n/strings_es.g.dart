@@ -67,9 +67,6 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 		'ZAR': 'Rand sudafricano',
 	};
 	@override late final _TranslationsAccountsEs accounts = _TranslationsAccountsEs._(_root);
-	@override late final _TranslationsTransactionsEs transactions = _TranslationsTransactionsEs._(_root);
-	@override late final _TranslationsBudgetsEs budgets = _TranslationsBudgetsEs._(_root);
-	@override late final _TranslationsSavingsEs savings = _TranslationsSavingsEs._(_root);
 	@override late final _TranslationsCategoriesEs categories = _TranslationsCategoriesEs._(_root);
 }
 
@@ -92,10 +89,7 @@ class _TranslationsCommonEs extends TranslationsCommonEn {
 	// Translations
 	@override String get save => 'Guardar';
 	@override String get cancel => 'Cancelar';
-	@override String get confirm => 'Confirmar';
 	@override String get delete => 'Eliminar';
-	@override String get edit => 'Editar';
-	@override String get close => 'Cerrar';
 	@override String get error => 'Error';
 	@override String get see_all => 'Ver Todo';
 	@override String get preview => 'Vista Previa';
@@ -126,7 +120,6 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 	@override String get app => 'App';
 	@override late final _TranslationsSettingsThemeEs theme = _TranslationsSettingsThemeEs._(_root);
 	@override late final _TranslationsSettingsLanguageEs language = _TranslationsSettingsLanguageEs._(_root);
-	@override late final _TranslationsSettingsCurrencyEs currency = _TranslationsSettingsCurrencyEs._(_root);
 	@override late final _TranslationsSettingsAccountsEs accounts = _TranslationsSettingsAccountsEs._(_root);
 	@override late final _TranslationsSettingsCategoriesEs categories = _TranslationsSettingsCategoriesEs._(_root);
 }
@@ -139,50 +132,15 @@ class _TranslationsAccountsEs extends TranslationsAccountsEn {
 
 	// Translations
 	@override String get title => 'Mis cuentas';
-	@override String get subtitle => 'Tu resumen financiero de un vistazo.';
 	@override String get empty_state => '¡Sin cuentas aún. Agrega una para comenzar!';
 	@override String get total_net_worth => 'Patrimonio neto total';
 	@override String get this_month => 'este mes';
-	@override String get due_soon => 'Vence pronto';
-	@override String get due_in_5_days => 'Vence en 5 días';
-	@override String get limit => 'Límite: {limit}';
 	@override String get cash_accounts => 'Cuentas de efectivo';
 	@override String get bank_accounts => 'Cuentas bancarias';
 	@override String get credit_cards => 'Tarjetas de crédito';
 	@override String get monthly_change => '{percentage} este mes';
 	@override late final _TranslationsAccountsCreateEs create = _TranslationsAccountsCreateEs._(_root);
 	@override late final _TranslationsAccountsEditEs edit = _TranslationsAccountsEditEs._(_root);
-	@override late final _TranslationsAccountsDetailsEs details = _TranslationsAccountsDetailsEs._(_root);
-}
-
-// Path: transactions
-class _TranslationsTransactionsEs extends TranslationsTransactionsEn {
-	_TranslationsTransactionsEs._(TranslationsEs root) : this._root = root, super.internal(root);
-
-	final TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Transacciones';
-}
-
-// Path: budgets
-class _TranslationsBudgetsEs extends TranslationsBudgetsEn {
-	_TranslationsBudgetsEs._(TranslationsEs root) : this._root = root, super.internal(root);
-
-	final TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Presupuestos';
-}
-
-// Path: savings
-class _TranslationsSavingsEs extends TranslationsSavingsEn {
-	_TranslationsSavingsEs._(TranslationsEs root) : this._root = root, super.internal(root);
-
-	final TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Ahorros';
 }
 
 // Path: categories
@@ -193,7 +151,6 @@ class _TranslationsCategoriesEs extends TranslationsCategoriesEn {
 
 	// Translations
 	@override String get title => 'Mis Categorías';
-	@override String get subtitle => 'Lleva al día en qué se te está volando la plata.';
 	@override String get expenses => 'Gastos';
 	@override String get income => 'Ingresos';
 	@override String get category => 'Categoría';
@@ -212,7 +169,6 @@ class _TranslationsCategoriesEs extends TranslationsCategoriesEn {
 	@override String get icon => 'Icono de la Categoría';
 	@override String get parent => 'Categoría Padre';
 	@override String get parent_none => 'Ninguno (Principal)';
-	@override String get pro_tip => 'Consejo: ¡Organiza tu lana en cajonecitos para no gastarte toda la plata de un solo jalón!';
 	@override String get success_create => '¡Categoría creada con éxito!';
 	@override String get success_update => '¡Categoría actualizada con éxito!';
 	@override String get success_delete => '¡Categoría eliminada con éxito!';
@@ -253,16 +209,6 @@ class _TranslationsSettingsLanguageEs extends TranslationsSettingsLanguageEn {
 	@override String get title => 'Idioma';
 }
 
-// Path: settings.currency
-class _TranslationsSettingsCurrencyEs extends TranslationsSettingsCurrencyEn {
-	_TranslationsSettingsCurrencyEs._(TranslationsEs root) : this._root = root, super.internal(root);
-
-	final TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Moneda';
-}
-
 // Path: settings.accounts
 class _TranslationsSettingsAccountsEs extends TranslationsSettingsAccountsEn {
 	_TranslationsSettingsAccountsEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -300,8 +246,6 @@ class _TranslationsAccountsCreateEs extends TranslationsAccountsCreateEn {
 	@override String get type_credit_card => 'Tarjeta de crédito';
 	@override String get currency => 'Moneda';
 	@override String get select_currency_title => 'Seleccionar moneda';
-	@override String get search_currency_hint => 'Buscar código o nombre de moneda...';
-	@override String get no_currencies_found => 'No se encontraron monedas';
 	@override String get initial_balance => 'Saldo inicial';
 	@override String get pro_tip_label => 'Consejo profesional';
 	@override String get pro_tip => 'Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.';
@@ -328,23 +272,6 @@ class _TranslationsAccountsEditEs extends TranslationsAccountsEditEn {
 	@override String get success_delete => 'Cuenta eliminada con éxito';
 }
 
-// Path: accounts.details
-class _TranslationsAccountsDetailsEs extends TranslationsAccountsDetailsEn {
-	_TranslationsAccountsDetailsEs._(TranslationsEs root) : this._root = root, super.internal(root);
-
-	final TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'Detalles de la cuenta';
-	@override String get edit_account => 'Editar cuenta';
-	@override String get delete_account => 'Eliminar cuenta';
-	@override String get recent_transactions => 'Transacciones recientes';
-	@override String get view_all => 'Ver todo';
-	@override String get no_transactions => 'No se encontraron transacciones';
-	@override String get growth_this_month => '{percentage} este mes';
-	@override String get error_loading => 'Error al cargar detalles';
-}
-
 /// The flat map containing all translations for locale <es>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -356,10 +283,7 @@ extension on TranslationsEs {
 			'app.name' => 'ExpenseLab',
 			'common.save' => 'Guardar',
 			'common.cancel' => 'Cancelar',
-			'common.confirm' => 'Confirmar',
 			'common.delete' => 'Eliminar',
-			'common.edit' => 'Editar',
-			'common.close' => 'Cerrar',
 			'common.error' => 'Error',
 			'common.see_all' => 'Ver Todo',
 			'common.preview' => 'Vista Previa',
@@ -375,7 +299,6 @@ extension on TranslationsEs {
 			'settings.theme.light' => 'Claro',
 			'settings.theme.dark' => 'Oscuro',
 			'settings.language.title' => 'Idioma',
-			'settings.currency.title' => 'Moneda',
 			'settings.accounts.title' => 'Cuentas',
 			'settings.categories.title' => 'Categorías',
 			'currencies.USD' => 'Dólar estadounidense',
@@ -400,13 +323,9 @@ extension on TranslationsEs {
 			'currencies.KRW' => 'Won surcoreano',
 			'currencies.ZAR' => 'Rand sudafricano',
 			'accounts.title' => 'Mis cuentas',
-			'accounts.subtitle' => 'Tu resumen financiero de un vistazo.',
 			'accounts.empty_state' => '¡Sin cuentas aún. Agrega una para comenzar!',
 			'accounts.total_net_worth' => 'Patrimonio neto total',
 			'accounts.this_month' => 'este mes',
-			'accounts.due_soon' => 'Vence pronto',
-			'accounts.due_in_5_days' => 'Vence en 5 días',
-			'accounts.limit' => 'Límite: {limit}',
 			'accounts.cash_accounts' => 'Cuentas de efectivo',
 			'accounts.bank_accounts' => 'Cuentas bancarias',
 			'accounts.credit_cards' => 'Tarjetas de crédito',
@@ -421,8 +340,6 @@ extension on TranslationsEs {
 			'accounts.create.type_credit_card' => 'Tarjeta de crédito',
 			'accounts.create.currency' => 'Moneda',
 			'accounts.create.select_currency_title' => 'Seleccionar moneda',
-			'accounts.create.search_currency_hint' => 'Buscar código o nombre de moneda...',
-			'accounts.create.no_currencies_found' => 'No se encontraron monedas',
 			'accounts.create.initial_balance' => 'Saldo inicial',
 			'accounts.create.pro_tip_label' => 'Consejo profesional',
 			'accounts.create.pro_tip' => 'Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.',
@@ -438,19 +355,7 @@ extension on TranslationsEs {
 			'accounts.edit.error_loading' => 'Error al cargar la cuenta',
 			'accounts.edit.success_update' => 'Cuenta actualizada con éxito',
 			'accounts.edit.success_delete' => 'Cuenta eliminada con éxito',
-			'accounts.details.title' => 'Detalles de la cuenta',
-			'accounts.details.edit_account' => 'Editar cuenta',
-			'accounts.details.delete_account' => 'Eliminar cuenta',
-			'accounts.details.recent_transactions' => 'Transacciones recientes',
-			'accounts.details.view_all' => 'Ver todo',
-			'accounts.details.no_transactions' => 'No se encontraron transacciones',
-			'accounts.details.growth_this_month' => '{percentage} este mes',
-			'accounts.details.error_loading' => 'Error al cargar detalles',
-			'transactions.title' => 'Transacciones',
-			'budgets.title' => 'Presupuestos',
-			'savings.title' => 'Ahorros',
 			'categories.title' => 'Mis Categorías',
-			'categories.subtitle' => 'Lleva al día en qué se te está volando la plata.',
 			'categories.expenses' => 'Gastos',
 			'categories.income' => 'Ingresos',
 			'categories.category' => 'Categoría',
@@ -469,7 +374,6 @@ extension on TranslationsEs {
 			'categories.icon' => 'Icono de la Categoría',
 			'categories.parent' => 'Categoría Padre',
 			'categories.parent_none' => 'Ninguno (Principal)',
-			'categories.pro_tip' => 'Consejo: ¡Organiza tu lana en cajonecitos para no gastarte toda la plata de un solo jalón!',
 			'categories.success_create' => '¡Categoría creada con éxito!',
 			'categories.success_update' => '¡Categoría actualizada con éxito!',
 			'categories.success_delete' => '¡Categoría eliminada con éxito!',

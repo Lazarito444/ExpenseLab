@@ -68,9 +68,6 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'ZAR': 'South African Rand',
 	};
 	late final TranslationsAccountsEn accounts = TranslationsAccountsEn.internal(_root);
-	late final TranslationsTransactionsEn transactions = TranslationsTransactionsEn.internal(_root);
-	late final TranslationsBudgetsEn budgets = TranslationsBudgetsEn.internal(_root);
-	late final TranslationsSavingsEn savings = TranslationsSavingsEn.internal(_root);
 	late final TranslationsCategoriesEn categories = TranslationsCategoriesEn.internal(_root);
 }
 
@@ -100,17 +97,8 @@ class TranslationsCommonEn {
 	/// en: 'Cancel'
 	String get cancel => 'Cancel';
 
-	/// en: 'Confirm'
-	String get confirm => 'Confirm';
-
 	/// en: 'Delete'
 	String get delete => 'Delete';
-
-	/// en: 'Edit'
-	String get edit => 'Edit';
-
-	/// en: 'Close'
-	String get close => 'Close';
 
 	/// en: 'Error'
 	String get error => 'Error';
@@ -162,7 +150,6 @@ class TranslationsSettingsEn {
 
 	late final TranslationsSettingsThemeEn theme = TranslationsSettingsThemeEn.internal(_root);
 	late final TranslationsSettingsLanguageEn language = TranslationsSettingsLanguageEn.internal(_root);
-	late final TranslationsSettingsCurrencyEn currency = TranslationsSettingsCurrencyEn.internal(_root);
 	late final TranslationsSettingsAccountsEn accounts = TranslationsSettingsAccountsEn.internal(_root);
 	late final TranslationsSettingsCategoriesEn categories = TranslationsSettingsCategoriesEn.internal(_root);
 }
@@ -178,9 +165,6 @@ class TranslationsAccountsEn {
 	/// en: 'My Accounts'
 	String get title => 'My Accounts';
 
-	/// en: 'Your financial overview at a glance.'
-	String get subtitle => 'Your financial overview at a glance.';
-
 	/// en: 'No accounts yet. Add one to get started!'
 	String get empty_state => 'No accounts yet. Add one to get started!';
 
@@ -189,21 +173,6 @@ class TranslationsAccountsEn {
 
 	/// en: 'this month'
 	String get this_month => 'this month';
-
-	/// en: 'Asset Accounts'
-	String get asset_accounts => 'Asset Accounts';
-
-	/// en: 'Liability Accounts'
-	String get liability_accounts => 'Liability Accounts';
-
-	/// en: 'Due soon'
-	String get due_soon => 'Due soon';
-
-	/// en: 'Due in 5 days'
-	String get due_in_5_days => 'Due in 5 days';
-
-	/// en: 'Limit: {limit}'
-	String get limit => 'Limit: {limit}';
 
 	/// en: 'Cash Accounts'
 	String get cash_accounts => 'Cash Accounts';
@@ -219,43 +188,6 @@ class TranslationsAccountsEn {
 
 	late final TranslationsAccountsCreateEn create = TranslationsAccountsCreateEn.internal(_root);
 	late final TranslationsAccountsEditEn edit = TranslationsAccountsEditEn.internal(_root);
-	late final TranslationsAccountsDetailsEn details = TranslationsAccountsDetailsEn.internal(_root);
-}
-
-// Path: transactions
-class TranslationsTransactionsEn {
-	TranslationsTransactionsEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-
-	/// en: 'Transactions'
-	String get title => 'Transactions';
-}
-
-// Path: budgets
-class TranslationsBudgetsEn {
-	TranslationsBudgetsEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-
-	/// en: 'Budgets'
-	String get title => 'Budgets';
-}
-
-// Path: savings
-class TranslationsSavingsEn {
-	TranslationsSavingsEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-
-	/// en: 'Savings'
-	String get title => 'Savings';
 }
 
 // Path: categories
@@ -268,9 +200,6 @@ class TranslationsCategoriesEn {
 
 	/// en: 'My Categories'
 	String get title => 'My Categories';
-
-	/// en: 'Keep track of where your hard-earned paper is going.'
-	String get subtitle => 'Keep track of where your hard-earned paper is going.';
 
 	/// en: 'Expenses'
 	String get expenses => 'Expenses';
@@ -325,9 +254,6 @@ class TranslationsCategoriesEn {
 
 	/// en: 'None (Top-level)'
 	String get parent_none => 'None (Top-level)';
-
-	/// en: 'Pro Tip: Split your outgoings so you don't burn through all your dough at once!'
-	String get pro_tip => 'Pro Tip: Split your outgoings so you don\'t burn through all your dough at once!';
 
 	/// en: 'Category created successfully!'
 	String get success_create => 'Category created successfully!';
@@ -394,18 +320,6 @@ class TranslationsSettingsLanguageEn {
 	String get title => 'Language';
 }
 
-// Path: settings.currency
-class TranslationsSettingsCurrencyEn {
-	TranslationsSettingsCurrencyEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-
-	/// en: 'Currency'
-	String get title => 'Currency';
-}
-
 // Path: settings.accounts
 class TranslationsSettingsAccountsEn {
 	TranslationsSettingsAccountsEn.internal(this._root);
@@ -468,12 +382,6 @@ class TranslationsAccountsCreateEn {
 	/// en: 'Select Currency'
 	String get select_currency_title => 'Select Currency';
 
-	/// en: 'Search currency code or name...'
-	String get search_currency_hint => 'Search currency code or name...';
-
-	/// en: 'No currencies found'
-	String get no_currencies_found => 'No currencies found';
-
 	/// en: 'Initial Balance'
 	String get initial_balance => 'Initial Balance';
 
@@ -529,39 +437,6 @@ class TranslationsAccountsEditEn {
 	String get success_delete => 'Account deleted successfully';
 }
 
-// Path: accounts.details
-class TranslationsAccountsDetailsEn {
-	TranslationsAccountsDetailsEn.internal(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-
-	/// en: 'Account Details'
-	String get title => 'Account Details';
-
-	/// en: 'Edit Account'
-	String get edit_account => 'Edit Account';
-
-	/// en: 'Delete Account'
-	String get delete_account => 'Delete Account';
-
-	/// en: 'Recent Transactions'
-	String get recent_transactions => 'Recent Transactions';
-
-	/// en: 'View All'
-	String get view_all => 'View All';
-
-	/// en: 'No transactions found'
-	String get no_transactions => 'No transactions found';
-
-	/// en: '{percentage} this month'
-	String get growth_this_month => '{percentage} this month';
-
-	/// en: 'Error loading details'
-	String get error_loading => 'Error loading details';
-}
-
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -573,10 +448,7 @@ extension on Translations {
 			'app.name' => 'ExpenseLab',
 			'common.save' => 'Save',
 			'common.cancel' => 'Cancel',
-			'common.confirm' => 'Confirm',
 			'common.delete' => 'Delete',
-			'common.edit' => 'Edit',
-			'common.close' => 'Close',
 			'common.error' => 'Error',
 			'common.see_all' => 'See All',
 			'common.preview' => 'Preview',
@@ -592,7 +464,6 @@ extension on Translations {
 			'settings.theme.light' => 'Light',
 			'settings.theme.dark' => 'Dark',
 			'settings.language.title' => 'Language',
-			'settings.currency.title' => 'Currency',
 			'settings.accounts.title' => 'Accounts',
 			'settings.categories.title' => 'Categories',
 			'currencies.USD' => 'US Dollar',
@@ -617,15 +488,9 @@ extension on Translations {
 			'currencies.KRW' => 'South Korean Won',
 			'currencies.ZAR' => 'South African Rand',
 			'accounts.title' => 'My Accounts',
-			'accounts.subtitle' => 'Your financial overview at a glance.',
 			'accounts.empty_state' => 'No accounts yet. Add one to get started!',
 			'accounts.total_net_worth' => 'Total Net Worth',
 			'accounts.this_month' => 'this month',
-			'accounts.asset_accounts' => 'Asset Accounts',
-			'accounts.liability_accounts' => 'Liability Accounts',
-			'accounts.due_soon' => 'Due soon',
-			'accounts.due_in_5_days' => 'Due in 5 days',
-			'accounts.limit' => 'Limit: {limit}',
 			'accounts.cash_accounts' => 'Cash Accounts',
 			'accounts.bank_accounts' => 'Bank Accounts',
 			'accounts.credit_cards' => 'Credit Cards',
@@ -640,8 +505,6 @@ extension on Translations {
 			'accounts.create.type_credit_card' => 'Credit Card',
 			'accounts.create.currency' => 'Currency',
 			'accounts.create.select_currency_title' => 'Select Currency',
-			'accounts.create.search_currency_hint' => 'Search currency code or name...',
-			'accounts.create.no_currencies_found' => 'No currencies found',
 			'accounts.create.initial_balance' => 'Initial Balance',
 			'accounts.create.pro_tip_label' => 'Pro Tip',
 			'accounts.create.pro_tip' => 'Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.',
@@ -657,19 +520,7 @@ extension on Translations {
 			'accounts.edit.error_loading' => 'Error loading account',
 			'accounts.edit.success_update' => 'Account updated successfully',
 			'accounts.edit.success_delete' => 'Account deleted successfully',
-			'accounts.details.title' => 'Account Details',
-			'accounts.details.edit_account' => 'Edit Account',
-			'accounts.details.delete_account' => 'Delete Account',
-			'accounts.details.recent_transactions' => 'Recent Transactions',
-			'accounts.details.view_all' => 'View All',
-			'accounts.details.no_transactions' => 'No transactions found',
-			'accounts.details.growth_this_month' => '{percentage} this month',
-			'accounts.details.error_loading' => 'Error loading details',
-			'transactions.title' => 'Transactions',
-			'budgets.title' => 'Budgets',
-			'savings.title' => 'Savings',
 			'categories.title' => 'My Categories',
-			'categories.subtitle' => 'Keep track of where your hard-earned paper is going.',
 			'categories.expenses' => 'Expenses',
 			'categories.income' => 'Income',
 			'categories.category' => 'Category',
@@ -688,7 +539,6 @@ extension on Translations {
 			'categories.icon' => 'Category Icon',
 			'categories.parent' => 'Parent Category',
 			'categories.parent_none' => 'None (Top-level)',
-			'categories.pro_tip' => 'Pro Tip: Split your outgoings so you don\'t burn through all your dough at once!',
 			'categories.success_create' => 'Category created successfully!',
 			'categories.success_update' => 'Category updated successfully!',
 			'categories.success_delete' => 'Category deleted successfully!',

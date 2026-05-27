@@ -5,10 +5,7 @@
   "common": {
     "save": "Guardar",
     "cancel": "Cancelar",
-    "confirm": "Confirmar",
     "delete": "Eliminar",
-    "edit": "Editar",
-    "close": "Cerrar",
     "error": "Error",
     "see_all": "Ver Todo",
     "preview": "Vista Previa"
@@ -31,9 +28,6 @@
     },
     "language": {
       "title": "Idioma"
-    },
-    "currency": {
-      "title": "Moneda"
     },
     "accounts": {
       "title": "Cuentas"
@@ -67,13 +61,9 @@
   },
   "accounts": {
     "title": "Mis cuentas",
-    "subtitle": "Tu resumen financiero de un vistazo.",
     "empty_state": "¡Sin cuentas aún. Agrega una para comenzar!",
     "total_net_worth": "Patrimonio neto total",
     "this_month": "este mes",
-    "due_soon": "Vence pronto",
-    "due_in_5_days": "Vence en 5 días",
-    "limit": "Límite: {limit}",
     "cash_accounts": "Cuentas de efectivo",
     "bank_accounts": "Cuentas bancarias",
     "credit_cards": "Tarjetas de crédito",
@@ -89,8 +79,6 @@
       "type_credit_card": "Tarjeta de crédito",
       "currency": "Moneda",
       "select_currency_title": "Seleccionar moneda",
-      "search_currency_hint": "Buscar código o nombre de moneda...",
-      "no_currencies_found": "No se encontraron monedas",
       "initial_balance": "Saldo inicial",
       "pro_tip_label": "Consejo profesional",
       "pro_tip": "Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.",
@@ -108,30 +96,10 @@
       "error_loading": "Error al cargar la cuenta",
       "success_update": "Cuenta actualizada con éxito",
       "success_delete": "Cuenta eliminada con éxito"
-    },
-    "details": {
-      "title": "Detalles de la cuenta",
-      "edit_account": "Editar cuenta",
-      "delete_account": "Eliminar cuenta",
-      "recent_transactions": "Transacciones recientes",
-      "view_all": "Ver todo",
-      "no_transactions": "No se encontraron transacciones",
-      "growth_this_month": "{percentage} este mes",
-      "error_loading": "Error al cargar detalles"
     }
-  },
-  "transactions": {
-    "title": "Transacciones"
-  },
-  "budgets": {
-    "title": "Presupuestos"
-  },
-  "savings": {
-    "title": "Ahorros"
   },
   "categories": {
     "title": "Mis Categorías",
-    "subtitle": "Lleva al día en qué se te está volando la plata.",
     "expenses": "Gastos",
     "income": "Ingresos",
     "category": "Categoría",
@@ -150,7 +118,6 @@
     "icon": "Icono de la Categoría",
     "parent": "Categoría Padre",
     "parent_none": "Ninguno (Principal)",
-    "pro_tip": "Consejo: ¡Organiza tu lana en cajonecitos para no gastarte toda la plata de un solo jalón!",
     "success_create": "¡Categoría creada con éxito!",
     "success_update": "¡Categoría actualizada con éxito!",
     "success_delete": "¡Categoría eliminada con éxito!",
