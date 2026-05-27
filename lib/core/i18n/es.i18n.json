@@ -68,6 +68,7 @@
   "accounts": {
     "title": "Mis cuentas",
     "subtitle": "Tu resumen financiero de un vistazo.",
+    "empty_state": "¡Sin cuentas aún. Agrega una para comenzar!",
     "total_net_worth": "Patrimonio neto total",
     "this_month": "este mes",
     "due_soon": "Vence pronto",

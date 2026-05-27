@@ -68,6 +68,7 @@
   "accounts": {
     "title": "My Accounts",
     "subtitle": "Your financial overview at a glance.",
+    "empty_state": "No accounts yet. Add one to get started!",
     "total_net_worth": "Total Net Worth",
     "this_month": "this month",
     "asset_accounts": "Asset Accounts",

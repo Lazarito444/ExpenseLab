@@ -181,6 +181,9 @@ class TranslationsAccountsEn {
 	/// en: 'Your financial overview at a glance.'
 	String get subtitle => 'Your financial overview at a glance.';
 
+	/// en: 'No accounts yet. Add one to get started!'
+	String get empty_state => 'No accounts yet. Add one to get started!';
+
 	/// en: 'Total Net Worth'
 	String get total_net_worth => 'Total Net Worth';
 
@@ -615,6 +618,7 @@ extension on Translations {
 			'currencies.ZAR' => 'South African Rand',
 			'accounts.title' => 'My Accounts',
 			'accounts.subtitle' => 'Your financial overview at a glance.',
+			'accounts.empty_state' => 'No accounts yet. Add one to get started!',
 			'accounts.total_net_worth' => 'Total Net Worth',
 			'accounts.this_month' => 'this month',
 			'accounts.asset_accounts' => 'Asset Accounts',

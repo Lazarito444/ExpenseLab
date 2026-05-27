@@ -140,6 +140,7 @@ class _TranslationsAccountsEs extends TranslationsAccountsEn {
 	// Translations
 	@override String get title => 'Mis cuentas';
 	@override String get subtitle => 'Tu resumen financiero de un vistazo.';
+	@override String get empty_state => '¡Sin cuentas aún. Agrega una para comenzar!';
 	@override String get total_net_worth => 'Patrimonio neto total';
 	@override String get this_month => 'este mes';
 	@override String get due_soon => 'Vence pronto';
@@ -400,6 +401,7 @@ extension on TranslationsEs {
 			'currencies.ZAR' => 'Rand sudafricano',
 			'accounts.title' => 'Mis cuentas',
 			'accounts.subtitle' => 'Tu resumen financiero de un vistazo.',
+			'accounts.empty_state' => '¡Sin cuentas aún. Agrega una para comenzar!',
 			'accounts.total_net_worth' => 'Patrimonio neto total',
 			'accounts.this_month' => 'este mes',
 			'accounts.due_soon' => 'Vence pronto',

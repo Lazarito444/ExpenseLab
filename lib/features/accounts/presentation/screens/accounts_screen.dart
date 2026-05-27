@@ -48,6 +48,23 @@ class AccountsScreen extends ConsumerWidget {
           final bankAccounts = models.where((a) => a.type == AccountType.bankAccount).toList();
           final creditCards = models.where((a) => a.type == AccountType.creditCard).toList();
 
+          if (cashAccounts.isEmpty && bankAccounts.isEmpty && creditCards.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Text(
+                  t.accounts.empty_state,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Epilogue',
+                    fontSize: 15,
+                    color: context.colorScheme.outline,
+                  ),
+                ),
+              ),
+            );
+          }
+
           return ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             children: [
@@ -217,7 +234,7 @@ class _AccountCard extends StatelessWidget {
     final iconData = iconFromName(model.icon);
 
     return GestureDetector(
-      onTap: () => context.push('/accounts/${model.id}/edit'),
+      onTap: () {}, // reserved — will navigate to account details
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -272,14 +289,36 @@ class _AccountCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            Text(
-              formatted,
-              style: TextStyle(
-                fontFamily: 'Epilogue',
-                fontWeight: FontWeight.w700,
-                fontSize: 22,
-                color: context.colorScheme.outline,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  formatted,
+                  style: TextStyle(
+                    fontFamily: 'Epilogue',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 22,
+                    color: context.colorScheme.outline,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => context.push('/accounts/${model.id}/edit'),
+                  child: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: context.colorScheme.primary.withValues(alpha: 0.10),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.edit_outlined,
+                      size: 16,
+                      color: context.colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
