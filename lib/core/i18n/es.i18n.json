@@ -74,6 +74,7 @@
     "cash_accounts": "Cuentas de efectivo",
     "bank_accounts": "Cuentas bancarias",
     "credit_cards": "Tarjetas de crédito",
+    "monthly_change": "{percentage} este mes",
     "create": {
       "title": "Nueva cuenta",
       "icon": "Icono de cuenta",

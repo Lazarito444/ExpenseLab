@@ -1,5 +1,7 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
+import 'package:expenselab/features/settings/domain/models/app_settings.dart';
 import 'package:expenselab/features/settings/presentation/screens/language_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/theme_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/widgets/settings_widgets.dart';
@@ -17,7 +19,7 @@ class SettingsScreen extends ConsumerWidget {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Translations t = context.t;
     final ThemeMode themeMode = ref.watch(themeModeProvider);
-    final AsyncValue<dynamic> settingsAsync = ref.watch(settingsProvider);
+    final AsyncValue<AppSettings> settingsAsync = ref.watch(settingsProvider);
     final AppLocale currentLocale = settingsAsync.value?.locale ?? AppLocale.en;
 
     final String currentThemeLabel = switch (themeMode) {
@@ -36,7 +38,7 @@ class SettingsScreen extends ConsumerWidget {
         title: t.settings.title,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios_new_rounded,
             color: context.colorScheme.primary,
           ),
           onPressed: () => context.pop(),
@@ -48,17 +50,8 @@ class SettingsScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                t.settings.title,
-                style: TextStyle(
-                  fontFamily: 'Epilogue',
-                  fontWeight: FontWeight.w800,
-                  fontSize: 32,
-                  color: isDark ? Colors.white : const Color(0xFF0F1E36),
-                ),
-              ),
               const SizedBox(height: 24),
-              buildSectionHeader(t.settings.preferences, isDark),
+              buildSectionHeader(t.settings.preferences, context),
               const SizedBox(height: 12),
               buildSettingsCard(
                 isDark,
@@ -94,7 +87,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              buildSectionHeader(t.settings.app, isDark),
+              buildSectionHeader(t.settings.app, context),
               const SizedBox(height: 12),
               buildSettingsCard(
                 isDark,
@@ -103,20 +96,18 @@ class SettingsScreen extends ConsumerWidget {
                     buildNavTile(
                       context: context,
                       label: t.settings.accounts.title,
-                      currentValue: currentThemeLabel,
                       icon: Icons.account_balance_wallet_outlined,
                       isDark: isDark,
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (_) => const ThemeSelectionScreen(),
+                          builder: (_) => const AccountsScreen(),
                         ),
                       ),
                     ),
                     buildNavTile(
                       context: context,
                       label: t.settings.categories.title,
-                      currentValue: currentLocaleLabel,
                       icon: Icons.bar_chart_rounded,
                       isDark: isDark,
                       onTap: () => Navigator.push(
@@ -137,26 +128,20 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
-Widget buildSectionHeader(String title, bool isDark) {
+Widget buildSectionHeader(String title, BuildContext context) {
   return Text(
     title.toUpperCase(),
-    style: TextStyle(
-      fontFamily: 'Epilogue',
-      fontWeight: FontWeight.bold,
-      fontSize: 12,
-      letterSpacing: 1.2,
-      color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
-    ),
+    style: context.textTheme.displaySmall,
   );
 }
 
 Widget buildNavTile({
   required BuildContext context,
   required String label,
-  required String currentValue,
   required IconData icon,
   required bool isDark,
   required VoidCallback onTap,
+  String? currentValue,
 }) {
   return ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -185,14 +170,15 @@ Widget buildNavTile({
     trailing: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          currentValue,
-          style: TextStyle(
-            fontFamily: 'Epilogue',
-            fontSize: 14,
-            color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+        if (currentValue != null)
+          Text(
+            currentValue,
+            style: TextStyle(
+              fontFamily: 'Epilogue',
+              fontSize: 14,
+              color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+            ),
           ),
-        ),
         const SizedBox(width: 4),
         Icon(
           Icons.chevron_right_rounded,

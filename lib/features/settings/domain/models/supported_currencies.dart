@@ -1,4 +1,5 @@
 import 'package:expenselab/features/settings/domain/models/currency.dart';
+import 'package:intl/intl.dart';
 
 const kUsdCurrency = Currency(code: 'USD', symbol: r'$', name: 'US Dollar');
 
@@ -25,3 +26,14 @@ const kSupportedCurrencies = <Currency>[
   Currency(code: 'KRW', symbol: '₩', name: 'South Korean Won'),
   Currency(code: 'ZAR', symbol: 'R', name: 'South African Rand'),
 ];
+
+String currencyCodeToSymbol(String code) {
+  return kSupportedCurrencies.firstWhere((c) => c.code == code).symbol;
+}
+
+String formatCurrency(double amount, String currencyCode) {
+  return NumberFormat.currency(
+    locale: 'en_US',
+    symbol: currencyCodeToSymbol(currencyCode),
+  ).format(amount);
+}

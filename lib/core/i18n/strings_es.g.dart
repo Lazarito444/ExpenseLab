@@ -146,6 +146,7 @@ class _TranslationsAccountsEs extends TranslationsAccountsEn {
 	@override String get cash_accounts => 'Cuentas de efectivo';
 	@override String get bank_accounts => 'Cuentas bancarias';
 	@override String get credit_cards => 'Tarjetas de crédito';
+	@override String get monthly_change => '{percentage} este mes';
 	@override late final _TranslationsAccountsCreateEs create = _TranslationsAccountsCreateEs._(_root);
 	@override late final _TranslationsAccountsEditEs edit = _TranslationsAccountsEditEs._(_root);
 	@override late final _TranslationsAccountsDetailsEs details = _TranslationsAccountsDetailsEs._(_root);
@@ -394,6 +395,7 @@ extension on TranslationsEs {
 			'accounts.cash_accounts' => 'Cuentas de efectivo',
 			'accounts.bank_accounts' => 'Cuentas bancarias',
 			'accounts.credit_cards' => 'Tarjetas de crédito',
+			'accounts.monthly_change' => '{percentage} este mes',
 			'accounts.create.title' => 'Nueva cuenta',
 			'accounts.create.icon' => 'Icono de cuenta',
 			'accounts.create.name' => 'Nombre de cuenta',

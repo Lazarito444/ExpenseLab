@@ -76,6 +76,7 @@
     "cash_accounts": "Cash Accounts",
     "bank_accounts": "Bank Accounts",
     "credit_cards": "Credit Cards",
+    "monthly_change": "{percentage} this month",
     "create": {
       "title": "New Account",
       "icon": "Account Icon",

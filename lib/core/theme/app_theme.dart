@@ -13,6 +13,8 @@ class AppTheme {
       seedColor: seedColor,
       primary: seedColor,
       primaryFixed: const Color(0xFF4E8A4F),
+      scrim: Colors.grey.shade900,
+      outline: const Color(0xFF508952),
     ),
     textTheme: const TextTheme(
       titleMedium: TextStyle(
@@ -21,18 +23,25 @@ class AppTheme {
         color: Color(0xFF2D6831),
         fontSize: 20,
       ),
-      // headlineLarge: TextStyle(
-      //   fontFamily: 'Epilogue',
-      //   fontWeight: FontWeight.w600,
-      //   color: Colors.black,
-      //   fontSize: 30,
-      // ),
-      // headlineSmall: TextStyle(
-      //   fontFamily: 'Epilogue',
-      //   fontWeight: FontWeight.w400,
-      //   color: Color(0xFF474f45),
-      //   fontSize: 15,
-      // ),
+      displaySmall: TextStyle(
+        fontFamily: 'Epilogue',
+        fontWeight: FontWeight.bold,
+        fontSize: 12,
+        letterSpacing: 1.2,
+        color: Color(0xFF9EAEA2),
+      ),
+      headlineLarge: TextStyle(
+        fontFamily: 'Epilogue',
+        fontWeight: FontWeight.w700,
+        color: Colors.black,
+        fontSize: 32,
+      ),
+      headlineSmall: TextStyle(
+        fontFamily: 'Epilogue',
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF1A1A1A),
+        fontSize: 18,
+      ),
       // labelSmall: TextStyle(
       //   fontFamily: 'Epilogue',
       //   fontWeight: FontWeight.w500,

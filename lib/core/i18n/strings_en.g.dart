@@ -205,6 +205,9 @@ class TranslationsAccountsEn {
 	/// en: 'Credit Cards'
 	String get credit_cards => 'Credit Cards';
 
+	/// en: '{percentage} this month'
+	String get monthly_change => '{percentage} this month';
+
 	late final TranslationsAccountsCreateEn create = TranslationsAccountsCreateEn.internal(_root);
 	late final TranslationsAccountsEditEn edit = TranslationsAccountsEditEn.internal(_root);
 	late final TranslationsAccountsDetailsEn details = TranslationsAccountsDetailsEn.internal(_root);
@@ -595,6 +598,7 @@ extension on Translations {
 			'accounts.cash_accounts' => 'Cash Accounts',
 			'accounts.bank_accounts' => 'Bank Accounts',
 			'accounts.credit_cards' => 'Credit Cards',
+			'accounts.monthly_change' => '{percentage} this month',
 			'accounts.create.title' => 'New Account',
 			'accounts.create.icon' => 'Account Icon',
 			'accounts.create.name' => 'Account Name',

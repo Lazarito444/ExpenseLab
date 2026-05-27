@@ -3,6 +3,7 @@ import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/features/accounts/data/datasources/accounts_local_datasource.dart';
 import 'package:expenselab/features/accounts/data/datasources/accounts_local_datasource_impl.dart';
 import 'package:expenselab/features/accounts/data/repositories/accounts_repository.dart';
+import 'package:expenselab/features/accounts/domain/models/account_model.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
 import 'package:expenselab/features/transactions/providers/transactions_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,4 +74,17 @@ final totalNetWorthProvider = Provider<double>((ref) {
     _ => <Account>[],
   };
   return accounts.fold(0.0, (sum, a) => sum + ref.watch(accountBalanceProvider(a.id)));
+});
+
+/// Maps every account to an [AccountModel] with its computed balance.
+/// Returns an empty list while accounts are loading or on error.
+final accountModelsProvider = Provider<List<AccountModel>>((ref) {
+  final accounts = ref.watch(accountsProvider).maybeWhen(
+    data: (list) => list,
+    orElse: () => <Account>[],
+  );
+  return accounts.map((account) {
+    final balance = ref.watch(accountBalanceProvider(account.id));
+    return AccountModel.fromAccount(account, balance);
+  }).toList();
 });
