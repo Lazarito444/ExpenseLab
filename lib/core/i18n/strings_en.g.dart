@@ -68,6 +68,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'ZAR': 'South African Rand',
 	};
 	late final TranslationsAccountsEn accounts = TranslationsAccountsEn.internal(_root);
+	late final TranslationsTransactionsEn transactions = TranslationsTransactionsEn.internal(_root);
 	late final TranslationsCategoriesEn categories = TranslationsCategoriesEn.internal(_root);
 }
 
@@ -188,6 +189,87 @@ class TranslationsAccountsEn {
 
 	late final TranslationsAccountsCreateEn create = TranslationsAccountsCreateEn.internal(_root);
 	late final TranslationsAccountsEditEn edit = TranslationsAccountsEditEn.internal(_root);
+}
+
+// Path: transactions
+class TranslationsTransactionsEn {
+	TranslationsTransactionsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Add Transaction'
+	String get add_title => 'Add Transaction';
+
+	/// en: 'ENTER AMOUNT'
+	String get enter_amount => 'ENTER AMOUNT';
+
+	/// en: 'Expense'
+	String get tab_expense => 'Expense';
+
+	/// en: 'Income'
+	String get tab_income => 'Income';
+
+	/// en: 'Transfer'
+	String get tab_transfer => 'Transfer';
+
+	/// en: 'CATEGORY'
+	String get category => 'CATEGORY';
+
+	/// en: 'Pick a vibe'
+	String get no_category => 'Pick a vibe';
+
+	/// en: 'ACCOUNT'
+	String get account => 'ACCOUNT';
+
+	/// en: 'Which wallet?'
+	String get no_account => 'Which wallet?';
+
+	/// en: 'TO ACCOUNT'
+	String get to_account => 'TO ACCOUNT';
+
+	/// en: 'Send it where?'
+	String get no_to_account => 'Send it where?';
+
+	/// en: 'DATE & TIME'
+	String get date_time => 'DATE & TIME';
+
+	/// en: 'NOTES'
+	String get notes => 'NOTES';
+
+	/// en: 'What was this for?'
+	String get notes_hint => 'What was this for?';
+
+	/// en: 'ATTACHMENTS'
+	String get attachments => 'ATTACHMENTS';
+
+	/// en: 'Snap or upload a receipt'
+	String get attachments_hint => 'Snap or upload a receipt';
+
+	/// en: 'Save Transaction'
+	String get save_button => 'Save Transaction';
+
+	/// en: 'Toss in an amount first!'
+	String get amount_required => 'Toss in an amount first!';
+
+	/// en: 'Pick a category first!'
+	String get category_required => 'Pick a category first!';
+
+	/// en: 'Choose an account to drop it in'
+	String get account_required => 'Choose an account to drop it in';
+
+	/// en: 'Transaction dropped!'
+	String get success => 'Transaction dropped!';
+
+	/// en: 'Pick Your Category'
+	String get select_category => 'Pick Your Category';
+
+	/// en: 'Which Account?'
+	String get select_account => 'Which Account?';
+
+	/// en: 'Where's It Going?'
+	String get select_to_account => 'Where\'s It Going?';
 }
 
 // Path: categories
@@ -520,6 +602,30 @@ extension on Translations {
 			'accounts.edit.error_loading' => 'Error loading account',
 			'accounts.edit.success_update' => 'Account updated successfully',
 			'accounts.edit.success_delete' => 'Account deleted successfully',
+			'transactions.add_title' => 'Add Transaction',
+			'transactions.enter_amount' => 'ENTER AMOUNT',
+			'transactions.tab_expense' => 'Expense',
+			'transactions.tab_income' => 'Income',
+			'transactions.tab_transfer' => 'Transfer',
+			'transactions.category' => 'CATEGORY',
+			'transactions.no_category' => 'Pick a vibe',
+			'transactions.account' => 'ACCOUNT',
+			'transactions.no_account' => 'Which wallet?',
+			'transactions.to_account' => 'TO ACCOUNT',
+			'transactions.no_to_account' => 'Send it where?',
+			'transactions.date_time' => 'DATE & TIME',
+			'transactions.notes' => 'NOTES',
+			'transactions.notes_hint' => 'What was this for?',
+			'transactions.attachments' => 'ATTACHMENTS',
+			'transactions.attachments_hint' => 'Snap or upload a receipt',
+			'transactions.save_button' => 'Save Transaction',
+			'transactions.amount_required' => 'Toss in an amount first!',
+			'transactions.category_required' => 'Pick a category first!',
+			'transactions.account_required' => 'Choose an account to drop it in',
+			'transactions.success' => 'Transaction dropped!',
+			'transactions.select_category' => 'Pick Your Category',
+			'transactions.select_account' => 'Which Account?',
+			'transactions.select_to_account' => 'Where\'s It Going?',
 			'categories.title' => 'My Categories',
 			'categories.expenses' => 'Expenses',
 			'categories.income' => 'Income',

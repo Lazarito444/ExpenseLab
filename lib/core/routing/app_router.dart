@@ -8,6 +8,7 @@ import 'package:expenselab/features/categories/presentation/screens/create_categ
 import 'package:expenselab/features/categories/presentation/screens/edit_category_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/goals_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/settings_screen.dart';
+import 'package:expenselab/features/transactions/presentation/screens/add_transaction_screen.dart';
 import 'package:expenselab/widgets/scaffold/main_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,7 +38,7 @@ final routerConfig = GoRouter(
     ),
     GoRoute(
       path: '/add-transaction',
-      builder: (context, state) => const SettingsScreen(),
+      builder: (context, state) => const AddTransactionScreen(),
     ),
     GoRoute(
       path: '/accounts',

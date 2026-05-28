@@ -67,6 +67,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 		'ZAR': 'Rand sudafricano',
 	};
 	@override late final _TranslationsAccountsEs accounts = _TranslationsAccountsEs._(_root);
+	@override late final _TranslationsTransactionsEs transactions = _TranslationsTransactionsEs._(_root);
 	@override late final _TranslationsCategoriesEs categories = _TranslationsCategoriesEs._(_root);
 }
 
@@ -141,6 +142,39 @@ class _TranslationsAccountsEs extends TranslationsAccountsEn {
 	@override String get monthly_change => '{percentage} este mes';
 	@override late final _TranslationsAccountsCreateEs create = _TranslationsAccountsCreateEs._(_root);
 	@override late final _TranslationsAccountsEditEs edit = _TranslationsAccountsEditEs._(_root);
+}
+
+// Path: transactions
+class _TranslationsTransactionsEs extends TranslationsTransactionsEn {
+	_TranslationsTransactionsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get add_title => 'Nuevo Movimiento';
+	@override String get enter_amount => '¿CUÁNTO FUE?';
+	@override String get tab_expense => 'Gasto';
+	@override String get tab_income => 'Ingreso';
+	@override String get tab_transfer => 'Traspaso';
+	@override String get category => 'CATEGORÍA';
+	@override String get no_category => '¿En qué cayó?';
+	@override String get account => 'CUENTA';
+	@override String get no_account => '¿De dónde salió?';
+	@override String get to_account => 'DESTINO';
+	@override String get no_to_account => '¿Adónde va?';
+	@override String get date_time => 'FECHA Y HORA';
+	@override String get notes => 'NOTA';
+	@override String get notes_hint => '¿Pa\' qué fue esto?';
+	@override String get attachments => 'ADJUNTOS';
+	@override String get attachments_hint => 'Sube el ticket o una foto';
+	@override String get save_button => 'Guardar Movimiento';
+	@override String get amount_required => '¡Mete un monto primero!';
+	@override String get category_required => '¡Elige una categoría primero!';
+	@override String get account_required => 'Selecciona una cuenta';
+	@override String get success => '¡Movimiento guardado!';
+	@override String get select_category => 'Elige una Categoría';
+	@override String get select_account => '¿Qué Cuenta?';
+	@override String get select_to_account => '¿Adónde Va?';
 }
 
 // Path: categories
@@ -355,6 +389,30 @@ extension on TranslationsEs {
 			'accounts.edit.error_loading' => 'Error al cargar la cuenta',
 			'accounts.edit.success_update' => 'Cuenta actualizada con éxito',
 			'accounts.edit.success_delete' => 'Cuenta eliminada con éxito',
+			'transactions.add_title' => 'Nuevo Movimiento',
+			'transactions.enter_amount' => '¿CUÁNTO FUE?',
+			'transactions.tab_expense' => 'Gasto',
+			'transactions.tab_income' => 'Ingreso',
+			'transactions.tab_transfer' => 'Traspaso',
+			'transactions.category' => 'CATEGORÍA',
+			'transactions.no_category' => '¿En qué cayó?',
+			'transactions.account' => 'CUENTA',
+			'transactions.no_account' => '¿De dónde salió?',
+			'transactions.to_account' => 'DESTINO',
+			'transactions.no_to_account' => '¿Adónde va?',
+			'transactions.date_time' => 'FECHA Y HORA',
+			'transactions.notes' => 'NOTA',
+			'transactions.notes_hint' => '¿Pa\' qué fue esto?',
+			'transactions.attachments' => 'ADJUNTOS',
+			'transactions.attachments_hint' => 'Sube el ticket o una foto',
+			'transactions.save_button' => 'Guardar Movimiento',
+			'transactions.amount_required' => '¡Mete un monto primero!',
+			'transactions.category_required' => '¡Elige una categoría primero!',
+			'transactions.account_required' => 'Selecciona una cuenta',
+			'transactions.success' => '¡Movimiento guardado!',
+			'transactions.select_category' => 'Elige una Categoría',
+			'transactions.select_account' => '¿Qué Cuenta?',
+			'transactions.select_to_account' => '¿Adónde Va?',
 			'categories.title' => 'Mis Categorías',
 			'categories.expenses' => 'Gastos',
 			'categories.income' => 'Ingresos',

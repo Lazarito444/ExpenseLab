@@ -98,6 +98,32 @@
       "success_delete": "Account deleted successfully"
     }
   },
+  "transactions": {
+    "add_title": "Add Transaction",
+    "enter_amount": "ENTER AMOUNT",
+    "tab_expense": "Expense",
+    "tab_income": "Income",
+    "tab_transfer": "Transfer",
+    "category": "CATEGORY",
+    "no_category": "Pick a vibe",
+    "account": "ACCOUNT",
+    "no_account": "Which wallet?",
+    "to_account": "TO ACCOUNT",
+    "no_to_account": "Send it where?",
+    "date_time": "DATE & TIME",
+    "notes": "NOTES",
+    "notes_hint": "What was this for?",
+    "attachments": "ATTACHMENTS",
+    "attachments_hint": "Snap or upload a receipt",
+    "save_button": "Save Transaction",
+    "amount_required": "Toss in an amount first!",
+    "category_required": "Pick a category first!",
+    "account_required": "Choose an account to drop it in",
+    "success": "Transaction dropped!",
+    "select_category": "Pick Your Category",
+    "select_account": "Which Account?",
+    "select_to_account": "Where's It Going?"
+  },
   "categories": {
     "title": "My Categories",
     "expenses": "Expenses",

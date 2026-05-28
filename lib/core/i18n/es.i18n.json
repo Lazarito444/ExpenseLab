@@ -98,6 +98,32 @@
       "success_delete": "Cuenta eliminada con éxito"
     }
   },
+  "transactions": {
+    "add_title": "Nuevo Movimiento",
+    "enter_amount": "¿CUÁNTO FUE?",
+    "tab_expense": "Gasto",
+    "tab_income": "Ingreso",
+    "tab_transfer": "Traspaso",
+    "category": "CATEGORÍA",
+    "no_category": "¿En qué cayó?",
+    "account": "CUENTA",
+    "no_account": "¿De dónde salió?",
+    "to_account": "DESTINO",
+    "no_to_account": "¿Adónde va?",
+    "date_time": "FECHA Y HORA",
+    "notes": "NOTA",
+    "notes_hint": "¿Pa' qué fue esto?",
+    "attachments": "ADJUNTOS",
+    "attachments_hint": "Sube el ticket o una foto",
+    "save_button": "Guardar Movimiento",
+    "amount_required": "¡Mete un monto primero!",
+    "category_required": "¡Elige una categoría primero!",
+    "account_required": "Selecciona una cuenta",
+    "success": "¡Movimiento guardado!",
+    "select_category": "Elige una Categoría",
+    "select_account": "¿Qué Cuenta?",
+    "select_to_account": "¿Adónde Va?"
+  },
   "categories": {
     "title": "Mis Categorías",
     "expenses": "Gastos",
