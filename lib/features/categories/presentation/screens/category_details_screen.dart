@@ -2,6 +2,7 @@ import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:expenselab/core/routing/app_routes.dart';
 import 'package:expenselab/features/categories/data/tables/categories_table.dart';
 import 'package:expenselab/features/categories/domain/models/category_model.dart';
 import 'package:expenselab/features/categories/providers/categories_providers.dart';
@@ -16,8 +17,7 @@ class CategoryDetailsScreen extends ConsumerStatefulWidget {
   final String categoryId;
 
   @override
-  ConsumerState<CategoryDetailsScreen> createState() =>
-      _CategoryDetailsScreenState();
+  ConsumerState<CategoryDetailsScreen> createState() => _CategoryDetailsScreenState();
 }
 
 class _CategoryDetailsScreenState extends ConsumerState<CategoryDetailsScreen> {
@@ -105,8 +105,7 @@ class _CategoryDetailsScreenState extends ConsumerState<CategoryDetailsScreen> {
                   Icons.edit_outlined,
                   color: context.colorScheme.primary,
                 ),
-                onPressed: () =>
-                    context.push('/categories/${widget.categoryId}/edit'),
+                onPressed: () => context.push(AppRoutes.categoryEdit(widget.categoryId)),
               ),
             ],
           ),
@@ -272,7 +271,7 @@ class _SubcategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = Color(category.color);
     return GestureDetector(
-      onTap: () => context.push('/categories/${category.id}'),
+      onTap: () => context.push(AppRoutes.categoryDetails(category.id)),
       child: Column(
         children: [
           Padding(

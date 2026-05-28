@@ -1,6 +1,7 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:expenselab/core/routing/app_routes.dart';
 import 'package:expenselab/features/categories/data/tables/categories_table.dart';
 import 'package:expenselab/features/categories/domain/models/category_model.dart';
 import 'package:expenselab/features/categories/providers/categories_providers.dart';
@@ -30,7 +31,7 @@ class CategoriesScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => context.push('/categories/create'),
+            onPressed: () => context.push(AppRoutes.categoriesCreate),
             icon: Icon(Icons.add_rounded, color: context.colorScheme.primary),
           ),
         ],
@@ -173,7 +174,7 @@ class _CategoryCard extends ConsumerWidget {
     final iconData = iconFromName(model.icon);
 
     return GestureDetector(
-      onTap: () => context.push('/categories/${model.id}'),
+      onTap: () => context.push(AppRoutes.categoryDetails(model.id)),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(

@@ -1,3 +1,4 @@
+import 'package:expenselab/core/routing/app_routes.dart';
 import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
 import 'package:expenselab/features/accounts/presentation/screens/create_account_screen.dart';
 import 'package:expenselab/features/accounts/presentation/screens/edit_account_screen.dart';
@@ -13,35 +14,35 @@ import 'package:expenselab/widgets/scaffold/main_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 final routerConfig = GoRouter(
-  initialLocation: '/',
+  initialLocation: AppRoutes.home,
   routes: [
     ShellRoute(
       builder: (context, state, child) => MainScaffold(child: child),
       routes: [
         GoRoute(
-          path: '/',
+          path: AppRoutes.home,
           builder: (context, state) => const BudgetsScreen(),
         ),
         GoRoute(
-          path: '/budgets',
+          path: AppRoutes.budgets,
           builder: (context, state) => const BudgetsScreen(),
         ),
         GoRoute(
-          path: '/goals',
+          path: AppRoutes.goals,
           builder: (context, state) => const GoalsScreen(),
         ),
       ],
     ),
     GoRoute(
-      path: '/settings',
+      path: AppRoutes.settings,
       builder: (context, state) => const SettingsScreen(),
     ),
     GoRoute(
-      path: '/add-transaction',
+      path: AppRoutes.addTransaction,
       builder: (context, state) => const AddTransactionScreen(),
     ),
     GoRoute(
-      path: '/accounts',
+      path: AppRoutes.accounts,
       builder: (context, state) => const AccountsScreen(),
       routes: [
         GoRoute(
@@ -57,7 +58,7 @@ final routerConfig = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/categories',
+      path: AppRoutes.categories,
       builder: (context, state) => const CategoriesScreen(),
       routes: [
         GoRoute(

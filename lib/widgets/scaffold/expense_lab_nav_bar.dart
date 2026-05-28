@@ -1,14 +1,29 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:expenselab/core/routing/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class ExpenseLabNavBar extends ConsumerWidget {
+class ExpenseLabNavBar extends StatelessWidget {
   const ExpenseLabNavBar({super.key});
 
+  int _selectedIndex(String location) {
+    if (location.startsWith(AppRoutes.budgets)) return 1;
+    if (location.startsWith(AppRoutes.goals)) return 3;
+    if (location.startsWith(AppRoutes.settings)) return 4;
+    return 0;
+  }
+
+  static const _tabRoutes = [
+    AppRoutes.home,
+    AppRoutes.budgets,
+    AppRoutes.addTransaction,
+    AppRoutes.goals,
+    AppRoutes.settings,
+  ];
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     const double fabOverflow = 28.0;
     const double navBarHeight = 72.0;
 
@@ -17,16 +32,16 @@ class ExpenseLabNavBar extends ConsumerWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          _navBarItems(context, ref),
+          _navBarItems(context),
           _fabButton(context),
         ],
       ),
     );
   }
 
-  Widget _navBarItems(BuildContext context, WidgetRef ref) {
+  Widget _navBarItems(BuildContext context) {
     final t = context.t;
-    final routes = ["/", "/budgets", "/add-transaction", "/goals", "/settings"];
+    final location = GoRouterState.of(context).matchedLocation;
 
     return ClipRRect(
       borderRadius: const BorderRadius.only(
@@ -34,7 +49,7 @@ class ExpenseLabNavBar extends ConsumerWidget {
         topRight: Radius.circular(24.0),
       ),
       child: NavigationBar(
-        selectedIndex: ref.watch(navIndexProvider),
+        selectedIndex: _selectedIndex(location),
         indicatorColor: context.colorScheme.primary.withValues(alpha: 0.1),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
@@ -43,15 +58,12 @@ class ExpenseLabNavBar extends ConsumerWidget {
           return TextStyle(color: Colors.grey.shade700, fontFamily: 'Epilogue');
         }),
         onDestinationSelected: (int index) {
-          if (index == 2) {
-            return;
-          }
+          if (index == 2) return;
           if (index == 4) {
-            context.push(routes[index]);
+            context.push(AppRoutes.settings);
             return;
           }
-          context.go(routes[index]);
-          ref.read(navIndexProvider.notifier).setIndex(index);
+          context.go(_tabRoutes[index]);
         },
         destinations: [
           NavigationDestination(
@@ -91,7 +103,7 @@ class ExpenseLabNavBar extends ConsumerWidget {
           child: FloatingActionButton(
             backgroundColor: context.theme.primaryColor,
             onPressed: () {
-              context.push("/add-transaction");
+              context.push(AppRoutes.addTransaction);
             },
             elevation: 4.0,
             shape: const CircleBorder(),
@@ -102,16 +114,3 @@ class ExpenseLabNavBar extends ConsumerWidget {
     );
   }
 }
-
-class NavIndexNotifier extends Notifier<int> {
-  @override
-  int build() {
-    return 0;
-  }
-
-  void setIndex(int index) {
-    state = index;
-  }
-}
-
-final navIndexProvider = NotifierProvider<NavIndexNotifier, int>(NavIndexNotifier.new);

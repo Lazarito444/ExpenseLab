@@ -1,6 +1,7 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:expenselab/core/routing/app_routes.dart';
 import 'package:expenselab/features/accounts/data/tables/accounts_table.dart';
 import 'package:expenselab/features/accounts/domain/models/account_model.dart';
 import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
@@ -35,7 +36,7 @@ class AccountsScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => context.push('/accounts/create'),
+            onPressed: () => context.push(AppRoutes.accountsCreate),
             icon: Icon(Icons.add_rounded, color: context.colorScheme.primary),
           ),
         ],
@@ -303,7 +304,7 @@ class _AccountCard extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => context.push('/accounts/${model.id}/edit'),
+                  onTap: () => context.push(AppRoutes.accountEdit(model.id)),
                   child: Container(
                     width: 36,
                     height: 36,
