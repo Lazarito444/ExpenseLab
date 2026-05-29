@@ -7,6 +7,7 @@ import 'package:expenselab/features/categories/presentation/screens/categories_s
 import 'package:expenselab/features/categories/presentation/screens/category_details_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/create_category_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/edit_category_screen.dart';
+import 'package:expenselab/features/home/presentation/screens/home_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/goals_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/settings_screen.dart';
 import 'package:expenselab/features/transactions/presentation/screens/add_transaction_screen.dart';
@@ -21,7 +22,7 @@ final routerConfig = GoRouter(
       routes: [
         GoRoute(
           path: AppRoutes.home,
-          builder: (context, state) => const BudgetsScreen(),
+          builder: (context, state) => const HomeScreen(),
         ),
         GoRoute(
           path: AppRoutes.budgets,
@@ -40,6 +41,12 @@ final routerConfig = GoRouter(
     GoRoute(
       path: AppRoutes.addTransaction,
       builder: (context, state) => const AddTransactionScreen(),
+    ),
+    GoRoute(
+      path: '/transactions/:id/edit',
+      builder: (context, state) => AddTransactionScreen(
+        transactionId: state.pathParameters['id']!,
+      ),
     ),
     GoRoute(
       path: AppRoutes.accounts,

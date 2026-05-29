@@ -11,4 +11,5 @@ class AppRoutes {
   static const categoriesCreate = '/categories/create';
   static String categoryDetails(String id) => '/categories/$id';
   static String categoryEdit(String id) => '/categories/$id/edit';
+  static String transactionEdit(String id) => '/transactions/$id/edit';
 }

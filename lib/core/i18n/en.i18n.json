@@ -8,7 +8,22 @@
     "delete": "Delete",
     "error": "Error",
     "see_all": "See All",
-    "preview": "Preview"
+    "preview": "Preview",
+    "yesterday": "Yesterday"
+  },
+  "home": {
+    "total_balance": "TOTAL BALANCE",
+    "monthly_summary": "Monthly Summary",
+    "income": "Income",
+    "expenses": "Expenses",
+    "savings_rate": "SAVINGS RATE",
+    "recent_transactions": "Recent Transactions",
+    "view_all": "View All",
+    "no_transactions": "No transactions yet",
+    "pct_this_month": "{pct} this month",
+    "no_transactions_day": "No transactions on this day",
+    "financial_schedule": "FINANCIAL SCHEDULE",
+    "transactions_for": "Transactions – {date}"
   },
   "nav": {
     "home": "Home",
@@ -100,6 +115,7 @@
   },
   "transactions": {
     "add_title": "Add Transaction",
+    "edit_title": "Edit Transaction",
     "enter_amount": "ENTER AMOUNT",
     "tab_expense": "Expense",
     "tab_income": "Income",

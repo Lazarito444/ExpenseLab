@@ -8,7 +8,22 @@
     "delete": "Eliminar",
     "error": "Error",
     "see_all": "Ver Todo",
-    "preview": "Vista Previa"
+    "preview": "Vista Previa",
+    "yesterday": "Ayer"
+  },
+  "home": {
+    "total_balance": "SALDO TOTAL",
+    "monthly_summary": "Resumen mensual",
+    "income": "Ingresos",
+    "expenses": "Gastos",
+    "savings_rate": "TASA DE AHORRO",
+    "recent_transactions": "Transacciones recientes",
+    "view_all": "Ver todo",
+    "no_transactions": "Sin transacciones aún",
+    "pct_this_month": "{pct} este mes",
+    "no_transactions_day": "Sin transacciones este día",
+    "financial_schedule": "AGENDA FINANCIERA",
+    "transactions_for": "Transacciones – {date}"
   },
   "nav": {
     "home": "Inicio",
@@ -100,6 +115,7 @@
   },
   "transactions": {
     "add_title": "Nuevo Movimiento",
+    "edit_title": "Editar Movimiento",
     "enter_amount": "¿CUÁNTO FUE?",
     "tab_expense": "Gasto",
     "tab_income": "Ingreso",

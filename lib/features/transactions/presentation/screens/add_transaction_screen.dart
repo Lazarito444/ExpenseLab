@@ -17,7 +17,12 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class AddTransactionScreen extends ConsumerStatefulWidget {
-  const AddTransactionScreen({super.key});
+  const AddTransactionScreen({this.transactionId, super.key});
+
+  /// When set, the screen loads this transaction and switches to edit mode.
+  final String? transactionId;
+
+  bool get isEditing => transactionId != null;
 
   @override
   ConsumerState<AddTransactionScreen> createState() => _AddTransactionScreenState();
@@ -34,6 +39,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   final _notesFocusNode = FocusNode();
   bool _isLoading = false;
   bool _showNumpad = true;
+  bool _isLoadingTransaction = false;
 
   @override
   void initState() {
@@ -43,6 +49,34 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
         setState(() => _showNumpad = false);
       }
     });
+    if (widget.isEditing) {
+      _loadTransaction();
+    }
+  }
+
+  Future<void> _loadTransaction() async {
+    setState(() => _isLoadingTransaction = true);
+    try {
+      final tx = await ref
+          .read(transactionsRepositoryProvider)
+          .getById(widget.transactionId!);
+      if (tx != null && mounted) {
+        setState(() {
+          _type = tx.type;
+          _amountString = tx.amount.toStringAsFixed(
+            tx.amount.truncateToDouble() == tx.amount ? 0 : 2,
+          );
+          _selectedCategoryId = tx.categoryId;
+          _selectedAccountId = tx.accountId;
+          _selectedToAccountId = tx.toAccountId;
+          _selectedDate = tx.date;
+          _noteController.text = tx.note ?? '';
+          _showNumpad = false;
+        });
+      }
+    } finally {
+      if (mounted) setState(() => _isLoadingTransaction = false);
+    }
   }
 
   @override
@@ -122,20 +156,28 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     }
 
     setState(() => _isLoading = true);
+    final companion = TransactionsCompanion(
+      type: drift.Value(_type),
+      amount: drift.Value(_amount),
+      date: drift.Value(_selectedDate),
+      accountId: drift.Value(_selectedAccountId!),
+      toAccountId: _type == TransactionType.transfer
+          ? drift.Value(_selectedToAccountId)
+          : const drift.Value(null),
+      categoryId: _selectedCategoryId != null
+          ? drift.Value(_selectedCategoryId)
+          : const drift.Value(null),
+      note: _noteController.text.trim().isNotEmpty
+          ? drift.Value(_noteController.text.trim())
+          : const drift.Value(null),
+    );
     try {
-      await ref
-          .read(transactionsRepositoryProvider)
-          .create(
-            TransactionsCompanion(
-              type: drift.Value(_type),
-              amount: drift.Value(_amount),
-              date: drift.Value(_selectedDate),
-              accountId: drift.Value(_selectedAccountId!),
-              toAccountId: _type == TransactionType.transfer ? drift.Value(_selectedToAccountId) : const drift.Value(null),
-              categoryId: _selectedCategoryId != null ? drift.Value(_selectedCategoryId) : const drift.Value(null),
-              note: _noteController.text.trim().isNotEmpty ? drift.Value(_noteController.text.trim()) : const drift.Value(null),
-            ),
-          );
+      final repo = ref.read(transactionsRepositoryProvider);
+      if (widget.isEditing) {
+        await repo.update(widget.transactionId!, companion);
+      } else {
+        await repo.create(companion);
+      }
 
       if (mounted) {
         _showSnack(
@@ -193,7 +235,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
 
   void _showCategorySheet(List<Category> categories) {
     final t = context.t;
-
+    _closeNumpad();
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: context.colorScheme.surface,
@@ -290,6 +332,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     final accounts = ref.read(accountModelsProvider);
     final currentSelected = isTo ? _selectedToAccountId : _selectedAccountId;
 
+    _closeNumpad();
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: context.colorScheme.surface,
@@ -414,14 +457,16 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: ExpenseLabAppBar(
-        title: t.transactions.add_title,
+        title: widget.isEditing ? t.transactions.edit_title : t.transactions.add_title,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: cs.primary),
           onPressed: () => context.pop(),
         ),
       ),
-      body: SafeArea(
-        child: Column(
+      body: _isLoadingTransaction
+          ? const Center(child: CircularProgressIndicator())
+          : SafeArea(
+              child: Column(
           children: [
             // ── Scrollable section ────────────────────────────────────────
             Expanded(
@@ -546,9 +591,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
             AnimatedSize(
               duration: const Duration(milliseconds: 220),
               curve: Curves.easeInOut,
-              child: _showNumpad
-                  ? _NumberPad(onKeyTap: _onKeyTap)
-                  : const SizedBox(width: double.infinity),
+              child: _showNumpad ? _NumberPad(onKeyTap: _onKeyTap) : const SizedBox(width: double.infinity),
             ),
 
             // ── Save button ───────────────────────────────────────────────
@@ -612,8 +655,7 @@ class _AmountHeader extends StatefulWidget {
   State<_AmountHeader> createState() => _AmountHeaderState();
 }
 
-class _AmountHeaderState extends State<_AmountHeader>
-    with SingleTickerProviderStateMixin {
+class _AmountHeaderState extends State<_AmountHeader> with SingleTickerProviderStateMixin {
   late final AnimationController _blink;
 
   @override

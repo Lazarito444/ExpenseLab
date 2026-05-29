@@ -42,6 +42,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final TranslationsAppEn app = TranslationsAppEn.internal(_root);
 	late final TranslationsCommonEn common = TranslationsCommonEn.internal(_root);
+	late final TranslationsHomeEn home = TranslationsHomeEn.internal(_root);
 	late final TranslationsNavEn nav = TranslationsNavEn.internal(_root);
 	late final TranslationsSettingsEn settings = TranslationsSettingsEn.internal(_root);
 	Map<String, String> get currencies => {
@@ -109,6 +110,54 @@ class TranslationsCommonEn {
 
 	/// en: 'Preview'
 	String get preview => 'Preview';
+
+	/// en: 'Yesterday'
+	String get yesterday => 'Yesterday';
+}
+
+// Path: home
+class TranslationsHomeEn {
+	TranslationsHomeEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'TOTAL BALANCE'
+	String get total_balance => 'TOTAL BALANCE';
+
+	/// en: 'Monthly Summary'
+	String get monthly_summary => 'Monthly Summary';
+
+	/// en: 'Income'
+	String get income => 'Income';
+
+	/// en: 'Expenses'
+	String get expenses => 'Expenses';
+
+	/// en: 'SAVINGS RATE'
+	String get savings_rate => 'SAVINGS RATE';
+
+	/// en: 'Recent Transactions'
+	String get recent_transactions => 'Recent Transactions';
+
+	/// en: 'View All'
+	String get view_all => 'View All';
+
+	/// en: 'No transactions yet'
+	String get no_transactions => 'No transactions yet';
+
+	/// en: '{pct} this month'
+	String get pct_this_month => '{pct} this month';
+
+	/// en: 'No transactions on this day'
+	String get no_transactions_day => 'No transactions on this day';
+
+	/// en: 'FINANCIAL SCHEDULE'
+	String get financial_schedule => 'FINANCIAL SCHEDULE';
+
+	/// en: 'Transactions – {date}'
+	String get transactions_for => 'Transactions – {date}';
 }
 
 // Path: nav
@@ -201,6 +250,9 @@ class TranslationsTransactionsEn {
 
 	/// en: 'Add Transaction'
 	String get add_title => 'Add Transaction';
+
+	/// en: 'Edit Transaction'
+	String get edit_title => 'Edit Transaction';
 
 	/// en: 'ENTER AMOUNT'
 	String get enter_amount => 'ENTER AMOUNT';
@@ -534,6 +586,19 @@ extension on Translations {
 			'common.error' => 'Error',
 			'common.see_all' => 'See All',
 			'common.preview' => 'Preview',
+			'common.yesterday' => 'Yesterday',
+			'home.total_balance' => 'TOTAL BALANCE',
+			'home.monthly_summary' => 'Monthly Summary',
+			'home.income' => 'Income',
+			'home.expenses' => 'Expenses',
+			'home.savings_rate' => 'SAVINGS RATE',
+			'home.recent_transactions' => 'Recent Transactions',
+			'home.view_all' => 'View All',
+			'home.no_transactions' => 'No transactions yet',
+			'home.pct_this_month' => '{pct} this month',
+			'home.no_transactions_day' => 'No transactions on this day',
+			'home.financial_schedule' => 'FINANCIAL SCHEDULE',
+			'home.transactions_for' => 'Transactions – {date}',
 			'nav.home' => 'Home',
 			'nav.budgets' => 'Budgets',
 			'nav.goals' => 'Goals',
@@ -603,6 +668,7 @@ extension on Translations {
 			'accounts.edit.success_update' => 'Account updated successfully',
 			'accounts.edit.success_delete' => 'Account deleted successfully',
 			'transactions.add_title' => 'Add Transaction',
+			'transactions.edit_title' => 'Edit Transaction',
 			'transactions.enter_amount' => 'ENTER AMOUNT',
 			'transactions.tab_expense' => 'Expense',
 			'transactions.tab_income' => 'Income',

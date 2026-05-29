@@ -41,6 +41,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	// Translations
 	@override late final _TranslationsAppEs app = _TranslationsAppEs._(_root);
 	@override late final _TranslationsCommonEs common = _TranslationsCommonEs._(_root);
+	@override late final _TranslationsHomeEs home = _TranslationsHomeEs._(_root);
 	@override late final _TranslationsNavEs nav = _TranslationsNavEs._(_root);
 	@override late final _TranslationsSettingsEs settings = _TranslationsSettingsEs._(_root);
 	@override Map<String, String> get currencies => {
@@ -94,6 +95,28 @@ class _TranslationsCommonEs extends TranslationsCommonEn {
 	@override String get error => 'Error';
 	@override String get see_all => 'Ver Todo';
 	@override String get preview => 'Vista Previa';
+	@override String get yesterday => 'Ayer';
+}
+
+// Path: home
+class _TranslationsHomeEs extends TranslationsHomeEn {
+	_TranslationsHomeEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get total_balance => 'SALDO TOTAL';
+	@override String get monthly_summary => 'Resumen mensual';
+	@override String get income => 'Ingresos';
+	@override String get expenses => 'Gastos';
+	@override String get savings_rate => 'TASA DE AHORRO';
+	@override String get recent_transactions => 'Transacciones recientes';
+	@override String get view_all => 'Ver todo';
+	@override String get no_transactions => 'Sin transacciones aún';
+	@override String get pct_this_month => '{pct} este mes';
+	@override String get no_transactions_day => 'Sin transacciones este día';
+	@override String get financial_schedule => 'AGENDA FINANCIERA';
+	@override String get transactions_for => 'Transacciones – {date}';
 }
 
 // Path: nav
@@ -152,6 +175,7 @@ class _TranslationsTransactionsEs extends TranslationsTransactionsEn {
 
 	// Translations
 	@override String get add_title => 'Nuevo Movimiento';
+	@override String get edit_title => 'Editar Movimiento';
 	@override String get enter_amount => '¿CUÁNTO FUE?';
 	@override String get tab_expense => 'Gasto';
 	@override String get tab_income => 'Ingreso';
@@ -321,6 +345,19 @@ extension on TranslationsEs {
 			'common.error' => 'Error',
 			'common.see_all' => 'Ver Todo',
 			'common.preview' => 'Vista Previa',
+			'common.yesterday' => 'Ayer',
+			'home.total_balance' => 'SALDO TOTAL',
+			'home.monthly_summary' => 'Resumen mensual',
+			'home.income' => 'Ingresos',
+			'home.expenses' => 'Gastos',
+			'home.savings_rate' => 'TASA DE AHORRO',
+			'home.recent_transactions' => 'Transacciones recientes',
+			'home.view_all' => 'Ver todo',
+			'home.no_transactions' => 'Sin transacciones aún',
+			'home.pct_this_month' => '{pct} este mes',
+			'home.no_transactions_day' => 'Sin transacciones este día',
+			'home.financial_schedule' => 'AGENDA FINANCIERA',
+			'home.transactions_for' => 'Transacciones – {date}',
 			'nav.home' => 'Inicio',
 			'nav.budgets' => 'Presupuestos',
 			'nav.goals' => 'Metas',
@@ -390,6 +427,7 @@ extension on TranslationsEs {
 			'accounts.edit.success_update' => 'Cuenta actualizada con éxito',
 			'accounts.edit.success_delete' => 'Cuenta eliminada con éxito',
 			'transactions.add_title' => 'Nuevo Movimiento',
+			'transactions.edit_title' => 'Editar Movimiento',
 			'transactions.enter_amount' => '¿CUÁNTO FUE?',
 			'transactions.tab_expense' => 'Gasto',
 			'transactions.tab_income' => 'Ingreso',
