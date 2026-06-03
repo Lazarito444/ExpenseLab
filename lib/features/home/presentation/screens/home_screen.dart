@@ -3,10 +3,12 @@ import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/core/routing/app_routes.dart';
+import 'package:expenselab/features/accounts/domain/models/account_model.dart';
 import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
 import 'package:expenselab/features/categories/providers/categories_providers.dart';
 import 'package:expenselab/features/home/providers/home_providers.dart';
 import 'package:expenselab/features/settings/domain/models/currency.dart';
+import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,20 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
+
+/// Returns the [Currency] for [tx]'s source account, falling back to [fallback].
+Currency _txCurrency(
+  Transaction tx,
+  Map<String, AccountModel> accountMap,
+  Currency fallback,
+) {
+  final code = accountMap[tx.accountId]?.currencyCode;
+  if (code == null) return fallback;
+  return kSupportedCurrencies.firstWhere(
+    (c) => c.code == code,
+    orElse: () => fallback,
+  );
+}
 
 String _typeLabel(TransactionType type, Translations t) => switch (type) {
   TransactionType.income => t.transactions.tab_income,
@@ -89,6 +105,7 @@ class _DashboardView extends ConsumerWidget {
           loading: () => <String, Category>{},
           error: (_, _) => <String, Category>{},
         );
+    final accountMap = {for (final a in ref.watch(accountModelsProvider)) a.id: a};
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
@@ -130,7 +147,8 @@ class _DashboardView extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: 8),
               child: _TransactionTile(
                 tx: tx,
-                currency: currency,
+                accountMap: accountMap,
+                fallbackCurrency: currency,
                 categoryMap: categoryMap,
                 onTap: () => context.push(AppRoutes.transactionEdit(tx.id)),
               ),
@@ -422,14 +440,16 @@ class _SectionHeader extends StatelessWidget {
 class _TransactionTile extends StatelessWidget {
   const _TransactionTile({
     required this.tx,
-    required this.currency,
+    required this.accountMap,
+    required this.fallbackCurrency,
     required this.categoryMap,
     this.showTime = false,
     this.onTap,
   });
 
   final Transaction tx;
-  final Currency currency;
+  final Map<String, AccountModel> accountMap;
+  final Currency fallbackCurrency;
   final Map<String, Category> categoryMap;
   final bool showTime;
   final VoidCallback? onTap;
@@ -462,12 +482,13 @@ class _TransactionTile extends StatelessWidget {
             TransactionType.transfer => Icons.swap_horiz_rounded,
           };
 
+    final txCurrency = _txCurrency(tx, accountMap, fallbackCurrency);
     final sign = switch (tx.type) {
       TransactionType.income => '+',
       TransactionType.expense => '-',
       TransactionType.transfer => '',
     };
-    final amountText = '$sign${currency.format(tx.amount)}';
+    final amountText = '$sign${txCurrency.format(tx.amount)}';
     final amountColor = switch (tx.type) {
       TransactionType.income => Colors.green.shade700,
       TransactionType.expense => Colors.red.shade600,
@@ -584,6 +605,7 @@ class _CalendarView extends ConsumerWidget {
           loading: () => <String, Category>{},
           error: (_, _) => <String, Category>{},
         );
+    final accountMap = {for (final a in ref.watch(accountModelsProvider)) a.id: a};
 
     final selectedKey = DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
     final selectedTxs = (txsByDate[selectedKey] ?? [])..sort((a, b) => a.date.compareTo(b.date));
@@ -609,10 +631,12 @@ class _CalendarView extends ConsumerWidget {
         Expanded(
           child: _DayTransactionList(
             transactions: selectedTxs,
-            currency: currency,
+            accountMap: accountMap,
+            fallbackCurrency: currency,
             categoryMap: categoryMap,
             selectedDay: selectedDay,
             onTransactionTap: (tx) => context.push(AppRoutes.transactionEdit(tx.id)),
+            onAddTransaction: () => context.push(AppRoutes.addTransactionOnDate(selectedDay)),
           ),
         ),
       ],
@@ -923,7 +947,7 @@ class _CalendarGrid extends StatelessWidget {
                                             horizontal: 1,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: isSelected ? Colors.white70 : c,
+                                            color: c,
                                             shape: BoxShape.circle,
                                           ),
                                         ),
@@ -981,17 +1005,21 @@ class _TotalBadge extends StatelessWidget {
 class _DayTransactionList extends StatelessWidget {
   const _DayTransactionList({
     required this.transactions,
-    required this.currency,
+    required this.accountMap,
+    required this.fallbackCurrency,
     required this.categoryMap,
     required this.selectedDay,
     required this.onTransactionTap,
+    required this.onAddTransaction,
   });
 
   final List<Transaction> transactions;
-  final Currency currency;
+  final Map<String, AccountModel> accountMap;
+  final Currency fallbackCurrency;
   final Map<String, Category> categoryMap;
   final DateTime selectedDay;
   final ValueChanged<Transaction> onTransactionTap;
+  final VoidCallback onAddTransaction;
 
   double get _total => transactions.fold(0.0, (sum, tx) {
     return sum +
@@ -1025,20 +1053,34 @@ class _DayTransactionList extends StatelessWidget {
                   color: context.colorScheme.scrim,
                 ),
               ),
-              if (transactions.isNotEmpty) _TotalBadge(total: _total, currency: currency),
+              if (transactions.isNotEmpty) _TotalBadge(total: _total, currency: fallbackCurrency),
             ],
           ),
         ),
         if (transactions.isEmpty)
           Expanded(
             child: Center(
-              child: Text(
-                t.home.no_transactions_day,
-                style: TextStyle(
-                  fontFamily: 'Epilogue',
-                  fontSize: 14,
-                  color: context.colorScheme.outline,
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    t.home.no_transactions_day,
+                    style: TextStyle(
+                      fontFamily: 'Epilogue',
+                      fontSize: 14,
+                      color: context.colorScheme.outline,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  FilledButton.icon(
+                    onPressed: onAddTransaction,
+                    icon: const Icon(Icons.add_rounded, size: 18),
+                    label: Text(
+                      t.home.add_transaction_on_day,
+                      style: const TextStyle(fontFamily: 'Epilogue'),
+                    ),
+                  ),
+                ],
               ),
             ),
           )
@@ -1050,7 +1092,8 @@ class _DayTransactionList extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(height: 8),
               itemBuilder: (context, i) => _TransactionTile(
                 tx: transactions[i],
-                currency: currency,
+                accountMap: accountMap,
+                fallbackCurrency: fallbackCurrency,
                 categoryMap: categoryMap,
                 showTime: true,
                 onTap: () => onTransactionTap(transactions[i]),

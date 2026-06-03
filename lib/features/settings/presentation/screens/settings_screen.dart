@@ -3,6 +3,7 @@ import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/categories_screen.dart';
 import 'package:expenselab/features/settings/domain/models/app_settings.dart';
+import 'package:expenselab/features/settings/presentation/screens/currency_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/language_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/theme_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/widgets/settings_widgets.dart';
@@ -22,6 +23,7 @@ class SettingsScreen extends ConsumerWidget {
     final ThemeMode themeMode = ref.watch(themeModeProvider);
     final AsyncValue<AppSettings> settingsAsync = ref.watch(settingsProvider);
     final AppLocale currentLocale = settingsAsync.value?.locale ?? AppLocale.en;
+    final currency = ref.watch(currencyProvider);
 
     final String currentThemeLabel = switch (themeMode) {
       ThemeMode.system => t.settings.theme.system,
@@ -81,6 +83,19 @@ class SettingsScreen extends ConsumerWidget {
                         context,
                         MaterialPageRoute<void>(
                           builder: (_) => const LanguageSelectionScreen(),
+                        ),
+                      ),
+                    ),
+                    buildNavTile(
+                      context: context,
+                      label: t.settings.default_currency.title,
+                      currentValue: '${currency.code} (${currency.symbol})',
+                      icon: Icons.currency_exchange_rounded,
+                      isDark: isDark,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (_) => const CurrencySelectionScreen(),
                         ),
                       ),
                     ),

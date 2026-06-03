@@ -22,6 +22,7 @@
     "no_transactions": "Sin transacciones aún",
     "pct_this_month": "{pct} este mes",
     "no_transactions_day": "Sin transacciones este día",
+    "add_transaction_on_day": "Agregar una transacción en este día",
     "financial_schedule": "AGENDA FINANCIERA",
     "transactions_for": "Transacciones – {date}"
   },
@@ -43,6 +44,9 @@
     },
     "language": {
       "title": "Idioma"
+    },
+    "default_currency": {
+      "title": "Moneda predeterminada"
     },
     "accounts": {
       "title": "Cuentas"

@@ -40,7 +40,11 @@ final routerConfig = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.addTransaction,
-      builder: (context, state) => const AddTransactionScreen(),
+      builder: (context, state) {
+        final dateStr = state.uri.queryParameters['date'];
+        final initialDate = dateStr != null ? DateTime.tryParse(dateStr) : null;
+        return AddTransactionScreen(initialDate: initialDate);
+      },
     ),
     GoRoute(
       path: '/transactions/:id/edit',

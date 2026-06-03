@@ -115,6 +115,7 @@ class _TranslationsHomeEs extends TranslationsHomeEn {
 	@override String get no_transactions => 'Sin transacciones aún';
 	@override String get pct_this_month => '{pct} este mes';
 	@override String get no_transactions_day => 'Sin transacciones este día';
+	@override String get add_transaction_on_day => 'Agregar una transacción en este día';
 	@override String get financial_schedule => 'AGENDA FINANCIERA';
 	@override String get transactions_for => 'Transacciones – {date}';
 }
@@ -144,6 +145,7 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 	@override String get app => 'App';
 	@override late final _TranslationsSettingsThemeEs theme = _TranslationsSettingsThemeEs._(_root);
 	@override late final _TranslationsSettingsLanguageEs language = _TranslationsSettingsLanguageEs._(_root);
+	@override late final _TranslationsSettingsDefaultCurrencyEs default_currency = _TranslationsSettingsDefaultCurrencyEs._(_root);
 	@override late final _TranslationsSettingsAccountsEs accounts = _TranslationsSettingsAccountsEs._(_root);
 	@override late final _TranslationsSettingsCategoriesEs categories = _TranslationsSettingsCategoriesEs._(_root);
 }
@@ -267,6 +269,16 @@ class _TranslationsSettingsLanguageEs extends TranslationsSettingsLanguageEn {
 	@override String get title => 'Idioma';
 }
 
+// Path: settings.default_currency
+class _TranslationsSettingsDefaultCurrencyEs extends TranslationsSettingsDefaultCurrencyEn {
+	_TranslationsSettingsDefaultCurrencyEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Moneda predeterminada';
+}
+
 // Path: settings.accounts
 class _TranslationsSettingsAccountsEs extends TranslationsSettingsAccountsEn {
 	_TranslationsSettingsAccountsEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -356,6 +368,7 @@ extension on TranslationsEs {
 			'home.no_transactions' => 'Sin transacciones aún',
 			'home.pct_this_month' => '{pct} este mes',
 			'home.no_transactions_day' => 'Sin transacciones este día',
+			'home.add_transaction_on_day' => 'Agregar una transacción en este día',
 			'home.financial_schedule' => 'AGENDA FINANCIERA',
 			'home.transactions_for' => 'Transacciones – {date}',
 			'nav.home' => 'Inicio',
@@ -370,6 +383,7 @@ extension on TranslationsEs {
 			'settings.theme.light' => 'Claro',
 			'settings.theme.dark' => 'Oscuro',
 			'settings.language.title' => 'Idioma',
+			'settings.default_currency.title' => 'Moneda predeterminada',
 			'settings.accounts.title' => 'Cuentas',
 			'settings.categories.title' => 'Categorías',
 			'currencies.USD' => 'Dólar estadounidense',

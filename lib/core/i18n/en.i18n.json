@@ -22,6 +22,7 @@
     "no_transactions": "No transactions yet",
     "pct_this_month": "{pct} this month",
     "no_transactions_day": "No transactions on this day",
+    "add_transaction_on_day": "Add a transaction on this day",
     "financial_schedule": "FINANCIAL SCHEDULE",
     "transactions_for": "Transactions – {date}"
   },
@@ -43,6 +44,9 @@
     },
     "language": {
       "title": "Language"
+    },
+    "default_currency": {
+      "title": "Default Currency"
     },
     "accounts": {
       "title": "Accounts"

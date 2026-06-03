@@ -4,6 +4,8 @@ class AppRoutes {
   static const goals = '/goals';
   static const settings = '/settings';
   static const addTransaction = '/add-transaction';
+  static String addTransactionOnDate(DateTime date) =>
+      '/add-transaction?date=${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   static const accounts = '/accounts';
   static const accountsCreate = '/accounts/create';
   static String accountEdit(String id) => '/accounts/$id/edit';

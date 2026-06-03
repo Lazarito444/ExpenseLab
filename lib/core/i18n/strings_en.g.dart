@@ -153,6 +153,9 @@ class TranslationsHomeEn {
 	/// en: 'No transactions on this day'
 	String get no_transactions_day => 'No transactions on this day';
 
+	/// en: 'Add a transaction on this day'
+	String get add_transaction_on_day => 'Add a transaction on this day';
+
 	/// en: 'FINANCIAL SCHEDULE'
 	String get financial_schedule => 'FINANCIAL SCHEDULE';
 
@@ -200,6 +203,7 @@ class TranslationsSettingsEn {
 
 	late final TranslationsSettingsThemeEn theme = TranslationsSettingsThemeEn.internal(_root);
 	late final TranslationsSettingsLanguageEn language = TranslationsSettingsLanguageEn.internal(_root);
+	late final TranslationsSettingsDefaultCurrencyEn default_currency = TranslationsSettingsDefaultCurrencyEn.internal(_root);
 	late final TranslationsSettingsAccountsEn accounts = TranslationsSettingsAccountsEn.internal(_root);
 	late final TranslationsSettingsCategoriesEn categories = TranslationsSettingsCategoriesEn.internal(_root);
 }
@@ -454,6 +458,18 @@ class TranslationsSettingsLanguageEn {
 	String get title => 'Language';
 }
 
+// Path: settings.default_currency
+class TranslationsSettingsDefaultCurrencyEn {
+	TranslationsSettingsDefaultCurrencyEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Default Currency'
+	String get title => 'Default Currency';
+}
+
 // Path: settings.accounts
 class TranslationsSettingsAccountsEn {
 	TranslationsSettingsAccountsEn.internal(this._root);
@@ -597,6 +613,7 @@ extension on Translations {
 			'home.no_transactions' => 'No transactions yet',
 			'home.pct_this_month' => '{pct} this month',
 			'home.no_transactions_day' => 'No transactions on this day',
+			'home.add_transaction_on_day' => 'Add a transaction on this day',
 			'home.financial_schedule' => 'FINANCIAL SCHEDULE',
 			'home.transactions_for' => 'Transactions – {date}',
 			'nav.home' => 'Home',
@@ -611,6 +628,7 @@ extension on Translations {
 			'settings.theme.light' => 'Light',
 			'settings.theme.dark' => 'Dark',
 			'settings.language.title' => 'Language',
+			'settings.default_currency.title' => 'Default Currency',
 			'settings.accounts.title' => 'Accounts',
 			'settings.categories.title' => 'Categories',
 			'currencies.USD' => 'US Dollar',

@@ -7,6 +7,7 @@ import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
 import 'package:expenselab/features/categories/data/tables/categories_table.dart';
 import 'package:expenselab/features/categories/domain/models/category_model.dart';
 import 'package:expenselab/features/categories/providers/categories_providers.dart';
+import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
 import 'package:expenselab/features/transactions/providers/transactions_providers.dart';
@@ -17,10 +18,13 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class AddTransactionScreen extends ConsumerStatefulWidget {
-  const AddTransactionScreen({this.transactionId, super.key});
+  const AddTransactionScreen({this.transactionId, this.initialDate, super.key});
 
   /// When set, the screen loads this transaction and switches to edit mode.
   final String? transactionId;
+
+  /// When set (and not editing), pre-selects this date for the new transaction.
+  final DateTime? initialDate;
 
   bool get isEditing => transactionId != null;
 
@@ -44,6 +48,11 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.initialDate != null && !widget.isEditing) {
+      final now = DateTime.now();
+      final d = widget.initialDate!;
+      _selectedDate = DateTime(d.year, d.month, d.day, now.hour, now.minute);
+    }
     _notesFocusNode.addListener(() {
       if (_notesFocusNode.hasFocus && _showNumpad) {
         setState(() => _showNumpad = false);
@@ -449,6 +458,14 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     final selectedAccount = accounts.where((a) => a.id == _selectedAccountId).firstOrNull;
     final selectedToAccount = accounts.where((a) => a.id == _selectedToAccountId).firstOrNull;
 
+    // Use the selected account's currency symbol; fall back to the app-wide currency.
+    final accountCurrency = selectedAccount != null
+        ? kSupportedCurrencies.firstWhere(
+            (c) => c.code == selectedAccount.currencyCode,
+            orElse: () => currency,
+          )
+        : currency;
+
     final categoryType = _type == TransactionType.income ? CategoryType.income : CategoryType.expense;
     final categories = ref.watch(categoriesByTypeProvider(categoryType)).value ?? [];
     final selectedCategory = categories.where((c) => c.id == _selectedCategoryId).firstOrNull;
@@ -483,7 +500,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                       behavior: HitTestBehavior.opaque,
                       child: _AmountHeader(
                         amountString: _formattedAmount,
-                        currencySymbol: currency.symbol,
+                        currencySymbol: accountCurrency.symbol,
                         label: t.transactions.enter_amount,
                       ),
                     ),
