@@ -2,6 +2,8 @@ import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/categories_screen.dart';
+import 'package:expenselab/features/security/biometric_service.dart';
+import 'package:expenselab/features/security/lock_provider.dart';
 import 'package:expenselab/features/settings/domain/models/app_settings.dart';
 import 'package:expenselab/features/settings/presentation/screens/currency_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/home_view_selection_screen.dart';
@@ -27,6 +29,7 @@ class SettingsScreen extends ConsumerWidget {
     final currency = ref.watch(currencyProvider);
     final bool defaultHomeIsCalendar =
         settingsAsync.value?.defaultHomeIsCalendar ?? false;
+    final bool biometricLogin = settingsAsync.value?.biometricLogin ?? false;
 
     final String currentThemeLabel = switch (themeMode) {
       ThemeMode.system => t.settings.theme.system,
@@ -154,10 +157,144 @@ class SettingsScreen extends ConsumerWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 24),
+              buildSectionHeader(t.settings.security.title, context),
+              const SizedBox(height: 12),
+              buildSettingsCard(
+                isDark,
+                child: buildToggleTile(
+                  context: context,
+                  label: t.settings.security.biometric_login.title,
+                  subtitle: t.settings.security.biometric_login.subtitle,
+                  icon: Icons.fingerprint_rounded,
+                  isDark: isDark,
+                  value: biometricLogin,
+                  onChanged: (value) =>
+                      _onBiometricToggle(value, context, ref),
+                ),
+              ),
+              const SizedBox(height: 24),
+              buildSectionHeader(t.settings.danger_zone.title, context),
+              const SizedBox(height: 12),
+              buildSettingsCard(
+                isDark,
+                child: buildDangerTile(
+                  context: context,
+                  label: t.settings.danger_zone.erase_data.title,
+                  subtitle: t.settings.danger_zone.erase_data.subtitle,
+                  icon: Icons.delete_forever_rounded,
+                  onTap: () => _showEraseConfirmation(context, ref, t),
+                ),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+Future<void> _onBiometricToggle(
+  bool value,
+  BuildContext context,
+  WidgetRef ref,
+) async {
+  if (value) {
+    final canAuth =
+        await ref.read(biometricServiceProvider).canAuthenticate();
+    if (!canAuth) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'No biometrics or screen lock set up on this device.',
+            ),
+          ),
+        );
+      }
+      return;
+    }
+  }
+  await ref.read(settingsProvider.notifier).setBiometricLogin(value);
+  if (value) {
+    ref.read(isLockedProvider.notifier).lock();
+  }
+}
+
+Future<void> _showEraseConfirmation(
+  BuildContext context,
+  WidgetRef ref,
+  Translations t,
+) async {
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => _EraseConfirmationDialog(t: t),
+  );
+  if (confirmed == true) {
+    await ref.read(settingsProvider.notifier).eraseAllData();
+  }
+}
+
+class _EraseConfirmationDialog extends StatefulWidget {
+  const _EraseConfirmationDialog({required this.t});
+  final Translations t;
+
+  @override
+  State<_EraseConfirmationDialog> createState() =>
+      _EraseConfirmationDialogState();
+}
+
+class _EraseConfirmationDialogState extends State<_EraseConfirmationDialog> {
+  final _controller = TextEditingController();
+  bool _matches = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      final matches = _controller.text == 'ExpenseLab';
+      if (matches != _matches) setState(() => _matches = matches);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = widget.t;
+    return AlertDialog(
+      title: Text(t.settings.danger_zone.erase_data.confirm_title),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(t.settings.danger_zone.erase_data.confirm_message),
+          const SizedBox(height: 20),
+          TextField(
+            controller: _controller,
+            autofocus: true,
+            decoration: InputDecoration(
+              labelText: t.settings.danger_zone.erase_data.type_to_confirm,
+              border: const OutlineInputBorder(),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: Text(t.common.cancel),
+        ),
+        TextButton(
+          onPressed: _matches ? () => Navigator.pop(context, true) : null,
+          style: TextButton.styleFrom(foregroundColor: const Color(0xFFD9534F)),
+          child: Text(t.settings.danger_zone.erase_data.confirm_button),
+        ),
+      ],
     );
   }
 }

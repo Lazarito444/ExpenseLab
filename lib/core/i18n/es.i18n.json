@@ -58,6 +58,24 @@
     },
     "categories": {
       "title": "Categorías"
+    },
+    "security": {
+      "title": "Seguridad",
+      "biometric_login": {
+        "title": "Inicio biométrico",
+        "subtitle": "Usa Face ID o huella para desbloquear"
+      }
+    },
+    "danger_zone": {
+      "title": "Zona de peligro",
+      "erase_data": {
+        "title": "Borrar todos los datos",
+        "subtitle": "Elimina permanentemente todos tus datos",
+        "confirm_title": "¿Borrar todos los datos?",
+        "confirm_message": "Esto eliminará permanentemente todas tus transacciones, cuentas, categorías y configuración. Esta acción no se puede deshacer.",
+        "confirm_button": "Borrar todo",
+        "type_to_confirm": "Escribe \"ExpenseLab\" para confirmar"
+      }
     }
   },
   "goals": {

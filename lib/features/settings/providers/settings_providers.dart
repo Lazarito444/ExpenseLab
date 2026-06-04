@@ -41,6 +41,19 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
     await prefs.setBool('settings_default_home_view', isCalendar);
     state = AsyncData(current.copyWith(defaultHomeIsCalendar: isCalendar));
   }
+
+  Future<void> setBiometricLogin(bool enabled) async {
+    final current = state.requireValue;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('settings_biometric_login', enabled);
+    state = AsyncData(current.copyWith(biometricLogin: enabled));
+  }
+
+  Future<void> eraseAllData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    state = AsyncData(AppSettings.fromPrefs(prefs));
+  }
 }
 
 final settingsProvider = AsyncNotifierProvider<SettingsNotifier, AppSettings>(

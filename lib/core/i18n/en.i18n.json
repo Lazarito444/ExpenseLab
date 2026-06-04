@@ -58,6 +58,24 @@
     },
     "categories": {
       "title": "Categories"
+    },
+    "security": {
+      "title": "Security",
+      "biometric_login": {
+        "title": "Biometric Login",
+        "subtitle": "Use Face ID or fingerprint to unlock"
+      }
+    },
+    "danger_zone": {
+      "title": "Danger Zone",
+      "erase_data": {
+        "title": "Erase All Data",
+        "subtitle": "Permanently delete all your data",
+        "confirm_title": "Erase All Data?",
+        "confirm_message": "This will permanently delete all your transactions, accounts, categories, and settings. This action cannot be undone.",
+        "confirm_button": "Erase Everything",
+        "type_to_confirm": "Type \"ExpenseLab\" to confirm"
+      }
     }
   },
   "goals": {

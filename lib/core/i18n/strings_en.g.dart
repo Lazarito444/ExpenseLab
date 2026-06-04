@@ -208,6 +208,8 @@ class TranslationsSettingsEn {
 	late final TranslationsSettingsDefaultHomeViewEn default_home_view = TranslationsSettingsDefaultHomeViewEn.internal(_root);
 	late final TranslationsSettingsAccountsEn accounts = TranslationsSettingsAccountsEn.internal(_root);
 	late final TranslationsSettingsCategoriesEn categories = TranslationsSettingsCategoriesEn.internal(_root);
+	late final TranslationsSettingsSecurityEn security = TranslationsSettingsSecurityEn.internal(_root);
+	late final TranslationsSettingsDangerZoneEn danger_zone = TranslationsSettingsDangerZoneEn.internal(_root);
 }
 
 // Path: goals
@@ -555,6 +557,34 @@ class TranslationsSettingsCategoriesEn {
 	String get title => 'Categories';
 }
 
+// Path: settings.security
+class TranslationsSettingsSecurityEn {
+	TranslationsSettingsSecurityEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Security'
+	String get title => 'Security';
+
+	late final TranslationsSettingsSecurityBiometricLoginEn biometric_login = TranslationsSettingsSecurityBiometricLoginEn.internal(_root);
+}
+
+// Path: settings.danger_zone
+class TranslationsSettingsDangerZoneEn {
+	TranslationsSettingsDangerZoneEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Danger Zone'
+	String get title => 'Danger Zone';
+
+	late final TranslationsSettingsDangerZoneEraseDataEn erase_data = TranslationsSettingsDangerZoneEraseDataEn.internal(_root);
+}
+
 // Path: goals.create
 class TranslationsGoalsCreateEn {
 	TranslationsGoalsCreateEn.internal(this._root);
@@ -801,6 +831,48 @@ class TranslationsAccountsEditEn {
 	String get success_delete => 'Account deleted successfully';
 }
 
+// Path: settings.security.biometric_login
+class TranslationsSettingsSecurityBiometricLoginEn {
+	TranslationsSettingsSecurityBiometricLoginEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Biometric Login'
+	String get title => 'Biometric Login';
+
+	/// en: 'Use Face ID or fingerprint to unlock'
+	String get subtitle => 'Use Face ID or fingerprint to unlock';
+}
+
+// Path: settings.danger_zone.erase_data
+class TranslationsSettingsDangerZoneEraseDataEn {
+	TranslationsSettingsDangerZoneEraseDataEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Erase All Data'
+	String get title => 'Erase All Data';
+
+	/// en: 'Permanently delete all your data'
+	String get subtitle => 'Permanently delete all your data';
+
+	/// en: 'Erase All Data?'
+	String get confirm_title => 'Erase All Data?';
+
+	/// en: 'This will permanently delete all your transactions, accounts, categories, and settings. This action cannot be undone.'
+	String get confirm_message => 'This will permanently delete all your transactions, accounts, categories, and settings. This action cannot be undone.';
+
+	/// en: 'Erase Everything'
+	String get confirm_button => 'Erase Everything';
+
+	/// en: 'Type "ExpenseLab" to confirm'
+	String get type_to_confirm => 'Type "ExpenseLab" to confirm';
+}
+
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -848,6 +920,16 @@ extension on Translations {
 			'settings.default_home_view.calendar' => 'Calendar',
 			'settings.accounts.title' => 'Accounts',
 			'settings.categories.title' => 'Categories',
+			'settings.security.title' => 'Security',
+			'settings.security.biometric_login.title' => 'Biometric Login',
+			'settings.security.biometric_login.subtitle' => 'Use Face ID or fingerprint to unlock',
+			'settings.danger_zone.title' => 'Danger Zone',
+			'settings.danger_zone.erase_data.title' => 'Erase All Data',
+			'settings.danger_zone.erase_data.subtitle' => 'Permanently delete all your data',
+			'settings.danger_zone.erase_data.confirm_title' => 'Erase All Data?',
+			'settings.danger_zone.erase_data.confirm_message' => 'This will permanently delete all your transactions, accounts, categories, and settings. This action cannot be undone.',
+			'settings.danger_zone.erase_data.confirm_button' => 'Erase Everything',
+			'settings.danger_zone.erase_data.type_to_confirm' => 'Type "ExpenseLab" to confirm',
 			'goals.title' => 'Savings Goals',
 			'goals.subtitle' => 'Your progress toward financial freedom',
 			'goals.total_saved' => 'TOTAL SAVED',

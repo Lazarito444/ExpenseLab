@@ -150,6 +150,8 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 	@override late final _TranslationsSettingsDefaultHomeViewEs default_home_view = _TranslationsSettingsDefaultHomeViewEs._(_root);
 	@override late final _TranslationsSettingsAccountsEs accounts = _TranslationsSettingsAccountsEs._(_root);
 	@override late final _TranslationsSettingsCategoriesEs categories = _TranslationsSettingsCategoriesEs._(_root);
+	@override late final _TranslationsSettingsSecurityEs security = _TranslationsSettingsSecurityEs._(_root);
+	@override late final _TranslationsSettingsDangerZoneEs danger_zone = _TranslationsSettingsDangerZoneEs._(_root);
 }
 
 // Path: goals
@@ -335,6 +337,28 @@ class _TranslationsSettingsCategoriesEs extends TranslationsSettingsCategoriesEn
 	@override String get title => 'Categorías';
 }
 
+// Path: settings.security
+class _TranslationsSettingsSecurityEs extends TranslationsSettingsSecurityEn {
+	_TranslationsSettingsSecurityEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Seguridad';
+	@override late final _TranslationsSettingsSecurityBiometricLoginEs biometric_login = _TranslationsSettingsSecurityBiometricLoginEs._(_root);
+}
+
+// Path: settings.danger_zone
+class _TranslationsSettingsDangerZoneEs extends TranslationsSettingsDangerZoneEn {
+	_TranslationsSettingsDangerZoneEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Zona de peligro';
+	@override late final _TranslationsSettingsDangerZoneEraseDataEs erase_data = _TranslationsSettingsDangerZoneEraseDataEs._(_root);
+}
+
 // Path: goals.create
 class _TranslationsGoalsCreateEs extends TranslationsGoalsCreateEn {
 	_TranslationsGoalsCreateEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -453,6 +477,32 @@ class _TranslationsAccountsEditEs extends TranslationsAccountsEditEn {
 	@override String get success_delete => 'Cuenta eliminada con éxito';
 }
 
+// Path: settings.security.biometric_login
+class _TranslationsSettingsSecurityBiometricLoginEs extends TranslationsSettingsSecurityBiometricLoginEn {
+	_TranslationsSettingsSecurityBiometricLoginEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Inicio biométrico';
+	@override String get subtitle => 'Usa Face ID o huella para desbloquear';
+}
+
+// Path: settings.danger_zone.erase_data
+class _TranslationsSettingsDangerZoneEraseDataEs extends TranslationsSettingsDangerZoneEraseDataEn {
+	_TranslationsSettingsDangerZoneEraseDataEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Borrar todos los datos';
+	@override String get subtitle => 'Elimina permanentemente todos tus datos';
+	@override String get confirm_title => '¿Borrar todos los datos?';
+	@override String get confirm_message => 'Esto eliminará permanentemente todas tus transacciones, cuentas, categorías y configuración. Esta acción no se puede deshacer.';
+	@override String get confirm_button => 'Borrar todo';
+	@override String get type_to_confirm => 'Escribe "ExpenseLab" para confirmar';
+}
+
 /// The flat map containing all translations for locale <es>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -500,6 +550,16 @@ extension on TranslationsEs {
 			'settings.default_home_view.calendar' => 'Calendario',
 			'settings.accounts.title' => 'Cuentas',
 			'settings.categories.title' => 'Categorías',
+			'settings.security.title' => 'Seguridad',
+			'settings.security.biometric_login.title' => 'Inicio biométrico',
+			'settings.security.biometric_login.subtitle' => 'Usa Face ID o huella para desbloquear',
+			'settings.danger_zone.title' => 'Zona de peligro',
+			'settings.danger_zone.erase_data.title' => 'Borrar todos los datos',
+			'settings.danger_zone.erase_data.subtitle' => 'Elimina permanentemente todos tus datos',
+			'settings.danger_zone.erase_data.confirm_title' => '¿Borrar todos los datos?',
+			'settings.danger_zone.erase_data.confirm_message' => 'Esto eliminará permanentemente todas tus transacciones, cuentas, categorías y configuración. Esta acción no se puede deshacer.',
+			'settings.danger_zone.erase_data.confirm_button' => 'Borrar todo',
+			'settings.danger_zone.erase_data.type_to_confirm' => 'Escribe "ExpenseLab" para confirmar',
 			'goals.title' => 'Metas de ahorro',
 			'goals.subtitle' => 'Tu progreso hacia la libertad financiera',
 			'goals.total_saved' => 'TOTAL AHORRADO',
