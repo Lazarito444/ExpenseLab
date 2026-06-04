@@ -36,14 +36,25 @@ class AccountsLocalDataSourceImpl implements AccountsLocalDataSource {
   Future<void> update(String id, AccountsCompanion data) => (_db.update(_db.accounts)..where((t) => t.id.equals(id))).write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
 
   @override
-  Future<void> delete(String id) {
+  Future<void> delete(String id) => _db.transaction(() async {
     final now = DateTime.now().toUtc();
-    return (_db.update(_db.accounts)..where((t) => t.id.equals(id))).write(
+
+    // Cascade: soft-delete all savings goals linked to this account.
+    await (_db.update(_db.savingsGoals)..where((t) => t.sourceAccountId.equals(id))).write(
+      SavingsGoalsCompanion(
+        isDeleted: const Value(true),
+        deletedAt: Value(now),
+        updatedAt: Value(now),
+      ),
+    );
+
+    // Soft-delete the account itself.
+    await (_db.update(_db.accounts)..where((t) => t.id.equals(id))).write(
       AccountsCompanion(
         isDeleted: const Value(true),
         deletedAt: Value(now),
         updatedAt: Value(now),
       ),
     );
-  }
+  });
 }

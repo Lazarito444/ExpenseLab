@@ -1,6 +1,8 @@
 class AppRoutes {
   static const home = '/';
   static const budgets = '/budgets';
+  static const budgetsCreate = '/budgets/create';
+  static String budgetEdit(String id) => '/budgets/$id/edit';
   static const goals = '/goals';
   static const goalsCreate = '/goals/create';
   static String goalDetails(String id) => '/goals/$id';

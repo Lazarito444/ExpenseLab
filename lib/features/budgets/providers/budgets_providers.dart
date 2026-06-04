@@ -38,3 +38,20 @@ final budgetByIdProvider = StreamProvider.family<Budget?, String>((ref, id) {
 final budgetsByCategoryProvider = StreamProvider.family<List<Budget>, String>((ref, categoryId) {
   return ref.watch(budgetsRepositoryProvider).watchByCategoryId(categoryId);
 });
+
+/// Tracks the currently selected month for the budgets screen.
+/// Defaults to the current month (normalised to day 1).
+final selectedBudgetMonthProvider = NotifierProvider<SelectedBudgetMonthNotifier, DateTime>(
+  SelectedBudgetMonthNotifier.new,
+);
+
+class SelectedBudgetMonthNotifier extends Notifier<DateTime> {
+  @override
+  DateTime build() {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month);
+  }
+
+  void previous() => state = DateTime(state.year, state.month - 1);
+  void next() => state = DateTime(state.year, state.month + 1);
+}

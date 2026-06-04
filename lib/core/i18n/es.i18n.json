@@ -6,6 +6,7 @@
     "save": "Guardar",
     "cancel": "Cancelar",
     "delete": "Eliminar",
+    "edit": "Editar",
     "error": "Error",
     "see_all": "Ver Todo",
     "preview": "Vista Previa",
@@ -134,6 +135,47 @@
       "amount_required": "Por favor ingresa un monto",
       "amount_invalid": "Por favor ingresa un monto válido",
       "success": "¡Contribución agregada!"
+    }
+  },
+  "budgets": {
+    "title": "Presupuestos Mensuales",
+    "subtitle": "Controla tus gastos por categoría",
+    "no_budgets": "Sin presupuestos aún",
+    "no_budgets_subtitle": "Toca + para crear tu primer presupuesto",
+    "categories": "Categorías",
+    "total_spent": "TOTAL GASTADO",
+    "remaining": "RESTANTE",
+    "on_track": "En buen camino",
+    "almost": "Casi",
+    "over_budget": "Excedido",
+    "of_limit": "{pct}% del límite de {limit}",
+    "of_amount": "de {amount}",
+    "over_by": "Excedido por {amount}",
+    "transaction_count": {
+      "one": "1 transacción",
+      "other": "$n transacciones"
+    },
+    "create": {
+      "title": "Nuevo Presupuesto",
+      "category": "Categoría",
+      "select_category": "Seleccionar categoría",
+      "currency": "Moneda",
+      "amount": "Monto",
+      "create_button": "Crear presupuesto",
+      "category_required": "Por favor selecciona una categoría",
+      "amount_required": "Por favor ingresa un monto de presupuesto",
+      "amount_invalid": "Por favor ingresa un monto válido",
+      "success": "¡Presupuesto creado con éxito!"
+    },
+    "edit": {
+      "title": "Editar presupuesto",
+      "edit_button": "Editar presupuesto",
+      "delete_button": "Eliminar presupuesto",
+      "delete_title": "Eliminar presupuesto",
+      "delete_message": "¿Estás seguro de que deseas eliminar este presupuesto? Esta acción no se puede deshacer.",
+      "error_loading": "Error al cargar el presupuesto",
+      "success_update": "¡Presupuesto actualizado con éxito!",
+      "success_delete": "¡Presupuesto eliminado con éxito!"
     }
   },
   "currencies(map)": {

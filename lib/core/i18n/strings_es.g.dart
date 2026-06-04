@@ -45,6 +45,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsNavEs nav = _TranslationsNavEs._(_root);
 	@override late final _TranslationsSettingsEs settings = _TranslationsSettingsEs._(_root);
 	@override late final _TranslationsGoalsEs goals = _TranslationsGoalsEs._(_root);
+	@override late final _TranslationsBudgetsEs budgets = _TranslationsBudgetsEs._(_root);
 	@override Map<String, String> get currencies => {
 		'USD': 'Dólar estadounidense',
 		'EUR': 'Euro',
@@ -93,6 +94,7 @@ class _TranslationsCommonEs extends TranslationsCommonEn {
 	@override String get save => 'Guardar';
 	@override String get cancel => 'Cancelar';
 	@override String get delete => 'Eliminar';
+	@override String get edit => 'Editar';
 	@override String get error => 'Error';
 	@override String get see_all => 'Ver Todo';
 	@override String get preview => 'Vista Previa';
@@ -174,6 +176,34 @@ class _TranslationsGoalsEs extends TranslationsGoalsEn {
 	@override late final _TranslationsGoalsEditEs edit = _TranslationsGoalsEditEs._(_root);
 	@override late final _TranslationsGoalsDetailsEs details = _TranslationsGoalsDetailsEs._(_root);
 	@override late final _TranslationsGoalsContributionEs contribution = _TranslationsGoalsContributionEs._(_root);
+}
+
+// Path: budgets
+class _TranslationsBudgetsEs extends TranslationsBudgetsEn {
+	_TranslationsBudgetsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Presupuestos Mensuales';
+	@override String get subtitle => 'Controla tus gastos por categoría';
+	@override String get no_budgets => 'Sin presupuestos aún';
+	@override String get no_budgets_subtitle => 'Toca + para crear tu primer presupuesto';
+	@override String get categories => 'Categorías';
+	@override String get total_spent => 'TOTAL GASTADO';
+	@override String get remaining => 'RESTANTE';
+	@override String get on_track => 'En buen camino';
+	@override String get almost => 'Casi';
+	@override String get over_budget => 'Excedido';
+	@override String get of_limit => '{pct}% del límite de {limit}';
+	@override String get of_amount => 'de {amount}';
+	@override String get over_by => 'Excedido por {amount}';
+	@override String transaction_count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n,
+		one: '1 transacción',
+		other: '${n} transacciones',
+	);
+	@override late final _TranslationsBudgetsCreateEs create = _TranslationsBudgetsCreateEs._(_root);
+	@override late final _TranslationsBudgetsEditEs edit = _TranslationsBudgetsEditEs._(_root);
 }
 
 // Path: accounts
@@ -434,6 +464,42 @@ class _TranslationsGoalsContributionEs extends TranslationsGoalsContributionEn {
 	@override String get success => '¡Contribución agregada!';
 }
 
+// Path: budgets.create
+class _TranslationsBudgetsCreateEs extends TranslationsBudgetsCreateEn {
+	_TranslationsBudgetsCreateEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Nuevo Presupuesto';
+	@override String get category => 'Categoría';
+	@override String get select_category => 'Seleccionar categoría';
+	@override String get currency => 'Moneda';
+	@override String get amount => 'Monto';
+	@override String get create_button => 'Crear presupuesto';
+	@override String get category_required => 'Por favor selecciona una categoría';
+	@override String get amount_required => 'Por favor ingresa un monto de presupuesto';
+	@override String get amount_invalid => 'Por favor ingresa un monto válido';
+	@override String get success => '¡Presupuesto creado con éxito!';
+}
+
+// Path: budgets.edit
+class _TranslationsBudgetsEditEs extends TranslationsBudgetsEditEn {
+	_TranslationsBudgetsEditEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Editar presupuesto';
+	@override String get edit_button => 'Editar presupuesto';
+	@override String get delete_button => 'Eliminar presupuesto';
+	@override String get delete_title => 'Eliminar presupuesto';
+	@override String get delete_message => '¿Estás seguro de que deseas eliminar este presupuesto? Esta acción no se puede deshacer.';
+	@override String get error_loading => 'Error al cargar el presupuesto';
+	@override String get success_update => '¡Presupuesto actualizado con éxito!';
+	@override String get success_delete => '¡Presupuesto eliminado con éxito!';
+}
+
 // Path: accounts.create
 class _TranslationsAccountsCreateEs extends TranslationsAccountsCreateEn {
 	_TranslationsAccountsCreateEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -515,6 +581,7 @@ extension on TranslationsEs {
 			'common.save' => 'Guardar',
 			'common.cancel' => 'Cancelar',
 			'common.delete' => 'Eliminar',
+			'common.edit' => 'Editar',
 			'common.error' => 'Error',
 			'common.see_all' => 'Ver Todo',
 			'common.preview' => 'Vista Previa',
@@ -608,6 +675,38 @@ extension on TranslationsEs {
 			'goals.contribution.amount_required' => 'Por favor ingresa un monto',
 			'goals.contribution.amount_invalid' => 'Por favor ingresa un monto válido',
 			'goals.contribution.success' => '¡Contribución agregada!',
+			'budgets.title' => 'Presupuestos Mensuales',
+			'budgets.subtitle' => 'Controla tus gastos por categoría',
+			'budgets.no_budgets' => 'Sin presupuestos aún',
+			'budgets.no_budgets_subtitle' => 'Toca + para crear tu primer presupuesto',
+			'budgets.categories' => 'Categorías',
+			'budgets.total_spent' => 'TOTAL GASTADO',
+			'budgets.remaining' => 'RESTANTE',
+			'budgets.on_track' => 'En buen camino',
+			'budgets.almost' => 'Casi',
+			'budgets.over_budget' => 'Excedido',
+			'budgets.of_limit' => '{pct}% del límite de {limit}',
+			'budgets.of_amount' => 'de {amount}',
+			'budgets.over_by' => 'Excedido por {amount}',
+			'budgets.transaction_count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '1 transacción', other: '${n} transacciones', ), 
+			'budgets.create.title' => 'Nuevo Presupuesto',
+			'budgets.create.category' => 'Categoría',
+			'budgets.create.select_category' => 'Seleccionar categoría',
+			'budgets.create.currency' => 'Moneda',
+			'budgets.create.amount' => 'Monto',
+			'budgets.create.create_button' => 'Crear presupuesto',
+			'budgets.create.category_required' => 'Por favor selecciona una categoría',
+			'budgets.create.amount_required' => 'Por favor ingresa un monto de presupuesto',
+			'budgets.create.amount_invalid' => 'Por favor ingresa un monto válido',
+			'budgets.create.success' => '¡Presupuesto creado con éxito!',
+			'budgets.edit.title' => 'Editar presupuesto',
+			'budgets.edit.edit_button' => 'Editar presupuesto',
+			'budgets.edit.delete_button' => 'Eliminar presupuesto',
+			'budgets.edit.delete_title' => 'Eliminar presupuesto',
+			'budgets.edit.delete_message' => '¿Estás seguro de que deseas eliminar este presupuesto? Esta acción no se puede deshacer.',
+			'budgets.edit.error_loading' => 'Error al cargar el presupuesto',
+			'budgets.edit.success_update' => '¡Presupuesto actualizado con éxito!',
+			'budgets.edit.success_delete' => '¡Presupuesto eliminado con éxito!',
 			'currencies.USD' => 'Dólar estadounidense',
 			'currencies.EUR' => 'Euro',
 			'currencies.GBP' => 'Libra esterlina',

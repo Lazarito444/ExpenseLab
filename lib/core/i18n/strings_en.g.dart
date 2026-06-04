@@ -46,6 +46,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsNavEn nav = TranslationsNavEn.internal(_root);
 	late final TranslationsSettingsEn settings = TranslationsSettingsEn.internal(_root);
 	late final TranslationsGoalsEn goals = TranslationsGoalsEn.internal(_root);
+	late final TranslationsBudgetsEn budgets = TranslationsBudgetsEn.internal(_root);
 	Map<String, String> get currencies => {
 		'USD': 'US Dollar',
 		'EUR': 'Euro',
@@ -102,6 +103,9 @@ class TranslationsCommonEn {
 
 	/// en: 'Delete'
 	String get delete => 'Delete';
+
+	/// en: 'Edit'
+	String get edit => 'Edit';
 
 	/// en: 'Error'
 	String get error => 'Error';
@@ -251,6 +255,63 @@ class TranslationsGoalsEn {
 	late final TranslationsGoalsEditEn edit = TranslationsGoalsEditEn.internal(_root);
 	late final TranslationsGoalsDetailsEn details = TranslationsGoalsDetailsEn.internal(_root);
 	late final TranslationsGoalsContributionEn contribution = TranslationsGoalsContributionEn.internal(_root);
+}
+
+// Path: budgets
+class TranslationsBudgetsEn {
+	TranslationsBudgetsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Monthly Budgets'
+	String get title => 'Monthly Budgets';
+
+	/// en: 'Track your spending by category'
+	String get subtitle => 'Track your spending by category';
+
+	/// en: 'No budgets yet'
+	String get no_budgets => 'No budgets yet';
+
+	/// en: 'Tap + to create your first budget'
+	String get no_budgets_subtitle => 'Tap + to create your first budget';
+
+	/// en: 'Categories'
+	String get categories => 'Categories';
+
+	/// en: 'TOTAL SPENT'
+	String get total_spent => 'TOTAL SPENT';
+
+	/// en: 'REMAINING'
+	String get remaining => 'REMAINING';
+
+	/// en: 'On track'
+	String get on_track => 'On track';
+
+	/// en: 'Almost'
+	String get almost => 'Almost';
+
+	/// en: 'Over budget'
+	String get over_budget => 'Over budget';
+
+	/// en: '{pct}% of {limit} limit'
+	String get of_limit => '{pct}% of {limit} limit';
+
+	/// en: 'of {amount}'
+	String get of_amount => 'of {amount}';
+
+	/// en: 'Over by {amount}'
+	String get over_by => 'Over by {amount}';
+
+	/// en: '(one) {1 transaction} (other) {$n transactions}'
+	String transaction_count({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
+		one: '1 transaction',
+		other: '${n} transactions',
+	);
+
+	late final TranslationsBudgetsCreateEn create = TranslationsBudgetsCreateEn.internal(_root);
+	late final TranslationsBudgetsEditEn edit = TranslationsBudgetsEditEn.internal(_root);
 }
 
 // Path: accounts
@@ -738,6 +799,78 @@ class TranslationsGoalsContributionEn {
 	String get success => 'Contribution added';
 }
 
+// Path: budgets.create
+class TranslationsBudgetsCreateEn {
+	TranslationsBudgetsCreateEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'New Budget'
+	String get title => 'New Budget';
+
+	/// en: 'Category'
+	String get category => 'Category';
+
+	/// en: 'Select Category'
+	String get select_category => 'Select Category';
+
+	/// en: 'Currency'
+	String get currency => 'Currency';
+
+	/// en: 'Amount'
+	String get amount => 'Amount';
+
+	/// en: 'Create Budget'
+	String get create_button => 'Create Budget';
+
+	/// en: 'Please select a category'
+	String get category_required => 'Please select a category';
+
+	/// en: 'Please enter a budget amount'
+	String get amount_required => 'Please enter a budget amount';
+
+	/// en: 'Please enter a valid amount'
+	String get amount_invalid => 'Please enter a valid amount';
+
+	/// en: 'Budget created successfully'
+	String get success => 'Budget created successfully';
+}
+
+// Path: budgets.edit
+class TranslationsBudgetsEditEn {
+	TranslationsBudgetsEditEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Edit Budget'
+	String get title => 'Edit Budget';
+
+	/// en: 'Edit Budget'
+	String get edit_button => 'Edit Budget';
+
+	/// en: 'Delete Budget'
+	String get delete_button => 'Delete Budget';
+
+	/// en: 'Delete Budget'
+	String get delete_title => 'Delete Budget';
+
+	/// en: 'Are you sure you want to delete this budget? This action cannot be undone.'
+	String get delete_message => 'Are you sure you want to delete this budget? This action cannot be undone.';
+
+	/// en: 'Error loading budget'
+	String get error_loading => 'Error loading budget';
+
+	/// en: 'Budget updated successfully'
+	String get success_update => 'Budget updated successfully';
+
+	/// en: 'Budget deleted successfully'
+	String get success_delete => 'Budget deleted successfully';
+}
+
 // Path: accounts.create
 class TranslationsAccountsCreateEn {
 	TranslationsAccountsCreateEn.internal(this._root);
@@ -885,6 +1018,7 @@ extension on Translations {
 			'common.save' => 'Save',
 			'common.cancel' => 'Cancel',
 			'common.delete' => 'Delete',
+			'common.edit' => 'Edit',
 			'common.error' => 'Error',
 			'common.see_all' => 'See All',
 			'common.preview' => 'Preview',
@@ -978,6 +1112,38 @@ extension on Translations {
 			'goals.contribution.amount_required' => 'Please enter an amount',
 			'goals.contribution.amount_invalid' => 'Please enter a valid amount',
 			'goals.contribution.success' => 'Contribution added',
+			'budgets.title' => 'Monthly Budgets',
+			'budgets.subtitle' => 'Track your spending by category',
+			'budgets.no_budgets' => 'No budgets yet',
+			'budgets.no_budgets_subtitle' => 'Tap + to create your first budget',
+			'budgets.categories' => 'Categories',
+			'budgets.total_spent' => 'TOTAL SPENT',
+			'budgets.remaining' => 'REMAINING',
+			'budgets.on_track' => 'On track',
+			'budgets.almost' => 'Almost',
+			'budgets.over_budget' => 'Over budget',
+			'budgets.of_limit' => '{pct}% of {limit} limit',
+			'budgets.of_amount' => 'of {amount}',
+			'budgets.over_by' => 'Over by {amount}',
+			'budgets.transaction_count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '1 transaction', other: '${n} transactions', ), 
+			'budgets.create.title' => 'New Budget',
+			'budgets.create.category' => 'Category',
+			'budgets.create.select_category' => 'Select Category',
+			'budgets.create.currency' => 'Currency',
+			'budgets.create.amount' => 'Amount',
+			'budgets.create.create_button' => 'Create Budget',
+			'budgets.create.category_required' => 'Please select a category',
+			'budgets.create.amount_required' => 'Please enter a budget amount',
+			'budgets.create.amount_invalid' => 'Please enter a valid amount',
+			'budgets.create.success' => 'Budget created successfully',
+			'budgets.edit.title' => 'Edit Budget',
+			'budgets.edit.edit_button' => 'Edit Budget',
+			'budgets.edit.delete_button' => 'Delete Budget',
+			'budgets.edit.delete_title' => 'Delete Budget',
+			'budgets.edit.delete_message' => 'Are you sure you want to delete this budget? This action cannot be undone.',
+			'budgets.edit.error_loading' => 'Error loading budget',
+			'budgets.edit.success_update' => 'Budget updated successfully',
+			'budgets.edit.success_delete' => 'Budget deleted successfully',
 			'currencies.USD' => 'US Dollar',
 			'currencies.EUR' => 'Euro',
 			'currencies.GBP' => 'British Pound',

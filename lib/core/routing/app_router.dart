@@ -3,6 +3,8 @@ import 'package:expenselab/features/accounts/presentation/screens/accounts_scree
 import 'package:expenselab/features/accounts/presentation/screens/create_account_screen.dart';
 import 'package:expenselab/features/accounts/presentation/screens/edit_account_screen.dart';
 import 'package:expenselab/features/budgets/presentation/screens/budgets_screen.dart';
+import 'package:expenselab/features/budgets/presentation/screens/create_budget_screen.dart';
+import 'package:expenselab/features/budgets/presentation/screens/edit_budget_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/categories_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/category_details_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/create_category_screen.dart';
@@ -36,6 +38,16 @@ final routerConfig = GoRouter(
           builder: (context, state) => const GoalsScreen(),
         ),
       ],
+    ),
+    GoRoute(
+      path: AppRoutes.budgetsCreate,
+      builder: (context, state) => const CreateBudgetScreen(),
+    ),
+    GoRoute(
+      path: '/budgets/:id/edit',
+      builder: (context, state) => EditBudgetScreen(
+        budgetId: state.pathParameters['id']!,
+      ),
     ),
     GoRoute(
       path: AppRoutes.goalsCreate,

@@ -46,14 +46,27 @@ class CategoriesLocalDataSourceImpl implements CategoriesLocalDataSource {
   Future<void> update(String id, CategoriesCompanion data) => (_db.update(_db.categories)..where((t) => t.id.equals(id))).write(data.copyWith(updatedAt: Value(DateTime.now().toUtc())));
 
   @override
-  Future<void> delete(String id) {
+  Future<void> delete(String id) => _db.transaction(() async {
     final now = DateTime.now().toUtc();
-    return (_db.update(_db.categories)..where((t) => t.id.equals(id))).write(
-      CategoriesCompanion(
+    final softDelete = CategoriesCompanion(
+      isDeleted: const Value(true),
+      deletedAt: Value(now),
+      updatedAt: Value(now),
+    );
+
+    // Cascade: soft-delete all subcategories of this category.
+    await (_db.update(_db.categories)..where((t) => t.parentId.equals(id))).write(softDelete);
+
+    // Cascade: soft-delete all budgets linked to this category.
+    await (_db.update(_db.budgets)..where((t) => t.categoryId.equals(id))).write(
+      BudgetsCompanion(
         isDeleted: const Value(true),
         deletedAt: Value(now),
         updatedAt: Value(now),
       ),
     );
-  }
+
+    // Soft-delete the category itself.
+    await (_db.update(_db.categories)..where((t) => t.id.equals(id))).write(softDelete);
+  });
 }
