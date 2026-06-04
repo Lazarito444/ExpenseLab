@@ -147,6 +147,7 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 	@override late final _TranslationsSettingsThemeEs theme = _TranslationsSettingsThemeEs._(_root);
 	@override late final _TranslationsSettingsLanguageEs language = _TranslationsSettingsLanguageEs._(_root);
 	@override late final _TranslationsSettingsDefaultCurrencyEs default_currency = _TranslationsSettingsDefaultCurrencyEs._(_root);
+	@override late final _TranslationsSettingsDefaultHomeViewEs default_home_view = _TranslationsSettingsDefaultHomeViewEs._(_root);
 	@override late final _TranslationsSettingsAccountsEs accounts = _TranslationsSettingsAccountsEs._(_root);
 	@override late final _TranslationsSettingsCategoriesEs categories = _TranslationsSettingsCategoriesEs._(_root);
 }
@@ -300,6 +301,18 @@ class _TranslationsSettingsDefaultCurrencyEs extends TranslationsSettingsDefault
 
 	// Translations
 	@override String get title => 'Moneda predeterminada';
+}
+
+// Path: settings.default_home_view
+class _TranslationsSettingsDefaultHomeViewEs extends TranslationsSettingsDefaultHomeViewEn {
+	_TranslationsSettingsDefaultHomeViewEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Vista de inicio predeterminada';
+	@override String get dashboard => 'Panel';
+	@override String get calendar => 'Calendario';
 }
 
 // Path: settings.accounts
@@ -482,6 +495,9 @@ extension on TranslationsEs {
 			'settings.theme.dark' => 'Oscuro',
 			'settings.language.title' => 'Idioma',
 			'settings.default_currency.title' => 'Moneda predeterminada',
+			'settings.default_home_view.title' => 'Vista de inicio predeterminada',
+			'settings.default_home_view.dashboard' => 'Panel',
+			'settings.default_home_view.calendar' => 'Calendario',
 			'settings.accounts.title' => 'Cuentas',
 			'settings.categories.title' => 'Categorías',
 			'goals.title' => 'Metas de ahorro',

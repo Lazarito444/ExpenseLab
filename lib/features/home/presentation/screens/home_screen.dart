@@ -65,20 +65,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isCalendarView = ref.watch(homeIsCalendarProvider);
+    final isCalendarAsync = ref.watch(homeIsCalendarProvider);
 
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 250),
-      transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
-      child: isCalendarView
-          ? _CalendarView(
-              key: const ValueKey('calendar'),
-              calendarMonth: _calendarMonth,
-              selectedDay: _selectedDay,
-              onMonthChanged: (m) => setState(() => _calendarMonth = m),
-              onDaySelected: (d) => setState(() => _selectedDay = d),
-            )
-          : const _DashboardView(key: ValueKey('dashboard')),
+    return isCalendarAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (_, _) => const _DashboardView(key: ValueKey('dashboard')),
+      data: (isCalendarView) => AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        transitionBuilder: (child, animation) =>
+            FadeTransition(opacity: animation, child: child),
+        child: isCalendarView
+            ? _CalendarView(
+                key: const ValueKey('calendar'),
+                calendarMonth: _calendarMonth,
+                selectedDay: _selectedDay,
+                onMonthChanged: (m) => setState(() => _calendarMonth = m),
+                onDaySelected: (d) => setState(() => _selectedDay = d),
+              )
+            : const _DashboardView(key: ValueKey('dashboard')),
+      ),
     );
   }
 }

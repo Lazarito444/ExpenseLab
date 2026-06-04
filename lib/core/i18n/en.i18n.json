@@ -48,6 +48,11 @@
     "default_currency": {
       "title": "Default Currency"
     },
+    "default_home_view": {
+      "title": "Default Home View",
+      "dashboard": "Dashboard",
+      "calendar": "Calendar"
+    },
     "accounts": {
       "title": "Accounts"
     },

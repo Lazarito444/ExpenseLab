@@ -205,6 +205,7 @@ class TranslationsSettingsEn {
 	late final TranslationsSettingsThemeEn theme = TranslationsSettingsThemeEn.internal(_root);
 	late final TranslationsSettingsLanguageEn language = TranslationsSettingsLanguageEn.internal(_root);
 	late final TranslationsSettingsDefaultCurrencyEn default_currency = TranslationsSettingsDefaultCurrencyEn.internal(_root);
+	late final TranslationsSettingsDefaultHomeViewEn default_home_view = TranslationsSettingsDefaultHomeViewEn.internal(_root);
 	late final TranslationsSettingsAccountsEn accounts = TranslationsSettingsAccountsEn.internal(_root);
 	late final TranslationsSettingsCategoriesEn categories = TranslationsSettingsCategoriesEn.internal(_root);
 }
@@ -510,6 +511,24 @@ class TranslationsSettingsDefaultCurrencyEn {
 
 	/// en: 'Default Currency'
 	String get title => 'Default Currency';
+}
+
+// Path: settings.default_home_view
+class TranslationsSettingsDefaultHomeViewEn {
+	TranslationsSettingsDefaultHomeViewEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Default Home View'
+	String get title => 'Default Home View';
+
+	/// en: 'Dashboard'
+	String get dashboard => 'Dashboard';
+
+	/// en: 'Calendar'
+	String get calendar => 'Calendar';
 }
 
 // Path: settings.accounts
@@ -824,6 +843,9 @@ extension on Translations {
 			'settings.theme.dark' => 'Dark',
 			'settings.language.title' => 'Language',
 			'settings.default_currency.title' => 'Default Currency',
+			'settings.default_home_view.title' => 'Default Home View',
+			'settings.default_home_view.dashboard' => 'Dashboard',
+			'settings.default_home_view.calendar' => 'Calendar',
 			'settings.accounts.title' => 'Accounts',
 			'settings.categories.title' => 'Categories',
 			'goals.title' => 'Savings Goals',

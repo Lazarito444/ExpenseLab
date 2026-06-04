@@ -31,7 +31,7 @@ class ExpenseLabAppBar extends ConsumerWidget implements PreferredSizeWidget {
     if (actions == null) {
       final location = GoRouterState.of(context).matchedLocation;
       if (location == AppRoutes.home) {
-        final isCalendar = ref.watch(homeIsCalendarProvider);
+        final isCalendar = ref.watch(homeIsCalendarProvider).value ?? false;
         effectiveActions = [
           IconButton(
             icon: Icon(

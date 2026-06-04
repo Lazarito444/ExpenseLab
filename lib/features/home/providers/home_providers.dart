@@ -1,19 +1,33 @@
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
+import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
 import 'package:expenselab/features/transactions/providers/transactions_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Tracks whether the home screen is in calendar view (true) or dashboard (false).
-class HomeCalendarNotifier extends Notifier<bool> {
-  @override
-  bool build() => false;
+///
+/// Awaits [settingsProvider] on first build so the correct view is shown
+/// immediately — no flash of the wrong view while SharedPreferences loads.
+/// Mid-session toggles are remembered via [_sessionOverride] so that changing
+/// other settings (currency, theme, etc.) does not reset the current view.
+class HomeCalendarNotifier extends AsyncNotifier<bool> {
+  bool? _sessionOverride;
 
-  void toggle() => state = !state;
+  @override
+  Future<bool> build() async {
+    final settings = await ref.watch(settingsProvider.future);
+    return _sessionOverride ?? settings.defaultHomeIsCalendar;
+  }
+
+  void toggle() {
+    _sessionOverride = !(state.value ?? false);
+    state = AsyncData(_sessionOverride!);
+  }
 }
 
 final homeIsCalendarProvider =
-    NotifierProvider<HomeCalendarNotifier, bool>(HomeCalendarNotifier.new);
+    AsyncNotifierProvider<HomeCalendarNotifier, bool>(HomeCalendarNotifier.new);
 
 ({DateTime start, DateTime end}) _thisMonthRange() {
   final now = DateTime.now();

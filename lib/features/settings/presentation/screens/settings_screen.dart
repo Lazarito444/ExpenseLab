@@ -4,6 +4,7 @@ import 'package:expenselab/features/accounts/presentation/screens/accounts_scree
 import 'package:expenselab/features/categories/presentation/screens/categories_screen.dart';
 import 'package:expenselab/features/settings/domain/models/app_settings.dart';
 import 'package:expenselab/features/settings/presentation/screens/currency_selection_screen.dart';
+import 'package:expenselab/features/settings/presentation/screens/home_view_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/language_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/theme_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/widgets/settings_widgets.dart';
@@ -24,6 +25,8 @@ class SettingsScreen extends ConsumerWidget {
     final AsyncValue<AppSettings> settingsAsync = ref.watch(settingsProvider);
     final AppLocale currentLocale = settingsAsync.value?.locale ?? AppLocale.en;
     final currency = ref.watch(currencyProvider);
+    final bool defaultHomeIsCalendar =
+        settingsAsync.value?.defaultHomeIsCalendar ?? false;
 
     final String currentThemeLabel = switch (themeMode) {
       ThemeMode.system => t.settings.theme.system,
@@ -96,6 +99,21 @@ class SettingsScreen extends ConsumerWidget {
                         context,
                         MaterialPageRoute<void>(
                           builder: (_) => const CurrencySelectionScreen(),
+                        ),
+                      ),
+                    ),
+                    buildNavTile(
+                      context: context,
+                      label: t.settings.default_home_view.title,
+                      currentValue: defaultHomeIsCalendar
+                          ? t.settings.default_home_view.calendar
+                          : t.settings.default_home_view.dashboard,
+                      icon: Icons.home_outlined,
+                      isDark: isDark,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (_) => const HomeViewSelectionScreen(),
                         ),
                       ),
                     ),

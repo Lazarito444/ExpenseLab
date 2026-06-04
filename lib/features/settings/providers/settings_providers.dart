@@ -34,6 +34,13 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
     await prefs.setString('settings_currency_code', currency.code);
     state = AsyncData(current.copyWith(currency: currency));
   }
+
+  Future<void> setDefaultHomeView(bool isCalendar) async {
+    final current = state.requireValue;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('settings_default_home_view', isCalendar);
+    state = AsyncData(current.copyWith(defaultHomeIsCalendar: isCalendar));
+  }
 }
 
 final settingsProvider = AsyncNotifierProvider<SettingsNotifier, AppSettings>(

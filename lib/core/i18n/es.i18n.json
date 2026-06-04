@@ -48,6 +48,11 @@
     "default_currency": {
       "title": "Moneda predeterminada"
     },
+    "default_home_view": {
+      "title": "Vista de inicio predeterminada",
+      "dashboard": "Panel",
+      "calendar": "Calendario"
+    },
     "accounts": {
       "title": "Cuentas"
     },
