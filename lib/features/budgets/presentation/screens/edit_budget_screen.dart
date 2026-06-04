@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
+import 'package:expenselab/features/budgets/domain/models/budget_model.dart';
 import 'package:expenselab/core/formatters/currency_input_formatter.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
@@ -66,7 +67,7 @@ class EditBudgetScreen extends ConsumerWidget {
 class _EditBudgetForm extends ConsumerStatefulWidget {
   const _EditBudgetForm({required this.budget});
 
-  final Budget budget;
+  final BudgetModel budget;
 
   @override
   ConsumerState<_EditBudgetForm> createState() => _EditBudgetFormState();

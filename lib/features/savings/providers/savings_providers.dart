@@ -1,4 +1,3 @@
-import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/features/savings/data/datasources/savings_contributions_local_datasource.dart';
 import 'package:expenselab/features/savings/data/datasources/savings_contributions_local_datasource_impl.dart';
@@ -6,6 +5,8 @@ import 'package:expenselab/features/savings/data/datasources/savings_goals_local
 import 'package:expenselab/features/savings/data/datasources/savings_goals_local_datasource_impl.dart';
 import 'package:expenselab/features/savings/data/repositories/savings_contributions_repository.dart';
 import 'package:expenselab/features/savings/data/repositories/savings_goals_repository.dart';
+import 'package:expenselab/features/savings/domain/models/savings_contribution_model.dart';
+import 'package:expenselab/features/savings/domain/models/savings_goal_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ── Savings Goals ─────────────────────────────────────────────────────────────
@@ -23,18 +24,18 @@ final savingsGoalsRepositoryProvider = Provider<SavingsGoalsRepository>((ref) {
   return SavingsGoalsRepository(ref.watch(savingsGoalsLocalDataSourceProvider));
 });
 
-/// Streams all non-deleted [SavingsGoal] records. Automatically re-emits
-/// whenever the underlying table changes.
+/// Streams all non-deleted [SavingsGoalModel] records. Automatically
+/// re-emits whenever the underlying table changes.
 ///
 /// Usage: `ref.watch(savingsGoalsProvider)` returns
-/// `AsyncValue<List<SavingsGoal>>`.
-final savingsGoalsProvider = StreamProvider<List<SavingsGoal>>((ref) {
+/// `AsyncValue<List<SavingsGoalModel>>`.
+final savingsGoalsProvider = StreamProvider<List<SavingsGoalModel>>((ref) {
   return ref.watch(savingsGoalsRepositoryProvider).watchAll();
 });
 
-/// Streams a single [SavingsGoal] by [id], or `null` if not found or
+/// Streams a single [SavingsGoalModel] by [id], or `null` if not found or
 /// soft-deleted. Re-emits whenever the record changes.
-final savingsGoalByIdProvider = StreamProvider.family<SavingsGoal?, String>((ref, id) {
+final savingsGoalByIdProvider = StreamProvider.family<SavingsGoalModel?, String>((ref, id) {
   return ref.watch(savingsGoalsRepositoryProvider).watchById(id);
 });
 
@@ -54,19 +55,19 @@ final savingsContributionsRepositoryProvider = Provider<SavingsContributionsRepo
   return SavingsContributionsRepository(ref.watch(savingsContributionsLocalDataSourceProvider));
 });
 
-/// Streams all non-deleted [SavingsContribution] records. Automatically
+/// Streams all non-deleted [SavingsContributionModel] records. Automatically
 /// re-emits whenever the underlying table changes.
 ///
 /// Usage: `ref.watch(savingsContributionsProvider)` returns
-/// `AsyncValue<List<SavingsContribution>>`.
-final savingsContributionsProvider = StreamProvider<List<SavingsContribution>>((ref) {
+/// `AsyncValue<List<SavingsContributionModel>>`.
+final savingsContributionsProvider = StreamProvider<List<SavingsContributionModel>>((ref) {
   return ref.watch(savingsContributionsRepositoryProvider).watchAll();
 });
 
-/// Streams all non-deleted contributions for [goalId]. Re-emits on every
-/// change.
+/// Streams all non-deleted contributions for [goalId] as
+/// [SavingsContributionModel]. Re-emits on every change.
 ///
 /// Usage: `ref.watch(contributionsByGoalProvider('goal-id'))`.
-final contributionsByGoalProvider = StreamProvider.family<List<SavingsContribution>, String>((ref, goalId) {
+final contributionsByGoalProvider = StreamProvider.family<List<SavingsContributionModel>, String>((ref, goalId) {
   return ref.watch(savingsContributionsRepositoryProvider).watchByGoalId(goalId);
 });

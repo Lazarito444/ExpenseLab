@@ -6,6 +6,7 @@ import 'package:expenselab/features/transactions/data/datasources/transactions_l
 import 'package:expenselab/features/transactions/data/datasources/transactions_local_datasource_impl.dart';
 import 'package:expenselab/features/transactions/data/repositories/transaction_images_repository.dart';
 import 'package:expenselab/features/transactions/data/repositories/transactions_repository.dart';
+import 'package:expenselab/features/transactions/domain/models/transaction_image_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ── Transactions ──────────────────────────────────────────────────────────────
@@ -60,10 +61,10 @@ final transactionImagesRepositoryProvider = Provider<TransactionImagesRepository
   return TransactionImagesRepository(ref.watch(transactionImagesLocalDataSourceProvider));
 });
 
-/// Streams all [TransactionImage] records associated with [transactionId].
+/// Streams all [TransactionImageModel] records associated with [transactionId].
 /// Re-emits on every change.
 ///
 /// Usage: `ref.watch(transactionImagesByTransactionProvider('tx-id'))`.
-final transactionImagesByTransactionProvider = StreamProvider.family<List<TransactionImage>, String>((ref, transactionId) {
+final transactionImagesByTransactionProvider = StreamProvider.family<List<TransactionImageModel>, String>((ref, transactionId) {
   return ref.watch(transactionImagesRepositoryProvider).watchByTransactionId(transactionId);
 });

@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
+import 'package:expenselab/features/savings/domain/models/savings_goal_model.dart';
 import 'package:expenselab/core/formatters/currency_input_formatter.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/accounts/domain/models/account_model.dart';
@@ -65,7 +66,7 @@ class EditGoalScreen extends ConsumerWidget {
 class _EditGoalForm extends ConsumerStatefulWidget {
   const _EditGoalForm({required this.goal});
 
-  final SavingsGoal goal;
+  final SavingsGoalModel goal;
 
   @override
   ConsumerState<_EditGoalForm> createState() => _EditGoalFormState();

@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
+import 'package:expenselab/features/savings/domain/models/savings_contribution_model.dart';
+import 'package:expenselab/features/savings/domain/models/savings_goal_model.dart';
 import 'package:expenselab/core/formatters/currency_input_formatter.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/core/routing/app_routes.dart';
@@ -96,7 +98,7 @@ class _GoalDetailsBody extends ConsumerWidget {
     required this.goalId,
   });
 
-  final SavingsGoal goal;
+  final SavingsGoalModel goal;
   final Currency currency;
   final bool isDark;
   final String goalId;
@@ -108,7 +110,7 @@ class _GoalDetailsBody extends ConsumerWidget {
 
     final contribs = contribsAsync.maybeWhen(
       data: (list) => list..sort((a, b) => b.date.compareTo(a.date)),
-      orElse: () => <SavingsContribution>[],
+      orElse: () => <SavingsContributionModel>[],
     );
 
     final totalSaved = contribs.fold(0.0, (sum, c) => sum + c.amount);
@@ -190,7 +192,7 @@ class _GoalDetailsBody extends ConsumerWidget {
 
   void _showAddContributionSheet({
     required BuildContext context,
-    required SavingsGoal goal,
+    required SavingsGoalModel goal,
     required Currency currency,
     required bool isDark,
     required Translations t,
@@ -220,7 +222,7 @@ class _ProgressCard extends StatelessWidget {
     required this.t,
   });
 
-  final SavingsGoal goal;
+  final SavingsGoalModel goal;
   final double totalSaved;
   final double progress;
   final Currency currency;
@@ -441,7 +443,7 @@ class _ContributionTile extends StatelessWidget {
     required this.t,
   });
 
-  final SavingsContribution contribution;
+  final SavingsContributionModel contribution;
   final Currency currency;
   final bool isDark;
   final Translations t;
@@ -532,7 +534,7 @@ class _AddContributionSheet extends ConsumerStatefulWidget {
     required this.isDark,
   });
 
-  final SavingsGoal goal;
+  final SavingsGoalModel goal;
   final Currency currency;
   final bool isDark;
 
