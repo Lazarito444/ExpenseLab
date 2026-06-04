@@ -55,6 +55,64 @@
       "title": "Categorías"
     }
   },
+  "goals": {
+    "title": "Metas de ahorro",
+    "subtitle": "Tu progreso hacia la libertad financiera",
+    "total_saved": "TOTAL AHORRADO",
+    "target_reached": "{pct}% de la meta total alcanzada",
+    "no_goals": "Sin metas de ahorro aún",
+    "no_goals_subtitle": "Toca + para crear tu primera meta",
+    "view_details": "Ver Detalles",
+    "saved": "{amount} ahorrado",
+    "target": "Meta: {amount}",
+    "create": {
+      "title": "Nueva Meta",
+      "name": "Nombre de la Meta",
+      "name_hint": "ej., Vacaciones soñadas",
+      "target_amount": "Monto Objetivo",
+      "target_date": "Fecha Objetivo (Opcional)",
+      "source_account": "Cuenta Fuente",
+      "select_account": "Selecciona una cuenta",
+      "create_button": "Crear Meta",
+      "name_required": "Por favor ingresa un nombre para la meta",
+      "amount_required": "Por favor ingresa un monto objetivo",
+      "amount_invalid": "Por favor ingresa un monto válido",
+      "account_required": "Por favor selecciona una cuenta fuente",
+      "success": "¡Meta creada con éxito!"
+    },
+    "edit": {
+      "title": "Editar Meta",
+      "associated_account": "Cuenta Asociada",
+      "save_button": "Guardar Cambios",
+      "delete_button": "Eliminar Meta",
+      "delete_title": "Eliminar Meta",
+      "delete_message": "¿Estás seguro de que deseas eliminar esta meta? Esta acción no se puede deshacer.",
+      "error_loading": "Error al cargar la meta",
+      "success_update": "¡Meta actualizada con éxito!",
+      "success_delete": "¡Meta eliminada con éxito!"
+    },
+    "details": {
+      "saved_label": "TOTAL AHORRADO",
+      "target_label": "META",
+      "deadline": "Fecha límite: {date}",
+      "no_deadline": "Sin fecha límite",
+      "contributions_title": "Contribuciones",
+      "no_contributions": "Sin contribuciones aún",
+      "no_contributions_subtitle": "Toca + para registrar tu primera contribución",
+      "contribution_label": "Contribución"
+    },
+    "contribution": {
+      "add_title": "Agregar Contribución",
+      "amount": "Monto",
+      "date": "Fecha",
+      "note": "Nota (Opcional)",
+      "note_hint": "¿Para qué fue esto?",
+      "save_button": "Guardar Contribución",
+      "amount_required": "Por favor ingresa un monto",
+      "amount_invalid": "Por favor ingresa un monto válido",
+      "success": "¡Contribución agregada!"
+    }
+  },
   "currencies(map)": {
     "USD": "Dólar estadounidense",
     "EUR": "Euro",

@@ -1,0 +1,831 @@
+import 'package:drift/drift.dart' as drift;
+import 'package:expenselab/core/database/app_database.dart';
+import 'package:expenselab/core/extensions/context_extensions.dart';
+import 'package:expenselab/core/formatters/currency_input_formatter.dart';
+import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:expenselab/core/routing/app_routes.dart';
+import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
+import 'package:expenselab/features/savings/providers/savings_providers.dart';
+import 'package:expenselab/features/settings/domain/models/currency.dart';
+import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
+import 'package:expenselab/widgets/scaffold/expense_lab_app_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+
+// ── Entry point ───────────────────────────────────────────────────────────────
+
+class GoalDetailsScreen extends ConsumerWidget {
+  const GoalDetailsScreen({required this.goalId, super.key});
+
+  final String goalId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final t = context.t;
+    final goalAsync = ref.watch(savingsGoalByIdProvider(goalId));
+    final accountModels = ref.watch(accountModelsProvider);
+
+    return goalAsync.when(
+      loading: () => Scaffold(
+        backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+        appBar: _buildAppBar(context, null, t, goalId),
+        body: const Center(child: CircularProgressIndicator()),
+      ),
+      error: (e, _) => Scaffold(
+        appBar: _buildAppBar(context, null, t, goalId),
+        body: Center(child: Text(t.goals.edit.error_loading)),
+      ),
+      data: (goal) {
+        if (goal == null) {
+          return Scaffold(
+            appBar: _buildAppBar(context, null, t, goalId),
+            body: Center(child: Text(t.goals.edit.error_loading)),
+          );
+        }
+
+        final account = accountModels.where((a) => a.id == goal.sourceAccountId).firstOrNull;
+        final currency = account != null
+            ? kSupportedCurrencies.firstWhere(
+                (c) => c.code == account.currencyCode,
+                orElse: () => kUsdCurrency,
+              )
+            : kUsdCurrency;
+
+        return _GoalDetailsBody(
+          goal: goal,
+          currency: currency,
+          isDark: isDark,
+          goalId: goalId,
+        );
+      },
+    );
+  }
+
+  ExpenseLabAppBar _buildAppBar(
+    BuildContext context,
+    String? title,
+    Translations t,
+    String goalId,
+  ) {
+    return ExpenseLabAppBar(
+      title: title,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.colorScheme.primary),
+        onPressed: () => context.pop(),
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.edit_outlined, color: context.colorScheme.primary),
+          onPressed: () => context.push(AppRoutes.goalEdit(goalId)),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Main body (has access to loaded goal) ─────────────────────────────────────
+
+class _GoalDetailsBody extends ConsumerWidget {
+  const _GoalDetailsBody({
+    required this.goal,
+    required this.currency,
+    required this.isDark,
+    required this.goalId,
+  });
+
+  final SavingsGoal goal;
+  final Currency currency;
+  final bool isDark;
+  final String goalId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = context.t;
+    final contribsAsync = ref.watch(contributionsByGoalProvider(goalId));
+
+    final contribs = contribsAsync.maybeWhen(
+      data: (list) => list..sort((a, b) => b.date.compareTo(a.date)),
+      orElse: () => <SavingsContribution>[],
+    );
+
+    final totalSaved = contribs.fold(0.0, (sum, c) => sum + c.amount);
+    final progress = goal.targetAmount > 0 ? (totalSaved / goal.targetAmount).clamp(0.0, 1.0) : 0.0;
+
+    return Scaffold(
+      backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+      appBar: ExpenseLabAppBar(
+        title: goal.name,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.colorScheme.primary),
+          onPressed: () => context.pop(),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit_outlined, color: context.colorScheme.primary),
+            onPressed: () => context.push(AppRoutes.goalEdit(goalId)),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'goal_details_fab',
+        onPressed: () => _showAddContributionSheet(
+          context: context,
+          goal: goal,
+          currency: currency,
+          isDark: isDark,
+          t: t,
+        ),
+        backgroundColor: context.colorScheme.primary,
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add_rounded),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        children: [
+          // ── Progress card ──────────────────────────────────────────
+          _ProgressCard(
+            goal: goal,
+            totalSaved: totalSaved,
+            progress: progress,
+            currency: currency,
+            isDark: isDark,
+            t: t,
+          ),
+          const SizedBox(height: 24),
+
+          // ── Contributions header ───────────────────────────────────
+          Text(
+            t.goals.details.contributions_title,
+            style: TextStyle(
+              fontFamily: 'Epilogue',
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+              color: isDark ? Colors.white : const Color(0xFF0F1E36),
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // ── Contributions list ─────────────────────────────────────
+          if (contribs.isEmpty)
+            _EmptyContributions(isDark: isDark, t: t)
+          else
+            ...contribs.map(
+              (c) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: _ContributionTile(
+                  contribution: c,
+                  currency: currency,
+                  isDark: isDark,
+                  t: t,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _showAddContributionSheet({
+    required BuildContext context,
+    required SavingsGoal goal,
+    required Currency currency,
+    required bool isDark,
+    required Translations t,
+  }) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _AddContributionSheet(
+        goal: goal,
+        currency: currency,
+        isDark: isDark,
+      ),
+    );
+  }
+}
+
+// ── Progress card ─────────────────────────────────────────────────────────────
+
+class _ProgressCard extends StatelessWidget {
+  const _ProgressCard({
+    required this.goal,
+    required this.totalSaved,
+    required this.progress,
+    required this.currency,
+    required this.isDark,
+    required this.t,
+  });
+
+  final SavingsGoal goal;
+  final double totalSaved;
+  final double progress;
+  final Currency currency;
+  final bool isDark;
+  final Translations t;
+
+  @override
+  Widget build(BuildContext context) {
+    final pct = (progress * 100).floor();
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2420) : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: isDark
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.06),
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              // Left: saved + target
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      t.goals.details.saved_label,
+                      style: TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.1,
+                        color: context.colorScheme.outline,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      currency.format(totalSaved),
+                      style: TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontWeight: FontWeight.w800,
+                        fontSize: 28,
+                        color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      t.goals.target.replaceAll('{amount}', currency.format(goal.targetAmount)),
+                      style: TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontSize: 13,
+                        color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Right: donut
+              _DonutProgress(progress: progress, pct: pct, isDark: isDark),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Progress bar
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 8,
+              backgroundColor: context.colorScheme.primary.withValues(alpha: 0.12),
+              valueColor: AlwaysStoppedAnimation(context.colorScheme.primary),
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // Deadline row
+          Row(
+            children: [
+              Icon(
+                goal.targetDate != null ? Icons.event_rounded : Icons.event_busy_outlined,
+                size: 15,
+                color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                goal.targetDate != null
+                    ? t.goals.details.deadline.replaceAll(
+                        '{date}',
+                        DateFormat('MMM d, yyyy').format(goal.targetDate!),
+                      )
+                    : t.goals.details.no_deadline,
+                style: TextStyle(
+                  fontFamily: 'Epilogue',
+                  fontSize: 12,
+                  color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Donut progress ────────────────────────────────────────────────────────────
+
+class _DonutProgress extends StatelessWidget {
+  const _DonutProgress({
+    required this.progress,
+    required this.pct,
+    required this.isDark,
+  });
+
+  final double progress;
+  final int pct;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 88,
+      height: 88,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox.expand(
+            child: CircularProgressIndicator(
+              value: progress,
+              strokeWidth: 8,
+              backgroundColor: context.colorScheme.primary.withValues(alpha: 0.12),
+              valueColor: AlwaysStoppedAnimation(context.colorScheme.primary),
+              strokeCap: StrokeCap.round,
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '$pct%',
+                style: TextStyle(
+                  fontFamily: 'Epilogue',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Empty contributions state ─────────────────────────────────────────────────
+
+class _EmptyContributions extends StatelessWidget {
+  const _EmptyContributions({required this.isDark, required this.t});
+
+  final bool isDark;
+  final Translations t;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 32),
+      child: Column(
+        children: [
+          Icon(
+            Icons.savings_outlined,
+            size: 48,
+            color: context.colorScheme.primary.withValues(alpha: 0.3),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            t.goals.details.no_contributions,
+            style: TextStyle(
+              fontFamily: 'Epilogue',
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
+              color: isDark ? Colors.white70 : const Color(0xFF0F1E36),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            t.goals.details.no_contributions_subtitle,
+            style: TextStyle(
+              fontFamily: 'Epilogue',
+              fontSize: 13,
+              color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Contribution tile ─────────────────────────────────────────────────────────
+
+class _ContributionTile extends StatelessWidget {
+  const _ContributionTile({
+    required this.contribution,
+    required this.currency,
+    required this.isDark,
+    required this.t,
+  });
+
+  final SavingsContribution contribution;
+  final Currency currency;
+  final bool isDark;
+  final Translations t;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = (contribution.note?.isNotEmpty ?? false) ? contribution.note! : t.goals.details.contribution_label;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2420) : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: isDark
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.03),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: context.colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Icons.savings_rounded,
+              color: context.colorScheme.primary,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontFamily: 'Epilogue',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  DateFormat('MMM d, yyyy').format(contribution.date),
+                  style: TextStyle(
+                    fontFamily: 'Epilogue',
+                    fontSize: 12,
+                    color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            '+${currency.format(contribution.amount)}',
+            style: TextStyle(
+              fontFamily: 'Epilogue',
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+              color: Colors.green.shade600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Add Contribution bottom sheet ─────────────────────────────────────────────
+
+class _AddContributionSheet extends ConsumerStatefulWidget {
+  const _AddContributionSheet({
+    required this.goal,
+    required this.currency,
+    required this.isDark,
+  });
+
+  final SavingsGoal goal;
+  final Currency currency;
+  final bool isDark;
+
+  @override
+  ConsumerState<_AddContributionSheet> createState() => _AddContributionSheetState();
+}
+
+class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
+  final _formKey = GlobalKey<FormState>();
+  final _amountController = TextEditingController();
+  final _noteController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) return;
+    setState(() => _isLoading = true);
+    try {
+      final amount = double.tryParse(_amountController.text.replaceAll(',', '')) ?? 0.0;
+      await ref
+          .read(savingsContributionsRepositoryProvider)
+          .create(
+            SavingsContributionsCompanion(
+              savingsGoalId: drift.Value(widget.goal.id),
+              amount: drift.Value(amount),
+              date: drift.Value(_selectedDate),
+              note: drift.Value(
+                _noteController.text.trim().isEmpty ? null : _noteController.text.trim(),
+              ),
+            ),
+          );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.t.goals.contribution.success),
+            backgroundColor: const Color(0xFF2D6831),
+          ),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) setState(() => _selectedDate = picked);
+  }
+
+  InputDecoration _dec({String? hint, String? prefixText}) {
+    final isDark = widget.isDark;
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: TextStyle(
+        fontFamily: 'Epilogue',
+        fontSize: 14,
+        color: isDark ? Colors.white24 : const Color(0xFFBDBDBD),
+      ),
+      prefixText: prefixText,
+      prefixStyle: TextStyle(
+        fontFamily: 'Epilogue',
+        fontSize: 14,
+        color: isDark ? Colors.white70 : const Color(0xFF1A1A1A),
+      ),
+      filled: true,
+      fillColor: isDark ? const Color(0xFF2A312C) : Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Color(0xFF2D6831), width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red, width: 1.5),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final isDark = widget.isDark;
+    final sheetBg = isDark ? const Color(0xFF1E2420) : Colors.white;
+    final labelStyle = TextStyle(
+      fontFamily: 'Epilogue',
+      fontSize: 13,
+      fontWeight: FontWeight.w500,
+      color: isDark ? const Color(0xFF6DBF6F) : const Color(0xFF2D6831),
+    );
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+      child: Container(
+        decoration: BoxDecoration(
+          color: sheetBg,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Handle
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: isDark ? Colors.white24 : Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: Text(
+                    t.goals.contribution.add_title,
+                    style: TextStyle(
+                      fontFamily: 'Epilogue',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Amount
+                      Text(t.goals.contribution.amount, style: labelStyle),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _amountController,
+                        autofocus: true,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: [CurrencyInputFormatter()],
+                        style: TextStyle(
+                          fontFamily: 'Epilogue',
+                          fontSize: 14,
+                          color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                        ),
+                        decoration: _dec(
+                          prefixText: '${widget.currency.symbol}  ',
+                        ),
+                        validator: (v) {
+                          if (v == null || v.isEmpty) {
+                            return t.goals.contribution.amount_required;
+                          }
+                          if (double.tryParse(v.replaceAll(',', '')) == null) {
+                            return t.goals.contribution.amount_invalid;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Date
+                      Text(t.goals.contribution.date, style: labelStyle),
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: _pickDate,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 15,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isDark ? const Color(0xFF2A312C) : Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                DateFormat('MMM d, yyyy').format(_selectedDate),
+                                style: TextStyle(
+                                  fontFamily: 'Epilogue',
+                                  fontSize: 14,
+                                  color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                                ),
+                              ),
+                              Icon(
+                                Icons.calendar_today_outlined,
+                                size: 18,
+                                color: isDark ? Colors.white24 : const Color(0xFFBDBDBD),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Note
+                      Text(t.goals.contribution.note, style: labelStyle),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _noteController,
+                        textCapitalization: TextCapitalization.sentences,
+                        style: TextStyle(
+                          fontFamily: 'Epilogue',
+                          fontSize: 14,
+                          color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                        ),
+                        decoration: _dec(hint: t.goals.contribution.note_hint),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Save button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 54,
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _submit,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF2D6831),
+                            foregroundColor: Colors.white,
+                            shape: const StadiumBorder(),
+                          ),
+                          child: _isLoading
+                              ? const SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  t.goals.contribution.save_button,
+                                  style: const TextStyle(
+                                    fontFamily: 'Epilogue',
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -8,6 +8,9 @@ import 'package:expenselab/features/categories/presentation/screens/category_det
 import 'package:expenselab/features/categories/presentation/screens/create_category_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/edit_category_screen.dart';
 import 'package:expenselab/features/home/presentation/screens/home_screen.dart';
+import 'package:expenselab/features/savings/presentation/screens/create_goal_screen.dart';
+import 'package:expenselab/features/savings/presentation/screens/edit_goal_screen.dart';
+import 'package:expenselab/features/savings/presentation/screens/goal_details_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/goals_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/settings_screen.dart';
 import 'package:expenselab/features/transactions/presentation/screens/add_transaction_screen.dart';
@@ -33,6 +36,22 @@ final routerConfig = GoRouter(
           builder: (context, state) => const GoalsScreen(),
         ),
       ],
+    ),
+    GoRoute(
+      path: AppRoutes.goalsCreate,
+      builder: (context, state) => const CreateGoalScreen(),
+    ),
+    GoRoute(
+      path: '/goals/:id',
+      builder: (context, state) => GoalDetailsScreen(
+        goalId: state.pathParameters['id']!,
+      ),
+    ),
+    GoRoute(
+      path: '/goals/:id/edit',
+      builder: (context, state) => EditGoalScreen(
+        goalId: state.pathParameters['id']!,
+      ),
     ),
     GoRoute(
       path: AppRoutes.settings,

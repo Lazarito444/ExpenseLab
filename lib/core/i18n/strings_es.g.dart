@@ -44,6 +44,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsHomeEs home = _TranslationsHomeEs._(_root);
 	@override late final _TranslationsNavEs nav = _TranslationsNavEs._(_root);
 	@override late final _TranslationsSettingsEs settings = _TranslationsSettingsEs._(_root);
+	@override late final _TranslationsGoalsEs goals = _TranslationsGoalsEs._(_root);
 	@override Map<String, String> get currencies => {
 		'USD': 'Dólar estadounidense',
 		'EUR': 'Euro',
@@ -148,6 +149,28 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 	@override late final _TranslationsSettingsDefaultCurrencyEs default_currency = _TranslationsSettingsDefaultCurrencyEs._(_root);
 	@override late final _TranslationsSettingsAccountsEs accounts = _TranslationsSettingsAccountsEs._(_root);
 	@override late final _TranslationsSettingsCategoriesEs categories = _TranslationsSettingsCategoriesEs._(_root);
+}
+
+// Path: goals
+class _TranslationsGoalsEs extends TranslationsGoalsEn {
+	_TranslationsGoalsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Metas de ahorro';
+	@override String get subtitle => 'Tu progreso hacia la libertad financiera';
+	@override String get total_saved => 'TOTAL AHORRADO';
+	@override String get target_reached => '{pct}% de la meta total alcanzada';
+	@override String get no_goals => 'Sin metas de ahorro aún';
+	@override String get no_goals_subtitle => 'Toca + para crear tu primera meta';
+	@override String get view_details => 'Ver Detalles';
+	@override String get saved => '{amount} ahorrado';
+	@override String get target => 'Meta: {amount}';
+	@override late final _TranslationsGoalsCreateEs create = _TranslationsGoalsCreateEs._(_root);
+	@override late final _TranslationsGoalsEditEs edit = _TranslationsGoalsEditEs._(_root);
+	@override late final _TranslationsGoalsDetailsEs details = _TranslationsGoalsDetailsEs._(_root);
+	@override late final _TranslationsGoalsContributionEs contribution = _TranslationsGoalsContributionEs._(_root);
 }
 
 // Path: accounts
@@ -299,6 +322,81 @@ class _TranslationsSettingsCategoriesEs extends TranslationsSettingsCategoriesEn
 	@override String get title => 'Categorías';
 }
 
+// Path: goals.create
+class _TranslationsGoalsCreateEs extends TranslationsGoalsCreateEn {
+	_TranslationsGoalsCreateEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Nueva Meta';
+	@override String get name => 'Nombre de la Meta';
+	@override String get name_hint => 'ej., Vacaciones soñadas';
+	@override String get target_amount => 'Monto Objetivo';
+	@override String get target_date => 'Fecha Objetivo (Opcional)';
+	@override String get source_account => 'Cuenta Fuente';
+	@override String get select_account => 'Selecciona una cuenta';
+	@override String get create_button => 'Crear Meta';
+	@override String get name_required => 'Por favor ingresa un nombre para la meta';
+	@override String get amount_required => 'Por favor ingresa un monto objetivo';
+	@override String get amount_invalid => 'Por favor ingresa un monto válido';
+	@override String get account_required => 'Por favor selecciona una cuenta fuente';
+	@override String get success => '¡Meta creada con éxito!';
+}
+
+// Path: goals.edit
+class _TranslationsGoalsEditEs extends TranslationsGoalsEditEn {
+	_TranslationsGoalsEditEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Editar Meta';
+	@override String get associated_account => 'Cuenta Asociada';
+	@override String get save_button => 'Guardar Cambios';
+	@override String get delete_button => 'Eliminar Meta';
+	@override String get delete_title => 'Eliminar Meta';
+	@override String get delete_message => '¿Estás seguro de que deseas eliminar esta meta? Esta acción no se puede deshacer.';
+	@override String get error_loading => 'Error al cargar la meta';
+	@override String get success_update => '¡Meta actualizada con éxito!';
+	@override String get success_delete => '¡Meta eliminada con éxito!';
+}
+
+// Path: goals.details
+class _TranslationsGoalsDetailsEs extends TranslationsGoalsDetailsEn {
+	_TranslationsGoalsDetailsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get saved_label => 'TOTAL AHORRADO';
+	@override String get target_label => 'META';
+	@override String get deadline => 'Fecha límite: {date}';
+	@override String get no_deadline => 'Sin fecha límite';
+	@override String get contributions_title => 'Contribuciones';
+	@override String get no_contributions => 'Sin contribuciones aún';
+	@override String get no_contributions_subtitle => 'Toca + para registrar tu primera contribución';
+	@override String get contribution_label => 'Contribución';
+}
+
+// Path: goals.contribution
+class _TranslationsGoalsContributionEs extends TranslationsGoalsContributionEn {
+	_TranslationsGoalsContributionEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get add_title => 'Agregar Contribución';
+	@override String get amount => 'Monto';
+	@override String get date => 'Fecha';
+	@override String get note => 'Nota (Opcional)';
+	@override String get note_hint => '¿Para qué fue esto?';
+	@override String get save_button => 'Guardar Contribución';
+	@override String get amount_required => 'Por favor ingresa un monto';
+	@override String get amount_invalid => 'Por favor ingresa un monto válido';
+	@override String get success => '¡Contribución agregada!';
+}
+
 // Path: accounts.create
 class _TranslationsAccountsCreateEs extends TranslationsAccountsCreateEn {
 	_TranslationsAccountsCreateEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -386,6 +484,54 @@ extension on TranslationsEs {
 			'settings.default_currency.title' => 'Moneda predeterminada',
 			'settings.accounts.title' => 'Cuentas',
 			'settings.categories.title' => 'Categorías',
+			'goals.title' => 'Metas de ahorro',
+			'goals.subtitle' => 'Tu progreso hacia la libertad financiera',
+			'goals.total_saved' => 'TOTAL AHORRADO',
+			'goals.target_reached' => '{pct}% de la meta total alcanzada',
+			'goals.no_goals' => 'Sin metas de ahorro aún',
+			'goals.no_goals_subtitle' => 'Toca + para crear tu primera meta',
+			'goals.view_details' => 'Ver Detalles',
+			'goals.saved' => '{amount} ahorrado',
+			'goals.target' => 'Meta: {amount}',
+			'goals.create.title' => 'Nueva Meta',
+			'goals.create.name' => 'Nombre de la Meta',
+			'goals.create.name_hint' => 'ej., Vacaciones soñadas',
+			'goals.create.target_amount' => 'Monto Objetivo',
+			'goals.create.target_date' => 'Fecha Objetivo (Opcional)',
+			'goals.create.source_account' => 'Cuenta Fuente',
+			'goals.create.select_account' => 'Selecciona una cuenta',
+			'goals.create.create_button' => 'Crear Meta',
+			'goals.create.name_required' => 'Por favor ingresa un nombre para la meta',
+			'goals.create.amount_required' => 'Por favor ingresa un monto objetivo',
+			'goals.create.amount_invalid' => 'Por favor ingresa un monto válido',
+			'goals.create.account_required' => 'Por favor selecciona una cuenta fuente',
+			'goals.create.success' => '¡Meta creada con éxito!',
+			'goals.edit.title' => 'Editar Meta',
+			'goals.edit.associated_account' => 'Cuenta Asociada',
+			'goals.edit.save_button' => 'Guardar Cambios',
+			'goals.edit.delete_button' => 'Eliminar Meta',
+			'goals.edit.delete_title' => 'Eliminar Meta',
+			'goals.edit.delete_message' => '¿Estás seguro de que deseas eliminar esta meta? Esta acción no se puede deshacer.',
+			'goals.edit.error_loading' => 'Error al cargar la meta',
+			'goals.edit.success_update' => '¡Meta actualizada con éxito!',
+			'goals.edit.success_delete' => '¡Meta eliminada con éxito!',
+			'goals.details.saved_label' => 'TOTAL AHORRADO',
+			'goals.details.target_label' => 'META',
+			'goals.details.deadline' => 'Fecha límite: {date}',
+			'goals.details.no_deadline' => 'Sin fecha límite',
+			'goals.details.contributions_title' => 'Contribuciones',
+			'goals.details.no_contributions' => 'Sin contribuciones aún',
+			'goals.details.no_contributions_subtitle' => 'Toca + para registrar tu primera contribución',
+			'goals.details.contribution_label' => 'Contribución',
+			'goals.contribution.add_title' => 'Agregar Contribución',
+			'goals.contribution.amount' => 'Monto',
+			'goals.contribution.date' => 'Fecha',
+			'goals.contribution.note' => 'Nota (Opcional)',
+			'goals.contribution.note_hint' => '¿Para qué fue esto?',
+			'goals.contribution.save_button' => 'Guardar Contribución',
+			'goals.contribution.amount_required' => 'Por favor ingresa un monto',
+			'goals.contribution.amount_invalid' => 'Por favor ingresa un monto válido',
+			'goals.contribution.success' => '¡Contribución agregada!',
 			'currencies.USD' => 'Dólar estadounidense',
 			'currencies.EUR' => 'Euro',
 			'currencies.GBP' => 'Libra esterlina',

@@ -55,6 +55,64 @@
       "title": "Categories"
     }
   },
+  "goals": {
+    "title": "Savings Goals",
+    "subtitle": "Your progress toward financial freedom",
+    "total_saved": "TOTAL SAVED",
+    "target_reached": "{pct}% of total target reached",
+    "no_goals": "No savings goals yet",
+    "no_goals_subtitle": "Tap + to create your first goal",
+    "view_details": "View Details",
+    "saved": "{amount} saved",
+    "target": "Target: {amount}",
+    "create": {
+      "title": "New Goal",
+      "name": "Goal Name",
+      "name_hint": "e.g., Dream Vacation",
+      "target_amount": "Target Amount",
+      "target_date": "Target Date (Optional)",
+      "source_account": "Source Account",
+      "select_account": "Select an account",
+      "create_button": "Create Goal",
+      "name_required": "Please enter a goal name",
+      "amount_required": "Please enter a target amount",
+      "amount_invalid": "Please enter a valid amount",
+      "account_required": "Please select a source account",
+      "success": "Goal created successfully"
+    },
+    "edit": {
+      "title": "Edit Goal",
+      "associated_account": "Associated Account",
+      "save_button": "Save Changes",
+      "delete_button": "Delete Goal",
+      "delete_title": "Delete Goal",
+      "delete_message": "Are you sure you want to delete this goal? This action cannot be undone.",
+      "error_loading": "Error loading goal",
+      "success_update": "Goal updated successfully",
+      "success_delete": "Goal deleted successfully"
+    },
+    "details": {
+      "saved_label": "TOTAL SAVED",
+      "target_label": "TARGET",
+      "deadline": "Deadline: {date}",
+      "no_deadline": "No deadline set",
+      "contributions_title": "Contributions",
+      "no_contributions": "No contributions yet",
+      "no_contributions_subtitle": "Tap + to log your first contribution",
+      "contribution_label": "Contribution"
+    },
+    "contribution": {
+      "add_title": "Add Contribution",
+      "amount": "Amount",
+      "date": "Date",
+      "note": "Note (Optional)",
+      "note_hint": "What's this for?",
+      "save_button": "Save Contribution",
+      "amount_required": "Please enter an amount",
+      "amount_invalid": "Please enter a valid amount",
+      "success": "Contribution added"
+    }
+  },
   "currencies(map)": {
     "USD": "US Dollar",
     "EUR": "Euro",

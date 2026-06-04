@@ -2,6 +2,9 @@ class AppRoutes {
   static const home = '/';
   static const budgets = '/budgets';
   static const goals = '/goals';
+  static const goalsCreate = '/goals/create';
+  static String goalDetails(String id) => '/goals/$id';
+  static String goalEdit(String id) => '/goals/$id/edit';
   static const settings = '/settings';
   static const addTransaction = '/add-transaction';
   static String addTransactionOnDate(DateTime date) =>

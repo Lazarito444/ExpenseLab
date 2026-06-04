@@ -45,6 +45,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsHomeEn home = TranslationsHomeEn.internal(_root);
 	late final TranslationsNavEn nav = TranslationsNavEn.internal(_root);
 	late final TranslationsSettingsEn settings = TranslationsSettingsEn.internal(_root);
+	late final TranslationsGoalsEn goals = TranslationsGoalsEn.internal(_root);
 	Map<String, String> get currencies => {
 		'USD': 'US Dollar',
 		'EUR': 'Euro',
@@ -206,6 +207,47 @@ class TranslationsSettingsEn {
 	late final TranslationsSettingsDefaultCurrencyEn default_currency = TranslationsSettingsDefaultCurrencyEn.internal(_root);
 	late final TranslationsSettingsAccountsEn accounts = TranslationsSettingsAccountsEn.internal(_root);
 	late final TranslationsSettingsCategoriesEn categories = TranslationsSettingsCategoriesEn.internal(_root);
+}
+
+// Path: goals
+class TranslationsGoalsEn {
+	TranslationsGoalsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Savings Goals'
+	String get title => 'Savings Goals';
+
+	/// en: 'Your progress toward financial freedom'
+	String get subtitle => 'Your progress toward financial freedom';
+
+	/// en: 'TOTAL SAVED'
+	String get total_saved => 'TOTAL SAVED';
+
+	/// en: '{pct}% of total target reached'
+	String get target_reached => '{pct}% of total target reached';
+
+	/// en: 'No savings goals yet'
+	String get no_goals => 'No savings goals yet';
+
+	/// en: 'Tap + to create your first goal'
+	String get no_goals_subtitle => 'Tap + to create your first goal';
+
+	/// en: 'View Details'
+	String get view_details => 'View Details';
+
+	/// en: '{amount} saved'
+	String get saved => '{amount} saved';
+
+	/// en: 'Target: {amount}'
+	String get target => 'Target: {amount}';
+
+	late final TranslationsGoalsCreateEn create = TranslationsGoalsCreateEn.internal(_root);
+	late final TranslationsGoalsEditEn edit = TranslationsGoalsEditEn.internal(_root);
+	late final TranslationsGoalsDetailsEn details = TranslationsGoalsDetailsEn.internal(_root);
+	late final TranslationsGoalsContributionEn contribution = TranslationsGoalsContributionEn.internal(_root);
 }
 
 // Path: accounts
@@ -494,6 +536,159 @@ class TranslationsSettingsCategoriesEn {
 	String get title => 'Categories';
 }
 
+// Path: goals.create
+class TranslationsGoalsCreateEn {
+	TranslationsGoalsCreateEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'New Goal'
+	String get title => 'New Goal';
+
+	/// en: 'Goal Name'
+	String get name => 'Goal Name';
+
+	/// en: 'e.g., Dream Vacation'
+	String get name_hint => 'e.g., Dream Vacation';
+
+	/// en: 'Target Amount'
+	String get target_amount => 'Target Amount';
+
+	/// en: 'Target Date (Optional)'
+	String get target_date => 'Target Date (Optional)';
+
+	/// en: 'Source Account'
+	String get source_account => 'Source Account';
+
+	/// en: 'Select an account'
+	String get select_account => 'Select an account';
+
+	/// en: 'Create Goal'
+	String get create_button => 'Create Goal';
+
+	/// en: 'Please enter a goal name'
+	String get name_required => 'Please enter a goal name';
+
+	/// en: 'Please enter a target amount'
+	String get amount_required => 'Please enter a target amount';
+
+	/// en: 'Please enter a valid amount'
+	String get amount_invalid => 'Please enter a valid amount';
+
+	/// en: 'Please select a source account'
+	String get account_required => 'Please select a source account';
+
+	/// en: 'Goal created successfully'
+	String get success => 'Goal created successfully';
+}
+
+// Path: goals.edit
+class TranslationsGoalsEditEn {
+	TranslationsGoalsEditEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Edit Goal'
+	String get title => 'Edit Goal';
+
+	/// en: 'Associated Account'
+	String get associated_account => 'Associated Account';
+
+	/// en: 'Save Changes'
+	String get save_button => 'Save Changes';
+
+	/// en: 'Delete Goal'
+	String get delete_button => 'Delete Goal';
+
+	/// en: 'Delete Goal'
+	String get delete_title => 'Delete Goal';
+
+	/// en: 'Are you sure you want to delete this goal? This action cannot be undone.'
+	String get delete_message => 'Are you sure you want to delete this goal? This action cannot be undone.';
+
+	/// en: 'Error loading goal'
+	String get error_loading => 'Error loading goal';
+
+	/// en: 'Goal updated successfully'
+	String get success_update => 'Goal updated successfully';
+
+	/// en: 'Goal deleted successfully'
+	String get success_delete => 'Goal deleted successfully';
+}
+
+// Path: goals.details
+class TranslationsGoalsDetailsEn {
+	TranslationsGoalsDetailsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'TOTAL SAVED'
+	String get saved_label => 'TOTAL SAVED';
+
+	/// en: 'TARGET'
+	String get target_label => 'TARGET';
+
+	/// en: 'Deadline: {date}'
+	String get deadline => 'Deadline: {date}';
+
+	/// en: 'No deadline set'
+	String get no_deadline => 'No deadline set';
+
+	/// en: 'Contributions'
+	String get contributions_title => 'Contributions';
+
+	/// en: 'No contributions yet'
+	String get no_contributions => 'No contributions yet';
+
+	/// en: 'Tap + to log your first contribution'
+	String get no_contributions_subtitle => 'Tap + to log your first contribution';
+
+	/// en: 'Contribution'
+	String get contribution_label => 'Contribution';
+}
+
+// Path: goals.contribution
+class TranslationsGoalsContributionEn {
+	TranslationsGoalsContributionEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Add Contribution'
+	String get add_title => 'Add Contribution';
+
+	/// en: 'Amount'
+	String get amount => 'Amount';
+
+	/// en: 'Date'
+	String get date => 'Date';
+
+	/// en: 'Note (Optional)'
+	String get note => 'Note (Optional)';
+
+	/// en: 'What's this for?'
+	String get note_hint => 'What\'s this for?';
+
+	/// en: 'Save Contribution'
+	String get save_button => 'Save Contribution';
+
+	/// en: 'Please enter an amount'
+	String get amount_required => 'Please enter an amount';
+
+	/// en: 'Please enter a valid amount'
+	String get amount_invalid => 'Please enter a valid amount';
+
+	/// en: 'Contribution added'
+	String get success => 'Contribution added';
+}
+
 // Path: accounts.create
 class TranslationsAccountsCreateEn {
 	TranslationsAccountsCreateEn.internal(this._root);
@@ -631,6 +826,54 @@ extension on Translations {
 			'settings.default_currency.title' => 'Default Currency',
 			'settings.accounts.title' => 'Accounts',
 			'settings.categories.title' => 'Categories',
+			'goals.title' => 'Savings Goals',
+			'goals.subtitle' => 'Your progress toward financial freedom',
+			'goals.total_saved' => 'TOTAL SAVED',
+			'goals.target_reached' => '{pct}% of total target reached',
+			'goals.no_goals' => 'No savings goals yet',
+			'goals.no_goals_subtitle' => 'Tap + to create your first goal',
+			'goals.view_details' => 'View Details',
+			'goals.saved' => '{amount} saved',
+			'goals.target' => 'Target: {amount}',
+			'goals.create.title' => 'New Goal',
+			'goals.create.name' => 'Goal Name',
+			'goals.create.name_hint' => 'e.g., Dream Vacation',
+			'goals.create.target_amount' => 'Target Amount',
+			'goals.create.target_date' => 'Target Date (Optional)',
+			'goals.create.source_account' => 'Source Account',
+			'goals.create.select_account' => 'Select an account',
+			'goals.create.create_button' => 'Create Goal',
+			'goals.create.name_required' => 'Please enter a goal name',
+			'goals.create.amount_required' => 'Please enter a target amount',
+			'goals.create.amount_invalid' => 'Please enter a valid amount',
+			'goals.create.account_required' => 'Please select a source account',
+			'goals.create.success' => 'Goal created successfully',
+			'goals.edit.title' => 'Edit Goal',
+			'goals.edit.associated_account' => 'Associated Account',
+			'goals.edit.save_button' => 'Save Changes',
+			'goals.edit.delete_button' => 'Delete Goal',
+			'goals.edit.delete_title' => 'Delete Goal',
+			'goals.edit.delete_message' => 'Are you sure you want to delete this goal? This action cannot be undone.',
+			'goals.edit.error_loading' => 'Error loading goal',
+			'goals.edit.success_update' => 'Goal updated successfully',
+			'goals.edit.success_delete' => 'Goal deleted successfully',
+			'goals.details.saved_label' => 'TOTAL SAVED',
+			'goals.details.target_label' => 'TARGET',
+			'goals.details.deadline' => 'Deadline: {date}',
+			'goals.details.no_deadline' => 'No deadline set',
+			'goals.details.contributions_title' => 'Contributions',
+			'goals.details.no_contributions' => 'No contributions yet',
+			'goals.details.no_contributions_subtitle' => 'Tap + to log your first contribution',
+			'goals.details.contribution_label' => 'Contribution',
+			'goals.contribution.add_title' => 'Add Contribution',
+			'goals.contribution.amount' => 'Amount',
+			'goals.contribution.date' => 'Date',
+			'goals.contribution.note' => 'Note (Optional)',
+			'goals.contribution.note_hint' => 'What\'s this for?',
+			'goals.contribution.save_button' => 'Save Contribution',
+			'goals.contribution.amount_required' => 'Please enter an amount',
+			'goals.contribution.amount_invalid' => 'Please enter a valid amount',
+			'goals.contribution.success' => 'Contribution added',
 			'currencies.USD' => 'US Dollar',
 			'currencies.EUR' => 'Euro',
 			'currencies.GBP' => 'British Pound',
