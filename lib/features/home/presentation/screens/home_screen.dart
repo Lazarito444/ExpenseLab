@@ -72,8 +72,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       error: (_, _) => const _DashboardView(key: ValueKey('dashboard')),
       data: (isCalendarView) => AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
-        transitionBuilder: (child, animation) =>
-            FadeTransition(opacity: animation, child: child),
+        transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
         child: isCalendarView
             ? _CalendarView(
                 key: const ValueKey('calendar'),
@@ -712,7 +711,7 @@ class _CalendarCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      DateFormat('MMMM yyyy').format(month),
+                      toBeginningOfSentenceCase(DateFormat('MMMM yyyy', LocaleSettings.currentLocale.languageTag).format(month)),
                       style: TextStyle(
                         fontFamily: 'Epilogue',
                         fontSize: 22,

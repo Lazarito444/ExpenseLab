@@ -11,14 +11,13 @@ class HomeViewSelectionScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Translations t = context.t;
-    final bool isCalendar =
-        ref.watch(settingsProvider).value?.defaultHomeIsCalendar ?? false;
+    final bool isCalendar = ref.watch(settingsProvider).value?.defaultHomeIsCalendar ?? false;
 
     final options = [
       (
         isCalendar: false,
         label: t.settings.default_home_view.dashboard,
-        icon: Icons.dashboard_outlined,
+        icon: Icons.analytics_outlined,
       ),
       (
         isCalendar: true,
@@ -72,9 +71,7 @@ class HomeViewSelectionScreen extends ConsumerWidget {
                       isSelected: selected,
                       isDark: isDark,
                       onTap: () {
-                        ref
-                            .read(settingsProvider.notifier)
-                            .setDefaultHomeView(opt.isCalendar);
+                        ref.read(settingsProvider.notifier).setDefaultHomeView(opt.isCalendar);
                         Navigator.pop(context);
                       },
                     ),
