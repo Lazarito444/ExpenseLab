@@ -1,10 +1,10 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
-import 'package:expenselab/features/budgets/domain/models/budget_model.dart';
 import 'package:expenselab/core/formatters/currency_input_formatter.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:expenselab/features/budgets/domain/models/budget_model.dart';
 import 'package:expenselab/features/budgets/providers/budgets_providers.dart';
 import 'package:expenselab/features/categories/data/tables/categories_table.dart';
 import 'package:expenselab/features/categories/providers/categories_providers.dart';
@@ -327,9 +327,7 @@ class _EditBudgetFormState extends ConsumerState<_EditBudgetForm> {
     final t = context.t;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final defaultCurrency = ref.watch(currencyProvider);
-    final categories = (ref.watch(categoriesProvider).value ?? [])
-        .where((c) => c.type == CategoryType.expense && !c.isDeleted)
-        .toList();
+    final categories = (ref.watch(categoriesProvider).value ?? []).where((c) => c.type == CategoryType.expense && !c.isDeleted).toList();
 
     final currencyCode = _selectedCurrencyCode ?? defaultCurrency.code;
     final currencySymbol = kSupportedCurrencies.firstWhere((c) => c.code == currencyCode, orElse: () => kUsdCurrency).symbol;

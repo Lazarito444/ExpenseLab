@@ -1,11 +1,11 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
-import 'package:expenselab/features/savings/domain/models/savings_goal_model.dart';
 import 'package:expenselab/core/formatters/currency_input_formatter.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/accounts/domain/models/account_model.dart';
 import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
+import 'package:expenselab/features/savings/domain/models/savings_goal_model.dart';
 import 'package:expenselab/features/savings/providers/savings_providers.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/widgets/scaffold/expense_lab_app_bar.dart';
