@@ -53,9 +53,18 @@ class ExpenseLabNavBar extends StatelessWidget {
         indicatorColor: context.colorScheme.primary.withValues(alpha: 0.1),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return TextStyle(color: context.colorScheme.primary, fontFamily: 'Epilogue', fontWeight: FontWeight.bold);
+            return TextStyle(
+              color: context.colorScheme.primary,
+              fontFamily: 'Epilogue',
+              fontWeight: FontWeight.bold,
+              overflow: TextOverflow.ellipsis,
+            );
           }
-          return TextStyle(color: Colors.grey.shade700, fontFamily: 'Epilogue');
+          return TextStyle(
+            color: Colors.grey.shade700,
+            fontFamily: 'Epilogue',
+            overflow: TextOverflow.ellipsis,
+          );
         }),
         onDestinationSelected: (int index) {
           if (index == 2) return;
