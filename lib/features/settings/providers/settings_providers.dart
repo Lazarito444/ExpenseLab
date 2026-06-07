@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/settings/domain/models/app_settings.dart';
 import 'package:expenselab/features/settings/domain/models/currency.dart';
@@ -50,8 +53,43 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
   }
 
   Future<void> eraseAllData() async {
+    // 1. Delete physical transaction image files from disk
+    try {
+      final db = ref.read(appDatabaseProvider);
+      final images = await db.select(db.transactionImages).get();
+      for (final img in images) {
+        if (img.localPath.isNotEmpty) {
+          final file = File(img.localPath);
+          if (await file.exists()) {
+            await file.delete();
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error deleting transaction image files: $e');
+    }
+
+    // 2. Clear all Drift database tables
+    try {
+      final db = ref.read(appDatabaseProvider);
+      await db.transaction(() async {
+        await db.delete(db.transactionImages).go();
+        await db.delete(db.transactions).go();
+        await db.delete(db.savingsContributions).go();
+        await db.delete(db.savingsGoals).go();
+        await db.delete(db.budgets).go();
+        await db.delete(db.categories).go();
+        await db.delete(db.accounts).go();
+      });
+    } catch (e) {
+      debugPrint('Error clearing database tables: $e');
+    }
+
+    // 3. Clear SharedPreferences
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
+
+    // 4. Update the settings state
     state = AsyncData(AppSettings.fromPrefs(prefs));
   }
 }

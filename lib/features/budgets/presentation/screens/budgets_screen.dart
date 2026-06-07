@@ -33,10 +33,7 @@ class BudgetsScreen extends ConsumerWidget {
     final monthlySpending = <String, double>{};
     final monthlyCount = <String, int>{};
     for (final tx in transactions) {
-      if (tx.type == TransactionType.expense &&
-          tx.date.year == selectedMonth.year &&
-          tx.date.month == selectedMonth.month &&
-          tx.categoryId != null) {
+      if (tx.type == TransactionType.expense && tx.date.year == selectedMonth.year && tx.date.month == selectedMonth.month && tx.categoryId != null) {
         final cid = tx.categoryId!;
         monthlySpending[cid] = (monthlySpending[cid] ?? 0) + tx.amount;
         monthlyCount[cid] = (monthlyCount[cid] ?? 0) + 1;
@@ -212,10 +209,13 @@ class _MonthSelector extends StatelessWidget {
               child: Icon(Icons.chevron_left_rounded, size: 18, color: context.colorScheme.primary),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
+          SizedBox(
+            width: 100,
             child: Text(
-              DateFormat('MMMM').format(selectedMonth),
+              toBeginningOfSentenceCase(DateFormat('MMMM', LocaleSettings.currentLocale.languageTag).format(selectedMonth)),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontSize: 13,
@@ -317,16 +317,14 @@ class _SummaryCard extends StatelessWidget {
     final statusLabel = isOver
         ? t.budgets.over_budget
         : overallPct >= 0.8
-            ? t.budgets.almost
-            : t.budgets.on_track;
+        ? t.budgets.almost
+        : t.budgets.on_track;
     final statusColor = isOver
         ? Colors.red.shade600
         : overallPct >= 0.8
-            ? Colors.orange.shade700
-            : context.colorScheme.primary;
-    final ofLimitText = t.budgets.of_limit
-        .replaceAll('{pct}', pct.toString())
-        .replaceAll('{limit}', currency.format(totalBudget));
+        ? Colors.orange.shade700
+        : context.colorScheme.primary;
+    final ofLimitText = t.budgets.of_limit.replaceAll('{pct}', pct.toString()).replaceAll('{limit}', currency.format(totalBudget));
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -485,9 +483,7 @@ class _BudgetCard extends StatelessWidget {
     final barColor = isOver ? Colors.red.shade600 : categoryColor;
     final clampedProgress = progress.clamp(0.0, 1.0);
     final overAmount = spent - budgetAmount;
-    final rightText = isOver
-        ? t.budgets.over_by.replaceAll('{amount}', currency.format(overAmount))
-        : t.budgets.of_amount.replaceAll('{amount}', currency.format(budgetAmount));
+    final rightText = isOver ? t.budgets.over_by.replaceAll('{amount}', currency.format(overAmount)) : t.budgets.of_amount.replaceAll('{amount}', currency.format(budgetAmount));
 
     return GestureDetector(
       onTap: onTap,
