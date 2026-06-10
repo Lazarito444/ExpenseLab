@@ -15,13 +15,19 @@ class ExpenseLabApp extends ConsumerStatefulWidget {
   ConsumerState<ExpenseLabApp> createState() => _ExpenseLabAppState();
 }
 
-class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp>
-    with WidgetsBindingObserver {
+class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    _initLocale();
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) => _initLockState());
+  }
+
+  Future<void> _initLocale() async {
+    final settings = await ref.read(settingsProvider.future);
+    final locale = settings.locale;
+    LocaleSettings.setLocale(locale);
   }
 
   @override
@@ -40,8 +46,7 @@ class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final biometricEnabled =
-        ref.read(settingsProvider).value?.biometricLogin ?? false;
+    final biometricEnabled = ref.read(settingsProvider).value?.biometricLogin ?? false;
     if (!biometricEnabled) return;
 
     if (state == AppLifecycleState.paused) {
@@ -52,8 +57,7 @@ class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp>
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(themeModeProvider);
-    final biometricEnabled =
-        ref.watch(settingsProvider).value?.biometricLogin ?? false;
+    final biometricEnabled = ref.watch(settingsProvider).value?.biometricLogin ?? false;
     final isLocked = ref.watch(isLockedProvider);
 
     return MaterialApp.router(
