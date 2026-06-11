@@ -43,7 +43,6 @@ class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp> with WidgetsBindi
     if (!settings.biometricLogin) {
       ref.read(isLockedProvider.notifier).unlock();
     }
-    // If biometricLogin is true, isLockedProvider stays true and LockScreen handles auth.
   }
 
   @override
