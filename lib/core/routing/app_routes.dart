@@ -19,6 +19,7 @@ class AppRoutes {
   static String categoryDetails(String id) => '/categories/$id';
   static String categoryEdit(String id) => '/categories/$id/edit';
   static String transactionEdit(String id) => '/transactions/$id/edit';
+  static const analytics = '/analytics';
   static const exchangeRates = '/exchange-rates';
   static const exchangeRatesCreate = '/exchange-rates/create';
   static String exchangeRateEdit(String id) => '/exchange-rates/$id/edit';

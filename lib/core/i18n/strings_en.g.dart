@@ -47,6 +47,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsSettingsEn settings = TranslationsSettingsEn.internal(_root);
 	late final TranslationsGoalsEn goals = TranslationsGoalsEn.internal(_root);
 	late final TranslationsBudgetsEn budgets = TranslationsBudgetsEn.internal(_root);
+	late final TranslationsAnalyticsEn analytics = TranslationsAnalyticsEn.internal(_root);
 	Map<String, String> get currencies => {
 		'USD': 'US Dollar',
 		'EUR': 'Euro',
@@ -312,6 +313,39 @@ class TranslationsBudgetsEn {
 
 	late final TranslationsBudgetsCreateEn create = TranslationsBudgetsCreateEn.internal(_root);
 	late final TranslationsBudgetsEditEn edit = TranslationsBudgetsEditEn.internal(_root);
+}
+
+// Path: analytics
+class TranslationsAnalyticsEn {
+	TranslationsAnalyticsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Analytics'
+	String get title => 'Analytics';
+
+	/// en: 'Insights for {period}'
+	String get insights_for => 'Insights for {period}';
+
+	/// en: 'Cash Flow'
+	String get cash_flow => 'Cash Flow';
+
+	/// en: 'NET INCOME'
+	String get net_income => 'NET INCOME';
+
+	/// en: 'Spending by Category'
+	String get spending_by_category => 'Spending by Category';
+
+	/// en: 'Incomes by Category'
+	String get income_by_category => 'Incomes by Category';
+
+	/// en: 'No data for this period'
+	String get no_data => 'No data for this period';
+
+	/// en: 'Total'
+	String get total => 'Total';
 }
 
 // Path: accounts
@@ -1144,6 +1178,14 @@ extension on Translations {
 			'budgets.edit.error_loading' => 'Error loading budget',
 			'budgets.edit.success_update' => 'Budget updated successfully',
 			'budgets.edit.success_delete' => 'Budget deleted successfully',
+			'analytics.title' => 'Analytics',
+			'analytics.insights_for' => 'Insights for {period}',
+			'analytics.cash_flow' => 'Cash Flow',
+			'analytics.net_income' => 'NET INCOME',
+			'analytics.spending_by_category' => 'Spending by Category',
+			'analytics.income_by_category' => 'Incomes by Category',
+			'analytics.no_data' => 'No data for this period',
+			'analytics.total' => 'Total',
 			'currencies.USD' => 'US Dollar',
 			'currencies.EUR' => 'Euro',
 			'currencies.GBP' => 'British Pound',

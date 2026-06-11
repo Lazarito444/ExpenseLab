@@ -178,6 +178,16 @@
       "success_delete": "¡Presupuesto eliminado con éxito!"
     }
   },
+  "analytics": {
+    "title": "Análisis",
+    "insights_for": "Perspectivas de {period}",
+    "cash_flow": "Flujo de Caja",
+    "net_income": "INGRESO NETO",
+    "spending_by_category": "Gastos por Categoría",
+    "income_by_category": "Ingresos por Categoría",
+    "no_data": "Sin datos para este período",
+    "total": "Total"
+  },
   "currencies(map)": {
     "USD": "Dólar estadounidense",
     "EUR": "Euro",

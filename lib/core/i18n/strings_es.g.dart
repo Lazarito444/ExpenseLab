@@ -46,6 +46,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsSettingsEs settings = _TranslationsSettingsEs._(_root);
 	@override late final _TranslationsGoalsEs goals = _TranslationsGoalsEs._(_root);
 	@override late final _TranslationsBudgetsEs budgets = _TranslationsBudgetsEs._(_root);
+	@override late final _TranslationsAnalyticsEs analytics = _TranslationsAnalyticsEs._(_root);
 	@override Map<String, String> get currencies => {
 		'USD': 'Dólar estadounidense',
 		'EUR': 'Euro',
@@ -204,6 +205,23 @@ class _TranslationsBudgetsEs extends TranslationsBudgetsEn {
 	);
 	@override late final _TranslationsBudgetsCreateEs create = _TranslationsBudgetsCreateEs._(_root);
 	@override late final _TranslationsBudgetsEditEs edit = _TranslationsBudgetsEditEs._(_root);
+}
+
+// Path: analytics
+class _TranslationsAnalyticsEs extends TranslationsAnalyticsEn {
+	_TranslationsAnalyticsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Análisis';
+	@override String get insights_for => 'Perspectivas de {period}';
+	@override String get cash_flow => 'Flujo de Caja';
+	@override String get net_income => 'INGRESO NETO';
+	@override String get spending_by_category => 'Gastos por Categoría';
+	@override String get income_by_category => 'Ingresos por Categoría';
+	@override String get no_data => 'Sin datos para este período';
+	@override String get total => 'Total';
 }
 
 // Path: accounts
@@ -707,6 +725,14 @@ extension on TranslationsEs {
 			'budgets.edit.error_loading' => 'Error al cargar el presupuesto',
 			'budgets.edit.success_update' => '¡Presupuesto actualizado con éxito!',
 			'budgets.edit.success_delete' => '¡Presupuesto eliminado con éxito!',
+			'analytics.title' => 'Análisis',
+			'analytics.insights_for' => 'Perspectivas de {period}',
+			'analytics.cash_flow' => 'Flujo de Caja',
+			'analytics.net_income' => 'INGRESO NETO',
+			'analytics.spending_by_category' => 'Gastos por Categoría',
+			'analytics.income_by_category' => 'Ingresos por Categoría',
+			'analytics.no_data' => 'Sin datos para este período',
+			'analytics.total' => 'Total',
 			'currencies.USD' => 'Dólar estadounidense',
 			'currencies.EUR' => 'Euro',
 			'currencies.GBP' => 'Libra esterlina',

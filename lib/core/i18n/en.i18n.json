@@ -178,6 +178,16 @@
       "success_delete": "Budget deleted successfully"
     }
   },
+  "analytics": {
+    "title": "Analytics",
+    "insights_for": "Insights for {period}",
+    "cash_flow": "Cash Flow",
+    "net_income": "NET INCOME",
+    "spending_by_category": "Spending by Category",
+    "income_by_category": "Incomes by Category",
+    "no_data": "No data for this period",
+    "total": "Total"
+  },
   "currencies(map)": {
     "USD": "US Dollar",
     "EUR": "Euro",

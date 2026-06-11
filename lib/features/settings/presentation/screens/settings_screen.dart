@@ -133,6 +133,13 @@ class SettingsScreen extends ConsumerWidget {
                   children: [
                     buildNavTile(
                       context: context,
+                      label: t.analytics.title,
+                      icon: Icons.bar_chart_rounded,
+                      isDark: isDark,
+                      onTap: () => context.push(AppRoutes.analytics),
+                    ),
+                    buildNavTile(
+                      context: context,
                       label: t.settings.accounts.title,
                       icon: Icons.account_balance_wallet_outlined,
                       isDark: isDark,
