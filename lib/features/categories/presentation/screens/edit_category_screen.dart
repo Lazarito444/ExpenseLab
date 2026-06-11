@@ -11,67 +11,43 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-// ── Icon catalogue (mirrored from create screen) ──────────────────────────────
+// ── Icon categories for the picker ───────────────────────────────────────────
 
-const _kIconOptions = [
-  'restaurant',
-  'local_grocery_store',
-  'local_cafe',
-  'fastfood',
-  'lunch_dining',
-  'wine_bar',
-  'cake',
-  'local_bar',
-  'directions_car',
-  'directions_bus',
-  'train',
-  'directions_bike',
-  'local_taxi',
-  'flight',
-  'local_gas_station',
-  'motorcycle',
-  'home',
-  'plumbing',
-  'water_drop',
-  'wifi',
-  'health_and_safety',
-  'fitness_center',
-  'medical_services',
-  'spa',
-  'self_improvement',
-  'pets',
-  'movie',
-  'sports_esports',
-  'sports_soccer',
-  'sports_basketball',
-  'nightlife',
-  'music_note',
-  'camera_alt',
-  'celebration',
-  'shopping_cart',
-  'shopping_bag',
-  'storefront',
-  'school',
-  'work',
-  'computer',
-  'science',
-  'menu_book',
-  'business_center',
-  'payments',
-  'savings',
-  'show_chart',
-  'analytics',
-  'paid',
-  'account_balance',
-  'card_giftcard',
-  'luggage',
-  'hotel',
-  'beach_access',
-  'volunteer_activism',
-  'child_care',
-  'bolt',
-  'phone',
-  'construction',
+final _kIconCategories = <(String, List<String>)>[
+  ('Finance', [
+    'account_balance_wallet', 'savings', 'account_balance', 'credit_card',
+    'cash', 'wallet', 'payments', 'local_atm', 'attach_money',
+    'currency_exchange', 'paid', 'money', 'euro',
+  ]),
+  ('Food & Dining', [
+    'restaurant', 'fastfood', 'local_cafe', 'local_grocery_store',
+    'lunch_dining', 'cake', 'local_bar', 'wine_bar',
+  ]),
+  ('Transport', [
+    'directions_car', 'flight', 'train', 'directions_bus',
+    'directions_bike', 'motorcycle', 'local_taxi', 'local_gas_station',
+  ]),
+  ('Home', ['home', 'bolt', 'wifi', 'phone', 'water_drop', 'plumbing']),
+  ('Health', [
+    'medical_services', 'fitness_center', 'health_and_safety',
+    'spa', 'self_improvement',
+  ]),
+  ('Entertainment', [
+    'movie', 'music_note', 'sports_esports', 'sports_basketball',
+    'sports_soccer', 'camera_alt', 'celebration', 'nightlife',
+  ]),
+  ('Shopping', [
+    'shopping_bag', 'shopping_cart', 'storefront', 'card_giftcard',
+  ]),
+  ('Work & Education', [
+    'work', 'school', 'computer', 'menu_book',
+    'science', 'construction', 'business_center',
+  ]),
+  ('Travel', ['hotel', 'luggage', 'beach_access', 'card_travel']),
+  ('Other', [
+    'pets', 'child_care', 'volunteer_activism',
+    'show_chart', 'trending_up', 'analytics',
+  ]),
 ];
 
 const _kQuickColors = [
@@ -100,7 +76,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
 
-  String _selectedIcon = _kIconOptions[0];
+  String _selectedIcon = _kIconCategories.first.$2.first;
   Color _selectedColor = _kQuickColors[0];
   CategoryType _selectedType = CategoryType.expense;
   String? _selectedParentId;
@@ -126,7 +102,8 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
     if (_initialized) return;
     _initialized = true;
     _nameController.text = category.name;
-    _selectedIcon = _kIconOptions.contains(category.icon) ? category.icon : _kIconOptions[0];
+    final _allIcons = _kIconCategories.expand((c) => c.$2).toSet();
+    _selectedIcon = _allIcons.contains(category.icon) ? category.icon : _kIconCategories.first.$2.first;
     _selectedColor = Color(category.color);
     _selectedType = category.type;
     _selectedParentId = category.parentId;
@@ -247,8 +224,9 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => DraggableScrollableSheet(
-        initialChildSize: 0.65,
+      builder: (sheetContext) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.5,
         maxChildSize: 0.92,
         expand: false,
         builder: (_, scrollController) => Padding(
@@ -265,42 +243,60 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               Expanded(
-                child: GridView.builder(
+                child: ListView(
                   controller: scrollController,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 6,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 1,
-                  ),
-                  itemCount: _kIconOptions.length,
-                  itemBuilder: (_, i) {
-                    final name = _kIconOptions[i];
-                    final selected = name == _selectedIcon;
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() => _selectedIcon = name);
-                        Navigator.pop(context);
-                      },
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 150),
-                        decoration: BoxDecoration(
-                          color: selected ? _selectedColor : const Color(0xFFF0F0F0),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          iconFromName(name),
-                          color: selected ? Colors.white : const Color(0xFF8E8E8E),
-                          size: 22,
+                  children: [
+                    for (final (category, icons) in _kIconCategories) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16, bottom: 8),
+                        child: Text(
+                          category,
+                          style: const TextStyle(
+                            fontFamily: 'Epilogue',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF9EAEA2),
+                          ),
                         ),
                       ),
-                    );
-                  },
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: icons.map((name) {
+                          final selected = name == _selectedIcon;
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() => _selectedIcon = name);
+                              Navigator.pop(sheetContext);
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: selected
+                                    ? _selectedColor
+                                    : const Color(0xFFF0F0F0),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Icon(
+                                iconFromName(name),
+                                color: selected
+                                    ? Colors.white
+                                    : const Color(0xFF8E8E8E),
+                                size: 22,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                    const SizedBox(height: 24),
+                  ],
                 ),
               ),
-              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -678,64 +674,58 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                           ),
                           const SizedBox(height: 20),
 
-                          // ── Icon grid ─────────────────────────────────
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _SectionLabel(label: t.categories.icon),
-                              GestureDetector(
-                                onTap: () => _showIconPicker(context, t),
-                                child: Text(
-                                  t.common.see_all,
-                                  style: const TextStyle(
-                                    fontFamily: 'Epilogue',
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF2D6831),
-                                  ),
+                          // ── Icon selector ─────────────────────────────
+                          _SectionLabel(label: t.categories.icon),
+                          const SizedBox(height: 8),
+                          GestureDetector(
+                            onTap: () => _showIconPicker(context, t),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: const Color(0xFFE5E5E5),
                                 ),
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: const Color(0xFFE5E5E5),
-                              ),
-                            ),
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 5,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 8,
-                                childAspectRatio: 1,
-                              ),
-                              itemCount: 10,
-                              itemBuilder: (_, i) {
-                                final name = _kIconOptions[i];
-                                final selected = name == _selectedIcon;
-                                return GestureDetector(
-                                  onTap: () => setState(() => _selectedIcon = name),
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 180),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 40,
+                                    height: 40,
                                     decoration: BoxDecoration(
-                                      color: selected ? _selectedColor : const Color(0xFFF5F5F5),
+                                      color: _selectedColor.withValues(
+                                        alpha: 0.15,
+                                      ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Icon(
-                                      iconFromName(name),
-                                      color: selected ? Colors.white : const Color(0xFF757575),
-                                      size: 22,
+                                      iconFromName(_selectedIcon),
+                                      color: _selectedColor,
+                                      size: 20,
                                     ),
                                   ),
-                                );
-                              },
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      _selectedIcon.replaceAll('_', ' '),
+                                      style: const TextStyle(
+                                        fontFamily: 'Epilogue',
+                                        fontSize: 14,
+                                        color: Color(0xFF1A1A1A),
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    color: Colors.grey.shade500,
+                                    size: 22,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(height: 20),

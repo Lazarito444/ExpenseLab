@@ -43,6 +43,10 @@
 	</array>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use Face ID to unlock ExpenseLab</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Take a photo of your receipt</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pick a receipt photo from your library</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

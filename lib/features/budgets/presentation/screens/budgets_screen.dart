@@ -212,7 +212,7 @@ class _MonthSelector extends StatelessWidget {
           SizedBox(
             width: 100,
             child: Text(
-              toBeginningOfSentenceCase(DateFormat('MMMM', LocaleSettings.currentLocale.languageTag).format(selectedMonth)),
+              toBeginningOfSentenceCase(DateFormat('MMMM yyyy', LocaleSettings.currentLocale.languageTag).format(selectedMonth)),
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:drift/drift.dart' as drift;
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
@@ -10,12 +12,16 @@ import 'package:expenselab/features/categories/providers/categories_providers.da
 import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
+import 'package:expenselab/features/transactions/domain/models/transaction_image_model.dart';
 import 'package:expenselab/features/transactions/providers/transactions_providers.dart';
 import 'package:expenselab/widgets/scaffold/expense_lab_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 class AddTransactionScreen extends ConsumerStatefulWidget {
   const AddTransactionScreen({this.transactionId, this.initialDate, super.key});
@@ -45,6 +51,10 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   bool _isLoading = false;
   bool _showNumpad = true;
   bool _isLoadingTransaction = false;
+  // Pending local paths for new images; populated before save.
+  final List<String> _pendingImagePaths = [];
+  // Existing image records loaded in edit mode.
+  List<TransactionImageModel> _existingImages = [];
 
   @override
   void initState() {
@@ -74,6 +84,9 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
           final cat = await ref.read(categoriesRepositoryProvider).getById(tx.categoryId!);
           if (cat != null) categoryModel = CategoryModel.fromCategory(cat);
         }
+        final images = await ref.read(transactionImagesRepositoryProvider).getAll().then(
+          (all) => all.where((img) => img.transactionId == widget.transactionId!).toList(),
+        );
         if (mounted) {
           setState(() {
             _type = tx.type;
@@ -87,6 +100,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
             _selectedDate = tx.date;
             _noteController.text = tx.note ?? '';
             _showNumpad = false;
+            _existingImages = images;
           });
         }
       }
@@ -187,10 +201,22 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     );
     try {
       final repo = ref.read(transactionsRepositoryProvider);
+      final imagesRepo = ref.read(transactionImagesRepositoryProvider);
+      String txId;
       if (widget.isEditing) {
         await repo.update(widget.transactionId!, companion);
+        txId = widget.transactionId!;
       } else {
-        await repo.create(companion);
+        txId = await repo.create(companion);
+      }
+
+      for (final path in _pendingImagePaths) {
+        await imagesRepo.create(
+          TransactionImagesCompanion(
+            transactionId: drift.Value(txId),
+            localPath: drift.Value(path),
+          ),
+        );
       }
 
       if (mounted) {
@@ -381,6 +407,56 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     );
   }
 
+  // ── Attachments ────────────────────────────────────────────────────────────
+
+  Future<void> _showAttachmentsSheet() async {
+    _closeNumpad();
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: context.colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => _AttachmentsSheet(
+        existingImages: _existingImages,
+        pendingPaths: _pendingImagePaths,
+        onPickCamera: () async {
+          Navigator.pop(ctx);
+          await _pickImage(ImageSource.camera);
+        },
+        onPickGallery: () async {
+          Navigator.pop(ctx);
+          await _pickImage(ImageSource.gallery);
+        },
+        onRemoveExisting: (img) async {
+          await ref.read(transactionImagesRepositoryProvider).delete(img.id);
+          final file = File(img.localPath);
+          if (await file.exists()) await file.delete();
+          if (mounted) setState(() => _existingImages.remove(img));
+        },
+        onRemovePending: (path) {
+          if (mounted) setState(() => _pendingImagePaths.remove(path));
+        },
+      ),
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: source, imageQuality: 85);
+    if (picked == null || !mounted) return;
+    final saved = await _copyImageToAppDir(picked.path);
+    setState(() => _pendingImagePaths.add(saved));
+  }
+
+  Future<String> _copyImageToAppDir(String sourcePath) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final dest = p.join(dir.path, 'tx_images', '${DateTime.now().millisecondsSinceEpoch}${p.extension(sourcePath)}');
+    await Directory(p.dirname(dest)).create(recursive: true);
+    await File(sourcePath).copy(dest);
+    return dest;
+  }
+
   // ── Build ──────────────────────────────────────────────────────────────────
 
   @override
@@ -530,7 +606,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                             child: _AttachmentsRow(
                               label: t.transactions.attachments,
                               hint: t.transactions.attachments_hint,
-                              onTap: _closeNumpad,
+                              imageCount: _existingImages.length + _pendingImagePaths.length,
+                              onTap: _showAttachmentsSheet,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -1047,11 +1124,13 @@ class _AttachmentsRow extends StatelessWidget {
   const _AttachmentsRow({
     required this.label,
     required this.hint,
+    required this.imageCount,
     required this.onTap,
   });
 
   final String label;
   final String hint;
+  final int imageCount;
   final VoidCallback onTap;
 
   @override
@@ -1083,16 +1162,17 @@ class _AttachmentsRow extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    hint,
+                    imageCount > 0 ? '$imageCount attachment${imageCount == 1 ? '' : 's'}' : hint,
                     style: TextStyle(
                       fontFamily: 'Epilogue',
                       fontSize: 13,
-                      color: cs.onSurfaceVariant,
+                      color: imageCount > 0 ? cs.onSurface : cs.onSurfaceVariant,
                     ),
                   ),
                 ],
               ),
             ),
+            Icon(Icons.chevron_right_rounded, color: cs.onSurfaceVariant, size: 20),
           ],
         ),
       ),
@@ -1367,6 +1447,205 @@ class _SheetHandle extends StatelessWidget {
         decoration: BoxDecoration(
           color: context.colorScheme.outlineVariant,
           borderRadius: BorderRadius.circular(2),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Attachments sheet ─────────────────────────────────────────────────────────
+
+class _AttachmentsSheet extends StatelessWidget {
+  const _AttachmentsSheet({
+    required this.existingImages,
+    required this.pendingPaths,
+    required this.onPickCamera,
+    required this.onPickGallery,
+    required this.onRemoveExisting,
+    required this.onRemovePending,
+  });
+
+  final List<TransactionImageModel> existingImages;
+  final List<String> pendingPaths;
+  final VoidCallback onPickCamera;
+  final VoidCallback onPickGallery;
+  final void Function(TransactionImageModel) onRemoveExisting;
+  final void Function(String) onRemovePending;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = context.colorScheme;
+    final allPaths = [
+      ...existingImages.map((img) => (path: img.localPath, existing: true, img: img)),
+      ...pendingPaths.map((path) => (path: path, existing: false, img: null as TransactionImageModel?)),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _SheetHandle(),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _AttachOption(
+                  icon: Icons.camera_alt_outlined,
+                  label: 'Camera',
+                  onTap: onPickCamera,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _AttachOption(
+                  icon: Icons.photo_library_outlined,
+                  label: 'Gallery',
+                  onTap: onPickGallery,
+                ),
+              ),
+            ],
+          ),
+          if (allPaths.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 80,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: allPaths.length,
+                separatorBuilder: (_, _) => const SizedBox(width: 8),
+                itemBuilder: (_, i) {
+                  final entry = allPaths[i];
+                  return Stack(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => _FullScreenImageViewer(path: entry.path),
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.file(
+                            File(entry.path),
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, _, _) => Container(
+                              width: 80,
+                              height: 80,
+                              color: cs.surfaceContainerHighest,
+                              child: Icon(Icons.broken_image_outlined, color: cs.onSurfaceVariant),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 2,
+                        right: 2,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (entry.existing && entry.img != null) {
+                              onRemoveExisting(entry.img!);
+                            } else {
+                              onRemovePending(entry.path);
+                            }
+                          },
+                          child: Container(
+                            width: 20,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: cs.error,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.close, size: 13, color: cs.onError),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _AttachOption extends StatelessWidget {
+  const _AttachOption({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = context.colorScheme;
+    return Material(
+      color: cs.surfaceContainerHighest,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            children: [
+              Icon(icon, color: cs.primary, size: 28),
+              const SizedBox(height: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'Epilogue',
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: cs.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Full-screen image viewer ───────────────────────────────────────────────────
+
+class _FullScreenImageViewer extends StatelessWidget {
+  const _FullScreenImageViewer({required this.path});
+
+  final String path;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Center(
+        child: InteractiveViewer(
+          minScale: 0.5,
+          maxScale: 5,
+          child: Image.file(
+            File(path),
+            fit: BoxFit.contain,
+            errorBuilder: (_, _, _) => const Icon(
+              Icons.broken_image_outlined,
+              color: Colors.white54,
+              size: 64,
+            ),
+          ),
         ),
       ),
     );

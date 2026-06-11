@@ -15,17 +15,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-// ── Icon options ──────────────────────────────────────────────────────────────
+// ── Icon categories for the picker ───────────────────────────────────────────
 
-const _kIconOptions = [
-  'account_balance_wallet',
-  'savings',
-  'account_balance',
-  'credit_card',
-  'cash',
-  'wallet',
-  'payments',
-  'local_atm',
+final _kIconCategories = <(String, List<String>)>[
+  ('Finance', [
+    'account_balance_wallet', 'savings', 'account_balance', 'credit_card',
+    'cash', 'wallet', 'payments', 'local_atm', 'attach_money',
+    'currency_exchange', 'paid', 'money', 'euro',
+  ]),
+  ('Food & Dining', [
+    'restaurant', 'fastfood', 'local_cafe', 'local_grocery_store',
+    'lunch_dining', 'cake', 'local_bar', 'wine_bar',
+  ]),
+  ('Transport', [
+    'directions_car', 'flight', 'train', 'directions_bus',
+    'directions_bike', 'motorcycle', 'local_taxi', 'local_gas_station',
+  ]),
+  ('Home', ['home', 'bolt', 'wifi', 'phone', 'water_drop', 'plumbing']),
+  ('Health', [
+    'medical_services', 'fitness_center', 'health_and_safety',
+    'spa', 'self_improvement',
+  ]),
+  ('Entertainment', [
+    'movie', 'music_note', 'sports_esports', 'sports_basketball',
+    'sports_soccer', 'camera_alt', 'celebration', 'nightlife',
+  ]),
+  ('Shopping', [
+    'shopping_bag', 'shopping_cart', 'storefront', 'card_giftcard',
+  ]),
+  ('Work & Education', [
+    'work', 'school', 'computer', 'menu_book',
+    'science', 'construction', 'business_center',
+  ]),
+  ('Travel', ['hotel', 'luggage', 'beach_access', 'card_travel']),
+  ('Other', [
+    'pets', 'child_care', 'volunteer_activism',
+    'show_chart', 'trending_up', 'analytics',
+  ]),
 ];
 
 // ── Screen ────────────────────────────────────────────────────────────────────
@@ -44,7 +70,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   final _nameController = TextEditingController();
   final _balanceController = TextEditingController();
 
-  String _selectedIcon = _kIconOptions[0];
+  String _selectedIcon = _kIconCategories.first.$2.first;
   AccountType _selectedType = AccountType.bankAccount;
   String _selectedCurrencyCode = 'USD';
   double _originalBalance = 0.0;
@@ -339,6 +365,94 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     );
   }
 
+  void _showIconSheet(BuildContext context, Translations t) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.5,
+        maxChildSize: 0.92,
+        expand: false,
+        builder: (_, scrollController) => Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+          child: Column(
+            children: [
+              const _SheetHandle(),
+              const SizedBox(height: 16),
+              Text(
+                t.accounts.create.icon,
+                style: const TextStyle(
+                  fontFamily: 'Epilogue',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: ListView(
+                  controller: scrollController,
+                  children: [
+                    for (final (category, icons) in _kIconCategories) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16, bottom: 8),
+                        child: Text(
+                          category,
+                          style: const TextStyle(
+                            fontFamily: 'Epilogue',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF9EAEA2),
+                          ),
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: icons.map((name) {
+                          final selected = name == _selectedIcon;
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() => _selectedIcon = name);
+                              Navigator.pop(sheetContext);
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: selected
+                                    ? const Color(0xFF2D6831)
+                                    : const Color(0xFFF0F0F0),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Icon(
+                                iconFromName(name),
+                                color: selected
+                                    ? Colors.white
+                                    : const Color(0xFF8E8E8E),
+                                size: 22,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   // ── Helpers ────────────────────────────────────────────────────────────────
 
   String _typeLabel(Translations t, AccountType type) => switch (type) {
@@ -440,41 +554,54 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                           // Account Icon
                           _SectionLabel(label: t.accounts.create.icon),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            height: 56,
-                            child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _kIconOptions.length,
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(width: 10),
-                              itemBuilder: (_, i) {
-                                final name = _kIconOptions[i];
-                                final selected = name == _selectedIcon;
-                                return GestureDetector(
-                                  onTap: () =>
-                                      setState(() => _selectedIcon = name),
-                                  child: AnimatedContainer(
-                                    duration:
-                                        const Duration(milliseconds: 180),
-                                    width: 52,
-                                    height: 52,
+                          GestureDetector(
+                            onTap: () => _showIconSheet(context, t),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: const Color(0xFFE5E5E5),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 40,
+                                    height: 40,
                                     decoration: BoxDecoration(
-                                      color: selected
-                                          ? const Color(0xFF2D6831)
-                                          : const Color(0xFFF0F0F0),
+                                      color: const Color(0xFF2D6831),
                                       borderRadius:
-                                          BorderRadius.circular(12),
+                                          BorderRadius.circular(10),
                                     ),
                                     child: Icon(
-                                      iconFromName(name),
-                                      color: selected
-                                          ? Colors.white
-                                          : const Color(0xFF8E8E8E),
-                                      size: 22,
+                                      iconFromName(_selectedIcon),
+                                      color: Colors.white,
+                                      size: 20,
                                     ),
                                   ),
-                                );
-                              },
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      _selectedIcon.replaceAll('_', ' '),
+                                      style: const TextStyle(
+                                        fontFamily: 'Epilogue',
+                                        fontSize: 14,
+                                        color: Color(0xFF1A1A1A),
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    color: Colors.grey.shade500,
+                                    size: 22,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(height: 22),
