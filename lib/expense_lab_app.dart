@@ -1,5 +1,6 @@
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/core/routing/app_router.dart';
+import 'package:expenselab/core/seed/seed_data_provider.dart';
 import 'package:expenselab/core/theme/app_theme.dart';
 import 'package:expenselab/features/security/lock_provider.dart';
 import 'package:expenselab/features/security/presentation/screens/lock_screen.dart';
@@ -20,6 +21,7 @@ class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp> with WidgetsBindi
   void initState() {
     super.initState();
     _initLocale();
+    ref.read(seedDataServiceProvider).seedIfNeeded();
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) => _initLockState());
   }

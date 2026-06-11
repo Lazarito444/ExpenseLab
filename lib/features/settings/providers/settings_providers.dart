@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:expenselab/core/database/database_providers.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:expenselab/core/seed/seed_data_provider.dart';
 import 'package:expenselab/features/settings/domain/models/app_settings.dart';
 import 'package:expenselab/features/settings/domain/models/currency.dart';
 import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
@@ -91,6 +92,9 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
 
     // 4. Update the settings state
     state = AsyncData(AppSettings.fromPrefs(prefs));
+
+    // 5. Seed default categories and account
+    await ref.read(seedDataServiceProvider).seedIfNeeded();
   }
 }
 
