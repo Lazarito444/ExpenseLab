@@ -36,6 +36,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   TransactionType _type = TransactionType.expense;
   String _amountString = '0';
   String? _selectedCategoryId;
+  CategoryModel? _selectedCategoryModel;
   String? _selectedAccountId;
   String? _selectedToAccountId;
   DateTime _selectedDate = DateTime.now();
@@ -66,22 +67,28 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   Future<void> _loadTransaction() async {
     setState(() => _isLoadingTransaction = true);
     try {
-      final tx = await ref
-          .read(transactionsRepositoryProvider)
-          .getById(widget.transactionId!);
+      final tx = await ref.read(transactionsRepositoryProvider).getById(widget.transactionId!);
       if (tx != null && mounted) {
-        setState(() {
-          _type = tx.type;
-          _amountString = tx.amount.toStringAsFixed(
-            tx.amount.truncateToDouble() == tx.amount ? 0 : 2,
-          );
-          _selectedCategoryId = tx.categoryId;
-          _selectedAccountId = tx.accountId;
-          _selectedToAccountId = tx.toAccountId;
-          _selectedDate = tx.date;
-          _noteController.text = tx.note ?? '';
-          _showNumpad = false;
-        });
+        CategoryModel? categoryModel;
+        if (tx.categoryId != null) {
+          final cat = await ref.read(categoriesRepositoryProvider).getById(tx.categoryId!);
+          if (cat != null) categoryModel = CategoryModel.fromCategory(cat);
+        }
+        if (mounted) {
+          setState(() {
+            _type = tx.type;
+            _amountString = tx.amount.toStringAsFixed(
+              tx.amount.truncateToDouble() == tx.amount ? 0 : 2,
+            );
+            _selectedCategoryId = tx.categoryId;
+            _selectedCategoryModel = categoryModel;
+            _selectedAccountId = tx.accountId;
+            _selectedToAccountId = tx.toAccountId;
+            _selectedDate = tx.date;
+            _noteController.text = tx.note ?? '';
+            _showNumpad = false;
+          });
+        }
       }
     } finally {
       if (mounted) setState(() => _isLoadingTransaction = false);
@@ -164,21 +171,19 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       return;
     }
 
+    if (_showNumpad) {
+      _closeNumpad();
+    }
+
     setState(() => _isLoading = true);
     final companion = TransactionsCompanion(
       type: drift.Value(_type),
       amount: drift.Value(_amount),
       date: drift.Value(_selectedDate),
       accountId: drift.Value(_selectedAccountId!),
-      toAccountId: _type == TransactionType.transfer
-          ? drift.Value(_selectedToAccountId)
-          : const drift.Value(null),
-      categoryId: _selectedCategoryId != null
-          ? drift.Value(_selectedCategoryId)
-          : const drift.Value(null),
-      note: _noteController.text.trim().isNotEmpty
-          ? drift.Value(_noteController.text.trim())
-          : const drift.Value(null),
+      toAccountId: _type == TransactionType.transfer ? drift.Value(_selectedToAccountId) : const drift.Value(null),
+      categoryId: _selectedCategoryId != null ? drift.Value(_selectedCategoryId) : const drift.Value(null),
+      note: _noteController.text.trim().isNotEmpty ? drift.Value(_noteController.text.trim()) : const drift.Value(null),
     );
     try {
       final repo = ref.read(transactionsRepositoryProvider);
@@ -242,98 +247,28 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
 
   // ── Bottom sheets ──────────────────────────────────────────────────────────
 
-  void _showCategorySheet(List<Category> categories) {
-    final t = context.t;
+  Future<void> _showCategorySheet(List<Category> topLevelCategories) async {
+    final allCategories = ref.read(categoriesProvider).value ?? [];
     _closeNumpad();
-    showModalBottomSheet<void>(
+    final selected = await showModalBottomSheet<Category>(
       context: context,
       backgroundColor: context.colorScheme.surface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => DraggableScrollableSheet(
-        initialChildSize: 0.6,
-        minChildSize: 0.4,
-        maxChildSize: 0.9,
-        expand: false,
-        builder: (_, sc) => Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-          child: Column(
-            children: [
-              const _SheetHandle(),
-              const SizedBox(height: 12),
-              Text(
-                t.transactions.select_category,
-                style: TextStyle(
-                  fontFamily: 'Epilogue',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: context.colorScheme.onSurface,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Expanded(
-                child: categories.isEmpty
-                    ? Center(
-                        child: Text(
-                          t.categories.empty_state,
-                          style: TextStyle(
-                            fontFamily: 'Epilogue',
-                            color: context.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      )
-                    : ListView.builder(
-                        controller: sc,
-                        itemCount: categories.length,
-                        itemBuilder: (_, i) {
-                          final cat = categories[i];
-                          final model = CategoryModel.fromCategory(cat);
-                          final isSelected = cat.id == _selectedCategoryId;
-                          return ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            leading: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: model.color.withValues(alpha: 0.15),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Icon(
-                                iconFromName(model.icon),
-                                color: model.color,
-                                size: 20,
-                              ),
-                            ),
-                            title: Text(
-                              model.name,
-                              style: TextStyle(
-                                fontFamily: 'Epilogue',
-                                fontSize: 14,
-                                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                                color: isSelected ? context.colorScheme.primary : context.colorScheme.onSurface,
-                              ),
-                            ),
-                            trailing: isSelected
-                                ? Icon(
-                                    Icons.check_rounded,
-                                    color: context.colorScheme.primary,
-                                  )
-                                : null,
-                            onTap: () {
-                              setState(() => _selectedCategoryId = cat.id);
-                              Navigator.pop(context);
-                            },
-                          );
-                        },
-                      ),
-              ),
-            ],
-          ),
-        ),
+      builder: (_) => _CategoryPickerSheet(
+        topLevelCategories: topLevelCategories,
+        allCategories: allCategories,
+        selectedCategoryId: _selectedCategoryId,
       ),
     );
+    if (selected != null && mounted) {
+      setState(() {
+        _selectedCategoryId = selected.id;
+        _selectedCategoryModel = CategoryModel.fromCategory(selected);
+      });
+    }
   }
 
   void _showAccountSheet({bool isTo = false}) {
@@ -468,8 +403,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
 
     final categoryType = _type == TransactionType.income ? CategoryType.income : CategoryType.expense;
     final categories = ref.watch(categoriesByTypeProvider(categoryType)).value ?? [];
-    final selectedCategory = categories.where((c) => c.id == _selectedCategoryId).firstOrNull;
-    final selectedCategoryModel = selectedCategory != null ? CategoryModel.fromCategory(selectedCategory) : null;
+    final selectedCategoryModel = _selectedCategoryModel;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -484,173 +418,174 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
           ? const Center(child: CircularProgressIndicator())
           : SafeArea(
               child: Column(
-          children: [
-            // ── Scrollable section ────────────────────────────────────────
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
-                ),
-                child: Column(
-                  children: [
-                    // Amount — tap to bring back the numpad
-                    GestureDetector(
-                      onTap: _openNumpad,
-                      behavior: HitTestBehavior.opaque,
-                      child: _AmountHeader(
-                        amountString: _formattedAmount,
-                        currencySymbol: accountCurrency.symbol,
-                        label: t.transactions.enter_amount,
+                children: [
+                  // ── Scrollable section ────────────────────────────────────────
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
                       ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Type tabs
-                    _TypeTabs(
-                      selected: _type,
-                      onChanged: (type) => setState(() {
-                        _type = type;
-                        _selectedCategoryId = null;
-                      }),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Category + Account cards (or two accounts for transfer)
-                    if (_type != TransactionType.transfer)
-                      Row(
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: _PickerCard(
-                              label: t.transactions.category,
-                              value: selectedCategoryModel?.name ?? t.transactions.no_category,
-                              icon: selectedCategoryModel != null ? iconFromName(selectedCategoryModel.icon) : Icons.category_rounded,
-                              iconBgColor: selectedCategoryModel != null ? selectedCategoryModel.color.withValues(alpha: 0.15) : cs.primaryContainer,
-                              iconColor: selectedCategoryModel?.color ?? cs.primary,
-                              onTap: () => _showCategorySheet(categories),
+                          // Amount — tap to bring back the numpad
+                          GestureDetector(
+                            onTap: _openNumpad,
+                            behavior: HitTestBehavior.opaque,
+                            child: _AmountHeader(
+                              amountString: _formattedAmount,
+                              currencySymbol: accountCurrency.symbol,
+                              label: t.transactions.enter_amount,
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: _PickerCard(
-                              label: t.transactions.account,
-                              value: selectedAccount?.name ?? t.transactions.no_account,
-                              icon: selectedAccount != null ? iconFromName(selectedAccount.icon) : Icons.account_balance_wallet_rounded,
-                              iconBgColor: cs.primaryContainer,
-                              iconColor: cs.primary,
-                              onTap: () => _showAccountSheet(),
+                          const SizedBox(height: 20),
+
+                          // Type tabs
+                          _TypeTabs(
+                            selected: _type,
+                            onChanged: (type) => setState(() {
+                              _type = type;
+                              _selectedCategoryId = null;
+                              _selectedCategoryModel = null;
+                            }),
+                          ),
+                          const SizedBox(height: 16),
+
+                          // Category + Account cards (or two accounts for transfer)
+                          if (_type != TransactionType.transfer)
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _PickerCard(
+                                    label: t.transactions.category,
+                                    value: selectedCategoryModel?.name ?? t.transactions.no_category,
+                                    icon: selectedCategoryModel != null ? iconFromName(selectedCategoryModel.icon) : Icons.category_rounded,
+                                    iconBgColor: selectedCategoryModel != null ? selectedCategoryModel.color.withValues(alpha: 0.15) : cs.primaryContainer,
+                                    iconColor: selectedCategoryModel?.color ?? cs.primary,
+                                    onTap: () => _showCategorySheet(categories),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _PickerCard(
+                                    label: t.transactions.account,
+                                    value: selectedAccount?.name ?? t.transactions.no_account,
+                                    icon: selectedAccount != null ? iconFromName(selectedAccount.icon) : Icons.account_balance_wallet_rounded,
+                                    iconBgColor: cs.primaryContainer,
+                                    iconColor: cs.primary,
+                                    onTap: () => _showAccountSheet(),
+                                  ),
+                                ),
+                              ],
+                            )
+                          else
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _PickerCard(
+                                    label: t.transactions.account,
+                                    value: selectedAccount?.name ?? t.transactions.no_account,
+                                    icon: selectedAccount != null ? iconFromName(selectedAccount.icon) : Icons.account_balance_wallet_rounded,
+                                    iconBgColor: cs.primaryContainer,
+                                    iconColor: cs.primary,
+                                    onTap: () => _showAccountSheet(),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _PickerCard(
+                                    label: t.transactions.to_account,
+                                    value: selectedToAccount?.name ?? t.transactions.no_to_account,
+                                    icon: selectedToAccount != null ? iconFromName(selectedToAccount.icon) : Icons.arrow_forward_rounded,
+                                    iconBgColor: cs.secondaryContainer,
+                                    iconColor: cs.secondary,
+                                    onTap: () => _showAccountSheet(isTo: true),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          const SizedBox(height: 12),
+
+                          // Date & Time
+                          _DateRow(
+                            date: _selectedDate,
+                            label: t.transactions.date_time,
+                            onTap: _pickDateTime,
+                          ),
+                          const SizedBox(height: 12),
+
+                          // Notes card
+                          _CardShell(
+                            child: _NotesField(
+                              controller: _noteController,
+                              focusNode: _notesFocusNode,
+                              label: t.transactions.notes,
+                              hint: t.transactions.notes_hint,
                             ),
                           ),
+                          const SizedBox(height: 8),
+
+                          // Attachments card
+                          _CardShell(
+                            child: _AttachmentsRow(
+                              label: t.transactions.attachments,
+                              hint: t.transactions.attachments_hint,
+                              onTap: _closeNumpad,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
                         ],
-                      )
-                    else
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _PickerCard(
-                              label: t.transactions.account,
-                              value: selectedAccount?.name ?? t.transactions.no_account,
-                              icon: selectedAccount != null ? iconFromName(selectedAccount.icon) : Icons.account_balance_wallet_rounded,
-                              iconBgColor: cs.primaryContainer,
-                              iconColor: cs.primary,
-                              onTap: () => _showAccountSheet(),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: _PickerCard(
-                              label: t.transactions.to_account,
-                              value: selectedToAccount?.name ?? t.transactions.no_to_account,
-                              icon: selectedToAccount != null ? iconFromName(selectedToAccount.icon) : Icons.arrow_forward_rounded,
-                              iconBgColor: cs.secondaryContainer,
-                              iconColor: cs.secondary,
-                              onTap: () => _showAccountSheet(isTo: true),
-                            ),
-                          ),
-                        ],
-                      ),
-                    const SizedBox(height: 12),
-
-                    // Date & Time
-                    _DateRow(
-                      date: _selectedDate,
-                      label: t.transactions.date_time,
-                      onTap: _pickDateTime,
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Notes card
-                    _CardShell(
-                      child: _NotesField(
-                        controller: _noteController,
-                        focusNode: _notesFocusNode,
-                        label: t.transactions.notes,
-                        hint: t.transactions.notes_hint,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                  ),
 
-                    // Attachments card
-                    _CardShell(
-                      child: _AttachmentsRow(
-                        label: t.transactions.attachments,
-                        hint: t.transactions.attachments_hint,
-                        onTap: _closeNumpad,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ),
-            ),
+                  // ── Number pad (animated show/hide) ──────────────────────────
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 220),
+                    curve: Curves.easeInOut,
+                    child: _showNumpad ? _NumberPad(onKeyTap: _onKeyTap) : const SizedBox(width: double.infinity),
+                  ),
 
-            // ── Number pad (animated show/hide) ──────────────────────────
-            AnimatedSize(
-              duration: const Duration(milliseconds: 220),
-              curve: Curves.easeInOut,
-              child: _showNumpad ? _NumberPad(onKeyTap: _onKeyTap) : const SizedBox(width: double.infinity),
-            ),
-
-            // ── Save button ───────────────────────────────────────────────
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-              child: SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton.icon(
-                  onPressed: _isLoading ? null : _submit,
-                  icon: _isLoading
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
+                  // ── Save button ───────────────────────────────────────────────
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 54,
+                      child: ElevatedButton.icon(
+                        onPressed: _isLoading ? null : _submit,
+                        icon: _isLoading
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(
+                                Icons.check_circle_outline_rounded,
+                                size: 20,
+                              ),
+                        label: Text(
+                          t.transactions.save_button,
+                          style: const TextStyle(
+                            fontFamily: 'Epilogue',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
                           ),
-                        )
-                      : const Icon(
-                          Icons.check_circle_outline_rounded,
-                          size: 20,
                         ),
-                  label: Text(
-                    t.transactions.save_button,
-                    style: const TextStyle(
-                      fontFamily: 'Epilogue',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: cs.primary,
+                          foregroundColor: cs.onPrimary,
+                          shape: const StadiumBorder(),
+                        ),
+                      ),
                     ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: cs.primary,
-                    foregroundColor: cs.onPrimary,
-                    shape: const StadiumBorder(),
-                  ),
-                ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -1277,6 +1212,141 @@ class _NumKey extends StatelessWidget {
                     ),
                   ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Category picker sheet ─────────────────────────────────────────────────────
+
+class _CategoryPickerSheet extends StatefulWidget {
+  const _CategoryPickerSheet({
+    required this.topLevelCategories,
+    required this.allCategories,
+    required this.selectedCategoryId,
+  });
+
+  final List<Category> topLevelCategories;
+  final List<Category> allCategories;
+  final String? selectedCategoryId;
+
+  @override
+  State<_CategoryPickerSheet> createState() => _CategoryPickerSheetState();
+}
+
+class _CategoryPickerSheetState extends State<_CategoryPickerSheet> {
+  Category? _drilledParent;
+
+  List<Category> get _drillItems {
+    if (_drilledParent == null) return widget.topLevelCategories;
+    final subs = widget.allCategories.where((c) => c.parentId == _drilledParent!.id).toList();
+    return [_drilledParent!, ...subs];
+  }
+
+  bool _hasSubcategories(Category cat) => widget.allCategories.any((c) => c.parentId == cat.id);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final cs = context.colorScheme;
+
+    final items = _drillItems;
+
+    return DraggableScrollableSheet(
+      initialChildSize: 0.6,
+      minChildSize: 0.4,
+      maxChildSize: 0.9,
+      expand: false,
+      builder: (_, sc) => Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+        child: Column(
+          children: [
+            const _SheetHandle(),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                if (_drilledParent != null)
+                  GestureDetector(
+                    onTap: () => setState(() => _drilledParent = null),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: cs.onSurface),
+                    ),
+                  ),
+                Expanded(
+                  child: Text(
+                    _drilledParent == null ? t.transactions.select_category : _drilledParent!.name,
+                    textAlign: _drilledParent != null ? TextAlign.start : TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Epilogue',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: cs.onSurface,
+                    ),
+                  ),
+                ),
+                if (_drilledParent != null) const SizedBox(width: 26),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: items.isEmpty
+                  ? Center(
+                      child: Text(
+                        t.categories.empty_state,
+                        style: TextStyle(
+                          fontFamily: 'Epilogue',
+                          color: cs.onSurfaceVariant,
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
+                      controller: sc,
+                      itemCount: items.length,
+                      itemBuilder: (_, i) {
+                        final cat = items[i];
+                        final model = CategoryModel.fromCategory(cat);
+                        final isSelected = cat.id == widget.selectedCategoryId;
+                        final hasSubs = _drilledParent == null && _hasSubcategories(cat);
+
+                        return ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: model.color.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Icon(iconFromName(model.icon), color: model.color, size: 20),
+                          ),
+                          title: Text(
+                            model.name,
+                            style: TextStyle(
+                              fontFamily: 'Epilogue',
+                              fontSize: 14,
+                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                              color: isSelected ? cs.primary : cs.onSurface,
+                            ),
+                          ),
+                          trailing: isSelected
+                              ? Icon(Icons.check_rounded, color: cs.primary)
+                              : hasSubs
+                              ? Icon(Icons.chevron_right_rounded, color: cs.onSurfaceVariant)
+                              : null,
+                          onTap: () {
+                            if (hasSubs) {
+                              setState(() => _drilledParent = cat);
+                            } else {
+                              Navigator.pop(context, cat);
+                            }
+                          },
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
       ),
     );

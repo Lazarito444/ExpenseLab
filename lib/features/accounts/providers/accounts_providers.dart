@@ -69,22 +69,35 @@ final accountBalanceProvider = Provider.family<double, String>((ref, accountId) 
 
 /// Total net worth: algebraic sum of every account's balance.
 final totalNetWorthProvider = Provider<double>((ref) {
-  final accounts = switch (ref.watch(accountsProvider)) {
-    AsyncData(:final value) => value,
-    _ => <Account>[],
-  };
-  return accounts.fold(0.0, (sum, a) => sum + ref.watch(accountBalanceProvider(a.id)));
+  return ref.watch(accountModelsProvider).fold(0.0, (sum, a) => sum + a.balance);
+});
+
+/// Computes balance for every account from all transactions in one pass.
+/// Watching a single provider avoids the variable-watch-count issue that
+/// arises when calling ref.watch inside a loop over a dynamic list.
+final _accountBalancesProvider = Provider<Map<String, double>>((ref) {
+  final txs = ref.watch(transactionsProvider).maybeWhen(data: (v) => v, orElse: () => <Transaction>[]);
+  final balances = <String, double>{};
+  for (final tx in txs) {
+    switch (tx.type) {
+      case TransactionType.income:
+        balances[tx.accountId] = (balances[tx.accountId] ?? 0) + tx.amount;
+      case TransactionType.expense:
+        balances[tx.accountId] = (balances[tx.accountId] ?? 0) - tx.amount;
+      case TransactionType.transfer:
+        balances[tx.accountId] = (balances[tx.accountId] ?? 0) - tx.amount;
+        if (tx.toAccountId != null) {
+          balances[tx.toAccountId!] = (balances[tx.toAccountId!] ?? 0) + tx.amount;
+        }
+    }
+  }
+  return balances;
 });
 
 /// Maps every account to an [AccountModel] with its computed balance.
 /// Returns an empty list while accounts are loading or on error.
 final accountModelsProvider = Provider<List<AccountModel>>((ref) {
-  final accounts = ref.watch(accountsProvider).maybeWhen(
-    data: (list) => list,
-    orElse: () => <Account>[],
-  );
-  return accounts.map((account) {
-    final balance = ref.watch(accountBalanceProvider(account.id));
-    return AccountModel.fromAccount(account, balance);
-  }).toList();
+  final accounts = ref.watch(accountsProvider).maybeWhen(data: (v) => v, orElse: () => <Account>[]);
+  final balances = ref.watch(_accountBalancesProvider);
+  return accounts.map((a) => AccountModel.fromAccount(a, balances[a.id] ?? 0.0)).toList();
 });

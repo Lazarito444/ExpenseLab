@@ -73,11 +73,24 @@ final monthlyExpenseProvider = Provider<double>((ref) {
 
 /// Savings rate = (income − expense) / income, clamped to [0, 1].
 /// Returns 0 when there is no income this month.
+/// Watches transactionsProvider directly to avoid diamond dependency via
+/// monthlyIncomeProvider + monthlyExpenseProvider both coming from the same stream.
 final savingsRateProvider = Provider<double>((ref) {
-  final income = ref.watch(monthlyIncomeProvider);
-  final expense = ref.watch(monthlyExpenseProvider);
-  if (income <= 0) return 0.0;
-  return ((income - expense) / income).clamp(0.0, 1.0);
+  return ref.watch(transactionsProvider).when(
+    data: (txs) {
+      final r = _thisMonthRange();
+      double income = 0.0, expense = 0.0;
+      for (final t in txs) {
+        if (t.date.isBefore(r.start) || t.date.isAfter(r.end)) continue;
+        if (t.type == TransactionType.income) income += t.amount;
+        if (t.type == TransactionType.expense) expense += t.amount;
+      }
+      if (income <= 0) return 0.0;
+      return ((income - expense) / income).clamp(0.0, 1.0);
+    },
+    loading: () => 0.0,
+    error: (_, _) => 0.0,
+  );
 });
 
 /// The 5 most recent transactions across all accounts, sorted newest-first.
@@ -94,12 +107,26 @@ final recentTransactionsProvider = Provider<List<Transaction>>((ref) {
 
 /// Approximate monthly balance change as a fraction of total net worth.
 /// e.g. 0.024 means +2.4%. Returns null when net worth is zero.
+/// Computes income/expense inline from transactionsProvider to avoid the
+/// diamond dependency that occurred when watching monthlyIncomeProvider and
+/// monthlyExpenseProvider separately alongside totalNetWorthProvider.
 final monthlyBalanceChangePctProvider = Provider<double?>((ref) {
-  final income = ref.watch(monthlyIncomeProvider);
-  final expense = ref.watch(monthlyExpenseProvider);
   final netWorth = ref.watch(totalNetWorthProvider);
   if (netWorth == 0) return null;
-  return (income - expense) / netWorth.abs();
+  return ref.watch(transactionsProvider).when(
+    data: (txs) {
+      final r = _thisMonthRange();
+      double income = 0.0, expense = 0.0;
+      for (final t in txs) {
+        if (t.date.isBefore(r.start) || t.date.isAfter(r.end)) continue;
+        if (t.type == TransactionType.income) income += t.amount;
+        if (t.type == TransactionType.expense) expense += t.amount;
+      }
+      return (income - expense) / netWorth.abs();
+    },
+    loading: () => null,
+    error: (_, _) => null,
+  );
 });
 
 /// All transactions grouped by their calendar day (time stripped).
