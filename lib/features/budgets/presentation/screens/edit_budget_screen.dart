@@ -87,6 +87,7 @@ class _EditBudgetFormState extends ConsumerState<_EditBudgetForm> {
       text: CurrencyInputFormatter.formatForDisplay(widget.budget.amount),
     );
     _selectedCategoryId = widget.budget.categoryId;
+    _selectedCurrencyCode = widget.budget.currencyCode;
   }
 
   @override
@@ -111,6 +112,7 @@ class _EditBudgetFormState extends ConsumerState<_EditBudgetForm> {
               categoryId: drift.Value(_selectedCategoryId),
               amount: drift.Value(amount),
               rrule: const drift.Value('FREQ=MONTHLY'),
+              currencyCode: drift.Value(_selectedCurrencyCode ?? ref.read(currencyProvider).code),
             ),
           );
       if (mounted) {

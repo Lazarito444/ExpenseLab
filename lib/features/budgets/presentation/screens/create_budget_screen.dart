@@ -54,6 +54,7 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
           amount: drift.Value(amount),
           startDate: drift.Value(DateTime.now()),
           rrule: const drift.Value('FREQ=MONTHLY'),
+          currencyCode: drift.Value(_selectedCurrencyCode ?? ref.read(currencyProvider).code),
         ),
       );
       if (mounted) {

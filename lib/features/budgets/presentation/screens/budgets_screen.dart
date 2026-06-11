@@ -2,9 +2,13 @@ import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/core/routing/app_routes.dart';
+import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
 import 'package:expenselab/features/budgets/providers/budgets_providers.dart';
 import 'package:expenselab/features/categories/providers/categories_providers.dart';
+import 'package:expenselab/features/exchange_rates/domain/models/exchange_rate_model.dart';
+import 'package:expenselab/features/exchange_rates/providers/exchange_rates_providers.dart';
 import 'package:expenselab/features/settings/domain/models/currency.dart';
+import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
 import 'package:expenselab/features/transactions/providers/transactions_providers.dart';
@@ -27,15 +31,37 @@ class BudgetsScreen extends ConsumerWidget {
     final allCategories = ref.watch(categoriesProvider).value ?? [];
     final transactions = ref.watch(transactionsProvider).value ?? [];
     final isLoading = ref.watch(budgetsProvider).isLoading;
+    final accounts = ref.watch(accountModelsProvider);
+    final allRates = ref.watch(exchangeRateModelsProvider);
+    final defaultCurrencyCode = ref.watch(currencyProvider).code;
 
+    final accountMap = {for (final a in accounts) a.id: a};
     final categoryMap = {for (final c in allCategories) c.id: c};
 
+    // Build a map: categoryId → {budgetCurrencyCode → spent amount}.
+    // Each transaction's amount is converted from its account's currency to
+    // the target budget currency using the rate closest to the transaction date.
     final monthlySpending = <String, double>{};
     final monthlyCount = <String, int>{};
+
+    // Pre-build a budget currency lookup for quick access.
+    final budgetCurrency = {
+      for (final b in budgets)
+        b.categoryId: b.currencyCode ?? defaultCurrencyCode,
+    };
+
     for (final tx in transactions) {
-      if (tx.type == TransactionType.expense && tx.date.year == selectedMonth.year && tx.date.month == selectedMonth.month && tx.categoryId != null) {
+      if (tx.type == TransactionType.expense &&
+          tx.date.year == selectedMonth.year &&
+          tx.date.month == selectedMonth.month &&
+          tx.categoryId != null) {
         final cid = tx.categoryId!;
-        monthlySpending[cid] = (monthlySpending[cid] ?? 0) + tx.amount;
+        final targetCode = budgetCurrency[cid] ?? defaultCurrencyCode;
+        final txCurrencyCode =
+            accountMap[tx.accountId]?.currencyCode ?? defaultCurrencyCode;
+        final converted =
+            _convertSync(tx.amount, txCurrencyCode, targetCode, allRates, tx.date);
+        monthlySpending[cid] = (monthlySpending[cid] ?? 0) + converted;
         monthlyCount[cid] = (monthlyCount[cid] ?? 0) + 1;
       }
     }
@@ -150,6 +176,10 @@ class BudgetsScreen extends ConsumerWidget {
                       final progress = budget.amount > 0 ? spent / budget.amount : 0.0;
                       final catColor = cat != null ? Color(cat.color) : context.colorScheme.primary;
                       final displayName = cat?.name ?? '';
+                      final budgetCurrencyObj = kSupportedCurrencies.firstWhere(
+                        (c) => c.code == (budget.currencyCode ?? currency.code),
+                        orElse: () => currency,
+                      );
 
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12),
@@ -161,7 +191,7 @@ class BudgetsScreen extends ConsumerWidget {
                           budgetAmount: budget.amount,
                           transactionCount: count,
                           progress: progress,
-                          currency: currency,
+                          currency: budgetCurrencyObj,
                           isDark: isDark,
                           t: t,
                           onTap: () => context.push(AppRoutes.budgetEdit(budget.id)),
@@ -591,4 +621,40 @@ class _BudgetCard extends StatelessWidget {
       ),
     );
   }
+}
+
+// ── Currency conversion helper ────────────────────────────────────────────────
+
+double _convertSync(
+  double amount,
+  String from,
+  String to,
+  List<ExchangeRateModel> rates,
+  DateTime date,
+) {
+  if (from == to) return amount;
+
+  final direct = rates
+      .where((r) => r.fromCurrencyCode == from && r.toCurrencyCode == to)
+      .toList()
+    ..sort((a, b) => b.date.compareTo(a.date));
+
+  if (direct.isNotEmpty) {
+    final onOrBefore = direct.where((r) => !r.date.isAfter(date)).firstOrNull;
+    return amount * (onOrBefore ?? direct.first).rate;
+  }
+
+  final inverse = rates
+      .where((r) => r.fromCurrencyCode == to && r.toCurrencyCode == from)
+      .toList()
+    ..sort((a, b) => b.date.compareTo(a.date));
+
+  if (inverse.isNotEmpty) {
+    final onOrBefore =
+        inverse.where((r) => !r.date.isAfter(date)).firstOrNull;
+    final rate = (onOrBefore ?? inverse.first).rate;
+    if (rate != 0) return amount / rate;
+  }
+
+  return amount;
 }

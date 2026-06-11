@@ -31,4 +31,8 @@ class Transactions extends Table with SoftDeleteTable {
 
   /// ID of the category the transaction is (only for income and expenses).
   TextColumn get categoryId => text().nullable().references(Categories, #id)();
+
+  /// Exchange rate from [accountId] currency to [toAccountId] currency.
+  /// Only set on cross-currency transfers; null otherwise.
+  RealColumn get exchangeRate => real().nullable()();
 }

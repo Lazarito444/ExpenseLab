@@ -1,5 +1,6 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
+import 'package:expenselab/core/routing/app_routes.dart';
 import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/categories_screen.dart';
 import 'package:expenselab/features/security/biometric_service.dart';
@@ -153,6 +154,13 @@ class SettingsScreen extends ConsumerWidget {
                           builder: (_) => const CategoriesScreen(),
                         ),
                       ),
+                    ),
+                    buildNavTile(
+                      context: context,
+                      label: 'Exchange Rates',
+                      icon: Icons.currency_exchange_rounded,
+                      isDark: isDark,
+                      onTap: () => context.push(AppRoutes.exchangeRates),
                     ),
                   ],
                 ),

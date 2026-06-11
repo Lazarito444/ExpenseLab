@@ -17,4 +17,7 @@ class Budgets extends Table with SoftDeleteTable {
 
   /// Recurrence rule, null means it will never recur.
   TextColumn get rrule => text().nullable()();
+
+  /// ISO 4217 currency code for this budget; null falls back to the app default.
+  TextColumn get currencyCode => text().nullable()();
 }

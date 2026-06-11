@@ -5,6 +5,7 @@ import 'package:drift/native.dart';
 import 'package:expenselab/features/accounts/data/tables/accounts_table.dart';
 import 'package:expenselab/features/budgets/data/tables/budgets_table.dart';
 import 'package:expenselab/features/categories/data/tables/categories_table.dart';
+import 'package:expenselab/features/exchange_rates/data/tables/exchange_rates_table.dart';
 import 'package:expenselab/features/savings/data/tables/savings_contributions_table.dart';
 import 'package:expenselab/features/savings/data/tables/savings_goals_table.dart';
 import 'package:expenselab/features/transactions/data/tables/transaction_images_table.dart';
@@ -24,6 +25,7 @@ part 'app_database.g.dart';
     Budgets,
     SavingsGoals,
     SavingsContributions,
+    ExchangeRates,
   ],
 )
 class AppDatabase extends _$AppDatabase {

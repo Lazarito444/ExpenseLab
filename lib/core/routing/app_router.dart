@@ -9,6 +9,8 @@ import 'package:expenselab/features/categories/presentation/screens/categories_s
 import 'package:expenselab/features/categories/presentation/screens/category_details_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/create_category_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/edit_category_screen.dart';
+import 'package:expenselab/features/exchange_rates/presentation/screens/add_edit_exchange_rate_screen.dart';
+import 'package:expenselab/features/exchange_rates/presentation/screens/exchange_rates_screen.dart';
 import 'package:expenselab/features/home/presentation/screens/home_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/create_goal_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/edit_goal_screen.dart';
@@ -68,6 +70,20 @@ final routerConfig = GoRouter(
     GoRoute(
       path: AppRoutes.settings,
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.exchangeRates,
+      builder: (context, state) => const ExchangeRatesScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.exchangeRatesCreate,
+      builder: (context, state) => const AddEditExchangeRateScreen(),
+    ),
+    GoRoute(
+      path: '/exchange-rates/:id/edit',
+      builder: (context, state) => AddEditExchangeRateScreen(
+        rateId: state.pathParameters['id']!,
+      ),
     ),
     GoRoute(
       path: AppRoutes.addTransaction,

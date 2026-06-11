@@ -47,6 +47,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   String? _selectedToAccountId;
   DateTime _selectedDate = DateTime.now();
   final _noteController = TextEditingController();
+  final _exchangeRateController = TextEditingController();
   final _notesFocusNode = FocusNode();
   bool _isLoading = false;
   bool _showNumpad = true;
@@ -99,6 +100,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
             _selectedToAccountId = tx.toAccountId;
             _selectedDate = tx.date;
             _noteController.text = tx.note ?? '';
+            _exchangeRateController.text =
+                tx.exchangeRate != null ? tx.exchangeRate.toString() : '';
             _showNumpad = false;
             _existingImages = images;
           });
@@ -112,6 +115,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   @override
   void dispose() {
     _noteController.dispose();
+    _exchangeRateController.dispose();
     _notesFocusNode.dispose();
     super.dispose();
   }
@@ -190,14 +194,38 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     }
 
     setState(() => _isLoading = true);
+
+    // Parse exchange rate for cross-currency transfers.
+    final accounts = ref.read(accountModelsProvider);
+    final fromAccount =
+        accounts.where((a) => a.id == _selectedAccountId).firstOrNull;
+    final toAccount =
+        accounts.where((a) => a.id == _selectedToAccountId).firstOrNull;
+    final isCrossCurrency = _type == TransactionType.transfer &&
+        fromAccount != null &&
+        toAccount != null &&
+        fromAccount.currencyCode != toAccount.currencyCode;
+    final parsedRate = isCrossCurrency
+        ? double.tryParse(_exchangeRateController.text.replaceAll(',', ''))
+        : null;
+
     final companion = TransactionsCompanion(
       type: drift.Value(_type),
       amount: drift.Value(_amount),
       date: drift.Value(_selectedDate),
       accountId: drift.Value(_selectedAccountId!),
-      toAccountId: _type == TransactionType.transfer ? drift.Value(_selectedToAccountId) : const drift.Value(null),
-      categoryId: _selectedCategoryId != null ? drift.Value(_selectedCategoryId) : const drift.Value(null),
-      note: _noteController.text.trim().isNotEmpty ? drift.Value(_noteController.text.trim()) : const drift.Value(null),
+      toAccountId: _type == TransactionType.transfer
+          ? drift.Value(_selectedToAccountId)
+          : const drift.Value(null),
+      categoryId: _selectedCategoryId != null
+          ? drift.Value(_selectedCategoryId)
+          : const drift.Value(null),
+      note: _noteController.text.trim().isNotEmpty
+          ? drift.Value(_noteController.text.trim())
+          : const drift.Value(null),
+      exchangeRate: isCrossCurrency && parsedRate != null
+          ? drift.Value(parsedRate)
+          : const drift.Value(null),
     );
     try {
       final repo = ref.read(transactionsRepositoryProvider);
@@ -580,6 +608,108 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                                 ),
                               ],
                             ),
+                          // Exchange rate — only for cross-currency transfers.
+                          if (_type == TransactionType.transfer &&
+                              selectedAccount != null &&
+                              selectedToAccount != null &&
+                              selectedAccount.currencyCode !=
+                                  selectedToAccount.currencyCode) ...[
+                            const SizedBox(height: 12),
+                            _CardShell(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 14, vertical: 12),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.currency_exchange_rounded,
+                                        color: cs.onSurfaceVariant, size: 22),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '1 ${selectedAccount.currencyCode} =',
+                                            style: TextStyle(
+                                              fontFamily: 'Epilogue',
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                              color: cs.primary,
+                                              letterSpacing: 0.9,
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: TextField(
+                                                  controller:
+                                                      _exchangeRateController,
+                                                  keyboardType: const TextInputType
+                                                      .numberWithOptions(
+                                                          decimal: true),
+                                                  style: TextStyle(
+                                                    fontFamily: 'Epilogue',
+                                                    fontSize: 14,
+                                                    color: cs.onSurface,
+                                                  ),
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    contentPadding:
+                                                        const EdgeInsets.only(
+                                                            top: 4),
+                                                    border: InputBorder.none,
+                                                    hintText: '0.00',
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: 'Epilogue',
+                                                      fontSize: 14,
+                                                      color: cs
+                                                          .onSurfaceVariant,
+                                                    ),
+                                                  ),
+                                                  onTap: _closeNumpad,
+                                                ),
+                                              ),
+                                              Text(
+                                                selectedToAccount.currencyCode,
+                                                style: TextStyle(
+                                                  fontFamily: 'Epilogue',
+                                                  fontSize: 13,
+                                                  color: cs.onSurfaceVariant,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          // Destination amount preview.
+                                          Builder(
+                                            builder: (_) {
+                                              final rate = double.tryParse(
+                                                  _exchangeRateController
+                                                      .text);
+                                              if (rate == null || rate <= 0) {
+                                                return const SizedBox.shrink();
+                                              }
+                                              final dest = _amount * rate;
+                                              return Text(
+                                                '≈ $dest ${selectedToAccount.currencyCode}',
+                                                style: TextStyle(
+                                                  fontFamily: 'Epilogue',
+                                                  fontSize: 11,
+                                                  color: cs.primary
+                                                      .withValues(alpha: 0.7),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+
                           const SizedBox(height: 12),
 
                           // Date & Time

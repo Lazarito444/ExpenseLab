@@ -8,6 +8,7 @@ class BudgetModel {
     required this.startDate,
     this.endDate,
     this.rrule,
+    this.currencyCode,
   });
 
   final String id;
@@ -16,6 +17,9 @@ class BudgetModel {
   final DateTime startDate;
   final DateTime? endDate;
   final String? rrule;
+
+  /// ISO 4217 currency code; null means use the app default currency.
+  final String? currencyCode;
 
   bool get isRecurring => rrule != null;
   bool get isOpenEnded => endDate == null;
@@ -27,5 +31,6 @@ class BudgetModel {
     startDate: budget.startDate,
     endDate: budget.endDate,
     rrule: budget.rrule,
+    currencyCode: budget.currencyCode,
   );
 }
