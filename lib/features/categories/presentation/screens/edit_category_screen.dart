@@ -14,40 +14,107 @@ import 'package:go_router/go_router.dart';
 // ── Icon categories for the picker ───────────────────────────────────────────
 
 final _kIconCategories = <(String, List<String>)>[
-  ('Finance', [
-    'account_balance_wallet', 'savings', 'account_balance', 'credit_card',
-    'cash', 'wallet', 'payments', 'local_atm', 'attach_money',
-    'currency_exchange', 'paid', 'money', 'euro',
-  ]),
-  ('Food & Dining', [
-    'restaurant', 'fastfood', 'local_cafe', 'local_grocery_store',
-    'lunch_dining', 'cake', 'local_bar', 'wine_bar',
-  ]),
-  ('Transport', [
-    'directions_car', 'flight', 'train', 'directions_bus',
-    'directions_bike', 'motorcycle', 'local_taxi', 'local_gas_station',
-  ]),
+  (
+    'Finance',
+    [
+      'account_balance_wallet',
+      'savings',
+      'account_balance',
+      'credit_card',
+      'cash',
+      'wallet',
+      'payments',
+      'local_atm',
+      'attach_money',
+      'currency_exchange',
+      'paid',
+      'money',
+      'euro',
+    ],
+  ),
+  (
+    'Food & Dining',
+    [
+      'restaurant',
+      'fastfood',
+      'local_cafe',
+      'local_grocery_store',
+      'lunch_dining',
+      'cake',
+      'local_bar',
+      'wine_bar',
+    ],
+  ),
+  (
+    'Transport',
+    [
+      'directions_car',
+      'flight',
+      'train',
+      'directions_bus',
+      'directions_bike',
+      'motorcycle',
+      'local_taxi',
+      'local_gas_station',
+    ],
+  ),
   ('Home', ['home', 'bolt', 'wifi', 'phone', 'water_drop', 'plumbing']),
-  ('Health', [
-    'medical_services', 'fitness_center', 'health_and_safety',
-    'spa', 'self_improvement',
-  ]),
-  ('Entertainment', [
-    'movie', 'music_note', 'sports_esports', 'sports_basketball',
-    'sports_soccer', 'camera_alt', 'celebration', 'nightlife',
-  ]),
-  ('Shopping', [
-    'shopping_bag', 'shopping_cart', 'storefront', 'card_giftcard',
-  ]),
-  ('Work & Education', [
-    'work', 'school', 'computer', 'menu_book',
-    'science', 'construction', 'business_center',
-  ]),
+  (
+    'Health',
+    [
+      'medical_services',
+      'fitness_center',
+      'health_and_safety',
+      'spa',
+      'self_improvement',
+    ],
+  ),
+  (
+    'Entertainment',
+    [
+      'movie',
+      'music_note',
+      'sports_esports',
+      'sports_basketball',
+      'sports_soccer',
+      'camera_alt',
+      'celebration',
+      'nightlife',
+    ],
+  ),
+  (
+    'Shopping',
+    [
+      'shopping_bag',
+      'shopping_cart',
+      'storefront',
+      'card_giftcard',
+    ],
+  ),
+  (
+    'Work & Education',
+    [
+      'work',
+      'school',
+      'computer',
+      'menu_book',
+      'science',
+      'construction',
+      'business_center',
+    ],
+  ),
   ('Travel', ['hotel', 'luggage', 'beach_access', 'card_travel']),
-  ('Other', [
-    'pets', 'child_care', 'volunteer_activism',
-    'show_chart', 'trending_up', 'analytics',
-  ]),
+  (
+    'Other',
+    [
+      'pets',
+      'child_care',
+      'volunteer_activism',
+      'show_chart',
+      'trending_up',
+      'analytics',
+    ],
+  ),
 ];
 
 const _kQuickColors = [
@@ -102,8 +169,8 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
     if (_initialized) return;
     _initialized = true;
     _nameController.text = category.name;
-    final _allIcons = _kIconCategories.expand((c) => c.$2).toSet();
-    _selectedIcon = _allIcons.contains(category.icon) ? category.icon : _kIconCategories.first.$2.first;
+    final allIcons = _kIconCategories.expand((c) => c.$2).toSet();
+    _selectedIcon = allIcons.contains(category.icon) ? category.icon : _kIconCategories.first.$2.first;
     _selectedColor = Color(category.color);
     _selectedType = category.type;
     _selectedParentId = category.parentId;
@@ -276,16 +343,12 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                               width: 52,
                               height: 52,
                               decoration: BoxDecoration(
-                                color: selected
-                                    ? _selectedColor
-                                    : const Color(0xFFF0F0F0),
+                                color: selected ? _selectedColor : const Color(0xFFF0F0F0),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Icon(
                                 iconFromName(name),
-                                color: selected
-                                    ? Colors.white
-                                    : const Color(0xFF8E8E8E),
+                                color: selected ? Colors.white : const Color(0xFF8E8E8E),
                                 size: 22,
                               ),
                             ),
