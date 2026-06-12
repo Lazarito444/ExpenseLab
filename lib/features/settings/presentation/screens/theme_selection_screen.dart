@@ -1,3 +1,4 @@
+import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/settings/presentation/widgets/settings_widgets.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
@@ -9,7 +10,6 @@ class ThemeSelectionScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Translations t = context.t;
     final ThemeMode currentMode = ref.watch(themeModeProvider);
 
@@ -20,6 +20,7 @@ class ThemeSelectionScreen extends ConsumerWidget {
     ];
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -29,15 +30,11 @@ class ThemeSelectionScreen extends ConsumerWidget {
             fontFamily: 'Epilogue',
             fontWeight: FontWeight.w700,
             fontSize: 18,
-            color: isDark ? Colors.white : const Color(0xFF0F1E36),
+            color: context.appColors.primaryText,
           ),
         ),
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : const Color(0xFF0F1E36),
-            size: 20,
-          ),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.appColors.primaryText, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -45,7 +42,7 @@ class ThemeSelectionScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: buildSettingsCard(
-            isDark,
+            context,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: options.indexed.map(
@@ -64,13 +61,12 @@ class ThemeSelectionScreen extends ConsumerWidget {
                         label: option.label,
                         icon: option.icon,
                         isSelected: isSelected,
-                        isDark: isDark,
                         onTap: () {
                           ref.read(settingsProvider.notifier).setThemeMode(option.mode);
                           Navigator.pop(context);
                         },
                       ),
-                      if (!isLast) buildDivider(isDark),
+                      if (!isLast) buildDivider(context),
                     ],
                   );
                 },

@@ -268,12 +268,12 @@ class _MonthlySummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final appColors = context.appColors;
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? context.colorScheme.surfaceContainerHigh : Colors.white,
+        color: appColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -295,19 +295,19 @@ class _MonthlySummaryCard extends StatelessWidget {
                 Expanded(
                   child: _SummaryColumn(
                     icon: Icons.arrow_downward_rounded,
-                    iconColor: Colors.green.shade600,
+                    iconColor: appColors.incomeColor,
                     label: t.home.income,
                     amount: currency.format(income),
-                    amountColor: Colors.green.shade700,
+                    amountColor: appColors.incomeColor,
                   ),
                 ),
                 Expanded(
                   child: _SummaryColumn(
                     icon: Icons.arrow_upward_rounded,
-                    iconColor: Colors.red.shade500,
+                    iconColor: appColors.expenseColor,
                     label: t.home.expenses,
                     amount: currency.format(expense),
-                    amountColor: Colors.red.shade600,
+                    amountColor: appColors.expenseColor,
                   ),
                 ),
               ],
@@ -319,12 +319,12 @@ class _MonthlySummaryCard extends StatelessWidget {
             children: [
               Text(
                 t.home.savings_rate,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.1,
-                  color: Color(0xFF9EAEA2),
+                  color: appColors.secondaryLabel,
                 ),
               ),
               Text(
@@ -398,11 +398,11 @@ class _SummaryColumn extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Epilogue',
               fontSize: 12,
               fontWeight: FontWeight.w400,
-              color: Color(0xFF9EAEA2),
+              color: context.appColors.secondaryLabel,
             ),
           ),
         ],
@@ -461,7 +461,7 @@ class _TransactionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final appColors = context.appColors;
     final cat = tx.categoryId != null ? categoryMap[tx.categoryId] : null;
 
     final primaryText = (tx.note?.isNotEmpty ?? false) ? tx.note! : (cat?.name ?? _typeLabel(tx.type, t));
@@ -473,9 +473,9 @@ class _TransactionTile extends StatelessWidget {
     final iconColor = cat != null
         ? Color(cat.color)
         : switch (tx.type) {
-            TransactionType.income => Colors.green.shade600,
-            TransactionType.expense => Colors.red.shade500,
-            TransactionType.transfer => Colors.grey.shade600,
+            TransactionType.income => appColors.incomeColor,
+            TransactionType.expense => appColors.expenseColor,
+            TransactionType.transfer => appColors.transferColor,
           };
 
     final iconData = cat != null
@@ -494,8 +494,8 @@ class _TransactionTile extends StatelessWidget {
     };
     final amountText = '$sign${txCurrency.format(tx.amount)}';
     final amountColor = switch (tx.type) {
-      TransactionType.income => Colors.green.shade700,
-      TransactionType.expense => Colors.red.shade600,
+      TransactionType.income => appColors.incomeColor,
+      TransactionType.expense => appColors.expenseColor,
       TransactionType.transfer => context.colorScheme.outline,
     };
 
@@ -504,7 +504,7 @@ class _TransactionTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: isDark ? context.colorScheme.surfaceContainerHigh : Colors.white,
+          color: appColors.cardSurface,
           borderRadius: BorderRadius.circular(14),
         ),
         child: Row(
@@ -537,10 +537,10 @@ class _TransactionTile extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     showTime ? secondaryText : '$secondaryText · ${_formatTime(tx.date, t)}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Epilogue',
                       fontSize: 12,
-                      color: Color(0xFF9EAEA2),
+                      color: appColors.secondaryLabel,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -671,22 +671,19 @@ class _CalendarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       decoration: BoxDecoration(
-        color: isDark ? context.colorScheme.surfaceContainerHigh : Colors.white,
+        color: context.appColors.cardSurface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: isDark
-            ? null
-            : [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.06),
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -754,14 +751,13 @@ class _NavArrow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 34,
         height: 34,
         decoration: BoxDecoration(
-          color: isDark ? context.colorScheme.surfaceContainerHighest : const Color(0xFFF2F2F2),
+          color: context.appColors.navArrowBg,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(icon, size: 20, color: context.colorScheme.scrim),
@@ -884,14 +880,15 @@ class _CalendarGrid extends StatelessWidget {
               final txs = cell.isCurrentMonth ? (txsByDate[dayKey] ?? []) : <Transaction>[];
 
               // Up to 3 dots, each coloured by the transaction's category (or type)
+              final appColors = context.appColors;
               final dots = txs.take(3).map((tx) {
                 final cat = tx.categoryId != null ? categoryMap[tx.categoryId] : null;
                 return cat != null
                     ? Color(cat.color)
                     : switch (tx.type) {
-                        TransactionType.income => Colors.green.shade500,
-                        TransactionType.expense => Colors.red.shade400,
-                        TransactionType.transfer => Colors.grey.shade400,
+                        TransactionType.income => appColors.incomeColor,
+                        TransactionType.expense => appColors.expenseColor,
+                        TransactionType.transfer => appColors.transferColor,
                       };
               }).toList();
 
@@ -984,8 +981,9 @@ class _TotalBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPositive = total >= 0;
-    final textColor = isPositive ? Colors.green.shade700 : Colors.red.shade600;
-    final bgColor = isPositive ? Colors.green.shade50 : Colors.red.shade50;
+    final appColors = context.appColors;
+    final textColor = isPositive ? appColors.incomeColor : appColors.expenseColor;
+    final bgColor = isPositive ? appColors.incomeBg : appColors.expenseBg;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

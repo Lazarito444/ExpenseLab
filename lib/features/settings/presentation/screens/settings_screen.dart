@@ -22,14 +22,12 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Translations t = context.t;
     final ThemeMode themeMode = ref.watch(themeModeProvider);
     final AsyncValue<AppSettings> settingsAsync = ref.watch(settingsProvider);
     final AppLocale currentLocale = settingsAsync.value?.locale ?? AppLocale.en;
     final currency = ref.watch(currencyProvider);
-    final bool defaultHomeIsCalendar =
-        settingsAsync.value?.defaultHomeIsCalendar ?? false;
+    final bool defaultHomeIsCalendar = settingsAsync.value?.defaultHomeIsCalendar ?? false;
     final bool biometricLogin = settingsAsync.value?.biometricLogin ?? false;
 
     final String currentThemeLabel = switch (themeMode) {
@@ -44,13 +42,11 @@ class SettingsScreen extends ConsumerWidget {
     };
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: t.settings.title,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: context.colorScheme.primary,
-          ),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.colorScheme.primary),
           onPressed: () => context.pop(),
         ),
       ),
@@ -64,7 +60,7 @@ class SettingsScreen extends ConsumerWidget {
               buildSectionHeader(t.settings.preferences, context),
               const SizedBox(height: 12),
               buildSettingsCard(
-                isDark,
+                context,
                 child: Column(
                   children: [
                     buildNavTile(
@@ -72,53 +68,42 @@ class SettingsScreen extends ConsumerWidget {
                       label: t.settings.theme.title,
                       currentValue: currentThemeLabel,
                       icon: Icons.dark_mode_outlined,
-                      isDark: isDark,
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute<void>(
-                          builder: (_) => const ThemeSelectionScreen(),
-                        ),
+                        MaterialPageRoute<void>(builder: (_) => const ThemeSelectionScreen()),
                       ),
                     ),
+                    buildDivider(context),
                     buildNavTile(
                       context: context,
                       label: t.settings.language.title,
                       currentValue: currentLocaleLabel,
                       icon: Icons.language_rounded,
-                      isDark: isDark,
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute<void>(
-                          builder: (_) => const LanguageSelectionScreen(),
-                        ),
+                        MaterialPageRoute<void>(builder: (_) => const LanguageSelectionScreen()),
                       ),
                     ),
+                    buildDivider(context),
                     buildNavTile(
                       context: context,
                       label: t.settings.default_currency.title,
                       currentValue: '${currency.code} (${currency.symbol})',
                       icon: Icons.currency_exchange_rounded,
-                      isDark: isDark,
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute<void>(
-                          builder: (_) => const CurrencySelectionScreen(),
-                        ),
+                        MaterialPageRoute<void>(builder: (_) => const CurrencySelectionScreen()),
                       ),
                     ),
+                    buildDivider(context),
                     buildNavTile(
                       context: context,
                       label: t.settings.default_home_view.title,
-                      currentValue: defaultHomeIsCalendar
-                          ? t.settings.default_home_view.calendar
-                          : t.settings.default_home_view.dashboard,
+                      currentValue: defaultHomeIsCalendar ? t.settings.default_home_view.calendar : t.settings.default_home_view.dashboard,
                       icon: Icons.home_outlined,
-                      isDark: isDark,
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute<void>(
-                          builder: (_) => const HomeViewSelectionScreen(),
-                        ),
+                        MaterialPageRoute<void>(builder: (_) => const HomeViewSelectionScreen()),
                       ),
                     ),
                   ],
@@ -128,45 +113,40 @@ class SettingsScreen extends ConsumerWidget {
               buildSectionHeader(t.settings.app, context),
               const SizedBox(height: 12),
               buildSettingsCard(
-                isDark,
+                context,
                 child: Column(
                   children: [
                     buildNavTile(
                       context: context,
                       label: t.analytics.title,
                       icon: Icons.bar_chart_rounded,
-                      isDark: isDark,
                       onTap: () => context.push(AppRoutes.analytics),
                     ),
+                    buildDivider(context),
                     buildNavTile(
                       context: context,
                       label: t.settings.accounts.title,
                       icon: Icons.account_balance_wallet_outlined,
-                      isDark: isDark,
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute<void>(
-                          builder: (_) => const AccountsScreen(),
-                        ),
+                        MaterialPageRoute<void>(builder: (_) => const AccountsScreen()),
                       ),
                     ),
+                    buildDivider(context),
                     buildNavTile(
                       context: context,
                       label: t.settings.categories.title,
                       icon: Icons.bar_chart_rounded,
-                      isDark: isDark,
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute<void>(
-                          builder: (_) => const CategoriesScreen(),
-                        ),
+                        MaterialPageRoute<void>(builder: (_) => const CategoriesScreen()),
                       ),
                     ),
+                    buildDivider(context),
                     buildNavTile(
                       context: context,
-                      label: 'Exchange Rates',
+                      label: t.exchange_rates.title,
                       icon: Icons.currency_exchange_rounded,
-                      isDark: isDark,
                       onTap: () => context.push(AppRoutes.exchangeRates),
                     ),
                   ],
@@ -176,23 +156,21 @@ class SettingsScreen extends ConsumerWidget {
               buildSectionHeader(t.settings.security.title, context),
               const SizedBox(height: 12),
               buildSettingsCard(
-                isDark,
+                context,
                 child: buildToggleTile(
                   context: context,
                   label: t.settings.security.biometric_login.title,
                   subtitle: t.settings.security.biometric_login.subtitle,
                   icon: Icons.fingerprint_rounded,
-                  isDark: isDark,
                   value: biometricLogin,
-                  onChanged: (value) =>
-                      _onBiometricToggle(value, context, ref),
+                  onChanged: (value) => _onBiometricToggle(value, context, ref),
                 ),
               ),
               const SizedBox(height: 24),
               buildSectionHeader(t.settings.danger_zone.title, context),
               const SizedBox(height: 12),
               buildSettingsCard(
-                isDark,
+                context,
                 child: buildDangerTile(
                   context: context,
                   label: t.settings.danger_zone.erase_data.title,
@@ -209,22 +187,13 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
-Future<void> _onBiometricToggle(
-  bool value,
-  BuildContext context,
-  WidgetRef ref,
-) async {
+Future<void> _onBiometricToggle(bool value, BuildContext context, WidgetRef ref) async {
   if (value) {
-    final canAuth =
-        await ref.read(biometricServiceProvider).canAuthenticate();
+    final canAuth = await ref.read(biometricServiceProvider).canAuthenticate();
     if (!canAuth) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'No biometrics or screen lock set up on this device.',
-            ),
-          ),
+          const SnackBar(content: Text('No biometrics or screen lock set up on this device.')),
         );
       }
       return;
@@ -236,11 +205,7 @@ Future<void> _onBiometricToggle(
   }
 }
 
-Future<void> _showEraseConfirmation(
-  BuildContext context,
-  WidgetRef ref,
-  Translations t,
-) async {
+Future<void> _showEraseConfirmation(BuildContext context, WidgetRef ref, Translations t) async {
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (ctx) => _EraseConfirmationDialog(t: t),
@@ -255,8 +220,7 @@ class _EraseConfirmationDialog extends StatefulWidget {
   final Translations t;
 
   @override
-  State<_EraseConfirmationDialog> createState() =>
-      _EraseConfirmationDialogState();
+  State<_EraseConfirmationDialog> createState() => _EraseConfirmationDialogState();
 }
 
 class _EraseConfirmationDialogState extends State<_EraseConfirmationDialog> {
@@ -315,20 +279,17 @@ class _EraseConfirmationDialogState extends State<_EraseConfirmationDialog> {
 }
 
 Widget buildSectionHeader(String title, BuildContext context) {
-  return Text(
-    title.toUpperCase(),
-    style: context.textTheme.displaySmall,
-  );
+  return Text(title.toUpperCase(), style: context.textTheme.displaySmall);
 }
 
 Widget buildNavTile({
   required BuildContext context,
   required String label,
   required IconData icon,
-  required bool isDark,
   required VoidCallback onTap,
   String? currentValue,
 }) {
+  final appColors = context.appColors;
   return ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
     leading: Container(
@@ -338,11 +299,7 @@ Widget buildNavTile({
         color: context.colorScheme.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Icon(
-        icon,
-        color: context.colorScheme.primary,
-        size: 20,
-      ),
+      child: Icon(icon, color: context.colorScheme.primary, size: 20),
     ),
     title: Text(
       label,
@@ -350,7 +307,7 @@ Widget buildNavTile({
         fontFamily: 'Epilogue',
         fontWeight: FontWeight.w500,
         fontSize: 15,
-        color: isDark ? Colors.white : const Color(0xFF1C221E),
+        color: appColors.primaryText,
       ),
     ),
     trailing: Row(
@@ -362,15 +319,11 @@ Widget buildNavTile({
             style: TextStyle(
               fontFamily: 'Epilogue',
               fontSize: 14,
-              color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+              color: appColors.secondaryLabel,
             ),
           ),
         const SizedBox(width: 4),
-        Icon(
-          Icons.chevron_right_rounded,
-          color: isDark ? Colors.white24 : const Color(0xFFBDCDBF),
-          size: 20,
-        ),
+        Icon(Icons.chevron_right_rounded, color: appColors.secondaryLabel, size: 20),
       ],
     ),
     onTap: onTap,

@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
+import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/exchange_rates/domain/models/exchange_rate_model.dart';
 import 'package:expenselab/features/exchange_rates/providers/exchange_rates_providers.dart';
 import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
@@ -72,17 +73,17 @@ class _FormState extends ConsumerState<_Form> {
   }
 
   Future<void> _submit() async {
+    final t = context.t;
     final rate = double.tryParse(_rateController.text.replaceAll(',', ''));
     if (rate == null || rate <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a valid rate greater than 0.')),
+        SnackBar(content: Text(t.exchange_rates.error_rate_invalid)),
       );
       return;
     }
     if (_fromCode == _toCode) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('From and To currencies must be different.')),
+        SnackBar(content: Text(t.exchange_rates.error_same_currency)),
       );
       return;
     }
@@ -109,8 +110,8 @@ class _FormState extends ConsumerState<_Form> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(widget.existing != null
-                ? 'Exchange rate updated.'
-                : 'Exchange rate added.'),
+                ? context.t.exchange_rates.success_update
+                : context.t.exchange_rates.success_add),
             backgroundColor: const Color(0xFF2D6831),
           ),
         );
@@ -129,21 +130,23 @@ class _FormState extends ConsumerState<_Form> {
   Future<void> _delete() async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Delete rate?'),
-        content: const Text('This exchange rate will be permanently removed.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child:
-                const Text('Delete', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
+      builder: (ctx) {
+        final t = ctx.t;
+        return AlertDialog(
+          title: Text(t.exchange_rates.delete_title),
+          content: Text(t.exchange_rates.delete_message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(t.common.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text(t.common.delete, style: const TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
     );
     if (confirmed != true) return;
 
@@ -173,12 +176,12 @@ class _FormState extends ConsumerState<_Form> {
     if (picked != null) setState(() => _date = picked);
   }
 
-  void _showCurrencySheet(
-      BuildContext context, bool isFrom, bool isDark) {
+  void _showCurrencySheet(BuildContext context, bool isFrom) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: isDark ? const Color(0xFF1E2420) : Colors.white,
+      backgroundColor: appColors.cardSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -194,12 +197,12 @@ class _FormState extends ConsumerState<_Form> {
               _SheetHandle(),
               const SizedBox(height: 16),
               Text(
-                isFrom ? 'From Currency' : 'To Currency',
+                isFrom ? context.t.exchange_rates.from_currency : context.t.exchange_rates.to_currency,
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 12),
@@ -222,15 +225,13 @@ class _FormState extends ConsumerState<_Form> {
                               ? FontWeight.w600
                               : FontWeight.w400,
                           color: selected
-                              ? const Color(0xFF2D6831)
-                              : (isDark
-                                  ? Colors.white
-                                  : const Color(0xFF1A1A1A)),
+                              ? context.colorScheme.primary
+                              : appColors.primaryText,
                         ),
                       ),
                       trailing: selected
-                          ? const Icon(Icons.check_rounded,
-                              color: Color(0xFF2D6831))
+                          ? Icon(Icons.check_rounded,
+                              color: context.colorScheme.primary)
                           : null,
                       onTap: () {
                         setState(() {
@@ -255,16 +256,16 @@ class _FormState extends ConsumerState<_Form> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final t = context.t;
+    final appColors = context.appColors;
     final dateLabel =
         DateFormat('MMM d, yyyy').format(_date.toLocal());
     final isEditing = widget.existing != null;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+      backgroundColor: appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
-        title: isEditing ? 'Edit Exchange Rate' : 'Add Exchange Rate',
+        title: isEditing ? t.exchange_rates.edit_title : t.exchange_rates.add_title,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded,
               color: context.colorScheme.primary),
@@ -279,38 +280,26 @@ class _FormState extends ConsumerState<_Form> {
                 padding: const EdgeInsets.all(16),
                 children: [
                   _Card(
-                    isDark: isDark,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // From currency
-                        _FieldLabel(
-                            label: 'From Currency', isDark: isDark),
+                        _FieldLabel(label: t.exchange_rates.from_currency),
                         const SizedBox(height: 8),
                         _SelectorField(
                           label: _fromCode,
-                          isDark: isDark,
-                          onTap: () =>
-                              _showCurrencySheet(context, true, isDark),
+                          onTap: () => _showCurrencySheet(context, true),
                         ),
                         const SizedBox(height: 16),
 
-                        // To currency
-                        _FieldLabel(label: 'To Currency', isDark: isDark),
+                        _FieldLabel(label: t.exchange_rates.to_currency),
                         const SizedBox(height: 8),
                         _SelectorField(
                           label: _toCode,
-                          isDark: isDark,
-                          onTap: () =>
-                              _showCurrencySheet(context, false, isDark),
+                          onTap: () => _showCurrencySheet(context, false),
                         ),
                         const SizedBox(height: 16),
 
-                        // Rate
-                        _FieldLabel(
-                          label: '1 $_fromCode =',
-                          isDark: isDark,
-                        ),
+                        _FieldLabel(label: '1 $_fromCode ='),
                         const SizedBox(height: 8),
                         TextFormField(
                           controller: _rateController,
@@ -319,24 +308,20 @@ class _FormState extends ConsumerState<_Form> {
                           style: TextStyle(
                             fontFamily: 'Epilogue',
                             fontSize: 14,
-                            color: isDark
-                                ? Colors.white
-                                : const Color(0xFF1A1A1A),
+                            color: appColors.primaryText,
                           ),
                           decoration: _fieldDecoration(
+                            context: context,
                             hint: '0.00',
                             suffixText: _toCode,
-                            isDark: isDark,
                           ),
                         ),
                         const SizedBox(height: 16),
 
-                        // Date
-                        _FieldLabel(label: 'Date', isDark: isDark),
+                        _FieldLabel(label: t.exchange_rates.date_label),
                         const SizedBox(height: 8),
                         _SelectorField(
                           label: dateLabel,
-                          isDark: isDark,
                           trailingIcon: Icons.calendar_today_outlined,
                           onTap: _pickDate,
                         ),
@@ -368,7 +353,7 @@ class _FormState extends ConsumerState<_Form> {
                               Icons.check_circle_outline_rounded,
                               size: 20),
                       label: Text(
-                        isEditing ? 'Save' : 'Add Rate',
+                        isEditing ? t.exchange_rates.save_button : t.exchange_rates.add_button,
                         style: const TextStyle(
                           fontFamily: 'Epilogue',
                           fontSize: 15,
@@ -391,9 +376,9 @@ class _FormState extends ConsumerState<_Form> {
                         onPressed: _isLoading ? null : _delete,
                         icon: const Icon(Icons.delete_outline_rounded,
                             size: 20, color: Colors.red),
-                        label: const Text(
-                          'Delete',
-                          style: TextStyle(
+                        label: Text(
+                          t.common.delete,
+                          style: const TextStyle(
                             fontFamily: 'Epilogue',
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -420,67 +405,64 @@ class _FormState extends ConsumerState<_Form> {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 InputDecoration _fieldDecoration({
+  required BuildContext context,
   String? hint,
   String? suffixText,
-  bool isDark = false,
 }) {
+  final appColors = context.appColors;
   return InputDecoration(
     hintText: hint,
     hintStyle: TextStyle(
       fontFamily: 'Epilogue',
-      color: isDark ? Colors.white24 : const Color(0xFFBDBDBD),
+      color: appColors.secondaryLabel,
       fontSize: 14,
     ),
     suffixText: suffixText,
     suffixStyle: TextStyle(
       fontFamily: 'Epilogue',
       fontSize: 14,
-      color: isDark ? Colors.white54 : const Color(0xFF9EAEA2),
+      color: appColors.secondaryLabel,
     ),
     filled: true,
-    fillColor: isDark ? const Color(0xFF2A312C) : Colors.white,
+    fillColor: appColors.inputFill,
     contentPadding:
         const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(
-          color: isDark ? Colors.white12 : const Color(0xFFE5E5E5)),
+      borderSide: BorderSide(color: appColors.inputBorder),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(
-          color: isDark ? Colors.white12 : const Color(0xFFE5E5E5)),
+      borderSide: BorderSide(color: appColors.inputBorder),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide:
-          const BorderSide(color: Color(0xFF2D6831), width: 1.5),
+          BorderSide(color: context.colorScheme.primary, width: 1.5),
     ),
   );
 }
 
 class _Card extends StatelessWidget {
-  const _Card({required this.isDark, required this.child});
+  const _Card({required this.child});
 
-  final bool isDark;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2420) : Colors.white,
+        color: appColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: isDark
-            ? null
-            : [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 12,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: child,
     );
@@ -488,10 +470,9 @@ class _Card extends StatelessWidget {
 }
 
 class _FieldLabel extends StatelessWidget {
-  const _FieldLabel({required this.label, required this.isDark});
+  const _FieldLabel({required this.label});
 
   final String label;
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -501,8 +482,7 @@ class _FieldLabel extends StatelessWidget {
         fontFamily: 'Epilogue',
         fontSize: 13,
         fontWeight: FontWeight.w500,
-        color:
-            isDark ? const Color(0xFF6DBF6F) : const Color(0xFF2D6831),
+        color: context.colorScheme.primary,
       ),
     );
   }
@@ -511,29 +491,26 @@ class _FieldLabel extends StatelessWidget {
 class _SelectorField extends StatelessWidget {
   const _SelectorField({
     required this.label,
-    required this.isDark,
     required this.onTap,
     this.trailingIcon = Icons.keyboard_arrow_down_rounded,
   });
 
   final String label;
-  final bool isDark;
   final VoidCallback onTap;
   final IconData trailingIcon;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF2A312C) : Colors.white,
+          color: appColors.inputFill,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
-          ),
+          border: Border.all(color: appColors.inputBorder),
         ),
         child: Row(
           children: [
@@ -543,17 +520,14 @@ class _SelectorField extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 14,
-                  color: isDark
-                      ? Colors.white
-                      : const Color(0xFF1A1A1A),
+                  color: appColors.primaryText,
                 ),
               ),
             ),
             Icon(
               trailingIcon,
               size: 22,
-              color:
-                  isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+              color: appColors.secondaryLabel,
             ),
           ],
         ),
@@ -570,7 +544,7 @@ class _SheetHandle extends StatelessWidget {
         width: 40,
         height: 4,
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: context.appColors.sheetHandle,
           borderRadius: BorderRadius.circular(2),
         ),
       ),

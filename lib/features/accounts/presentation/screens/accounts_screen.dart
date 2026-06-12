@@ -25,6 +25,7 @@ class AccountsScreen extends ConsumerWidget {
     final currency = ref.watch(currencyProvider);
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: t.accounts.title,
         leading: IconButton(
@@ -231,6 +232,7 @@ class _AccountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final appColors = context.appColors;
     final formatted = formatCurrency(model.balance, model.currencyCode);
     final iconData = iconFromName(model.icon);
 
@@ -239,8 +241,15 @@ class _AccountCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: appColors.cardSurface,
           borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,17 +285,17 @@ class _AccountCard extends StatelessWidget {
                       ),
                       Text(
                         t.currencies[model.currencyCode.toUpperCase()]!,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Epilogue',
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
-                          color: Color(0xFF9EAEA2),
+                          color: appColors.secondaryLabel,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right_rounded, color: Colors.grey.shade400),
+                Icon(Icons.chevron_right_rounded, color: appColors.secondaryLabel),
               ],
             ),
             const SizedBox(height: 12),

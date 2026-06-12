@@ -510,7 +510,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     final selectedCategoryModel = _selectedCategoryModel;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: widget.isEditing ? t.transactions.edit_title : t.transactions.add_title,
         leading: IconButton(

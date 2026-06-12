@@ -632,16 +632,19 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
 
     return categoryAsync.when(
       loading: () => Scaffold(
+        backgroundColor: context.appColors.scaffoldBackground,
         appBar: appBar,
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) => Scaffold(
+        backgroundColor: context.appColors.scaffoldBackground,
         appBar: appBar,
         body: Center(child: Text(t.common.error)),
       ),
       data: (category) {
         if (category == null) {
           return Scaffold(
+            backgroundColor: context.appColors.scaffoldBackground,
             appBar: appBar,
             body: Center(child: Text(t.common.error)),
           );
@@ -650,6 +653,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
         _initFrom(category);
 
         return Scaffold(
+          backgroundColor: context.appColors.scaffoldBackground,
           appBar: appBar,
           body: SafeArea(
             child: Column(

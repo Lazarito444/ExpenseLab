@@ -1,4 +1,5 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
+import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/core/routing/app_routes.dart';
 import 'package:expenselab/features/exchange_rates/domain/models/exchange_rate_model.dart';
 import 'package:expenselab/features/exchange_rates/providers/exchange_rates_providers.dart';
@@ -13,7 +14,7 @@ class ExchangeRatesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final t = context.t;
     final rates = ref.watch(exchangeRateModelsProvider);
     final isLoading = ref.watch(exchangeRatesProvider).isLoading;
 
@@ -25,10 +26,9 @@ class ExchangeRatesScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor:
-          isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
-        title: 'Exchange Rates',
+        title: t.exchange_rates.title,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded,
               color: context.colorScheme.primary),
@@ -46,17 +46,16 @@ class ExchangeRatesScreen extends ConsumerWidget {
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : rates.isEmpty
-                ? _EmptyState(isDark: isDark)
+                ? const _EmptyState()
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
                     children: [
                       for (final entry in groups.entries) ...[
-                        _PairHeader(pair: entry.key, isDark: isDark),
+                        _PairHeader(pair: entry.key),
                         const SizedBox(height: 8),
                         ...entry.value.map(
                           (r) => _RateTile(
                             rate: r,
-                            isDark: isDark,
                             onTap: () => context
                                 .push(AppRoutes.exchangeRateEdit(r.id)),
                           ),
@@ -71,10 +70,9 @@ class ExchangeRatesScreen extends ConsumerWidget {
 }
 
 class _PairHeader extends StatelessWidget {
-  const _PairHeader({required this.pair, required this.isDark});
+  const _PairHeader({required this.pair});
 
   final String pair;
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -92,37 +90,30 @@ class _PairHeader extends StatelessWidget {
 }
 
 class _RateTile extends StatelessWidget {
-  const _RateTile({
-    required this.rate,
-    required this.isDark,
-    required this.onTap,
-  });
+  const _RateTile({required this.rate, required this.onTap});
 
   final ExchangeRateModel rate;
-  final bool isDark;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final dateLabel =
-        DateFormat('MMM d, yyyy').format(rate.date.toLocal());
+    final appColors = context.appColors;
+    final dateLabel = DateFormat('MMM d, yyyy').format(rate.date.toLocal());
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E2420) : Colors.white,
+          color: appColors.cardSurface,
           borderRadius: BorderRadius.circular(14),
-          boxShadow: isDark
-              ? null
-              : [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -136,7 +127,7 @@ class _RateTile extends StatelessWidget {
                       fontFamily: 'Epilogue',
                       fontWeight: FontWeight.w600,
                       fontSize: 15,
-                      color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                      color: appColors.primaryText,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -145,8 +136,7 @@ class _RateTile extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: 'Epilogue',
                       fontSize: 12,
-                      color:
-                          isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                      color: appColors.secondaryLabel,
                     ),
                   ),
                 ],
@@ -155,7 +145,7 @@ class _RateTile extends StatelessWidget {
             Icon(
               Icons.chevron_right_rounded,
               size: 20,
-              color: isDark ? Colors.white24 : const Color(0xFFBDBDBD),
+              color: appColors.secondaryLabel,
             ),
           ],
         ),
@@ -165,12 +155,11 @@ class _RateTile extends StatelessWidget {
 }
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState({required this.isDark});
-
-  final bool isDark;
+  const _EmptyState();
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return SizedBox(
       height: 400,
       child: Center(
@@ -186,23 +175,22 @@ class _EmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'No exchange rates yet',
+                context.t.exchange_rates.empty_state_title,
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
-                  color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                  color: appColors.primaryText,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
               Text(
-                'Add rates to convert balances and budgets across currencies.',
+                context.t.exchange_rates.empty_state_subtitle,
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 14,
-                  color:
-                      isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                  color: appColors.secondaryLabel,
                 ),
                 textAlign: TextAlign.center,
               ),

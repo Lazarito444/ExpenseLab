@@ -10,11 +10,12 @@ class CurrencySelectionScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Translations t = context.t;
+    final appColors = context.appColors;
     final currentCode = ref.watch(currencyProvider).code;
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -24,15 +25,11 @@ class CurrencySelectionScreen extends ConsumerWidget {
             fontFamily: 'Epilogue',
             fontWeight: FontWeight.w700,
             fontSize: 18,
-            color: isDark ? Colors.white : const Color(0xFF0F1E36),
+            color: appColors.primaryText,
           ),
         ),
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : const Color(0xFF0F1E36),
-            size: 20,
-          ),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: appColors.primaryText, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -43,7 +40,7 @@ class CurrencySelectionScreen extends ConsumerWidget {
           separatorBuilder: (_, _) => Divider(
             height: 1,
             thickness: 1,
-            color: isDark ? Colors.white10 : const Color(0xFFEAF0EB),
+            color: appColors.inputBorder,
             indent: 56,
           ),
           itemBuilder: (context, i) {
@@ -51,10 +48,7 @@ class CurrencySelectionScreen extends ConsumerWidget {
             final isSelected = cur.code == currentCode;
 
             return ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 4,
-              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               leading: Container(
                 width: 40,
                 height: 40,
@@ -80,22 +74,12 @@ class CurrencySelectionScreen extends ConsumerWidget {
                   fontFamily: 'Epilogue',
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                   fontSize: 15,
-                  color: isSelected
-                      ? context.colorScheme.primary
-                      : (isDark ? Colors.white : const Color(0xFF1C221E)),
+                  color: isSelected ? context.colorScheme.primary : appColors.primaryText,
                 ),
               ),
               trailing: isSelected
-                  ? Icon(
-                      Icons.check_circle_rounded,
-                      color: context.colorScheme.primary,
-                      size: 20,
-                    )
-                  : Icon(
-                      Icons.circle_outlined,
-                      color: isDark ? Colors.white24 : const Color(0xFFBDCDBF),
-                      size: 20,
-                    ),
+                  ? Icon(Icons.check_circle_rounded, color: context.colorScheme.primary, size: 20)
+                  : Icon(Icons.circle_outlined, color: appColors.secondaryLabel, size: 20),
               onTap: () {
                 ref.read(settingsProvider.notifier).setCurrency(cur);
                 Navigator.pop(context);

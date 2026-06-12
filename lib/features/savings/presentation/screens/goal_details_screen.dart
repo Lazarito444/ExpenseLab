@@ -25,14 +25,13 @@ class GoalDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final t = context.t;
     final goalAsync = ref.watch(savingsGoalByIdProvider(goalId));
     final accountModels = ref.watch(accountModelsProvider);
 
     return goalAsync.when(
       loading: () => Scaffold(
-        backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+        backgroundColor: context.appColors.scaffoldBackground,
         appBar: _buildAppBar(context, null, t, goalId),
         body: const Center(child: CircularProgressIndicator()),
       ),
@@ -59,7 +58,6 @@ class GoalDetailsScreen extends ConsumerWidget {
         return _GoalDetailsBody(
           goal: goal,
           currency: currency,
-          isDark: isDark,
           goalId: goalId,
         );
       },
@@ -94,18 +92,17 @@ class _GoalDetailsBody extends ConsumerWidget {
   const _GoalDetailsBody({
     required this.goal,
     required this.currency,
-    required this.isDark,
     required this.goalId,
   });
 
   final SavingsGoalModel goal;
   final Currency currency;
-  final bool isDark;
   final String goalId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
+    final appColors = context.appColors;
     final contribsAsync = ref.watch(contributionsByGoalProvider(goalId));
 
     final contribs = contribsAsync.maybeWhen(
@@ -117,7 +114,7 @@ class _GoalDetailsBody extends ConsumerWidget {
     final progress = goal.targetAmount > 0 ? (totalSaved / goal.targetAmount).clamp(0.0, 1.0) : 0.0;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+      backgroundColor: appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: goal.name,
         leading: IconButton(
@@ -133,13 +130,7 @@ class _GoalDetailsBody extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'goal_details_fab',
-        onPressed: () => _showAddContributionSheet(
-          context: context,
-          goal: goal,
-          currency: currency,
-          isDark: isDark,
-          t: t,
-        ),
+        onPressed: () => _showAddContributionSheet(context: context, goal: goal, currency: currency, t: t),
         backgroundColor: context.colorScheme.primary,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add_rounded),
@@ -147,42 +138,31 @@ class _GoalDetailsBody extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
         children: [
-          // ── Progress card ──────────────────────────────────────────
           _ProgressCard(
             goal: goal,
             totalSaved: totalSaved,
             progress: progress,
             currency: currency,
-            isDark: isDark,
             t: t,
           ),
           const SizedBox(height: 24),
-
-          // ── Contributions header ───────────────────────────────────
           Text(
             t.goals.details.contributions_title,
             style: TextStyle(
               fontFamily: 'Epilogue',
               fontWeight: FontWeight.w700,
               fontSize: 16,
-              color: isDark ? Colors.white : const Color(0xFF0F1E36),
+              color: appColors.primaryText,
             ),
           ),
           const SizedBox(height: 12),
-
-          // ── Contributions list ─────────────────────────────────────
           if (contribs.isEmpty)
-            _EmptyContributions(isDark: isDark, t: t)
+            _EmptyContributions(t: t)
           else
             ...contribs.map(
               (c) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: _ContributionTile(
-                  contribution: c,
-                  currency: currency,
-                  isDark: isDark,
-                  t: t,
-                ),
+                child: _ContributionTile(contribution: c, currency: currency, t: t),
               ),
             ),
         ],
@@ -194,18 +174,13 @@ class _GoalDetailsBody extends ConsumerWidget {
     required BuildContext context,
     required SavingsGoalModel goal,
     required Currency currency,
-    required bool isDark,
     required Translations t,
   }) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _AddContributionSheet(
-        goal: goal,
-        currency: currency,
-        isDark: isDark,
-      ),
+      builder: (_) => _AddContributionSheet(goal: goal, currency: currency),
     );
   }
 }
@@ -218,7 +193,6 @@ class _ProgressCard extends StatelessWidget {
     required this.totalSaved,
     required this.progress,
     required this.currency,
-    required this.isDark,
     required this.t,
   });
 
@@ -226,33 +200,30 @@ class _ProgressCard extends StatelessWidget {
   final double totalSaved;
   final double progress;
   final Currency currency;
-  final bool isDark;
   final Translations t;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     final pct = (progress * 100).floor();
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2420) : Colors.white,
+        color: appColors.cardSurface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: isDark
-            ? null
-            : [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.06),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         children: [
           Row(
             children: [
-              // Left: saved + target
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,7 +245,7 @@ class _ProgressCard extends StatelessWidget {
                         fontFamily: 'Epilogue',
                         fontWeight: FontWeight.w800,
                         fontSize: 28,
-                        color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                        color: appColors.primaryText,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -283,20 +254,16 @@ class _ProgressCard extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: 'Epilogue',
                         fontSize: 13,
-                        color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                        color: appColors.secondaryLabel,
                       ),
                     ),
                   ],
                 ),
               ),
-
-              // Right: donut
-              _DonutProgress(progress: progress, pct: pct, isDark: isDark),
+              _DonutProgress(progress: progress, pct: pct),
             ],
           ),
           const SizedBox(height: 16),
-
-          // Progress bar
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
@@ -307,14 +274,12 @@ class _ProgressCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-
-          // Deadline row
           Row(
             children: [
               Icon(
                 goal.targetDate != null ? Icons.event_rounded : Icons.event_busy_outlined,
                 size: 15,
-                color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                color: appColors.secondaryLabel,
               ),
               const SizedBox(width: 6),
               Text(
@@ -327,7 +292,7 @@ class _ProgressCard extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 12,
-                  color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                  color: appColors.secondaryLabel,
                 ),
               ),
             ],
@@ -341,15 +306,10 @@ class _ProgressCard extends StatelessWidget {
 // ── Donut progress ────────────────────────────────────────────────────────────
 
 class _DonutProgress extends StatelessWidget {
-  const _DonutProgress({
-    required this.progress,
-    required this.pct,
-    required this.isDark,
-  });
+  const _DonutProgress({required this.progress, required this.pct});
 
   final double progress;
   final int pct;
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -368,19 +328,14 @@ class _DonutProgress extends StatelessWidget {
               strokeCap: StrokeCap.round,
             ),
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '$pct%',
-                style: TextStyle(
-                  fontFamily: 'Epilogue',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: isDark ? Colors.white : const Color(0xFF0F1E36),
-                ),
-              ),
-            ],
+          Text(
+            '$pct%',
+            style: TextStyle(
+              fontFamily: 'Epilogue',
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              color: context.appColors.primaryText,
+            ),
           ),
         ],
       ),
@@ -391,13 +346,13 @@ class _DonutProgress extends StatelessWidget {
 // ── Empty contributions state ─────────────────────────────────────────────────
 
 class _EmptyContributions extends StatelessWidget {
-  const _EmptyContributions({required this.isDark, required this.t});
+  const _EmptyContributions({required this.t});
 
-  final bool isDark;
   final Translations t;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32),
       child: Column(
@@ -414,7 +369,7 @@ class _EmptyContributions extends StatelessWidget {
               fontFamily: 'Epilogue',
               fontWeight: FontWeight.w600,
               fontSize: 15,
-              color: isDark ? Colors.white70 : const Color(0xFF0F1E36),
+              color: appColors.primaryText,
             ),
           ),
           const SizedBox(height: 4),
@@ -423,7 +378,7 @@ class _EmptyContributions extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Epilogue',
               fontSize: 13,
-              color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+              color: appColors.secondaryLabel,
             ),
             textAlign: TextAlign.center,
           ),
@@ -439,33 +394,30 @@ class _ContributionTile extends StatelessWidget {
   const _ContributionTile({
     required this.contribution,
     required this.currency,
-    required this.isDark,
     required this.t,
   });
 
   final SavingsContributionModel contribution;
   final Currency currency;
-  final bool isDark;
   final Translations t;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     final label = (contribution.note?.isNotEmpty ?? false) ? contribution.note! : t.goals.details.contribution_label;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2420) : Colors.white,
+        color: appColors.cardSurface,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: isDark
-            ? null
-            : [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -476,11 +428,7 @@ class _ContributionTile extends StatelessWidget {
               color: context.colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              Icons.savings_rounded,
-              color: context.colorScheme.primary,
-              size: 20,
-            ),
+            child: Icon(Icons.savings_rounded, color: context.colorScheme.primary, size: 20),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -493,7 +441,7 @@ class _ContributionTile extends StatelessWidget {
                     fontFamily: 'Epilogue',
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                    color: appColors.primaryText,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -504,7 +452,7 @@ class _ContributionTile extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Epilogue',
                     fontSize: 12,
-                    color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                    color: appColors.secondaryLabel,
                   ),
                 ),
               ],
@@ -516,7 +464,7 @@ class _ContributionTile extends StatelessWidget {
               fontFamily: 'Epilogue',
               fontWeight: FontWeight.w700,
               fontSize: 15,
-              color: Colors.green.shade600,
+              color: appColors.incomeColor,
             ),
           ),
         ],
@@ -528,15 +476,10 @@ class _ContributionTile extends StatelessWidget {
 // ── Add Contribution bottom sheet ─────────────────────────────────────────────
 
 class _AddContributionSheet extends ConsumerStatefulWidget {
-  const _AddContributionSheet({
-    required this.goal,
-    required this.currency,
-    required this.isDark,
-  });
+  const _AddContributionSheet({required this.goal, required this.currency});
 
   final SavingsGoalModel goal;
   final Currency currency;
-  final bool isDark;
 
   @override
   ConsumerState<_AddContributionSheet> createState() => _AddContributionSheetState();
@@ -603,35 +546,31 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
     if (picked != null) setState(() => _selectedDate = picked);
   }
 
-  InputDecoration _dec({String? hint, String? prefixText}) {
-    final isDark = widget.isDark;
+  InputDecoration _dec(BuildContext context, {String? hint, String? prefixText}) {
+    final appColors = context.appColors;
     return InputDecoration(
       hintText: hint,
       hintStyle: TextStyle(
         fontFamily: 'Epilogue',
         fontSize: 14,
-        color: isDark ? Colors.white24 : const Color(0xFFBDBDBD),
+        color: appColors.secondaryLabel,
       ),
       prefixText: prefixText,
       prefixStyle: TextStyle(
         fontFamily: 'Epilogue',
         fontSize: 14,
-        color: isDark ? Colors.white70 : const Color(0xFF1A1A1A),
+        color: appColors.primaryText,
       ),
       filled: true,
-      fillColor: isDark ? const Color(0xFF2A312C) : Colors.white,
+      fillColor: appColors.inputFill,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
-        ),
+        borderSide: BorderSide(color: appColors.inputBorder),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
-        ),
+        borderSide: BorderSide(color: appColors.inputBorder),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -651,20 +590,19 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final isDark = widget.isDark;
-    final sheetBg = isDark ? const Color(0xFF1E2420) : Colors.white;
+    final appColors = context.appColors;
     final labelStyle = TextStyle(
       fontFamily: 'Epilogue',
       fontSize: 13,
       fontWeight: FontWeight.w500,
-      color: isDark ? const Color(0xFF6DBF6F) : const Color(0xFF2D6831),
+      color: context.colorScheme.primary,
     );
 
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: Container(
         decoration: BoxDecoration(
-          color: sheetBg,
+          color: appColors.cardSurface,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: SafeArea(
@@ -674,7 +612,6 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Handle
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 12),
@@ -682,7 +619,7 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
                       width: 40,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: isDark ? Colors.white24 : Colors.grey.shade300,
+                        color: appColors.sheetHandle,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -696,7 +633,7 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
                       fontFamily: 'Epilogue',
                       fontWeight: FontWeight.w700,
                       fontSize: 18,
-                      color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                      color: appColors.primaryText,
                     ),
                   ),
                 ),
@@ -705,52 +642,36 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Amount
                       Text(t.goals.contribution.amount, style: labelStyle),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _amountController,
                         autofocus: true,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         inputFormatters: [CurrencyInputFormatter()],
                         style: TextStyle(
                           fontFamily: 'Epilogue',
                           fontSize: 14,
-                          color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                          color: appColors.primaryText,
                         ),
-                        decoration: _dec(
-                          prefixText: '${widget.currency.symbol}  ',
-                        ),
+                        decoration: _dec(context, prefixText: '${widget.currency.symbol}  '),
                         validator: (v) {
-                          if (v == null || v.isEmpty) {
-                            return t.goals.contribution.amount_required;
-                          }
-                          if (double.tryParse(v.replaceAll(',', '')) == null) {
-                            return t.goals.contribution.amount_invalid;
-                          }
+                          if (v == null || v.isEmpty) return t.goals.contribution.amount_required;
+                          if (double.tryParse(v.replaceAll(',', '')) == null) return t.goals.contribution.amount_invalid;
                           return null;
                         },
                       ),
                       const SizedBox(height: 16),
-
-                      // Date
                       Text(t.goals.contribution.date, style: labelStyle),
                       const SizedBox(height: 8),
                       GestureDetector(
                         onTap: _pickDate,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 15,
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF2A312C) : Colors.white,
+                            color: appColors.inputFill,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
-                            ),
+                            border: Border.all(color: appColors.inputBorder),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -760,21 +681,19 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
                                 style: TextStyle(
                                   fontFamily: 'Epilogue',
                                   fontSize: 14,
-                                  color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                                  color: appColors.primaryText,
                                 ),
                               ),
                               Icon(
                                 Icons.calendar_today_outlined,
                                 size: 18,
-                                color: isDark ? Colors.white24 : const Color(0xFFBDBDBD),
+                                color: appColors.secondaryLabel,
                               ),
                             ],
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
-
-                      // Note
                       Text(t.goals.contribution.note, style: labelStyle),
                       const SizedBox(height: 8),
                       TextFormField(
@@ -783,20 +702,18 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
                         style: TextStyle(
                           fontFamily: 'Epilogue',
                           fontSize: 14,
-                          color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                          color: appColors.primaryText,
                         ),
-                        decoration: _dec(hint: t.goals.contribution.note_hint),
+                        decoration: _dec(context, hint: t.goals.contribution.note_hint),
                       ),
                       const SizedBox(height: 24),
-
-                      // Save button
                       SizedBox(
                         width: double.infinity,
                         height: 54,
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _submit,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF2D6831),
+                            backgroundColor: context.colorScheme.primary,
                             foregroundColor: Colors.white,
                             shape: const StadiumBorder(),
                           ),
@@ -804,10 +721,7 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
                               ? const SizedBox(
                                   width: 18,
                                   height: 18,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
+                                  child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                                 )
                               : Text(
                                   t.goals.contribution.save_button,

@@ -312,5 +312,23 @@
       "one": "1 subcategory",
       "other": "$n subcategories"
     }
+  },
+  "exchange_rates": {
+    "title": "Exchange Rates",
+    "empty_state_title": "No exchange rates yet",
+    "empty_state_subtitle": "Add rates to convert balances and budgets across currencies.",
+    "add_title": "Add Exchange Rate",
+    "edit_title": "Edit Exchange Rate",
+    "from_currency": "From Currency",
+    "to_currency": "To Currency",
+    "date_label": "Date",
+    "add_button": "Add Rate",
+    "save_button": "Save",
+    "delete_title": "Delete rate?",
+    "delete_message": "This exchange rate will be permanently removed.",
+    "error_rate_invalid": "Enter a valid rate greater than 0.",
+    "error_same_currency": "From and To currencies must be different.",
+    "success_add": "Exchange rate added.",
+    "success_update": "Exchange rate updated."
   }
 }

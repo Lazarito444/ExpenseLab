@@ -74,6 +74,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsAccountsEn accounts = TranslationsAccountsEn.internal(_root);
 	late final TranslationsTransactionsEn transactions = TranslationsTransactionsEn.internal(_root);
 	late final TranslationsCategoriesEn categories = TranslationsCategoriesEn.internal(_root);
+	late final TranslationsExchangeRatesEn exchange_rates = TranslationsExchangeRatesEn.internal(_root);
 }
 
 // Path: app
@@ -563,6 +564,63 @@ class TranslationsCategoriesEn {
 		one: '1 subcategory',
 		other: '${n} subcategories',
 	);
+}
+
+// Path: exchange_rates
+class TranslationsExchangeRatesEn {
+	TranslationsExchangeRatesEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Exchange Rates'
+	String get title => 'Exchange Rates';
+
+	/// en: 'No exchange rates yet'
+	String get empty_state_title => 'No exchange rates yet';
+
+	/// en: 'Add rates to convert balances and budgets across currencies.'
+	String get empty_state_subtitle => 'Add rates to convert balances and budgets across currencies.';
+
+	/// en: 'Add Exchange Rate'
+	String get add_title => 'Add Exchange Rate';
+
+	/// en: 'Edit Exchange Rate'
+	String get edit_title => 'Edit Exchange Rate';
+
+	/// en: 'From Currency'
+	String get from_currency => 'From Currency';
+
+	/// en: 'To Currency'
+	String get to_currency => 'To Currency';
+
+	/// en: 'Date'
+	String get date_label => 'Date';
+
+	/// en: 'Add Rate'
+	String get add_button => 'Add Rate';
+
+	/// en: 'Save'
+	String get save_button => 'Save';
+
+	/// en: 'Delete rate?'
+	String get delete_title => 'Delete rate?';
+
+	/// en: 'This exchange rate will be permanently removed.'
+	String get delete_message => 'This exchange rate will be permanently removed.';
+
+	/// en: 'Enter a valid rate greater than 0.'
+	String get error_rate_invalid => 'Enter a valid rate greater than 0.';
+
+	/// en: 'From and To currencies must be different.'
+	String get error_same_currency => 'From and To currencies must be different.';
+
+	/// en: 'Exchange rate added.'
+	String get success_add => 'Exchange rate added.';
+
+	/// en: 'Exchange rate updated.'
+	String get success_update => 'Exchange rate updated.';
 }
 
 // Path: settings.theme
@@ -1292,6 +1350,22 @@ extension on Translations {
 			'categories.total_monthly_income' => 'Total Monthly Income',
 			'categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '1 Category', other: '${n} Categories', ), 
 			'categories.subcategory_count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, zero: 'No subcategories', one: '1 subcategory', other: '${n} subcategories', ), 
+			'exchange_rates.title' => 'Exchange Rates',
+			'exchange_rates.empty_state_title' => 'No exchange rates yet',
+			'exchange_rates.empty_state_subtitle' => 'Add rates to convert balances and budgets across currencies.',
+			'exchange_rates.add_title' => 'Add Exchange Rate',
+			'exchange_rates.edit_title' => 'Edit Exchange Rate',
+			'exchange_rates.from_currency' => 'From Currency',
+			'exchange_rates.to_currency' => 'To Currency',
+			'exchange_rates.date_label' => 'Date',
+			'exchange_rates.add_button' => 'Add Rate',
+			'exchange_rates.save_button' => 'Save',
+			'exchange_rates.delete_title' => 'Delete rate?',
+			'exchange_rates.delete_message' => 'This exchange rate will be permanently removed.',
+			'exchange_rates.error_rate_invalid' => 'Enter a valid rate greater than 0.',
+			'exchange_rates.error_same_currency' => 'From and To currencies must be different.',
+			'exchange_rates.success_add' => 'Exchange rate added.',
+			'exchange_rates.success_update' => 'Exchange rate updated.',
 			_ => null,
 		};
 	}

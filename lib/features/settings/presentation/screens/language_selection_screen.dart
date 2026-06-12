@@ -1,3 +1,4 @@
+import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/settings/presentation/widgets/settings_widgets.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
@@ -9,7 +10,6 @@ class LanguageSelectionScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Translations t = context.t;
     final AsyncValue<dynamic> settingsAsync = ref.watch(settingsProvider);
     final AppLocale currentLocale = settingsAsync.value?.locale ?? AppLocale.en;
@@ -20,6 +20,7 @@ class LanguageSelectionScreen extends ConsumerWidget {
     ];
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -29,15 +30,11 @@ class LanguageSelectionScreen extends ConsumerWidget {
             fontFamily: 'Epilogue',
             fontWeight: FontWeight.w700,
             fontSize: 18,
-            color: isDark ? Colors.white : const Color(0xFF0F1E36),
+            color: context.appColors.primaryText,
           ),
         ),
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : const Color(0xFF0F1E36),
-            size: 20,
-          ),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.appColors.primaryText, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -45,7 +42,7 @@ class LanguageSelectionScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: buildSettingsCard(
-            isDark,
+            context,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: options.indexed.map(
@@ -63,13 +60,12 @@ class LanguageSelectionScreen extends ConsumerWidget {
                         ref: ref,
                         label: option.label,
                         isSelected: isSelected,
-                        isDark: isDark,
                         onTap: () {
                           ref.read(settingsProvider.notifier).setLocale(option.locale);
                           Navigator.pop(context);
                         },
                       ),
-                      if (!isLast) buildDivider(isDark),
+                      if (!isLast) buildDivider(context),
                     ],
                   );
                 },

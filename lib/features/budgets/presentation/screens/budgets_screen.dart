@@ -22,8 +22,8 @@ class BudgetsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final t = context.t;
+    final appColors = context.appColors;
     final currency = ref.watch(currencyProvider);
     final selectedMonth = ref.watch(selectedBudgetMonthProvider);
 
@@ -38,16 +38,11 @@ class BudgetsScreen extends ConsumerWidget {
     final accountMap = {for (final a in accounts) a.id: a};
     final categoryMap = {for (final c in allCategories) c.id: c};
 
-    // Build a map: categoryId → {budgetCurrencyCode → spent amount}.
-    // Each transaction's amount is converted from its account's currency to
-    // the target budget currency using the rate closest to the transaction date.
     final monthlySpending = <String, double>{};
     final monthlyCount = <String, int>{};
 
-    // Pre-build a budget currency lookup for quick access.
     final budgetCurrency = {
-      for (final b in budgets)
-        b.categoryId: b.currencyCode ?? defaultCurrencyCode,
+      for (final b in budgets) b.categoryId: b.currencyCode ?? defaultCurrencyCode,
     };
 
     for (final tx in transactions) {
@@ -57,10 +52,8 @@ class BudgetsScreen extends ConsumerWidget {
           tx.categoryId != null) {
         final cid = tx.categoryId!;
         final targetCode = budgetCurrency[cid] ?? defaultCurrencyCode;
-        final txCurrencyCode =
-            accountMap[tx.accountId]?.currencyCode ?? defaultCurrencyCode;
-        final converted =
-            _convertSync(tx.amount, txCurrencyCode, targetCode, allRates, tx.date);
+        final txCurrencyCode = accountMap[tx.accountId]?.currencyCode ?? defaultCurrencyCode;
+        final converted = _convertSync(tx.amount, txCurrencyCode, targetCode, allRates, tx.date);
         monthlySpending[cid] = (monthlySpending[cid] ?? 0) + converted;
         monthlyCount[cid] = (monthlyCount[cid] ?? 0) + 1;
       }
@@ -72,7 +65,7 @@ class BudgetsScreen extends ConsumerWidget {
     final overallPct = totalBudget > 0 ? (totalSpent / totalBudget).clamp(0.0, 1.0) : 0.0;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+      backgroundColor: appColors.scaffoldBackground,
       floatingActionButton: FloatingActionButton(
         heroTag: 'budgets_fab',
         onPressed: () => context.push(AppRoutes.budgetsCreate),
@@ -86,49 +79,41 @@ class BudgetsScreen extends ConsumerWidget {
             : ListView(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
                 children: [
-                  // ── Header ────────────────────────────────────────────
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Text(
-                            t.budgets.title,
-                            style: TextStyle(
-                              fontFamily: 'Epilogue',
-                              fontWeight: FontWeight.w800,
-                              fontSize: 28,
-                              color: isDark ? Colors.white : context.colorScheme.primary,
-                            ),
+                        Text(
+                          t.budgets.title,
+                          style: TextStyle(
+                            fontFamily: 'Epilogue',
+                            fontWeight: FontWeight.w800,
+                            fontSize: 28,
+                            color: context.colorScheme.primary,
                           ),
                         ),
+                        const SizedBox(height: 10),
                         _MonthSelector(
                           selectedMonth: selectedMonth,
-                          isDark: isDark,
                           onPrev: () => ref.read(selectedBudgetMonthProvider.notifier).previous(),
                           onNext: () => ref.read(selectedBudgetMonthProvider.notifier).next(),
                         ),
                       ],
                     ),
                   ),
-
                   if (budgets.isEmpty) ...[
-                    _EmptyState(isDark: isDark, t: t),
+                    _EmptyState(t: t),
                   ] else ...[
-                    // ── Summary card ──────────────────────────────────
                     _SummaryCard(
                       currency: currency,
                       totalSpent: totalSpent,
                       totalBudget: totalBudget,
                       totalRemaining: totalRemaining,
                       overallPct: overallPct,
-                      isDark: isDark,
                       t: t,
                     ),
                     const SizedBox(height: 24),
-
-                    // ── Categories header ─────────────────────────────
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -138,7 +123,7 @@ class BudgetsScreen extends ConsumerWidget {
                             fontFamily: 'Epilogue',
                             fontWeight: FontWeight.w700,
                             fontSize: 18,
-                            color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                            color: appColors.primaryText,
                           ),
                         ),
                         GestureDetector(
@@ -156,19 +141,13 @@ class BudgetsScreen extends ConsumerWidget {
                                 ),
                               ),
                               const SizedBox(width: 4),
-                              Icon(
-                                Icons.edit_outlined,
-                                size: 14,
-                                color: context.colorScheme.primary,
-                              ),
+                              Icon(Icons.edit_outlined, size: 14, color: context.colorScheme.primary),
                             ],
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 12),
-
-                    // ── Budget cards ──────────────────────────────────
                     ...budgets.map((budget) {
                       final cat = categoryMap[budget.categoryId];
                       final spent = monthlySpending[budget.categoryId] ?? 0.0;
@@ -192,7 +171,6 @@ class BudgetsScreen extends ConsumerWidget {
                           transactionCount: count,
                           progress: progress,
                           currency: budgetCurrencyObj,
-                          isDark: isDark,
                           t: t,
                           onTap: () => context.push(AppRoutes.budgetEdit(budget.id)),
                         ),
@@ -211,13 +189,11 @@ class BudgetsScreen extends ConsumerWidget {
 class _MonthSelector extends StatelessWidget {
   const _MonthSelector({
     required this.selectedMonth,
-    required this.isDark,
     required this.onPrev,
     required this.onNext,
   });
 
   final DateTime selectedMonth;
-  final bool isDark;
   final VoidCallback onPrev;
   final VoidCallback onNext;
 
@@ -270,13 +246,13 @@ class _MonthSelector extends StatelessWidget {
 // ── Empty state ───────────────────────────────────────────────────────────────
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState({required this.isDark, required this.t});
+  const _EmptyState({required this.t});
 
-  final bool isDark;
   final Translations t;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return SizedBox(
       height: 400,
       child: Center(
@@ -285,11 +261,7 @@ class _EmptyState extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.account_balance_wallet_outlined,
-                size: 72,
-                color: context.colorScheme.primary.withValues(alpha: 0.4),
-              ),
+              Icon(Icons.account_balance_wallet_outlined, size: 72, color: context.colorScheme.primary.withValues(alpha: 0.4)),
               const SizedBox(height: 20),
               Text(
                 t.budgets.no_budgets,
@@ -297,7 +269,7 @@ class _EmptyState extends StatelessWidget {
                   fontFamily: 'Epilogue',
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
-                  color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                  color: appColors.primaryText,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -307,7 +279,7 @@ class _EmptyState extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 14,
-                  color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                  color: appColors.secondaryLabel,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -328,7 +300,6 @@ class _SummaryCard extends StatelessWidget {
     required this.totalBudget,
     required this.totalRemaining,
     required this.overallPct,
-    required this.isDark,
     required this.t,
   });
 
@@ -337,11 +308,11 @@ class _SummaryCard extends StatelessWidget {
   final double totalBudget;
   final double totalRemaining;
   final double overallPct;
-  final bool isDark;
   final Translations t;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     final isOver = totalSpent > totalBudget;
     final pct = (overallPct * 100).round();
     final statusLabel = isOver
@@ -350,7 +321,7 @@ class _SummaryCard extends StatelessWidget {
         ? t.budgets.almost
         : t.budgets.on_track;
     final statusColor = isOver
-        ? Colors.red.shade600
+        ? appColors.expenseColor
         : overallPct >= 0.8
         ? Colors.orange.shade700
         : context.colorScheme.primary;
@@ -359,17 +330,15 @@ class _SummaryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2420) : Colors.white,
+        color: appColors.cardSurface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: isDark
-            ? null
-            : [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.06),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -397,7 +366,7 @@ class _SummaryCard extends StatelessWidget {
                         fontFamily: 'Epilogue',
                         fontWeight: FontWeight.w700,
                         fontSize: 26,
-                        color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                        color: appColors.primaryText,
                       ),
                     ),
                   ],
@@ -423,7 +392,7 @@ class _SummaryCard extends StatelessWidget {
                       fontFamily: 'Epilogue',
                       fontWeight: FontWeight.w700,
                       fontSize: 26,
-                      color: isOver ? Colors.red.shade600 : (isDark ? Colors.white : const Color(0xFF0F1E36)),
+                      color: isOver ? appColors.expenseColor : appColors.primaryText,
                     ),
                   ),
                 ],
@@ -438,7 +407,7 @@ class _SummaryCard extends StatelessWidget {
               minHeight: 8,
               backgroundColor: context.colorScheme.primary.withValues(alpha: 0.12),
               valueColor: AlwaysStoppedAnimation(
-                isOver ? Colors.red.shade600 : context.colorScheme.primary,
+                isOver ? appColors.expenseColor : context.colorScheme.primary,
               ),
             ),
           ),
@@ -451,7 +420,7 @@ class _SummaryCard extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 12,
-                  color: isDark ? Colors.white54 : const Color(0xFF9EAEA2),
+                  color: appColors.secondaryLabel,
                 ),
               ),
               Container(
@@ -490,7 +459,6 @@ class _BudgetCard extends StatelessWidget {
     required this.transactionCount,
     required this.progress,
     required this.currency,
-    required this.isDark,
     required this.t,
     required this.onTap,
   });
@@ -503,39 +471,38 @@ class _BudgetCard extends StatelessWidget {
   final int transactionCount;
   final double progress;
   final Currency currency;
-  final bool isDark;
   final Translations t;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     final isOver = spent > budgetAmount;
-    final barColor = isOver ? Colors.red.shade600 : categoryColor;
+    final barColor = isOver ? appColors.expenseColor : categoryColor;
     final clampedProgress = progress.clamp(0.0, 1.0);
     final overAmount = spent - budgetAmount;
-    final rightText = isOver ? t.budgets.over_by.replaceAll('{amount}', currency.format(overAmount)) : t.budgets.of_amount.replaceAll('{amount}', currency.format(budgetAmount));
+    final rightText = isOver
+        ? t.budgets.over_by.replaceAll('{amount}', currency.format(overAmount))
+        : t.budgets.of_amount.replaceAll('{amount}', currency.format(budgetAmount));
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E2420) : Colors.white,
+          color: appColors.cardSurface,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: isDark
-              ? null
-              : [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 12,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 12,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Category icon
             Container(
               width: 48,
               height: 48,
@@ -546,8 +513,6 @@ class _BudgetCard extends StatelessWidget {
               child: Icon(categoryIcon, color: categoryColor, size: 24),
             ),
             const SizedBox(width: 12),
-
-            // Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -562,7 +527,7 @@ class _BudgetCard extends StatelessWidget {
                             fontFamily: 'Epilogue',
                             fontWeight: FontWeight.w700,
                             fontSize: 15,
-                            color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                            color: appColors.primaryText,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -575,7 +540,7 @@ class _BudgetCard extends StatelessWidget {
                           fontFamily: 'Epilogue',
                           fontWeight: FontWeight.w700,
                           fontSize: 15,
-                          color: isOver ? Colors.red.shade600 : (isDark ? Colors.white : const Color(0xFF0F1E36)),
+                          color: isOver ? appColors.expenseColor : appColors.primaryText,
                         ),
                       ),
                     ],
@@ -589,7 +554,7 @@ class _BudgetCard extends StatelessWidget {
                         style: TextStyle(
                           fontFamily: 'Epilogue',
                           fontSize: 12,
-                          color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+                          color: appColors.secondaryLabel,
                         ),
                       ),
                       Text(
@@ -598,7 +563,7 @@ class _BudgetCard extends StatelessWidget {
                           fontFamily: 'Epilogue',
                           fontSize: 12,
                           fontWeight: isOver ? FontWeight.w600 : FontWeight.w400,
-                          color: isOver ? Colors.red.shade600 : (isDark ? Colors.white38 : const Color(0xFF9EAEA2)),
+                          color: isOver ? appColors.expenseColor : appColors.secondaryLabel,
                         ),
                       ),
                     ],
@@ -650,8 +615,7 @@ double _convertSync(
     ..sort((a, b) => b.date.compareTo(a.date));
 
   if (inverse.isNotEmpty) {
-    final onOrBefore =
-        inverse.where((r) => !r.date.isAfter(date)).firstOrNull;
+    final onOrBefore = inverse.where((r) => !r.date.isAfter(date)).firstOrNull;
     final rate = (onOrBefore ?? inverse.first).rate;
     if (rate != 0) return amount / rate;
   }

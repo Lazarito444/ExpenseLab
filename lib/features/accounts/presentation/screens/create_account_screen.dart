@@ -1,4 +1,4 @@
-import 'package:drift/drift.dart' as drift;
+﻿import 'package:drift/drift.dart' as drift;
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/formatters/currency_input_formatter.dart';
@@ -17,7 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-// ── Icon categories for the picker ───────────────────────────────────────────
+// â”€â”€ Icon categories for the picker â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 final _kIconCategories = <(String, List<String>)>[
   (
@@ -123,7 +123,7 @@ final _kIconCategories = <(String, List<String>)>[
   ),
 ];
 
-// ── Screen ────────────────────────────────────────────────────────────────────
+// â”€â”€ Screen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class CreateAccountScreen extends ConsumerStatefulWidget {
   const CreateAccountScreen({super.key});
@@ -160,7 +160,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
     orElse: () => kUsdCurrency,
   );
 
-  // ── Submit ─────────────────────────────────────────────────────────────────
+  // â”€â”€ Submit â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
@@ -196,7 +196,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(context.t.accounts.create.success),
-            backgroundColor: const Color(0xFF2D6831),
+            backgroundColor: context.colorScheme.primary,
           ),
         );
         context.pop();
@@ -212,12 +212,13 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
     }
   }
 
-  // ── Bottom sheets ──────────────────────────────────────────────────────────
+  // â”€â”€ Bottom sheets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   void _showTypeSheet(BuildContext context, Translations t) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: appColors.cardSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -226,14 +227,15 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const _SheetHandle(),
+            _sheetHandle(context),
             const SizedBox(height: 16),
             Text(
               t.accounts.create.type,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
+                color: appColors.primaryText,
               ),
             ),
             const SizedBox(height: 8),
@@ -248,14 +250,11 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     fontFamily: 'Epilogue',
                     fontSize: 14,
                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                    color: isSelected ? const Color(0xFF2D6831) : const Color(0xFF1A1A1A),
+                    color: isSelected ? context.colorScheme.primary : appColors.primaryText,
                   ),
                 ),
                 trailing: isSelected
-                    ? const Icon(
-                        Icons.check_rounded,
-                        color: Color(0xFF2D6831),
-                      )
+                    ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
                     : null,
                 onTap: () {
                   setState(() => _selectedType = type);
@@ -270,9 +269,10 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
   }
 
   void _showCurrencySheet(BuildContext context, Translations t) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: appColors.cardSurface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -286,14 +286,15 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
           child: Column(
             children: [
-              const _SheetHandle(),
+              _sheetHandle(context),
               const SizedBox(height: 16),
               Text(
                 t.accounts.create.select_currency_title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 12),
@@ -312,22 +313,19 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                           fontFamily: 'Epilogue',
                           fontSize: 14,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                          color: isSelected ? const Color(0xFF2D6831) : const Color(0xFF1A1A1A),
+                          color: isSelected ? context.colorScheme.primary : appColors.primaryText,
                         ),
                       ),
                       subtitle: Text(
                         cur.name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Epilogue',
                           fontSize: 12,
-                          color: Color(0xFF9EAEA2),
+                          color: appColors.secondaryLabel,
                         ),
                       ),
                       trailing: isSelected
-                          ? const Icon(
-                              Icons.check_rounded,
-                              color: Color(0xFF2D6831),
-                            )
+                          ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
                           : null,
                       onTap: () {
                         setState(() => _selectedCurrencyCode = cur.code);
@@ -345,9 +343,10 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
   }
 
   void _showIconSheet(BuildContext context, Translations t) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: appColors.cardSurface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -361,14 +360,15 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
           child: Column(
             children: [
-              const _SheetHandle(),
+              _sheetHandle(context),
               const SizedBox(height: 16),
               Text(
                 t.accounts.create.icon,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 12),
@@ -381,11 +381,11 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         padding: const EdgeInsets.only(top: 16, bottom: 8),
                         child: Text(
                           category,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Epilogue',
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF9EAEA2),
+                            color: appColors.secondaryLabel,
                           ),
                         ),
                       ),
@@ -404,12 +404,14 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                               width: 52,
                               height: 52,
                               decoration: BoxDecoration(
-                                color: selected ? const Color(0xFF2D6831) : const Color(0xFFF0F0F0),
+                                color: selected
+                                    ? context.colorScheme.primary
+                                    : appColors.inputFill,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
                                 iconFromName(name),
-                                color: selected ? Colors.white : const Color(0xFF8E8E8E),
+                                color: selected ? Colors.white : appColors.secondaryLabel,
                                 size: 22,
                               ),
                             ),
@@ -428,7 +430,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
     );
   }
 
-  // ── Helpers ────────────────────────────────────────────────────────────────
+  // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   String _typeLabel(Translations t, AccountType type) => switch (type) {
     AccountType.cash => t.accounts.create.type_cash,
@@ -436,46 +438,51 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
     AccountType.creditCard => t.accounts.create.type_credit_card,
   };
 
-  InputDecoration _fieldDecoration({String? hint, Widget? prefix}) => InputDecoration(
-    hintText: hint,
-    hintStyle: const TextStyle(
-      fontFamily: 'Epilogue',
-      color: Color(0xFFBDBDBD),
-      fontSize: 14,
-    ),
-    prefix: prefix,
-    filled: true,
-    fillColor: Colors.white,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Color(0xFFE5E5E5)),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Color(0xFFE5E5E5)),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Color(0xFF2D6831), width: 1.5),
-    ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Colors.red),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Colors.red, width: 1.5),
-    ),
-  );
+  InputDecoration _fieldDecoration({String? hint, Widget? prefix}) {
+    final appColors = context.appColors;
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: TextStyle(
+        fontFamily: 'Epilogue',
+        color: appColors.secondaryLabel,
+        fontSize: 14,
+      ),
+      prefix: prefix,
+      filled: true,
+      fillColor: appColors.inputFill,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: appColors.inputBorder),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: appColors.inputBorder),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: context.colorScheme.primary, width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red, width: 1.5),
+      ),
+    );
+  }
 
-  // ── Build ──────────────────────────────────────────────────────────────────
+  // â”€â”€ Build â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final appColors = context.appColors;
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: t.accounts.create.title,
         leading: IconButton(
@@ -489,7 +496,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // ── Scrollable form ──────────────────────────────────────────
+            // â”€â”€ Scrollable form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             Expanded(
               child: Form(
                 key: _formKey,
@@ -512,11 +519,9 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                             vertical: 14,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: appColors.inputFill,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: const Color(0xFFE5E5E5),
-                            ),
+                            border: Border.all(color: appColors.inputBorder),
                           ),
                           child: Row(
                             children: [
@@ -524,7 +529,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                                 width: 40,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF2D6831),
+                                  color: context.colorScheme.primary,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Icon(
@@ -537,16 +542,16 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                               Expanded(
                                 child: Text(
                                   toBeginningOfSentenceCase(_selectedIcon.replaceAll('_', ' ')),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Epilogue',
                                     fontSize: 14,
-                                    color: Color(0xFF1A1A1A),
+                                    color: appColors.primaryText,
                                   ),
                                 ),
                               ),
                               Icon(
                                 Icons.keyboard_arrow_down_rounded,
-                                color: Colors.grey.shade500,
+                                color: appColors.secondaryLabel,
                                 size: 22,
                               ),
                             ],
@@ -561,9 +566,10 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                       TextFormField(
                         controller: _nameController,
                         textCapitalization: TextCapitalization.sentences,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Epilogue',
                           fontSize: 14,
+                          color: appColors.primaryText,
                         ),
                         decoration: _fieldDecoration(
                           hint: t.accounts.create.name_hint,
@@ -604,18 +610,19 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                           decimal: true,
                         ),
                         inputFormatters: [CurrencyInputFormatter()],
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Epilogue',
                           fontSize: 14,
+                          color: appColors.primaryText,
                         ),
                         decoration: _fieldDecoration(
                           hint: '0.00',
                           prefix: Text(
                             '${_currency.symbol}  ',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Epilogue',
                               fontSize: 14,
-                              color: Color(0xFF1A1A1A),
+                              color: appColors.primaryText,
                             ),
                           ),
                         ),
@@ -636,15 +643,15 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF0F8F0),
+                          color: context.colorScheme.primary.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.tips_and_updates_outlined,
-                              color: Color(0xFF2D6831),
+                              color: context.colorScheme.primary,
                               size: 18,
                             ),
                             const SizedBox(width: 10),
@@ -654,20 +661,20 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                                   children: [
                                     TextSpan(
                                       text: '${t.accounts.create.pro_tip_label}: ',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontFamily: 'Epilogue',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600,
-                                        color: Color(0xFF2D6831),
+                                        color: context.colorScheme.primary,
                                       ),
                                     ),
                                     TextSpan(
                                       text: t.accounts.create.pro_tip,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontFamily: 'Epilogue',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
-                                        color: Color(0xFF4A6E4A),
+                                        color: context.colorScheme.primary.withValues(alpha: 0.7),
                                       ),
                                     ),
                                   ],
@@ -684,7 +691,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
               ),
             ),
 
-            // ── Pinned Create Account button ─────────────────────────────
+            // â”€â”€ Pinned Create Account button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
               child: SizedBox(
@@ -711,7 +718,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2D6831),
+                    backgroundColor: context.colorScheme.primary,
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                   ),
@@ -725,7 +732,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
   }
 }
 
-// ── Private widgets ───────────────────────────────────────────────────────────
+// â”€â”€ Private widgets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class _SectionLabel extends StatelessWidget {
   const _SectionLabel({required this.label});
@@ -736,11 +743,11 @@ class _SectionLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: 'Epilogue',
         fontSize: 13,
         fontWeight: FontWeight.w500,
-        color: Color(0xFF2D6831),
+        color: context.colorScheme.primary,
       ),
     );
   }
@@ -754,30 +761,31 @@ class _SelectorField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: appColors.inputFill,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xFFE5E5E5)),
+          border: Border.all(color: appColors.inputBorder),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               value,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontSize: 14,
-                color: Color(0xFF1A1A1A),
+                color: appColors.primaryText,
               ),
             ),
             Icon(
               Icons.keyboard_arrow_down_rounded,
-              color: Colors.grey.shade500,
+              color: appColors.secondaryLabel,
               size: 22,
             ),
           ],
@@ -787,18 +795,15 @@ class _SelectorField extends StatelessWidget {
   }
 }
 
-class _SheetHandle extends StatelessWidget {
-  const _SheetHandle();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
+Widget _sheetHandle(BuildContext context) {
+  return Center(
+    child: Container(
       width: 40,
       height: 4,
       decoration: BoxDecoration(
-        color: Colors.grey.shade300,
+        color: context.appColors.sheetHandle,
         borderRadius: BorderRadius.circular(2),
       ),
-    );
-  }
+    ),
+  );
 }

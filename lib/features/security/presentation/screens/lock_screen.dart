@@ -1,3 +1,4 @@
+import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/features/security/biometric_service.dart';
 import 'package:expenselab/features/security/lock_provider.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
@@ -53,11 +54,11 @@ class _LockScreenState extends ConsumerState<LockScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final primary = Theme.of(context).colorScheme.primary;
+    final appColors = context.appColors;
+    final primary = context.colorScheme.primary;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF111714) : const Color(0xFFF4F8F5),
+      backgroundColor: appColors.scaffoldBackground,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -79,7 +80,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
                   fontFamily: 'Epilogue',
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : const Color(0xFF1C221E),
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 8),
@@ -90,7 +91,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 14,
-                  color: isDark ? Colors.white54 : const Color(0xFF9EAEA2),
+                  color: appColors.secondaryLabel,
                 ),
               ),
               const SizedBox(height: 56),
@@ -120,7 +121,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
                     'Try Again',
                     style: TextStyle(
                       fontFamily: 'Epilogue',
-                      color: isDark ? Colors.white54 : const Color(0xFF9EAEA2),
+                      color: appColors.secondaryLabel,
                     ),
                   ),
                 ),

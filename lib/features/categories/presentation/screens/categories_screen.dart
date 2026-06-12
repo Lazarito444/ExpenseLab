@@ -20,6 +20,7 @@ class CategoriesScreen extends ConsumerWidget {
     final expenseAsync = ref.watch(categoriesByTypeProvider(CategoryType.expense));
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: t.categories.title,
         leading: IconButton(
