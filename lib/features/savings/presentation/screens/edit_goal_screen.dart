@@ -23,13 +23,12 @@ class EditGoalScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final t = context.t;
     final goalAsync = ref.watch(savingsGoalByIdProvider(goalId));
 
     return goalAsync.when(
       loading: () => Scaffold(
-        backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+        backgroundColor: context.appColors.scaffoldBackground,
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) => Scaffold(
@@ -202,12 +201,12 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
     BuildContext context,
     List<AccountModel> accounts,
     Translations t,
-    bool isDark,
   ) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: isDark ? const Color(0xFF1E2420) : Colors.white,
+      backgroundColor: appColors.cardSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -228,7 +227,7 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
                   fontFamily: 'Epilogue',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 12),
@@ -247,14 +246,11 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
                           fontFamily: 'Epilogue',
                           fontSize: 14,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                          color: isSelected ? const Color(0xFF2D6831) : (isDark ? Colors.white : const Color(0xFF1A1A1A)),
+                          color: isSelected ? context.colorScheme.primary : appColors.primaryText,
                         ),
                       ),
                       trailing: isSelected
-                          ? const Icon(
-                              Icons.check_rounded,
-                              color: Color(0xFF2D6831),
-                            )
+                          ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
                           : null,
                       onTap: () {
                         setState(() => _selectedAccountId = acc.id);
@@ -274,37 +270,38 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
   // ── Helpers ───────────────────────────────────────────────────────────────
 
   InputDecoration _fieldDecoration({
+    required BuildContext context,
     String? hint,
     String? prefixText,
-    bool isDark = false,
   }) {
+    final appColors = context.appColors;
     return InputDecoration(
       hintText: hint,
       hintStyle: TextStyle(
         fontFamily: 'Epilogue',
-        color: isDark ? Colors.white24 : const Color(0xFFBDBDBD),
+        color: appColors.secondaryLabel,
         fontSize: 14,
       ),
       prefixText: prefixText,
       prefixStyle: TextStyle(
         fontFamily: 'Epilogue',
         fontSize: 14,
-        color: isDark ? Colors.white70 : const Color(0xFF1A1A1A),
+        color: appColors.primaryText,
       ),
       filled: true,
-      fillColor: isDark ? const Color(0xFF2A312C) : Colors.white,
+      fillColor: appColors.inputFill,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: isDark ? Colors.white12 : const Color(0xFFE5E5E5)),
+        borderSide: BorderSide(color: appColors.inputBorder),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: isDark ? Colors.white12 : const Color(0xFFE5E5E5)),
+        borderSide: BorderSide(color: appColors.inputBorder),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF2D6831), width: 1.5),
+        borderSide: BorderSide(color: context.colorScheme.primary, width: 1.5),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -322,14 +319,13 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final currency = ref.watch(currencyProvider);
     final accounts = ref.watch(accountModelsProvider);
 
     final selectedAccount = accounts.where((a) => a.id == _selectedAccountId).firstOrNull;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: t.goals.edit.title,
         leading: IconButton(
@@ -340,7 +336,6 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
       body: SafeArea(
         child: Column(
           children: [
-            // ── Scrollable form ──────────────────────────────────────
             Expanded(
               child: Form(
                 key: _formKey,
@@ -348,15 +343,10 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
                   padding: const EdgeInsets.all(16),
                   children: [
                     _FormCard(
-                      isDark: isDark,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Goal Name
-                          _FieldLabel(
-                            label: t.goals.create.name,
-                            isDark: isDark,
-                          ),
+                          _FieldLabel(label: t.goals.create.name),
                           const SizedBox(height: 8),
                           TextFormField(
                             controller: _nameController,
@@ -364,9 +354,9 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
                             style: TextStyle(
                               fontFamily: 'Epilogue',
                               fontSize: 14,
-                              color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                              color: context.appColors.primaryText,
                             ),
-                            decoration: _fieldDecoration(isDark: isDark),
+                            decoration: _fieldDecoration(context: context),
                             validator: (v) {
                               if (v == null || v.trim().isEmpty) {
                                 return t.goals.create.name_required;
@@ -376,35 +366,26 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
                           ),
                           const SizedBox(height: 16),
 
-                          // Target Amount
-                          _FieldLabel(
-                            label: t.goals.create.target_amount,
-                            isDark: isDark,
-                          ),
+                          _FieldLabel(label: t.goals.create.target_amount),
                           const SizedBox(height: 8),
                           TextFormField(
                             controller: _amountController,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
                             inputFormatters: [CurrencyInputFormatter()],
                             style: TextStyle(
                               fontFamily: 'Epilogue',
                               fontSize: 14,
-                              color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                              color: context.appColors.primaryText,
                             ),
                             decoration: _fieldDecoration(
+                              context: context,
                               prefixText: '${currency.symbol}  ',
-                              isDark: isDark,
                             ),
                             validator: (v) {
                               if (v == null || v.isEmpty) {
                                 return t.goals.create.amount_required;
                               }
-                              if (double.tryParse(
-                                    v.replaceAll(',', ''),
-                                  ) ==
-                                  null) {
+                              if (double.tryParse(v.replaceAll(',', '')) == null) {
                                 return t.goals.create.amount_invalid;
                               }
                               return null;
@@ -412,37 +393,19 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
                           ),
                           const SizedBox(height: 16),
 
-                          // Target Date
-                          _FieldLabel(
-                            label: t.goals.create.target_date,
-                            isDark: isDark,
-                          ),
+                          _FieldLabel(label: t.goals.create.target_date),
                           const SizedBox(height: 8),
-                          _DateSelectorField(
-                            date: _selectedDate,
-                            isDark: isDark,
-                            onTap: _pickDate,
-                          ),
+                          _DateSelectorField(date: _selectedDate, onTap: _pickDate),
                           const SizedBox(height: 16),
 
-                          // Associated Account
-                          _FieldLabel(
-                            label: t.goals.edit.associated_account,
-                            isDark: isDark,
-                          ),
+                          _FieldLabel(label: t.goals.edit.associated_account),
                           const SizedBox(height: 8),
                           _AccountSelectorField(
                             label: selectedAccount?.name ?? t.goals.create.select_account,
                             isEmpty: selectedAccount == null,
-                            isDark: isDark,
                             onTap: accounts.isEmpty
                                 ? null
-                                : () => _showAccountSheet(
-                                    context,
-                                    accounts,
-                                    t,
-                                    isDark,
-                                  ),
+                                : () => _showAccountSheet(context, accounts, t),
                           ),
                         ],
                       ),
@@ -452,7 +415,6 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
               ),
             ),
 
-            // ── Pinned save + delete buttons ─────────────────────────
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               child: SizedBox(
@@ -469,10 +431,7 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
                       ? const SizedBox(
                           width: 18,
                           height: 18,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
+                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                         )
                       : Text(
                           t.goals.edit.save_button,
@@ -509,27 +468,25 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
 // ── Shared form helpers ───────────────────────────────────────────────────────
 
 class _FormCard extends StatelessWidget {
-  const _FormCard({required this.isDark, required this.child});
+  const _FormCard({required this.child});
 
-  final bool isDark;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2420) : Colors.white,
+        color: appColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: isDark
-            ? null
-            : [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 12,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: child,
     );
@@ -537,10 +494,9 @@ class _FormCard extends StatelessWidget {
 }
 
 class _FieldLabel extends StatelessWidget {
-  const _FieldLabel({required this.label, required this.isDark});
+  const _FieldLabel({required this.label});
 
   final String label;
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -550,36 +506,30 @@ class _FieldLabel extends StatelessWidget {
         fontFamily: 'Epilogue',
         fontSize: 13,
         fontWeight: FontWeight.w600,
-        color: isDark ? const Color(0xFF6DBF6F) : const Color(0xFF2D6831),
+        color: context.colorScheme.primary,
       ),
     );
   }
 }
 
 class _DateSelectorField extends StatelessWidget {
-  const _DateSelectorField({
-    required this.date,
-    required this.isDark,
-    required this.onTap,
-  });
+  const _DateSelectorField({required this.date, required this.onTap});
 
   final DateTime? date;
-  final bool isDark;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     final hasDate = date != null;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF2A312C) : Colors.white,
+          color: appColors.inputFill,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
-          ),
+          border: Border.all(color: appColors.inputBorder),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -589,14 +539,10 @@ class _DateSelectorField extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontSize: 14,
-                color: hasDate ? (isDark ? Colors.white : const Color(0xFF1A1A1A)) : (isDark ? Colors.white24 : const Color(0xFFBDBDBD)),
+                color: hasDate ? appColors.primaryText : appColors.secondaryLabel,
               ),
             ),
-            Icon(
-              Icons.calendar_today_outlined,
-              size: 18,
-              color: isDark ? Colors.white24 : const Color(0xFFBDBDBD),
-            ),
+            Icon(Icons.calendar_today_outlined, size: 18, color: appColors.secondaryLabel),
           ],
         ),
       ),
@@ -608,27 +554,24 @@ class _AccountSelectorField extends StatelessWidget {
   const _AccountSelectorField({
     required this.label,
     required this.isEmpty,
-    required this.isDark,
     required this.onTap,
   });
 
   final String label;
   final bool isEmpty;
-  final bool isDark;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF2A312C) : Colors.white,
+          color: appColors.inputFill,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
-          ),
+          border: Border.all(color: appColors.inputBorder),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -639,17 +582,13 @@ class _AccountSelectorField extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 14,
-                  color: isEmpty ? (isDark ? Colors.white24 : const Color(0xFFBDBDBD)) : (isDark ? Colors.white : const Color(0xFF1A1A1A)),
+                  color: isEmpty ? appColors.secondaryLabel : appColors.primaryText,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Icon(
-              Icons.keyboard_arrow_down_rounded,
-              size: 22,
-              color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
-            ),
+            Icon(Icons.keyboard_arrow_down_rounded, size: 22, color: appColors.secondaryLabel),
           ],
         ),
       ),
@@ -665,7 +604,7 @@ class _SheetHandle extends StatelessWidget {
         width: 40,
         height: 4,
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: context.appColors.sheetHandle,
           borderRadius: BorderRadius.circular(2),
         ),
       ),

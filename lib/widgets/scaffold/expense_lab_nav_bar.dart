@@ -61,7 +61,7 @@ class ExpenseLabNavBar extends StatelessWidget {
             );
           }
           return TextStyle(
-            color: Colors.grey.shade700,
+            color: context.appColors.transferColor,
             fontFamily: 'Epilogue',
             overflow: TextOverflow.ellipsis,
           );
@@ -78,22 +78,27 @@ class ExpenseLabNavBar extends StatelessWidget {
           NavigationDestination(
             icon: const Icon(Icons.home_outlined),
             label: t.nav.home,
+            tooltip: "",
           ),
           NavigationDestination(
             icon: const Icon(Icons.account_balance_wallet_outlined),
             label: t.nav.budgets,
+            tooltip: "",
           ),
           const NavigationDestination(
             icon: SizedBox.shrink(),
             label: "",
+            tooltip: "",
           ),
           NavigationDestination(
             icon: const Icon(Icons.savings_outlined),
             label: t.nav.goals,
+            tooltip: "",
           ),
           NavigationDestination(
             icon: const Icon(Icons.settings_outlined),
             label: t.nav.settings,
+            tooltip: "",
           ),
         ],
       ),
@@ -110,7 +115,7 @@ class ExpenseLabNavBar extends StatelessWidget {
           width: 56.0,
           height: 56.0,
           child: FloatingActionButton(
-            backgroundColor: context.theme.primaryColor,
+            backgroundColor: context.colorScheme.primary,
             onPressed: () {
               context.push(AppRoutes.addTransaction);
             },

@@ -312,5 +312,23 @@
       "one": "1 subcategoría",
       "other": "$n subcategorías"
     }
+  },
+  "exchange_rates": {
+    "title": "Tasas de Cambio",
+    "empty_state_title": "Sin tasas de cambio",
+    "empty_state_subtitle": "Agrega tasas para convertir saldos y presupuestos entre monedas.",
+    "add_title": "Agregar Tasa de Cambio",
+    "edit_title": "Editar Tasa de Cambio",
+    "from_currency": "Moneda de origen",
+    "to_currency": "Moneda de destino",
+    "date_label": "Fecha",
+    "add_button": "Agregar Tasa",
+    "save_button": "Guardar",
+    "delete_title": "¿Eliminar tasa?",
+    "delete_message": "Esta tasa de cambio se eliminará de forma permanente.",
+    "error_rate_invalid": "Ingresa una tasa válida mayor que 0.",
+    "error_same_currency": "Las monedas de origen y destino deben ser diferentes.",
+    "success_add": "Tipo de cambio agregado.",
+    "success_update": "Tipo de cambio actualizado."
   }
 }

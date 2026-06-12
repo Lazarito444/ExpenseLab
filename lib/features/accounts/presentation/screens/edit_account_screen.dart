@@ -1,4 +1,4 @@
-import 'package:drift/drift.dart' as drift;
+﻿import 'package:drift/drift.dart' as drift;
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/formatters/currency_input_formatter.dart';
@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-// ── Icon categories for the picker ───────────────────────────────────────────
+// â”€â”€ Icon categories for the picker â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 final _kIconCategories = <(String, List<String>)>[
   ('Finance', [
@@ -54,7 +54,7 @@ final _kIconCategories = <(String, List<String>)>[
   ]),
 ];
 
-// ── Screen ────────────────────────────────────────────────────────────────────
+// â”€â”€ Screen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class EditAccountScreen extends ConsumerStatefulWidget {
   const EditAccountScreen({required this.accountId, super.key});
@@ -84,7 +84,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     super.dispose();
   }
 
-  /// Idempotent initialisation — runs once when account data first arrives.
+  /// Idempotent initialisation â€” runs once when account data first arrives.
   void _initFrom(Account account, double balance) {
     if (_initialized) return;
     _initialized = true;
@@ -101,7 +101,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     orElse: () => kUsdCurrency,
   );
 
-  // ── Submit ─────────────────────────────────────────────────────────────────
+  // â”€â”€ Submit â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
@@ -111,7 +111,6 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       final accountRepo = ref.read(accountsRepositoryProvider);
       final txRepo = ref.read(transactionsRepositoryProvider);
 
-      // Update account metadata.
       await accountRepo.update(
         widget.accountId,
         AccountsCompanion(
@@ -122,7 +121,6 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
         ),
       );
 
-      // Create a balance-adjustment transaction when the balance changed.
       final newBalance =
           double.tryParse(_balanceController.text.replaceAll(',', '')) ??
           _originalBalance;
@@ -145,7 +143,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(context.t.accounts.edit.success_update),
-          backgroundColor: const Color(0xFF2D6831),
+          backgroundColor: context.colorScheme.primary,
         ),
       );
       context.pop();
@@ -159,7 +157,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     }
   }
 
-  // ── Delete ─────────────────────────────────────────────────────────────────
+  // â”€â”€ Delete â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Future<void> _confirmDelete(BuildContext context, Translations t) async {
     final confirmed = await showDialog<bool>(
@@ -213,7 +211,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(t.accounts.edit.success_delete),
-          backgroundColor: const Color(0xFF2D6831),
+          backgroundColor: context.colorScheme.primary,
         ),
       );
       context.pop();
@@ -227,12 +225,13 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     }
   }
 
-  // ── Bottom sheets ──────────────────────────────────────────────────────────
+  // â”€â”€ Bottom sheets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   void _showTypeSheet(BuildContext context, Translations t) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: appColors.cardSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -241,14 +240,15 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const _SheetHandle(),
+            _sheetHandle(context),
             const SizedBox(height: 16),
             Text(
               t.accounts.create.type,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
+                color: appColors.primaryText,
               ),
             ),
             const SizedBox(height: 8),
@@ -262,18 +262,12 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                   style: TextStyle(
                     fontFamily: 'Epilogue',
                     fontSize: 14,
-                    fontWeight:
-                        isSelected ? FontWeight.w600 : FontWeight.w400,
-                    color: isSelected
-                        ? const Color(0xFF2D6831)
-                        : const Color(0xFF1A1A1A),
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                    color: isSelected ? context.colorScheme.primary : appColors.primaryText,
                   ),
                 ),
                 trailing: isSelected
-                    ? const Icon(
-                        Icons.check_rounded,
-                        color: Color(0xFF2D6831),
-                      )
+                    ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
                     : null,
                 onTap: () {
                   setState(() => _selectedType = type);
@@ -288,9 +282,10 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   }
 
   void _showCurrencySheet(BuildContext context, Translations t) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: appColors.cardSurface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -304,14 +299,15 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
           child: Column(
             children: [
-              const _SheetHandle(),
+              _sheetHandle(context),
               const SizedBox(height: 16),
               Text(
                 t.accounts.create.select_currency_title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 12),
@@ -329,26 +325,20 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                         style: TextStyle(
                           fontFamily: 'Epilogue',
                           fontSize: 14,
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.w400,
-                          color: isSelected
-                              ? const Color(0xFF2D6831)
-                              : const Color(0xFF1A1A1A),
+                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                          color: isSelected ? context.colorScheme.primary : appColors.primaryText,
                         ),
                       ),
                       subtitle: Text(
                         cur.name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Epilogue',
                           fontSize: 12,
-                          color: Color(0xFF9EAEA2),
+                          color: appColors.secondaryLabel,
                         ),
                       ),
                       trailing: isSelected
-                          ? const Icon(
-                              Icons.check_rounded,
-                              color: Color(0xFF2D6831),
-                            )
+                          ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
                           : null,
                       onTap: () {
                         setState(() => _selectedCurrencyCode = cur.code);
@@ -366,9 +356,10 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   }
 
   void _showIconSheet(BuildContext context, Translations t) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: appColors.cardSurface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -382,14 +373,15 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
           child: Column(
             children: [
-              const _SheetHandle(),
+              _sheetHandle(context),
               const SizedBox(height: 16),
               Text(
                 t.accounts.create.icon,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 12),
@@ -402,11 +394,11 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                         padding: const EdgeInsets.only(top: 16, bottom: 8),
                         child: Text(
                           category,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Epilogue',
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF9EAEA2),
+                            color: appColors.secondaryLabel,
                           ),
                         ),
                       ),
@@ -426,15 +418,13 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                               height: 52,
                               decoration: BoxDecoration(
                                 color: selected
-                                    ? const Color(0xFF2D6831)
-                                    : const Color(0xFFF0F0F0),
+                                    ? context.colorScheme.primary
+                                    : appColors.inputFill,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
                                 iconFromName(name),
-                                color: selected
-                                    ? Colors.white
-                                    : const Color(0xFF8E8E8E),
+                                color: selected ? Colors.white : appColors.secondaryLabel,
                                 size: 22,
                               ),
                             ),
@@ -453,7 +443,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     );
   }
 
-  // ── Helpers ────────────────────────────────────────────────────────────────
+  // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   String _typeLabel(Translations t, AccountType type) => switch (type) {
     AccountType.cash => t.accounts.create.type_cash,
@@ -461,46 +451,48 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     AccountType.creditCard => t.accounts.create.type_credit_card,
   };
 
-  InputDecoration _fieldDecoration({String? hint, Widget? prefix}) =>
-      InputDecoration(
-        hintText: hint,
-        hintStyle: const TextStyle(
-          fontFamily: 'Epilogue',
-          color: Color(0xFFBDBDBD),
-          fontSize: 14,
-        ),
-        prefix: prefix,
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE5E5E5)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE5E5E5)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF2D6831), width: 1.5),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.red),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.red, width: 1.5),
-        ),
-      );
+  InputDecoration _fieldDecoration({String? hint, Widget? prefix}) {
+    final appColors = context.appColors;
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: TextStyle(
+        fontFamily: 'Epilogue',
+        color: appColors.secondaryLabel,
+        fontSize: 14,
+      ),
+      prefix: prefix,
+      filled: true,
+      fillColor: appColors.inputFill,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: appColors.inputBorder),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: appColors.inputBorder),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: context.colorScheme.primary, width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red, width: 1.5),
+      ),
+    );
+  }
 
-  // ── Build ──────────────────────────────────────────────────────────────────
+  // â”€â”€ Build â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final appColors = context.appColors;
     final accountAsync = ref.watch(accountByIdProvider(widget.accountId));
     final balance = ref.watch(accountBalanceProvider(widget.accountId));
 
@@ -517,16 +509,19 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
 
     return accountAsync.when(
       loading: () => Scaffold(
+        backgroundColor: context.appColors.scaffoldBackground,
         appBar: appBar,
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (e, st) => Scaffold(
+        backgroundColor: context.appColors.scaffoldBackground,
         appBar: appBar,
         body: Center(child: Text(t.accounts.edit.error_loading)),
       ),
       data: (account) {
         if (account == null) {
           return Scaffold(
+            backgroundColor: context.appColors.scaffoldBackground,
             appBar: appBar,
             body: Center(child: Text(t.accounts.edit.error_loading)),
           );
@@ -535,11 +530,12 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
         _initFrom(account, balance);
 
         return Scaffold(
+          backgroundColor: context.appColors.scaffoldBackground,
           appBar: appBar,
           body: SafeArea(
             child: Column(
               children: [
-                // ── Scrollable form ────────────────────────────────────
+                // â”€â”€ Scrollable form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                 Expanded(
                   child: Form(
                     key: _formKey,
@@ -562,11 +558,9 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                                 vertical: 14,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: appColors.inputFill,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: const Color(0xFFE5E5E5),
-                                ),
+                                border: Border.all(color: appColors.inputBorder),
                               ),
                               child: Row(
                                 children: [
@@ -574,9 +568,8 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                                     width: 40,
                                     height: 40,
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF2D6831),
-                                      borderRadius:
-                                          BorderRadius.circular(10),
+                                      color: context.colorScheme.primary,
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Icon(
                                       iconFromName(_selectedIcon),
@@ -588,16 +581,16 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                                   Expanded(
                                     child: Text(
                                       _selectedIcon.replaceAll('_', ' '),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontFamily: 'Epilogue',
                                         fontSize: 14,
-                                        color: Color(0xFF1A1A1A),
+                                        color: appColors.primaryText,
                                       ),
                                     ),
                                   ),
                                   Icon(
                                     Icons.keyboard_arrow_down_rounded,
-                                    color: Colors.grey.shade500,
+                                    color: appColors.secondaryLabel,
                                     size: 22,
                                   ),
                                 ],
@@ -612,9 +605,10 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                           TextFormField(
                             controller: _nameController,
                             textCapitalization: TextCapitalization.sentences,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Epilogue',
                               fontSize: 14,
+                              color: appColors.primaryText,
                             ),
                             decoration: _fieldDecoration(
                               hint: t.accounts.create.name_hint,
@@ -641,42 +635,38 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                           _SectionLabel(label: t.accounts.create.currency),
                           const SizedBox(height: 10),
                           _SelectorField(
-                            value:
-                                '${_currency.code} (${_currency.symbol})',
+                            value: '${_currency.code} (${_currency.symbol})',
                             onTap: () => _showCurrencySheet(context, t),
                           ),
                           const SizedBox(height: 22),
 
                           // Current Balance
-                          _SectionLabel(
-                            label: t.accounts.create.initial_balance,
-                          ),
+                          _SectionLabel(label: t.accounts.create.initial_balance),
                           const SizedBox(height: 10),
                           TextFormField(
                             controller: _balanceController,
-                            keyboardType:
-                                const TextInputType.numberWithOptions(
+                            keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
                             ),
                             inputFormatters: [CurrencyInputFormatter()],
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Epilogue',
                               fontSize: 14,
+                              color: appColors.primaryText,
                             ),
                             decoration: _fieldDecoration(
                               prefix: Text(
                                 '${_currency.symbol}  ',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'Epilogue',
                                   fontSize: 14,
-                                  color: Color(0xFF1A1A1A),
+                                  color: appColors.primaryText,
                                 ),
                               ),
                             ),
                             validator: (v) {
                               if (v == null || v.isEmpty) return null;
-                              if (double.tryParse(v.replaceAll(',', '')) ==
-                                  null) {
+                              if (double.tryParse(v.replaceAll(',', '')) == null) {
                                 return t.accounts.create.balance_invalid;
                               }
                               return null;
@@ -691,15 +681,15 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                               vertical: 12,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF0F8F0),
+                              color: context.colorScheme.primary.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.tips_and_updates_outlined,
-                                  color: Color(0xFF2D6831),
+                                  color: context.colorScheme.primary,
                                   size: 18,
                                 ),
                                 const SizedBox(width: 10),
@@ -708,22 +698,21 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text:
-                                              '${t.accounts.create.pro_tip_label}: ',
-                                          style: const TextStyle(
+                                          text: '${t.accounts.create.pro_tip_label}: ',
+                                          style: TextStyle(
                                             fontFamily: 'Epilogue',
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0xFF2D6831),
+                                            color: context.colorScheme.primary,
                                           ),
                                         ),
                                         TextSpan(
                                           text: t.accounts.create.pro_tip,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontFamily: 'Epilogue',
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
-                                            color: Color(0xFF4A6E4A),
+                                            color: context.colorScheme.primary.withValues(alpha: 0.7),
                                           ),
                                         ),
                                       ],
@@ -740,7 +729,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                   ),
                 ),
 
-                // ── Edit Account button ──────────────────────────────
+                // â”€â”€ Edit Account button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                   child: SizedBox(
@@ -757,10 +746,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                                 strokeWidth: 2,
                               ),
                             )
-                          : const Icon(
-                              Icons.edit_rounded,
-                              size: 20,
-                            ),
+                          : const Icon(Icons.edit_rounded, size: 20),
                       label: Text(
                         t.accounts.edit.edit_button,
                         style: const TextStyle(
@@ -770,7 +756,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2D6831),
+                        backgroundColor: context.colorScheme.primary,
                         foregroundColor: Colors.white,
                         shape: const StadiumBorder(),
                       ),
@@ -778,11 +764,9 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                   ),
                 ),
 
-                // ── Delete Account button ────────────────────────────
+                // â”€â”€ Delete Account button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                 TextButton.icon(
-                  onPressed: _isLoading
-                      ? null
-                      : () => _confirmDelete(context, t),
+                  onPressed: _isLoading ? null : () => _confirmDelete(context, t),
                   icon: const Icon(
                     Icons.delete_outline_rounded,
                     color: Colors.red,
@@ -808,7 +792,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   }
 }
 
-// ── Private widgets ───────────────────────────────────────────────────────────
+// â”€â”€ Private widgets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class _SectionLabel extends StatelessWidget {
   const _SectionLabel({required this.label});
@@ -819,11 +803,11 @@ class _SectionLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: 'Epilogue',
         fontSize: 13,
         fontWeight: FontWeight.w500,
-        color: Color(0xFF2D6831),
+        color: context.colorScheme.primary,
       ),
     );
   }
@@ -837,30 +821,31 @@ class _SelectorField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: appColors.inputFill,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xFFE5E5E5)),
+          border: Border.all(color: appColors.inputBorder),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               value,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontSize: 14,
-                color: Color(0xFF1A1A1A),
+                color: appColors.primaryText,
               ),
             ),
             Icon(
               Icons.keyboard_arrow_down_rounded,
-              color: Colors.grey.shade500,
+              color: appColors.secondaryLabel,
               size: 22,
             ),
           ],
@@ -870,18 +855,15 @@ class _SelectorField extends StatelessWidget {
   }
 }
 
-class _SheetHandle extends StatelessWidget {
-  const _SheetHandle();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
+Widget _sheetHandle(BuildContext context) {
+  return Center(
+    child: Container(
       width: 40,
       height: 4,
       decoration: BoxDecoration(
-        color: Colors.grey.shade300,
+        color: context.appColors.sheetHandle,
         borderRadius: BorderRadius.circular(2),
       ),
-    );
-  }
+    ),
+  );
 }

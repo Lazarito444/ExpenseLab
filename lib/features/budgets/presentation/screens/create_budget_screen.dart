@@ -77,11 +77,12 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
     }
   }
 
-  void _showCategorySheet(BuildContext context, List categories, Translations t, bool isDark) {
+  void _showCategorySheet(BuildContext context, List categories, Translations t) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: isDark ? const Color(0xFF1E2420) : Colors.white,
+      backgroundColor: appColors.cardSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -102,7 +103,7 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
                   fontFamily: 'Epilogue',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 12),
@@ -131,13 +132,11 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
                           fontFamily: 'Epilogue',
                           fontSize: 14,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                          color: isSelected
-                              ? const Color(0xFF2D6831)
-                              : (isDark ? Colors.white : const Color(0xFF1A1A1A)),
+                          color: isSelected ? context.colorScheme.primary : appColors.primaryText,
                         ),
                       ),
                       trailing: isSelected
-                          ? const Icon(Icons.check_rounded, color: Color(0xFF2D6831))
+                          ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
                           : null,
                       onTap: () {
                         setState(() => _selectedCategoryId = cat.id);
@@ -154,11 +153,12 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
     );
   }
 
-  void _showCurrencySheet(BuildContext context, Translations t, bool isDark) {
+  void _showCurrencySheet(BuildContext context, Translations t) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: isDark ? const Color(0xFF1E2420) : Colors.white,
+      backgroundColor: appColors.cardSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -179,7 +179,7 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
                   fontFamily: 'Epilogue',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : const Color(0xFF0F1E36),
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 12),
@@ -198,13 +198,11 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
                           fontFamily: 'Epilogue',
                           fontSize: 14,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                          color: isSelected
-                              ? const Color(0xFF2D6831)
-                              : (isDark ? Colors.white : const Color(0xFF1A1A1A)),
+                          color: isSelected ? context.colorScheme.primary : appColors.primaryText,
                         ),
                       ),
                       trailing: isSelected
-                          ? const Icon(Icons.check_rounded, color: Color(0xFF2D6831))
+                          ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
                           : null,
                       onTap: () {
                         setState(() => _selectedCurrencyCode = c.code);
@@ -226,7 +224,6 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final defaultCurrency = ref.watch(currencyProvider);
     final categories = (ref.watch(categoriesProvider).value ?? [])
         .where((c) => c.type == CategoryType.expense && !c.isDeleted)
@@ -242,7 +239,7 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
         : null;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF171B18) : const Color(0xFFF9FAF9),
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: t.budgets.create.title,
         leading: IconButton(
@@ -260,17 +257,14 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
                   padding: const EdgeInsets.all(16),
                   children: [
                     _FormCard(
-                      isDark: isDark,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Category
-                          _FieldLabel(label: t.budgets.create.category, isDark: isDark),
+                          _FieldLabel(label: t.budgets.create.category),
                           const SizedBox(height: 8),
                           _SelectorField(
                             label: selectedCategory?.name ?? t.budgets.create.select_category,
                             isEmpty: selectedCategory == null,
-                            isDark: isDark,
                             leadingIcon: selectedCategory != null
                                 ? Container(
                                     width: 28,
@@ -287,24 +281,21 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
                                   )
                                 : null,
                             trailingIcon: Icons.chevron_right_rounded,
-                            onTap: () => _showCategorySheet(context, categories, t, isDark),
+                            onTap: () => _showCategorySheet(context, categories, t),
                           ),
                           const SizedBox(height: 16),
 
-                          // Currency
-                          _FieldLabel(label: t.budgets.create.currency, isDark: isDark),
+                          _FieldLabel(label: t.budgets.create.currency),
                           const SizedBox(height: 8),
                           _SelectorField(
                             label: '$currencyCode ($currencySymbol)',
                             isEmpty: false,
-                            isDark: isDark,
                             trailingIcon: Icons.keyboard_arrow_down_rounded,
-                            onTap: () => _showCurrencySheet(context, t, isDark),
+                            onTap: () => _showCurrencySheet(context, t),
                           ),
                           const SizedBox(height: 16),
 
-                          // Amount
-                          _FieldLabel(label: t.budgets.create.amount, isDark: isDark),
+                          _FieldLabel(label: t.budgets.create.amount),
                           const SizedBox(height: 8),
                           TextFormField(
                             controller: _amountController,
@@ -313,12 +304,12 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
                             style: TextStyle(
                               fontFamily: 'Epilogue',
                               fontSize: 14,
-                              color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                              color: context.appColors.primaryText,
                             ),
                             decoration: _fieldDecoration(
+                              context: context,
                               prefixText: '$currencySymbol  ',
                               hint: '0.00',
-                              isDark: isDark,
                             ),
                             validator: (v) {
                               if (v == null || v.isEmpty) return t.budgets.create.amount_required;
@@ -336,7 +327,6 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
               ),
             ),
 
-            // ── Pinned create button ──────────────────────────────────
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
               child: SizedBox(
@@ -377,37 +367,38 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
 // ── Shared form helpers ───────────────────────────────────────────────────────
 
 InputDecoration _fieldDecoration({
+  required BuildContext context,
   String? hint,
   String? prefixText,
-  bool isDark = false,
 }) {
+  final appColors = context.appColors;
   return InputDecoration(
     hintText: hint,
     hintStyle: TextStyle(
       fontFamily: 'Epilogue',
-      color: isDark ? Colors.white24 : const Color(0xFFBDBDBD),
+      color: appColors.secondaryLabel,
       fontSize: 14,
     ),
     prefixText: prefixText,
     prefixStyle: TextStyle(
       fontFamily: 'Epilogue',
       fontSize: 14,
-      color: isDark ? Colors.white70 : const Color(0xFF1A1A1A),
+      color: appColors.primaryText,
     ),
     filled: true,
-    fillColor: isDark ? const Color(0xFF2A312C) : Colors.white,
+    fillColor: appColors.inputFill,
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: isDark ? Colors.white12 : const Color(0xFFE5E5E5)),
+      borderSide: BorderSide(color: appColors.inputBorder),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: isDark ? Colors.white12 : const Color(0xFFE5E5E5)),
+      borderSide: BorderSide(color: appColors.inputBorder),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Color(0xFF2D6831), width: 1.5),
+      borderSide: BorderSide(color: context.colorScheme.primary, width: 1.5),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
@@ -421,27 +412,25 @@ InputDecoration _fieldDecoration({
 }
 
 class _FormCard extends StatelessWidget {
-  const _FormCard({required this.isDark, required this.child});
+  const _FormCard({required this.child});
 
-  final bool isDark;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2420) : Colors.white,
+        color: appColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: isDark
-            ? null
-            : [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 12,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: child,
     );
@@ -449,10 +438,9 @@ class _FormCard extends StatelessWidget {
 }
 
 class _FieldLabel extends StatelessWidget {
-  const _FieldLabel({required this.label, required this.isDark});
+  const _FieldLabel({required this.label});
 
   final String label;
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -462,7 +450,7 @@ class _FieldLabel extends StatelessWidget {
         fontFamily: 'Epilogue',
         fontSize: 13,
         fontWeight: FontWeight.w500,
-        color: isDark ? const Color(0xFF6DBF6F) : const Color(0xFF2D6831),
+        color: context.colorScheme.primary,
       ),
     );
   }
@@ -472,7 +460,6 @@ class _SelectorField extends StatelessWidget {
   const _SelectorField({
     required this.label,
     required this.isEmpty,
-    required this.isDark,
     required this.onTap,
     this.leadingIcon,
     this.trailingIcon = Icons.keyboard_arrow_down_rounded,
@@ -480,23 +467,21 @@ class _SelectorField extends StatelessWidget {
 
   final String label;
   final bool isEmpty;
-  final bool isDark;
   final VoidCallback onTap;
   final Widget? leadingIcon;
   final IconData trailingIcon;
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF2A312C) : Colors.white,
+          color: appColors.inputFill,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isDark ? Colors.white12 : const Color(0xFFE5E5E5),
-          ),
+          border: Border.all(color: appColors.inputBorder),
         ),
         child: Row(
           children: [
@@ -507,19 +492,13 @@ class _SelectorField extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 14,
-                  color: isEmpty
-                      ? (isDark ? Colors.white24 : const Color(0xFFBDBDBD))
-                      : (isDark ? Colors.white : const Color(0xFF1A1A1A)),
+                  color: isEmpty ? appColors.secondaryLabel : appColors.primaryText,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Icon(
-              trailingIcon,
-              size: 22,
-              color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
-            ),
+            Icon(trailingIcon, size: 22, color: appColors.secondaryLabel),
           ],
         ),
       ),
@@ -535,7 +514,7 @@ class _SheetHandle extends StatelessWidget {
         width: 40,
         height: 4,
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: context.appColors.sheetHandle,
           borderRadius: BorderRadius.circular(2),
         ),
       ),

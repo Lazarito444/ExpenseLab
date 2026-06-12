@@ -526,6 +526,7 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
     final parents = parentsAsync.value ?? [];
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: t.categories.add_category,
         leading: IconButton(

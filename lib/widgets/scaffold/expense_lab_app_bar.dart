@@ -2,7 +2,6 @@ import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/core/routing/app_routes.dart';
 import 'package:expenselab/features/home/providers/home_providers.dart';
-import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,8 +20,6 @@ class ExpenseLabAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeModeProvider);
-    final isDark = themeMode == ThemeMode.dark;
     final t = context.t;
 
     // When no explicit actions are provided and we're on the home route,
@@ -46,7 +43,7 @@ class ExpenseLabAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
     return AppBar(
       elevation: 0,
-      backgroundColor: isDark ? const Color(0xFF1E2420) : Colors.white,
+      backgroundColor: context.appColors.cardSurface,
       leading: Padding(
         padding: const EdgeInsets.only(left: 12),
         child: Center(

@@ -65,10 +65,12 @@ class _CategoryDetailsScreenState extends ConsumerState<CategoryDetailsScreen> {
 
     return categoryAsync.when(
       loading: () => Scaffold(
+        backgroundColor: context.appColors.scaffoldBackground,
         appBar: fallbackAppBar,
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (_, stack) => Scaffold(
+        backgroundColor: context.appColors.scaffoldBackground,
         appBar: fallbackAppBar,
         body: Center(child: Text(t.common.error)),
       ),
@@ -81,6 +83,7 @@ class _CategoryDetailsScreenState extends ConsumerState<CategoryDetailsScreen> {
         if (display == null) {
           // Still in initial load with no data yet — show a spinner.
           return Scaffold(
+            backgroundColor: context.appColors.scaffoldBackground,
             appBar: fallbackAppBar,
             body: const Center(child: CircularProgressIndicator()),
           );
@@ -90,6 +93,7 @@ class _CategoryDetailsScreenState extends ConsumerState<CategoryDetailsScreen> {
         final subcategories = subcategoriesAsync.value ?? [];
 
         return Scaffold(
+          backgroundColor: context.appColors.scaffoldBackground,
           appBar: ExpenseLabAppBar(
             title: model.name,
             leading: IconButton(

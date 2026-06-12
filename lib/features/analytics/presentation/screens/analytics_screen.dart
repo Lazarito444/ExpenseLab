@@ -29,6 +29,7 @@ class AnalyticsScreen extends ConsumerWidget {
     final income = ref.watch(incomeByCategoryProvider(month));
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         title: t.analytics.title,
         leading: IconButton(
@@ -126,14 +127,13 @@ class _NavArrow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 34,
         height: 34,
         decoration: BoxDecoration(
-          color: isDark ? context.colorScheme.surfaceContainerHighest : const Color(0xFFF2F2F2),
+          color: context.appColors.navArrowBg,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(icon, size: 20, color: context.colorScheme.scrim),
@@ -160,13 +160,13 @@ class _CashFlowCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final appColors = context.appColors;
     final primary = context.colorScheme.primary;
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? context.colorScheme.surfaceContainerHigh : Colors.white,
+        color: appColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -209,7 +209,7 @@ class _CashFlowCard extends StatelessWidget {
                 child: _StatBlock(
                   label: t.analytics.net_income,
                   value: '${netIncome >= 0 ? '+' : ''}${currency.format(netIncome.abs())}',
-                  valueColor: netIncome >= 0 ? Colors.green.shade700 : Colors.red.shade600,
+                  valueColor: netIncome >= 0 ? appColors.incomeColor : appColors.expenseColor,
                   prefix: netIncome < 0 ? '-' : null,
                 ),
               ),
@@ -310,12 +310,12 @@ class _StatBlock extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Epilogue',
             fontSize: 11,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.1,
-            color: Color(0xFF9EAEA2),
+            color: context.appColors.secondaryLabel,
           ),
         ),
         const SizedBox(height: 4),
@@ -523,13 +523,12 @@ class _CategoryDonutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final total = shares.fold(0.0, (a, b) => a + b.amount);
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? context.colorScheme.surfaceContainerHigh : Colors.white,
+        color: context.appColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -591,10 +590,10 @@ class _CategoryDonutCard extends StatelessWidget {
                           ),
                           Text(
                             totalLabel,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Epilogue',
                               fontSize: 10,
-                              color: Color(0xFF9EAEA2),
+                              color: context.appColors.secondaryLabel,
                             ),
                           ),
                         ],

@@ -73,6 +73,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsAccountsEs accounts = _TranslationsAccountsEs._(_root);
 	@override late final _TranslationsTransactionsEs transactions = _TranslationsTransactionsEs._(_root);
 	@override late final _TranslationsCategoriesEs categories = _TranslationsCategoriesEs._(_root);
+	@override late final _TranslationsExchangeRatesEs exchange_rates = _TranslationsExchangeRatesEs._(_root);
 }
 
 // Path: app
@@ -318,6 +319,31 @@ class _TranslationsCategoriesEs extends TranslationsCategoriesEn {
 		one: '1 subcategoría',
 		other: '${n} subcategorías',
 	);
+}
+
+// Path: exchange_rates
+class _TranslationsExchangeRatesEs extends TranslationsExchangeRatesEn {
+	_TranslationsExchangeRatesEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Tasas de Cambio';
+	@override String get empty_state_title => 'Sin tasas de cambio';
+	@override String get empty_state_subtitle => 'Agrega tasas para convertir saldos y presupuestos entre monedas.';
+	@override String get add_title => 'Agregar Tasa de Cambio';
+	@override String get edit_title => 'Editar Tasa de Cambio';
+	@override String get from_currency => 'Moneda de origen';
+	@override String get to_currency => 'Moneda de destino';
+	@override String get date_label => 'Fecha';
+	@override String get add_button => 'Agregar Tasa';
+	@override String get save_button => 'Guardar';
+	@override String get delete_title => '¿Eliminar tasa?';
+	@override String get delete_message => 'Esta tasa de cambio se eliminará de forma permanente.';
+	@override String get error_rate_invalid => 'Ingresa una tasa válida mayor que 0.';
+	@override String get error_same_currency => 'Las monedas de origen y destino deben ser diferentes.';
+	@override String get success_add => 'Tipo de cambio agregado.';
+	@override String get success_update => 'Tipo de cambio actualizado.';
 }
 
 // Path: settings.theme
@@ -839,6 +865,22 @@ extension on TranslationsEs {
 			'categories.total_monthly_income' => 'Ingreso total del mes',
 			'categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '1 Categoría', other: '${n} Categorías', ), 
 			'categories.subcategory_count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, zero: 'Sin subcategorías', one: '1 subcategoría', other: '${n} subcategorías', ), 
+			'exchange_rates.title' => 'Tasas de Cambio',
+			'exchange_rates.empty_state_title' => 'Sin tasas de cambio',
+			'exchange_rates.empty_state_subtitle' => 'Agrega tasas para convertir saldos y presupuestos entre monedas.',
+			'exchange_rates.add_title' => 'Agregar Tasa de Cambio',
+			'exchange_rates.edit_title' => 'Editar Tasa de Cambio',
+			'exchange_rates.from_currency' => 'Moneda de origen',
+			'exchange_rates.to_currency' => 'Moneda de destino',
+			'exchange_rates.date_label' => 'Fecha',
+			'exchange_rates.add_button' => 'Agregar Tasa',
+			'exchange_rates.save_button' => 'Guardar',
+			'exchange_rates.delete_title' => '¿Eliminar tasa?',
+			'exchange_rates.delete_message' => 'Esta tasa de cambio se eliminará de forma permanente.',
+			'exchange_rates.error_rate_invalid' => 'Ingresa una tasa válida mayor que 0.',
+			'exchange_rates.error_same_currency' => 'Las monedas de origen y destino deben ser diferentes.',
+			'exchange_rates.success_add' => 'Tipo de cambio agregado.',
+			'exchange_rates.success_update' => 'Tipo de cambio actualizado.',
 			_ => null,
 		};
 	}

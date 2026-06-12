@@ -2,18 +2,19 @@ import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Widget buildSettingsCard(bool isDark, {required Widget child}) {
+Widget buildSettingsCard(BuildContext context, {required Widget child}) {
+  final appColors = context.appColors;
   return Container(
     decoration: BoxDecoration(
-      color: isDark ? const Color(0xFF1E2420) : Colors.white,
+      color: appColors.cardSurface,
       borderRadius: BorderRadius.circular(20),
       border: Border.all(
-        color: isDark ? Colors.white10 : const Color(0xFFEAF0EB),
+        color: appColors.inputBorder,
         width: 1.5,
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
+          color: Colors.black.withValues(alpha: 0.03),
           blurRadius: 10,
           offset: const Offset(0, 4),
         ),
@@ -23,11 +24,11 @@ Widget buildSettingsCard(bool isDark, {required Widget child}) {
   );
 }
 
-Widget buildDivider(bool isDark) {
+Widget buildDivider(BuildContext context) {
   return Divider(
     height: 1,
     thickness: 1,
-    color: isDark ? Colors.white10 : const Color(0xFFEAF0EB),
+    color: context.appColors.inputBorder,
     indent: 56,
   );
 }
@@ -37,10 +38,10 @@ Widget buildToggleTile({
   required String label,
   required String subtitle,
   required IconData icon,
-  required bool isDark,
   required bool value,
   required ValueChanged<bool> onChanged,
 }) {
+  final appColors = context.appColors;
   return ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
     leading: Container(
@@ -62,7 +63,7 @@ Widget buildToggleTile({
         fontFamily: 'Epilogue',
         fontWeight: FontWeight.w500,
         fontSize: 15,
-        color: isDark ? Colors.white : const Color(0xFF1C221E),
+        color: appColors.primaryText,
       ),
     ),
     subtitle: Text(
@@ -70,7 +71,7 @@ Widget buildToggleTile({
       style: TextStyle(
         fontFamily: 'Epilogue',
         fontSize: 12,
-        color: isDark ? Colors.white38 : const Color(0xFF9EAEA2),
+        color: appColors.secondaryLabel,
       ),
     ),
     trailing: Switch(
@@ -134,10 +135,10 @@ Widget buildOptionTile({
   required WidgetRef ref,
   required String label,
   required bool isSelected,
-  required bool isDark,
   required VoidCallback onTap,
   IconData? icon,
 }) {
+  final appColors = context.appColors;
   return ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
     leading: Container(
@@ -159,14 +160,14 @@ Widget buildOptionTile({
         fontFamily: 'Epilogue',
         fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
         fontSize: 15,
-        color: isSelected ? context.colorScheme.primary : (isDark ? Colors.white : const Color(0xFF1C221E)),
+        color: isSelected ? context.colorScheme.primary : appColors.primaryText,
       ),
     ),
     trailing: isSelected
         ? Icon(Icons.check_circle_rounded, color: context.colorScheme.primary, size: 20)
         : Icon(
             Icons.circle_outlined,
-            color: isDark ? Colors.white24 : const Color(0xFFBDCDBF),
+            color: appColors.secondaryLabel,
             size: 20,
           ),
     onTap: onTap,

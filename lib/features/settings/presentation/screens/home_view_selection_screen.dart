@@ -1,3 +1,4 @@
+import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/settings/presentation/widgets/settings_widgets.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
@@ -9,24 +10,16 @@ class HomeViewSelectionScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Translations t = context.t;
     final bool isCalendar = ref.watch(settingsProvider).value?.defaultHomeIsCalendar ?? false;
 
     final options = [
-      (
-        isCalendar: false,
-        label: t.settings.default_home_view.dashboard,
-        icon: Icons.analytics_outlined,
-      ),
-      (
-        isCalendar: true,
-        label: t.settings.default_home_view.calendar,
-        icon: Icons.calendar_month_outlined,
-      ),
+      (isCalendar: false, label: t.settings.default_home_view.dashboard, icon: Icons.analytics_outlined),
+      (isCalendar: true, label: t.settings.default_home_view.calendar, icon: Icons.calendar_month_outlined),
     ];
 
     return Scaffold(
+      backgroundColor: context.appColors.scaffoldBackground,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -36,15 +29,11 @@ class HomeViewSelectionScreen extends ConsumerWidget {
             fontFamily: 'Epilogue',
             fontWeight: FontWeight.w700,
             fontSize: 18,
-            color: isDark ? Colors.white : const Color(0xFF0F1E36),
+            color: context.appColors.primaryText,
           ),
         ),
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : const Color(0xFF0F1E36),
-            size: 20,
-          ),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.appColors.primaryText, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -52,7 +41,7 @@ class HomeViewSelectionScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: buildSettingsCard(
-            isDark,
+            context,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: options.indexed.map((entry) {
@@ -69,13 +58,12 @@ class HomeViewSelectionScreen extends ConsumerWidget {
                       label: opt.label,
                       icon: opt.icon,
                       isSelected: selected,
-                      isDark: isDark,
                       onTap: () {
                         ref.read(settingsProvider.notifier).setDefaultHomeView(opt.isCalendar);
                         Navigator.pop(context);
                       },
                     ),
-                    if (!isLast) buildDivider(isDark),
+                    if (!isLast) buildDivider(context),
                   ],
                 );
               }).toList(),
