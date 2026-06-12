@@ -131,7 +131,9 @@ class _NetWorthCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       decoration: BoxDecoration(
-        color: const Color(0xFF2D6831),
+        color: totalNetWorth < 0
+            ? context.appColors.balanceCardNegativeBg
+            : context.appColors.balanceCardPositiveBg,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
