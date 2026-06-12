@@ -199,7 +199,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(context.t.categories.success_update),
-          backgroundColor: const Color(0xFF2D6831),
+          backgroundColor: context.colorScheme.primary,
         ),
       );
       context.pop();
@@ -267,7 +267,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(t.categories.success_delete),
-          backgroundColor: const Color(0xFF2D6831),
+          backgroundColor: context.colorScheme.primary,
         ),
       );
       context.pop('/categories');
@@ -284,10 +284,11 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
   // ── Bottom sheets ──────────────────────────────────────────────────────────
 
   void _showIconPicker(BuildContext context, Translations t) {
+    final appColors = context.appColors;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: this.context.colorScheme.surface,
+      backgroundColor: appColors.cardSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -304,10 +305,11 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
               const SizedBox(height: 12),
               Text(
                 t.categories.icon,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
+                  color: appColors.primaryText,
                 ),
               ),
               const SizedBox(height: 12),
@@ -320,11 +322,11 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                         padding: const EdgeInsets.only(top: 16, bottom: 8),
                         child: Text(
                           category,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Epilogue',
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF9EAEA2),
+                            color: appColors.secondaryLabel,
                           ),
                         ),
                       ),
@@ -343,12 +345,12 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                               width: 52,
                               height: 52,
                               decoration: BoxDecoration(
-                                color: selected ? _selectedColor : const Color(0xFFF0F0F0),
+                                color: selected ? _selectedColor : appColors.inputFill,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Icon(
                                 iconFromName(name),
-                                color: selected ? Colors.white : const Color(0xFF8E8E8E),
+                                color: selected ? Colors.white : appColors.secondaryLabel,
                                 size: 22,
                               ),
                             ),
@@ -368,11 +370,12 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
   }
 
   void _showColorPicker(BuildContext context, Translations t) {
+    final appColors = context.appColors;
     Color pickerColor = _selectedColor;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: this.context.colorScheme.surface,
+      backgroundColor: appColors.cardSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -394,10 +397,11 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                   Expanded(
                     child: Text(
                       t.categories.color,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Epilogue',
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
+                        color: appColors.primaryText,
                       ),
                     ),
                   ),
@@ -407,15 +411,15 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                     decoration: BoxDecoration(
                       color: _selectedColor,
                       shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xFFE5E5E5)),
+                      border: Border.all(color: appColors.inputBorder),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 6),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
                     child: Icon(
                       Icons.arrow_forward_rounded,
                       size: 14,
-                      color: Color(0xFF9E9E9E),
+                      color: appColors.secondaryLabel,
                     ),
                   ),
                   AnimatedContainer(
@@ -425,7 +429,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                     decoration: BoxDecoration(
                       color: pickerColor,
                       shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xFFE5E5E5)),
+                      border: Border.all(color: appColors.inputBorder),
                     ),
                   ),
                 ],
@@ -479,12 +483,14 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
     Translations t,
     List<Category> parents,
   ) {
+    final appColors = context.appColors;
     // Filter out the category being edited to avoid self-reference
     final filtered = parents.where((c) => c.id != widget.categoryId).toList();
 
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: this.context.colorScheme.surface,
+      isScrollControlled: true,
+      backgroundColor: appColors.cardSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -497,73 +503,79 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
             const SizedBox(height: 12),
             Text(
               t.categories.parent,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
+                color: appColors.primaryText,
               ),
             ),
             const SizedBox(height: 8),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                t.categories.parent_none,
-                style: TextStyle(
-                  fontFamily: 'Epilogue',
-                  fontSize: 14,
-                  fontWeight: _selectedParentId == null ? FontWeight.w600 : FontWeight.w400,
-                  color: _selectedParentId == null ? const Color(0xFF2D6831) : const Color(0xFF1A1A1A),
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(
+                        t.categories.parent_none,
+                        style: TextStyle(
+                          fontFamily: 'Epilogue',
+                          fontSize: 14,
+                          fontWeight: _selectedParentId == null ? FontWeight.w600 : FontWeight.w400,
+                          color: _selectedParentId == null
+                              ? context.colorScheme.primary
+                              : appColors.primaryText,
+                        ),
+                      ),
+                      trailing: _selectedParentId == null
+                          ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
+                          : null,
+                      onTap: () {
+                        setState(() => _selectedParentId = null);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ...filtered.map((cat) {
+                      final isSelected = cat.id == _selectedParentId;
+                      return ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: Color(cat.color).withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(
+                            iconFromName(cat.icon),
+                            color: Color(cat.color),
+                            size: 18,
+                          ),
+                        ),
+                        title: Text(
+                          cat.name,
+                          style: TextStyle(
+                            fontFamily: 'Epilogue',
+                            fontSize: 14,
+                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                            color: isSelected ? context.colorScheme.primary : appColors.primaryText,
+                          ),
+                        ),
+                        trailing: isSelected
+                            ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
+                            : null,
+                        onTap: () {
+                          setState(() => _selectedParentId = cat.id);
+                          Navigator.pop(context);
+                        },
+                      );
+                    }),
+                  ],
                 ),
               ),
-              trailing: _selectedParentId == null
-                  ? const Icon(
-                      Icons.check_rounded,
-                      color: Color(0xFF2D6831),
-                    )
-                  : null,
-              onTap: () {
-                setState(() => _selectedParentId = null);
-                Navigator.pop(context);
-              },
             ),
-            ...filtered.map((cat) {
-              final isSelected = cat.id == _selectedParentId;
-              return ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: Color(cat.color).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    iconFromName(cat.icon),
-                    color: Color(cat.color),
-                    size: 18,
-                  ),
-                ),
-                title: Text(
-                  cat.name,
-                  style: TextStyle(
-                    fontFamily: 'Epilogue',
-                    fontSize: 14,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                    color: isSelected ? const Color(0xFF2D6831) : const Color(0xFF1A1A1A),
-                  ),
-                ),
-                trailing: isSelected
-                    ? const Icon(
-                        Icons.check_rounded,
-                        color: Color(0xFF2D6831),
-                      )
-                    : null,
-                onTap: () {
-                  setState(() => _selectedParentId = cat.id);
-                  Navigator.pop(context);
-                },
-              );
-            }),
           ],
         ),
       ),
@@ -578,43 +590,47 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
     return match?.name ?? t.categories.parent_none;
   }
 
-  InputDecoration _fieldDecoration({String? hint}) => InputDecoration(
-    hintText: hint,
-    hintStyle: const TextStyle(
-      fontFamily: 'Epilogue',
-      color: Color(0xFFBDBDBD),
-      fontSize: 14,
-    ),
-    filled: true,
-    fillColor: Colors.white,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Color(0xFFE5E5E5)),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Color(0xFFE5E5E5)),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Color(0xFF2D6831), width: 1.5),
-    ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Colors.red),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: Colors.red, width: 1.5),
-    ),
-  );
+  InputDecoration _fieldDecoration({String? hint}) {
+    final appColors = context.appColors;
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: TextStyle(
+        fontFamily: 'Epilogue',
+        color: appColors.secondaryLabel,
+        fontSize: 14,
+      ),
+      filled: true,
+      fillColor: appColors.inputFill,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: appColors.inputBorder),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: appColors.inputBorder),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: context.colorScheme.primary, width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red, width: 1.5),
+      ),
+    );
+  }
 
   // ── Build ──────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final appColors = context.appColors;
     final categoryAsync = ref.watch(categoryByIdProvider(widget.categoryId));
     final parentsAsync = ref.watch(categoriesByTypeProvider(_selectedType));
     final parents = parentsAsync.value ?? [];
@@ -632,19 +648,19 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
 
     return categoryAsync.when(
       loading: () => Scaffold(
-        backgroundColor: context.appColors.scaffoldBackground,
+        backgroundColor: appColors.scaffoldBackground,
         appBar: appBar,
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) => Scaffold(
-        backgroundColor: context.appColors.scaffoldBackground,
+        backgroundColor: appColors.scaffoldBackground,
         appBar: appBar,
         body: Center(child: Text(t.common.error)),
       ),
       data: (category) {
         if (category == null) {
           return Scaffold(
-            backgroundColor: context.appColors.scaffoldBackground,
+            backgroundColor: appColors.scaffoldBackground,
             appBar: appBar,
             body: Center(child: Text(t.common.error)),
           );
@@ -653,7 +669,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
         _initFrom(category);
 
         return Scaffold(
-          backgroundColor: context.appColors.scaffoldBackground,
+          backgroundColor: appColors.scaffoldBackground,
           appBar: appBar,
           body: SafeArea(
             child: Column(
@@ -684,9 +700,10 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                           TextFormField(
                             controller: _nameController,
                             textCapitalization: TextCapitalization.sentences,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Epilogue',
                               fontSize: 14,
+                              color: appColors.primaryText,
                             ),
                             decoration: _fieldDecoration(
                               hint: t.categories.name_hint,
@@ -752,11 +769,9 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                                 vertical: 14,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: appColors.inputFill,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: const Color(0xFFE5E5E5),
-                                ),
+                                border: Border.all(color: appColors.inputBorder),
                               ),
                               child: Row(
                                 children: [
@@ -764,9 +779,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                                     width: 40,
                                     height: 40,
                                     decoration: BoxDecoration(
-                                      color: _selectedColor.withValues(
-                                        alpha: 0.15,
-                                      ),
+                                      color: _selectedColor.withValues(alpha: 0.15),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Icon(
@@ -779,16 +792,16 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                                   Expanded(
                                     child: Text(
                                       _selectedIcon.replaceAll('_', ' '),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontFamily: 'Epilogue',
                                         fontSize: 14,
-                                        color: Color(0xFF1A1A1A),
+                                        color: appColors.primaryText,
                                       ),
                                     ),
                                   ),
                                   Icon(
                                     Icons.keyboard_arrow_down_rounded,
-                                    color: Colors.grey.shade500,
+                                    color: appColors.secondaryLabel,
                                     size: 22,
                                   ),
                                 ],
@@ -817,9 +830,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                                           () => _selectedColor = color,
                                         ),
                                         child: AnimatedContainer(
-                                          duration: const Duration(
-                                            milliseconds: 180,
-                                          ),
+                                          duration: const Duration(milliseconds: 180),
                                           width: 40,
                                           height: 40,
                                           decoration: BoxDecoration(
@@ -834,9 +845,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                                             boxShadow: selected
                                                 ? [
                                                     BoxShadow(
-                                                      color: color.withValues(
-                                                        alpha: 0.5,
-                                                      ),
+                                                      color: color.withValues(alpha: 0.5),
                                                       blurRadius: 6,
                                                       spreadRadius: 1,
                                                     ),
@@ -863,15 +872,13 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                                     height: 40,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: const Color(0xFFE5E5E5),
-                                      ),
-                                      color: Colors.white,
+                                      border: Border.all(color: appColors.inputBorder),
+                                      color: appColors.inputFill,
                                     ),
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.edit_outlined,
                                       size: 18,
-                                      color: Color(0xFF8E8E8E),
+                                      color: appColors.secondaryLabel,
                                     ),
                                   ),
                                 ),
@@ -894,7 +901,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _submit,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2D6831),
+                        backgroundColor: context.colorScheme.primary,
                         foregroundColor: Colors.white,
                         shape: const StadiumBorder(),
                       ),
@@ -970,7 +977,7 @@ class _PreviewCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE5E5E5)),
+        border: Border.all(color: context.appColors.inputBorder),
       ),
       child: Column(
         children: [
@@ -986,12 +993,12 @@ class _PreviewCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             t.common.preview.toUpperCase(),
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Epilogue',
               fontSize: 10,
               fontWeight: FontWeight.w600,
               letterSpacing: 1.2,
-              color: Color(0xFF2D6831),
+              color: context.colorScheme.primary,
             ),
           ),
           const SizedBox(height: 2),
@@ -1025,16 +1032,19 @@ class _TypeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         height: 44,
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF2D6831).withValues(alpha: 0.08) : Colors.transparent,
+          color: isSelected
+              ? context.colorScheme.primary.withValues(alpha: 0.08)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isSelected ? const Color(0xFF2D6831) : const Color(0xFFE5E5E5),
+            color: isSelected ? context.colorScheme.primary : appColors.inputBorder,
             width: isSelected ? 1.5 : 1,
           ),
         ),
@@ -1044,7 +1054,7 @@ class _TypeChip extends StatelessWidget {
             Icon(
               icon,
               size: 16,
-              color: isSelected ? const Color(0xFF2D6831) : const Color(0xFF9E9E9E),
+              color: isSelected ? context.colorScheme.primary : appColors.secondaryLabel,
             ),
             const SizedBox(width: 6),
             Text(
@@ -1053,7 +1063,7 @@ class _TypeChip extends StatelessWidget {
                 fontFamily: 'Epilogue',
                 fontSize: 13,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                color: isSelected ? const Color(0xFF2D6831) : const Color(0xFF9E9E9E),
+                color: isSelected ? context.colorScheme.primary : appColors.secondaryLabel,
               ),
             ),
           ],
@@ -1072,11 +1082,11 @@ class _SectionLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: 'Epilogue',
         fontSize: 13,
         fontWeight: FontWeight.w500,
-        color: Color(0xFF2D6831),
+        color: context.colorScheme.primary,
       ),
     );
   }
@@ -1090,30 +1100,31 @@ class _SelectorField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: appColors.inputFill,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xFFE5E5E5)),
+          border: Border.all(color: appColors.inputBorder),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               value,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontSize: 14,
-                color: Color(0xFF1A1A1A),
+                color: appColors.primaryText,
               ),
             ),
             Icon(
               Icons.keyboard_arrow_down_rounded,
-              color: Colors.grey.shade500,
+              color: appColors.secondaryLabel,
               size: 22,
             ),
           ],
@@ -1128,12 +1139,14 @@ class _SheetHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 4,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(2),
+    return Center(
+      child: Container(
+        width: 40,
+        height: 4,
+        decoration: BoxDecoration(
+          color: context.appColors.sheetHandle,
+          borderRadius: BorderRadius.circular(2),
+        ),
       ),
     );
   }
