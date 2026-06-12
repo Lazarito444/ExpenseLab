@@ -74,6 +74,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsAccountsEn accounts = TranslationsAccountsEn.internal(_root);
 	late final TranslationsTransactionsEn transactions = TranslationsTransactionsEn.internal(_root);
 	late final TranslationsCategoriesEn categories = TranslationsCategoriesEn.internal(_root);
+	late final TranslationsSeedEn seed = TranslationsSeedEn.internal(_root);
 	late final TranslationsExchangeRatesEn exchange_rates = TranslationsExchangeRatesEn.internal(_root);
 }
 
@@ -566,6 +567,17 @@ class TranslationsCategoriesEn {
 	);
 }
 
+// Path: seed
+class TranslationsSeedEn {
+	TranslationsSeedEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final TranslationsSeedCategoriesEn categories = TranslationsSeedCategoriesEn.internal(_root);
+	late final TranslationsSeedAccountsEn accounts = TranslationsSeedAccountsEn.internal(_root);
+}
+
 // Path: exchange_rates
 class TranslationsExchangeRatesEn {
 	TranslationsExchangeRatesEn.internal(this._root);
@@ -1056,6 +1068,60 @@ class TranslationsAccountsEditEn {
 	String get success_delete => 'Account deleted successfully';
 }
 
+// Path: seed.categories
+class TranslationsSeedCategoriesEn {
+	TranslationsSeedCategoriesEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Food & Dining'
+	String get food_and_dining => 'Food & Dining';
+
+	/// en: 'Housing'
+	String get housing => 'Housing';
+
+	/// en: 'Transportation'
+	String get transportation => 'Transportation';
+
+	/// en: 'Health'
+	String get health => 'Health';
+
+	/// en: 'Entertainment'
+	String get entertainment => 'Entertainment';
+
+	/// en: 'Shopping'
+	String get shopping => 'Shopping';
+
+	/// en: 'Education'
+	String get education => 'Education';
+
+	/// en: 'Salary'
+	String get salary => 'Salary';
+
+	/// en: 'Freelance'
+	String get freelance => 'Freelance';
+
+	/// en: 'Investment'
+	String get investment => 'Investment';
+}
+
+// Path: seed.accounts
+class TranslationsSeedAccountsEn {
+	TranslationsSeedAccountsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Cash'
+	String get cash => 'Cash';
+
+	/// en: 'Bank Account'
+	String get bank_account => 'Bank Account';
+}
+
 // Path: settings.security.biometric_login
 class TranslationsSettingsSecurityBiometricLoginEn {
 	TranslationsSettingsSecurityBiometricLoginEn.internal(this._root);
@@ -1350,6 +1416,18 @@ extension on Translations {
 			'categories.total_monthly_income' => 'Total Monthly Income',
 			'categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, one: '1 Category', other: '${n} Categories', ), 
 			'categories.subcategory_count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n, zero: 'No subcategories', one: '1 subcategory', other: '${n} subcategories', ), 
+			'seed.categories.food_and_dining' => 'Food & Dining',
+			'seed.categories.housing' => 'Housing',
+			'seed.categories.transportation' => 'Transportation',
+			'seed.categories.health' => 'Health',
+			'seed.categories.entertainment' => 'Entertainment',
+			'seed.categories.shopping' => 'Shopping',
+			'seed.categories.education' => 'Education',
+			'seed.categories.salary' => 'Salary',
+			'seed.categories.freelance' => 'Freelance',
+			'seed.categories.investment' => 'Investment',
+			'seed.accounts.cash' => 'Cash',
+			'seed.accounts.bank_account' => 'Bank Account',
 			'exchange_rates.title' => 'Exchange Rates',
 			'exchange_rates.empty_state_title' => 'No exchange rates yet',
 			'exchange_rates.empty_state_subtitle' => 'Add rates to convert balances and budgets across currencies.',

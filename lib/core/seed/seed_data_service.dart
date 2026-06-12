@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:expenselab/core/database/app_database.dart';
+import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/accounts/data/repositories/accounts_repository.dart';
 import 'package:expenselab/features/accounts/data/tables/accounts_table.dart';
 import 'package:expenselab/features/categories/data/repositories/categories_repository.dart';
@@ -13,94 +14,107 @@ class SeedDataService {
   final AccountsRepository _accounts;
 
   static const _seededKey = 'app_seeded';
+  static const _localeKey = 'settings_locale';
 
   Future<void> seedIfNeeded() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getBool(_seededKey) == true) return;
-    await _seed();
+    final localeStr = prefs.getString(_localeKey);
+    final locale = AppLocaleUtils.parse(localeStr ?? 'en');
+    final t = await locale.build();
+    await _seed(t);
     await prefs.setBool(_seededKey, true);
   }
 
-  Future<void> _seed() async {
-    for (final c in _defaultExpenseCategories) {
+  Future<void> _seed(Translations t) async {
+    final s = t.seed;
+    for (final c in _expenseCategories(s)) {
       await _categories.create(c);
     }
-    for (final c in _defaultIncomeCategories) {
+    for (final c in _incomeCategories(s)) {
       await _categories.create(c);
     }
-    await _accounts.create(_defaultCashAccount);
+    await _accounts.create(_cashAccount(s));
+    await _accounts.create(_bankAccount(s));
   }
 }
 
-const _defaultExpenseCategories = <CategoriesCompanion>[
-  CategoriesCompanion(
-    name: Value('Food & Dining'),
-    icon: Value('restaurant'),
-    color: Value(0xFFFF9800),
-    type: Value(CategoryType.expense),
-  ),
-  CategoriesCompanion(
-    name: Value('Housing'),
-    icon: Value('home'),
-    color: Value(0xFF607D8B),
-    type: Value(CategoryType.expense),
-  ),
-  CategoriesCompanion(
-    name: Value('Transportation'),
-    icon: Value('directions_car'),
-    color: Value(0xFF2196F3),
-    type: Value(CategoryType.expense),
-  ),
-  CategoriesCompanion(
-    name: Value('Health'),
-    icon: Value('medical_services'),
-    color: Value(0xFFF44336),
-    type: Value(CategoryType.expense),
-  ),
-  CategoriesCompanion(
-    name: Value('Entertainment'),
-    icon: Value('movie'),
-    color: Value(0xFF9C27B0),
-    type: Value(CategoryType.expense),
-  ),
-  CategoriesCompanion(
-    name: Value('Shopping'),
-    icon: Value('shopping_bag'),
-    color: Value(0xFFE91E63),
-    type: Value(CategoryType.expense),
-  ),
-  CategoriesCompanion(
-    name: Value('Education'),
-    icon: Value('school'),
-    color: Value(0xFF3F51B5),
-    type: Value(CategoryType.expense),
-  ),
-];
+List<CategoriesCompanion> _expenseCategories(TranslationsSeedEn s) => [
+      CategoriesCompanion(
+        name: Value(s.categories.food_and_dining),
+        icon: const Value('restaurant'),
+        color: const Value(0xFFFF9800),
+        type: const Value(CategoryType.expense),
+      ),
+      CategoriesCompanion(
+        name: Value(s.categories.housing),
+        icon: const Value('home'),
+        color: const Value(0xFF607D8B),
+        type: const Value(CategoryType.expense),
+      ),
+      CategoriesCompanion(
+        name: Value(s.categories.transportation),
+        icon: const Value('directions_car'),
+        color: const Value(0xFF2196F3),
+        type: const Value(CategoryType.expense),
+      ),
+      CategoriesCompanion(
+        name: Value(s.categories.health),
+        icon: const Value('medical_services'),
+        color: const Value(0xFFF44336),
+        type: const Value(CategoryType.expense),
+      ),
+      CategoriesCompanion(
+        name: Value(s.categories.entertainment),
+        icon: const Value('movie'),
+        color: const Value(0xFF9C27B0),
+        type: const Value(CategoryType.expense),
+      ),
+      CategoriesCompanion(
+        name: Value(s.categories.shopping),
+        icon: const Value('shopping_bag'),
+        color: const Value(0xFFE91E63),
+        type: const Value(CategoryType.expense),
+      ),
+      CategoriesCompanion(
+        name: Value(s.categories.education),
+        icon: const Value('school'),
+        color: const Value(0xFF3F51B5),
+        type: const Value(CategoryType.expense),
+      ),
+    ];
 
-const _defaultIncomeCategories = <CategoriesCompanion>[
-  CategoriesCompanion(
-    name: Value('Salary'),
-    icon: Value('work'),
-    color: Value(0xFF4CAF50),
-    type: Value(CategoryType.income),
-  ),
-  CategoriesCompanion(
-    name: Value('Freelance'),
-    icon: Value('computer'),
-    color: Value(0xFF009688),
-    type: Value(CategoryType.income),
-  ),
-  CategoriesCompanion(
-    name: Value('Investment'),
-    icon: Value('trending_up'),
-    color: Value(0xFF2196F3),
-    type: Value(CategoryType.income),
-  ),
-];
+List<CategoriesCompanion> _incomeCategories(TranslationsSeedEn s) => [
+      CategoriesCompanion(
+        name: Value(s.categories.salary),
+        icon: const Value('work'),
+        color: const Value(0xFF4CAF50),
+        type: const Value(CategoryType.income),
+      ),
+      CategoriesCompanion(
+        name: Value(s.categories.freelance),
+        icon: const Value('computer'),
+        color: const Value(0xFF009688),
+        type: const Value(CategoryType.income),
+      ),
+      CategoriesCompanion(
+        name: Value(s.categories.investment),
+        icon: const Value('trending_up'),
+        color: const Value(0xFF2196F3),
+        type: const Value(CategoryType.income),
+      ),
+    ];
 
-const _defaultCashAccount = AccountsCompanion(
-  name: Value('Cash'),
-  type: Value(AccountType.cash),
-  currencyCode: Value('USD'),
-  icon: Value('account_balance_wallet'),
-);
+AccountsCompanion _cashAccount(TranslationsSeedEn s) => AccountsCompanion(
+      name: Value(s.accounts.cash),
+      type: const Value(AccountType.cash),
+      currencyCode: const Value('USD'),
+      icon: const Value('account_balance_wallet'),
+    );
+
+AccountsCompanion _bankAccount(TranslationsSeedEn s) => AccountsCompanion(
+      name: Value(s.accounts.bank_account),
+      type: const Value(AccountType.bankAccount),
+      currencyCode: const Value('USD'),
+      icon: const Value('account_balance'),
+    );

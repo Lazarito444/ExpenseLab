@@ -313,6 +313,24 @@
       "other": "$n subcategorías"
     }
   },
+  "seed": {
+    "categories": {
+      "food_and_dining": "Comida y Restaurantes",
+      "housing": "Vivienda",
+      "transportation": "Transporte",
+      "health": "Salud",
+      "entertainment": "Entretenimiento",
+      "shopping": "Compras",
+      "education": "Educación",
+      "salary": "Sueldo",
+      "freelance": "Freelance",
+      "investment": "Inversiones"
+    },
+    "accounts": {
+      "cash": "Efectivo",
+      "bank_account": "Cuenta de Banco"
+    }
+  },
   "exchange_rates": {
     "title": "Tasas de Cambio",
     "empty_state_title": "Sin tasas de cambio",

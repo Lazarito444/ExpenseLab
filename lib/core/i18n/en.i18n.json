@@ -313,6 +313,24 @@
       "other": "$n subcategories"
     }
   },
+  "seed": {
+    "categories": {
+      "food_and_dining": "Food & Dining",
+      "housing": "Housing",
+      "transportation": "Transportation",
+      "health": "Health",
+      "entertainment": "Entertainment",
+      "shopping": "Shopping",
+      "education": "Education",
+      "salary": "Salary",
+      "freelance": "Freelance",
+      "investment": "Investment"
+    },
+    "accounts": {
+      "cash": "Cash",
+      "bank_account": "Bank Account"
+    }
+  },
   "exchange_rates": {
     "title": "Exchange Rates",
     "empty_state_title": "No exchange rates yet",

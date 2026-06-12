@@ -73,6 +73,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsAccountsEs accounts = _TranslationsAccountsEs._(_root);
 	@override late final _TranslationsTransactionsEs transactions = _TranslationsTransactionsEs._(_root);
 	@override late final _TranslationsCategoriesEs categories = _TranslationsCategoriesEs._(_root);
+	@override late final _TranslationsSeedEs seed = _TranslationsSeedEs._(_root);
 	@override late final _TranslationsExchangeRatesEs exchange_rates = _TranslationsExchangeRatesEs._(_root);
 }
 
@@ -319,6 +320,17 @@ class _TranslationsCategoriesEs extends TranslationsCategoriesEn {
 		one: '1 subcategoría',
 		other: '${n} subcategorías',
 	);
+}
+
+// Path: seed
+class _TranslationsSeedEs extends TranslationsSeedEn {
+	_TranslationsSeedEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsSeedCategoriesEs categories = _TranslationsSeedCategoriesEs._(_root);
+	@override late final _TranslationsSeedAccountsEs accounts = _TranslationsSeedAccountsEs._(_root);
 }
 
 // Path: exchange_rates
@@ -585,6 +597,36 @@ class _TranslationsAccountsEditEs extends TranslationsAccountsEditEn {
 	@override String get error_loading => 'Error al cargar la cuenta';
 	@override String get success_update => 'Cuenta actualizada con éxito';
 	@override String get success_delete => 'Cuenta eliminada con éxito';
+}
+
+// Path: seed.categories
+class _TranslationsSeedCategoriesEs extends TranslationsSeedCategoriesEn {
+	_TranslationsSeedCategoriesEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get food_and_dining => 'Comida y Restaurantes';
+	@override String get housing => 'Vivienda';
+	@override String get transportation => 'Transporte';
+	@override String get health => 'Salud';
+	@override String get entertainment => 'Entretenimiento';
+	@override String get shopping => 'Compras';
+	@override String get education => 'Educación';
+	@override String get salary => 'Sueldo';
+	@override String get freelance => 'Freelance';
+	@override String get investment => 'Inversiones';
+}
+
+// Path: seed.accounts
+class _TranslationsSeedAccountsEs extends TranslationsSeedAccountsEn {
+	_TranslationsSeedAccountsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get cash => 'Efectivo';
+	@override String get bank_account => 'Cuenta de Banco';
 }
 
 // Path: settings.security.biometric_login
@@ -865,6 +907,18 @@ extension on TranslationsEs {
 			'categories.total_monthly_income' => 'Ingreso total del mes',
 			'categories.count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, one: '1 Categoría', other: '${n} Categorías', ), 
 			'categories.subcategory_count' => ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('es'))(n, zero: 'Sin subcategorías', one: '1 subcategoría', other: '${n} subcategorías', ), 
+			'seed.categories.food_and_dining' => 'Comida y Restaurantes',
+			'seed.categories.housing' => 'Vivienda',
+			'seed.categories.transportation' => 'Transporte',
+			'seed.categories.health' => 'Salud',
+			'seed.categories.entertainment' => 'Entretenimiento',
+			'seed.categories.shopping' => 'Compras',
+			'seed.categories.education' => 'Educación',
+			'seed.categories.salary' => 'Sueldo',
+			'seed.categories.freelance' => 'Freelance',
+			'seed.categories.investment' => 'Inversiones',
+			'seed.accounts.cash' => 'Efectivo',
+			'seed.accounts.bank_account' => 'Cuenta de Banco',
 			'exchange_rates.title' => 'Tasas de Cambio',
 			'exchange_rates.empty_state_title' => 'Sin tasas de cambio',
 			'exchange_rates.empty_state_subtitle' => 'Agrega tasas para convertir saldos y presupuestos entre monedas.',
