@@ -29,7 +29,6 @@ Widget buildDivider(BuildContext context) {
     height: 1,
     thickness: 1,
     color: context.appColors.inputBorder,
-    indent: 56,
   );
 }
 

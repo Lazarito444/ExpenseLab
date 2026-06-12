@@ -185,7 +185,9 @@ class _BalanceCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
       decoration: BoxDecoration(
-        color: context.colorScheme.primary,
+        color: totalBalance < 0
+            ? context.appColors.balanceCardNegativeBg
+            : context.appColors.balanceCardPositiveBg,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(

@@ -17,6 +17,8 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.transferColor,
     required this.navArrowBg,
     required this.sheetHandle,
+    required this.balanceCardPositiveBg,
+    required this.balanceCardNegativeBg,
   });
 
   final Color scaffoldBackground;
@@ -33,6 +35,8 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color transferColor;
   final Color navArrowBg;
   final Color sheetHandle;
+  final Color balanceCardPositiveBg;
+  final Color balanceCardNegativeBg;
 
   static const light = AppColors(
     scaffoldBackground: Color(0xFFF8F8F8),
@@ -49,6 +53,8 @@ class AppColors extends ThemeExtension<AppColors> {
     transferColor: Color(0xFF757575),
     navArrowBg: Color(0xFFF2F2F2),
     sheetHandle: Color(0xFFE0E0E0),
+    balanceCardPositiveBg: Color(0xFF2D6831),
+    balanceCardNegativeBg: Color(0xFFC62828),
   );
 
   static const dark = AppColors(
@@ -66,6 +72,8 @@ class AppColors extends ThemeExtension<AppColors> {
     transferColor: Color(0xFF9E9E9E),
     navArrowBg: Color(0xFF2A2F2B),
     sheetHandle: Color(0x3DFFFFFF),
+    balanceCardPositiveBg: Color(0xFF1A3B1D),
+    balanceCardNegativeBg: Color(0xFF7B1A1A),
   );
 
   @override
@@ -84,6 +92,8 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? transferColor,
     Color? navArrowBg,
     Color? sheetHandle,
+    Color? balanceCardPositiveBg,
+    Color? balanceCardNegativeBg,
   }) {
     return AppColors(
       scaffoldBackground: scaffoldBackground ?? this.scaffoldBackground,
@@ -100,6 +110,8 @@ class AppColors extends ThemeExtension<AppColors> {
       transferColor: transferColor ?? this.transferColor,
       navArrowBg: navArrowBg ?? this.navArrowBg,
       sheetHandle: sheetHandle ?? this.sheetHandle,
+      balanceCardPositiveBg: balanceCardPositiveBg ?? this.balanceCardPositiveBg,
+      balanceCardNegativeBg: balanceCardNegativeBg ?? this.balanceCardNegativeBg,
     );
   }
 
@@ -121,6 +133,8 @@ class AppColors extends ThemeExtension<AppColors> {
       transferColor: Color.lerp(transferColor, other.transferColor, t)!,
       navArrowBg: Color.lerp(navArrowBg, other.navArrowBg, t)!,
       sheetHandle: Color.lerp(sheetHandle, other.sheetHandle, t)!,
+      balanceCardPositiveBg: Color.lerp(balanceCardPositiveBg, other.balanceCardPositiveBg, t)!,
+      balanceCardNegativeBg: Color.lerp(balanceCardNegativeBg, other.balanceCardNegativeBg, t)!,
     );
   }
 }
