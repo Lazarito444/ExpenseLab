@@ -783,8 +783,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: cs.primary,
-                          foregroundColor: cs.onPrimary,
+                          backgroundColor: context.appColors.actionButtonBg,
+                          foregroundColor: Colors.white,
                           shape: const StadiumBorder(),
                         ),
                       ),
@@ -966,7 +966,7 @@ class _TypeTab extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
-            color: isSelected ? cs.primary.withValues(alpha: 95) : Colors.transparent,
+            color: isSelected ? context.appColors.actionButtonBg : Colors.transparent,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Padding(
@@ -977,7 +977,7 @@ class _TypeTab extends StatelessWidget {
                 Icon(
                   icon,
                   size: 15,
-                  color: isSelected ? cs.onPrimary : cs.onSurfaceVariant,
+                  color: isSelected ? Colors.white : cs.onSurfaceVariant,
                 ),
                 const SizedBox(width: 5),
                 Text(
@@ -986,7 +986,7 @@ class _TypeTab extends StatelessWidget {
                     fontFamily: 'Epilogue',
                     fontSize: 14,
                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                    color: isSelected ? cs.onPrimary : cs.onSurfaceVariant,
+                    color: isSelected ? Colors.white : cs.onSurfaceVariant,
                   ),
                 ),
               ],
