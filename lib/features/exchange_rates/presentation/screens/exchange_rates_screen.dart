@@ -38,7 +38,7 @@ class ExchangeRatesScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: 'exchange_rates_fab',
         onPressed: () => context.push(AppRoutes.exchangeRatesCreate),
-        backgroundColor: context.colorScheme.primary,
+        backgroundColor: context.appColors.actionButtonBg,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add_rounded),
       ),

@@ -350,7 +350,7 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colorScheme.primary,
+                    backgroundColor: context.appColors.actionButtonBg,
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                   ),

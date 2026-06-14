@@ -361,7 +361,7 @@ class _FormState extends ConsumerState<_Form> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: context.colorScheme.primary,
+                        backgroundColor: context.appColors.actionButtonBg,
                         foregroundColor: Colors.white,
                         shape: const StadiumBorder(),
                       ),

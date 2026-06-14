@@ -423,7 +423,7 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : () => _submit(t),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colorScheme.primary,
+                    backgroundColor: context.appColors.actionButtonBg,
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                   ),

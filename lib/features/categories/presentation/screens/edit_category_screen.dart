@@ -901,7 +901,7 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _submit,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: context.colorScheme.primary,
+                        backgroundColor: context.appColors.actionButtonBg,
                         foregroundColor: Colors.white,
                         shape: const StadiumBorder(),
                       ),

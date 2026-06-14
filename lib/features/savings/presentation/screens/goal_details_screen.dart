@@ -131,7 +131,7 @@ class _GoalDetailsBody extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: 'goal_details_fab',
         onPressed: () => _showAddContributionSheet(context: context, goal: goal, currency: currency, t: t),
-        backgroundColor: context.colorScheme.primary,
+        backgroundColor: context.appColors.actionButtonBg,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add_rounded),
       ),
@@ -713,7 +713,7 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _submit,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: context.colorScheme.primary,
+                            backgroundColor: context.appColors.actionButtonBg,
                             foregroundColor: Colors.white,
                             shape: const StadiumBorder(),
                           ),

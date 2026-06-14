@@ -69,7 +69,7 @@ class BudgetsScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: 'budgets_fab',
         onPressed: () => context.push(AppRoutes.budgetsCreate),
-        backgroundColor: context.colorScheme.primary,
+        backgroundColor: context.appColors.actionButtonBg,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add_rounded),
       ),

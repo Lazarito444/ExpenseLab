@@ -376,8 +376,8 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
                     Navigator.pop(sheetCtx);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colorScheme.primary,
-                    foregroundColor: Colors.white,
+                    backgroundColor: pickerColor,
+                    foregroundColor: _contrastColor(pickerColor),
                     shape: const StadiumBorder(),
                     elevation: 0,
                   ),
@@ -498,6 +498,8 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
       ),
     );
   }
+
+  Color _contrastColor(Color bg) => bg.computeLuminance() > 0.35 ? Colors.black87 : Colors.white;
 
   // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -795,7 +797,7 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _submit,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colorScheme.primary,
+                    backgroundColor: context.appColors.actionButtonBg,
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                   ),

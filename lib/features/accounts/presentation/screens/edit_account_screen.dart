@@ -756,7 +756,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: context.colorScheme.primary,
+                        backgroundColor: context.appColors.actionButtonBg,
                         foregroundColor: Colors.white,
                         shape: const StadiumBorder(),
                       ),

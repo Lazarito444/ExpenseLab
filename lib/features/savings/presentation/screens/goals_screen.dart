@@ -35,7 +35,7 @@ class GoalsScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: 'goals_fab',
         onPressed: () => context.push(AppRoutes.goalsCreate),
-        backgroundColor: context.colorScheme.primary,
+        backgroundColor: context.appColors.actionButtonBg,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add_rounded),
       ),

@@ -19,6 +19,7 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.sheetHandle,
     required this.balanceCardPositiveBg,
     required this.balanceCardNegativeBg,
+    required this.actionButtonBg,
   });
 
   final Color scaffoldBackground;
@@ -37,6 +38,7 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color sheetHandle;
   final Color balanceCardPositiveBg;
   final Color balanceCardNegativeBg;
+  final Color actionButtonBg;
 
   static const light = AppColors(
     scaffoldBackground: Color(0xFFF8F8F8),
@@ -55,6 +57,7 @@ class AppColors extends ThemeExtension<AppColors> {
     sheetHandle: Color(0xFFE0E0E0),
     balanceCardPositiveBg: Color(0xFF2D6831),
     balanceCardNegativeBg: Color(0xFFC62828),
+    actionButtonBg: Color(0xFF2D6831),
   );
 
   static const dark = AppColors(
@@ -74,6 +77,7 @@ class AppColors extends ThemeExtension<AppColors> {
     sheetHandle: Color(0x3DFFFFFF),
     balanceCardPositiveBg: Color(0xFF1A3B1D),
     balanceCardNegativeBg: Color(0xFF7B1A1A),
+    actionButtonBg: Color(0xFF3D7A40),
   );
 
   @override
@@ -94,6 +98,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? sheetHandle,
     Color? balanceCardPositiveBg,
     Color? balanceCardNegativeBg,
+    Color? actionButtonBg,
   }) {
     return AppColors(
       scaffoldBackground: scaffoldBackground ?? this.scaffoldBackground,
@@ -112,6 +117,7 @@ class AppColors extends ThemeExtension<AppColors> {
       sheetHandle: sheetHandle ?? this.sheetHandle,
       balanceCardPositiveBg: balanceCardPositiveBg ?? this.balanceCardPositiveBg,
       balanceCardNegativeBg: balanceCardNegativeBg ?? this.balanceCardNegativeBg,
+      actionButtonBg: actionButtonBg ?? this.actionButtonBg,
     );
   }
 
@@ -135,6 +141,7 @@ class AppColors extends ThemeExtension<AppColors> {
       sheetHandle: Color.lerp(sheetHandle, other.sheetHandle, t)!,
       balanceCardPositiveBg: Color.lerp(balanceCardPositiveBg, other.balanceCardPositiveBg, t)!,
       balanceCardNegativeBg: Color.lerp(balanceCardNegativeBg, other.balanceCardNegativeBg, t)!,
+      actionButtonBg: Color.lerp(actionButtonBg, other.actionButtonBg, t)!,
     );
   }
 }

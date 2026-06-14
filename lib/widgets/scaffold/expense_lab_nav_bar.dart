@@ -115,7 +115,7 @@ class ExpenseLabNavBar extends StatelessWidget {
           width: 56.0,
           height: 56.0,
           child: FloatingActionButton(
-            backgroundColor: context.colorScheme.primary,
+            backgroundColor: context.appColors.actionButtonBg,
             onPressed: () {
               context.push(AppRoutes.addTransaction);
             },

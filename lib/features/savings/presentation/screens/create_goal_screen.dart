@@ -141,9 +141,7 @@ class _CreateGoalScreenState extends ConsumerState<CreateGoalScreen> {
                           color: isSelected ? context.colorScheme.primary : appColors.primaryText,
                         ),
                       ),
-                      trailing: isSelected
-                          ? Icon(Icons.check_rounded, color: context.colorScheme.primary)
-                          : null,
+                      trailing: isSelected ? Icon(Icons.check_rounded, color: context.colorScheme.primary) : null,
                       onTap: () {
                         setState(() => _selectedAccountId = acc.id);
                         Navigator.pop(context);
@@ -235,7 +233,7 @@ class _CreateGoalScreenState extends ConsumerState<CreateGoalScreen> {
       backgroundColor: context.appColors.scaffoldBackground,
       appBar: ExpenseLabAppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.theme.primaryColor),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.colorScheme.primary),
           onPressed: () => context.pop(),
         ),
         title: t.goals.create.title,
@@ -281,9 +279,7 @@ class _CreateGoalScreenState extends ConsumerState<CreateGoalScreen> {
                           _AccountSelectorField(
                             label: selectedAccount?.name ?? t.goals.create.select_account,
                             isEmpty: selectedAccount == null,
-                            onTap: accounts.isEmpty
-                                ? null
-                                : () => _showAccountSheet(context, accounts, t),
+                            onTap: accounts.isEmpty ? null : () => _showAccountSheet(context, accounts, t),
                           ),
                           const SizedBox(height: 16),
 
@@ -341,7 +337,7 @@ class _CreateGoalScreenState extends ConsumerState<CreateGoalScreen> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : () => _submit(t),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colorScheme.primary,
+                    backgroundColor: context.appColors.actionButtonBg,
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                   ),
