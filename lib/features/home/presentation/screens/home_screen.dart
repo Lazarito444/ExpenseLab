@@ -185,9 +185,7 @@ class _BalanceCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
       decoration: BoxDecoration(
-        color: totalBalance < 0
-            ? context.appColors.balanceCardNegativeBg
-            : context.appColors.balanceCardPositiveBg,
+        color: totalBalance < 0 ? context.appColors.balanceCardNegativeBg : context.appColors.balanceCardPositiveBg,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -897,6 +895,7 @@ class _CalendarGrid extends StatelessWidget {
               return Expanded(
                 child: GestureDetector(
                   onTap: cell.isCurrentMonth ? () => onDaySelected(cell.date) : null,
+                  behavior: HitTestBehavior.opaque,
                   child: SizedBox(
                     height: 52,
                     child: Column(
