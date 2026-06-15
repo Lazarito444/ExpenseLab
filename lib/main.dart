@@ -7,7 +7,7 @@ void main() {
   launchExpenseLabApp();
 }
 
-Future<void> launchExpenseLabApp() async {
+void launchExpenseLabApp() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     ProviderScope(
