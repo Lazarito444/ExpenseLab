@@ -52,8 +52,13 @@ class ExpenseLabAppBar extends ConsumerWidget implements PreferredSizeWidget {
             width: 42,
             child:
                 leading ??
-                const CircleAvatar(
-                  child: Icon(Icons.account_balance_outlined),
+                ClipOval(
+                  child: Image.asset(
+                    'assets/images/expense_lab_icon.png',
+                    width: 42,
+                    height: 42,
+                    fit: BoxFit.cover,
+                  ),
                 ),
           ),
         ),
