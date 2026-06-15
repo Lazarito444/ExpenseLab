@@ -1,15 +1,9 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/core/routing/app_routes.dart';
-import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
-import 'package:expenselab/features/categories/presentation/screens/categories_screen.dart';
 import 'package:expenselab/features/security/biometric_service.dart';
 import 'package:expenselab/features/security/lock_provider.dart';
 import 'package:expenselab/features/settings/domain/models/app_settings.dart';
-import 'package:expenselab/features/settings/presentation/screens/currency_selection_screen.dart';
-import 'package:expenselab/features/settings/presentation/screens/home_view_selection_screen.dart';
-import 'package:expenselab/features/settings/presentation/screens/language_selection_screen.dart';
-import 'package:expenselab/features/settings/presentation/screens/theme_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/widgets/settings_widgets.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/widgets/scaffold/expense_lab_app_bar.dart';
@@ -69,10 +63,7 @@ class SettingsScreen extends ConsumerWidget {
                       label: t.settings.theme.title,
                       currentValue: currentThemeLabel,
                       icon: Icons.dark_mode_outlined,
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(builder: (_) => const ThemeSelectionScreen()),
-                      ),
+                      onTap: () => context.push(AppRoutes.settingsTheme),
                     ),
                     buildDivider(context),
                     buildNavTile(
@@ -80,10 +71,7 @@ class SettingsScreen extends ConsumerWidget {
                       label: t.settings.language.title,
                       currentValue: currentLocaleLabel,
                       icon: Icons.language_rounded,
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(builder: (_) => const LanguageSelectionScreen()),
-                      ),
+                      onTap: () => context.push(AppRoutes.settingsLanguage),
                     ),
                     buildDivider(context),
                     buildNavTile(
@@ -91,10 +79,7 @@ class SettingsScreen extends ConsumerWidget {
                       label: t.settings.default_currency.title,
                       currentValue: '${currency.code} (${currency.symbol})',
                       icon: Icons.currency_exchange_rounded,
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(builder: (_) => const CurrencySelectionScreen()),
-                      ),
+                      onTap: () => context.push(AppRoutes.settingsCurrency),
                     ),
                     buildDivider(context),
                     buildNavTile(
@@ -102,10 +87,7 @@ class SettingsScreen extends ConsumerWidget {
                       label: t.settings.default_home_view.title,
                       currentValue: defaultHomeIsCalendar ? t.settings.default_home_view.calendar : t.settings.default_home_view.dashboard,
                       icon: Icons.home_outlined,
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(builder: (_) => const HomeViewSelectionScreen()),
-                      ),
+                      onTap: () => context.push(AppRoutes.settingsHomeView),
                     ),
                   ],
                 ),
@@ -128,20 +110,14 @@ class SettingsScreen extends ConsumerWidget {
                       context: context,
                       label: t.settings.accounts.title,
                       icon: Icons.account_balance_wallet_outlined,
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(builder: (_) => const AccountsScreen()),
-                      ),
+                      onTap: () => context.push(AppRoutes.accounts),
                     ),
                     buildDivider(context),
                     buildNavTile(
                       context: context,
                       label: t.settings.categories.title,
                       icon: Icons.bar_chart_rounded,
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(builder: (_) => const CategoriesScreen()),
-                      ),
+                      onTap: () => context.push(AppRoutes.categories),
                     ),
                     buildDivider(context),
                     buildNavTile(
@@ -194,7 +170,7 @@ Future<void> _onBiometricToggle(bool value, BuildContext context, WidgetRef ref)
     if (!canAuth) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No biometrics or screen lock set up on this device.')),
+          SnackBar(content: Text(context.t.settings.security.biometric_login.unavailable_snackbar)),
         );
       }
       return;

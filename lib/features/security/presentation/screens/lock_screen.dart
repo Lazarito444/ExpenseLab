@@ -1,4 +1,5 @@
 import 'package:expenselab/core/extensions/context_extensions.dart';
+import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/security/biometric_service.dart';
 import 'package:expenselab/features/security/lock_provider.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
@@ -29,9 +30,10 @@ class _LockScreenState extends ConsumerState<LockScreen> {
       _notAvailable = false;
     });
 
+    final reason = context.t.security.lock_screen.reason;
     final result = await ref
         .read(biometricServiceProvider)
-        .authenticate('Verify your identity to access ExpenseLab');
+        .authenticate(reason);
 
     if (!mounted) return;
 
@@ -40,9 +42,13 @@ class _LockScreenState extends ConsumerState<LockScreen> {
         ref.read(isLockedProvider.notifier).unlock();
 
       case BiometricResult.notAvailable:
+        setState(() {
+          _notAvailable = true;
+          _isAuthenticating = false;
+        });
         // Biometrics were removed from the device — disable the setting and unlock.
         await ref.read(settingsProvider.notifier).setBiometricLogin(false);
-        ref.read(isLockedProvider.notifier).unlock();
+        if (mounted) ref.read(isLockedProvider.notifier).unlock();
 
       case BiometricResult.failure:
         setState(() {
@@ -75,7 +81,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
               ),
               const SizedBox(height: 28),
               Text(
-                'ExpenseLab',
+                context.t.app.name,
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 28,
@@ -86,8 +92,8 @@ class _LockScreenState extends ConsumerState<LockScreen> {
               const SizedBox(height: 8),
               Text(
                 _notAvailable
-                    ? 'Biometrics unavailable on this device'
-                    : 'Authenticate to continue',
+                    ? context.t.security.lock_screen.subtitle_unavailable
+                    : context.t.security.lock_screen.subtitle_authenticate,
                 style: TextStyle(
                   fontFamily: 'Epilogue',
                   fontSize: 14,
@@ -118,7 +124,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
                 TextButton(
                   onPressed: _authenticate,
                   child: Text(
-                    'Try Again',
+                    context.t.security.lock_screen.try_again,
                     style: TextStyle(
                       fontFamily: 'Epilogue',
                       color: appColors.secondaryLabel,

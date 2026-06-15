@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/features/transactions/data/datasources/transactions_local_datasource.dart';
+import 'package:expenselab/features/transactions/data/repositories/transaction_images_repository.dart';
 
 /// Mediates access to [Transaction] data on behalf of application features.
 ///
@@ -9,9 +12,10 @@ import 'package:expenselab/features/transactions/data/datasources/transactions_l
 /// providers are unaffected because they depend on this class, not on the
 /// datasource directly.
 class TransactionsRepository {
-  const TransactionsRepository(this._local);
+  const TransactionsRepository(this._local, this._images);
 
   final TransactionsLocalDataSource _local;
+  final TransactionImagesRepository _images;
 
   /// Streams all non-deleted transactions, re-emitting on every database
   /// change.
@@ -40,6 +44,16 @@ class TransactionsRepository {
   /// Overwrites the mutable fields of the transaction identified by [id].
   Future<void> update(String id, TransactionsCompanion data) => _local.update(id, data);
 
-  /// Soft-deletes the transaction identified by [id].
-  Future<void> delete(String id) => _local.delete(id);
+  /// Deletes the transaction and cleans up associated image files from disk.
+  Future<void> delete(String id) async {
+    final images = await _images.getByTransactionId(id);
+    for (final img in images) {
+      if (img.localPath.isNotEmpty) {
+        final file = File(img.localPath);
+        if (await file.exists()) await file.delete();
+      }
+    }
+    await _images.deleteByTransactionId(id);
+    return _local.delete(id);
+  }
 }

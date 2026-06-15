@@ -64,7 +64,8 @@
       "title": "Seguridad",
       "biometric_login": {
         "title": "Inicio biométrico",
-        "subtitle": "Usa Face ID o huella para desbloquear"
+        "subtitle": "Usa Face ID o huella para desbloquear",
+        "unavailable_snackbar": "No hay biometría ni bloqueo de pantalla configurado en este dispositivo."
       }
     },
     "danger_zone": {
@@ -357,6 +358,14 @@
     "accounts": {
       "cash": "Efectivo",
       "bank_account": "Cuenta de Banco"
+    }
+  },
+  "security": {
+    "lock_screen": {
+      "subtitle_authenticate": "Autentícate para continuar",
+      "subtitle_unavailable": "Biometría no disponible en este dispositivo",
+      "try_again": "Intentar de nuevo",
+      "reason": "Verifica tu identidad para acceder a ExpenseLab"
     }
   },
   "exchange_rates": {

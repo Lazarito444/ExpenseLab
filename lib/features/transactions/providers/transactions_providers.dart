@@ -19,9 +19,12 @@ final transactionsLocalDataSourceProvider = Provider<TransactionsLocalDataSource
 });
 
 /// Provides the singleton [TransactionsRepository], wired to
-/// [transactionsLocalDataSourceProvider].
+/// [transactionsLocalDataSourceProvider] and [transactionImagesRepositoryProvider].
 final transactionsRepositoryProvider = Provider<TransactionsRepository>((ref) {
-  return TransactionsRepository(ref.watch(transactionsLocalDataSourceProvider));
+  return TransactionsRepository(
+    ref.watch(transactionsLocalDataSourceProvider),
+    ref.watch(transactionImagesRepositoryProvider),
+  );
 });
 
 /// Streams all non-deleted [Transaction] records. Automatically re-emits

@@ -120,7 +120,7 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(t.goals.edit.success_update),
-            backgroundColor: const Color(0xFF2D6831),
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
         context.pop();
@@ -170,7 +170,7 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(t.goals.edit.success_delete),
-            backgroundColor: const Color(0xFF2D6831),
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
         context.pop();

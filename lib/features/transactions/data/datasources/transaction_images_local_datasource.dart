@@ -27,6 +27,10 @@ abstract class TransactionImagesLocalDataSource {
   /// every change.
   Stream<List<TransactionImage>> watchByTransactionId(String transactionId);
 
+  /// Returns all image records associated with [transactionId] as a one-shot
+  /// future. Used for file cleanup before deleting a transaction.
+  Future<List<TransactionImage>> getByTransactionId(String transactionId);
+
   /// Inserts a new image record. [id], [createdAt], and [updatedAt] are
   /// assigned automatically — do not set them in [data]. Returns the generated
   /// [id].

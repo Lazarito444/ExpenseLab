@@ -45,5 +45,9 @@ class TransactionImagesLocalDataSourceImpl implements TransactionImagesLocalData
   Future<void> delete(String id) => (_db.delete(_db.transactionImages)..where((t) => t.id.equals(id))).go();
 
   @override
+  Future<List<TransactionImage>> getByTransactionId(String transactionId) =>
+      (_db.select(_db.transactionImages)..where((t) => t.transactionId.equals(transactionId))).get();
+
+  @override
   Future<void> deleteByTransactionId(String transactionId) => (_db.delete(_db.transactionImages)..where((t) => t.transactionId.equals(transactionId))).go();
 }

@@ -112,7 +112,7 @@ class _FormState extends ConsumerState<_Form> {
             content: Text(widget.existing != null
                 ? context.t.exchange_rates.success_update
                 : context.t.exchange_rates.success_add),
-            backgroundColor: const Color(0xFF2D6831),
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
         context.pop();

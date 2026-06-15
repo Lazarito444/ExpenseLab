@@ -76,6 +76,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsTransactionsEn transactions = TranslationsTransactionsEn.internal(_root);
 	late final TranslationsCategoriesEn categories = TranslationsCategoriesEn.internal(_root);
 	late final TranslationsSeedEn seed = TranslationsSeedEn.internal(_root);
+	late final TranslationsSecurityEn security = TranslationsSecurityEn.internal(_root);
 	late final TranslationsExchangeRatesEn exchange_rates = TranslationsExchangeRatesEn.internal(_root);
 }
 
@@ -601,6 +602,16 @@ class TranslationsSeedEn {
 	// Translations
 	late final TranslationsSeedCategoriesEn categories = TranslationsSeedCategoriesEn.internal(_root);
 	late final TranslationsSeedAccountsEn accounts = TranslationsSeedAccountsEn.internal(_root);
+}
+
+// Path: security
+class TranslationsSecurityEn {
+	TranslationsSecurityEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final TranslationsSecurityLockScreenEn lock_screen = TranslationsSecurityLockScreenEn.internal(_root);
 }
 
 // Path: exchange_rates
@@ -1222,6 +1233,27 @@ class TranslationsSeedAccountsEn {
 	String get bank_account => 'Bank Account';
 }
 
+// Path: security.lock_screen
+class TranslationsSecurityLockScreenEn {
+	TranslationsSecurityLockScreenEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Authenticate to continue'
+	String get subtitle_authenticate => 'Authenticate to continue';
+
+	/// en: 'Biometrics unavailable on this device'
+	String get subtitle_unavailable => 'Biometrics unavailable on this device';
+
+	/// en: 'Try Again'
+	String get try_again => 'Try Again';
+
+	/// en: 'Verify your identity to access ExpenseLab'
+	String get reason => 'Verify your identity to access ExpenseLab';
+}
+
 // Path: settings.security.biometric_login
 class TranslationsSettingsSecurityBiometricLoginEn {
 	TranslationsSettingsSecurityBiometricLoginEn.internal(this._root);
@@ -1235,6 +1267,9 @@ class TranslationsSettingsSecurityBiometricLoginEn {
 
 	/// en: 'Use Face ID or fingerprint to unlock'
 	String get subtitle => 'Use Face ID or fingerprint to unlock';
+
+	/// en: 'No biometrics or screen lock set up on this device.'
+	String get unavailable_snackbar => 'No biometrics or screen lock set up on this device.';
 }
 
 // Path: settings.danger_zone.erase_data
@@ -1324,6 +1359,7 @@ extension on Translations {
 			'settings.security.title' => 'Security',
 			'settings.security.biometric_login.title' => 'Biometric Login',
 			'settings.security.biometric_login.subtitle' => 'Use Face ID or fingerprint to unlock',
+			'settings.security.biometric_login.unavailable_snackbar' => 'No biometrics or screen lock set up on this device.',
 			'settings.danger_zone.title' => 'Danger Zone',
 			'settings.danger_zone.erase_data.title' => 'Erase All Data',
 			'settings.danger_zone.erase_data.subtitle' => 'Permanently delete all your data',
@@ -1553,6 +1589,10 @@ extension on Translations {
 			'seed.categories.investment' => 'Investment',
 			'seed.accounts.cash' => 'Cash',
 			'seed.accounts.bank_account' => 'Bank Account',
+			'security.lock_screen.subtitle_authenticate' => 'Authenticate to continue',
+			'security.lock_screen.subtitle_unavailable' => 'Biometrics unavailable on this device',
+			'security.lock_screen.try_again' => 'Try Again',
+			'security.lock_screen.reason' => 'Verify your identity to access ExpenseLab',
 			'exchange_rates.title' => 'Exchange Rates',
 			'exchange_rates.empty_state_title' => 'No exchange rates yet',
 			'exchange_rates.empty_state_subtitle' => 'Add rates to convert balances and budgets across currencies.',

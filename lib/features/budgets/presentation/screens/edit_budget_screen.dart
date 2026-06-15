@@ -118,7 +118,7 @@ class _EditBudgetFormState extends ConsumerState<_EditBudgetForm> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(t.budgets.edit.success_update),
-            backgroundColor: const Color(0xFF2D6831),
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
         context.pop();
@@ -168,7 +168,7 @@ class _EditBudgetFormState extends ConsumerState<_EditBudgetForm> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(t.budgets.edit.success_delete),
-            backgroundColor: const Color(0xFF2D6831),
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
         context.pop();

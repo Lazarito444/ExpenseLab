@@ -45,6 +45,10 @@ class TransactionImagesRepository {
     return img != null ? TransactionImageModel.fromTransactionImage(img) : null;
   }
 
+  /// Returns all image records for [transactionId] as a one-shot future.
+  Future<List<TransactionImageModel>> getByTransactionId(String transactionId) async =>
+      (await _local.getByTransactionId(transactionId)).map(TransactionImageModel.fromTransactionImage).toList();
+
   /// Streams all image records for [transactionId] as [TransactionImageModel],
   /// re-emitting on every change.
   Stream<List<TransactionImageModel>> watchByTransactionId(String transactionId) =>

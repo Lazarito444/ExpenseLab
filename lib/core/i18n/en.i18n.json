@@ -64,7 +64,8 @@
       "title": "Security",
       "biometric_login": {
         "title": "Biometric Login",
-        "subtitle": "Use Face ID or fingerprint to unlock"
+        "subtitle": "Use Face ID or fingerprint to unlock",
+        "unavailable_snackbar": "No biometrics or screen lock set up on this device."
       }
     },
     "danger_zone": {
@@ -357,6 +358,14 @@
     "accounts": {
       "cash": "Cash",
       "bank_account": "Bank Account"
+    }
+  },
+  "security": {
+    "lock_screen": {
+      "subtitle_authenticate": "Authenticate to continue",
+      "subtitle_unavailable": "Biometrics unavailable on this device",
+      "try_again": "Try Again",
+      "reason": "Verify your identity to access ExpenseLab"
     }
   },
   "exchange_rates": {

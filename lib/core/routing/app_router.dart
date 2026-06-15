@@ -17,7 +17,11 @@ import 'package:expenselab/features/savings/presentation/screens/create_goal_scr
 import 'package:expenselab/features/savings/presentation/screens/edit_goal_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/goal_details_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/goals_screen.dart';
+import 'package:expenselab/features/settings/presentation/screens/currency_selection_screen.dart';
+import 'package:expenselab/features/settings/presentation/screens/home_view_selection_screen.dart';
+import 'package:expenselab/features/settings/presentation/screens/language_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/settings_screen.dart';
+import 'package:expenselab/features/settings/presentation/screens/theme_selection_screen.dart';
 import 'package:expenselab/features/transactions/presentation/screens/add_transaction_screen.dart';
 import 'package:expenselab/widgets/scaffold/main_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -71,6 +75,24 @@ final routerConfig = GoRouter(
     GoRoute(
       path: AppRoutes.settings,
       builder: (context, state) => const SettingsScreen(),
+      routes: [
+        GoRoute(
+          path: 'theme',
+          builder: (context, state) => const ThemeSelectionScreen(),
+        ),
+        GoRoute(
+          path: 'language',
+          builder: (context, state) => const LanguageSelectionScreen(),
+        ),
+        GoRoute(
+          path: 'currency',
+          builder: (context, state) => const CurrencySelectionScreen(),
+        ),
+        GoRoute(
+          path: 'home-view',
+          builder: (context, state) => const HomeViewSelectionScreen(),
+        ),
+      ],
     ),
     GoRoute(
       path: AppRoutes.analytics,

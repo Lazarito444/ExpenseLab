@@ -61,7 +61,7 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(t.budgets.create.success),
-            backgroundColor: const Color(0xFF2D6831),
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
         context.pop();

@@ -520,7 +520,7 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(context.t.goals.contribution.success),
-            backgroundColor: const Color(0xFF2D6831),
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
         Navigator.pop(context);
@@ -574,7 +574,7 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF2D6831), width: 1.5),
+        borderSide: BorderSide(color: context.colorScheme.primary, width: 1.5),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),

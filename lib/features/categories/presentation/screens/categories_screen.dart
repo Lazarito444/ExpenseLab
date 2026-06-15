@@ -128,7 +128,7 @@ class _SectionHeader extends StatelessWidget {
       children: [
         Icon(
           isIncome ? Icons.trending_up_rounded : Icons.trending_down_rounded,
-          color: isIncome ? const Color(0xFF2D6831) : const Color(0xFFEF5350),
+          color: isIncome ? context.appColors.incomeColor : context.appColors.expenseColor,
           size: 20,
         ),
         const SizedBox(width: 12),

@@ -75,6 +75,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsTransactionsEs transactions = _TranslationsTransactionsEs._(_root);
 	@override late final _TranslationsCategoriesEs categories = _TranslationsCategoriesEs._(_root);
 	@override late final _TranslationsSeedEs seed = _TranslationsSeedEs._(_root);
+	@override late final _TranslationsSecurityEs security = _TranslationsSecurityEs._(_root);
 	@override late final _TranslationsExchangeRatesEs exchange_rates = _TranslationsExchangeRatesEs._(_root);
 }
 
@@ -349,6 +350,16 @@ class _TranslationsSeedEs extends TranslationsSeedEn {
 	// Translations
 	@override late final _TranslationsSeedCategoriesEs categories = _TranslationsSeedCategoriesEs._(_root);
 	@override late final _TranslationsSeedAccountsEs accounts = _TranslationsSeedAccountsEs._(_root);
+}
+
+// Path: security
+class _TranslationsSecurityEs extends TranslationsSecurityEn {
+	_TranslationsSecurityEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsSecurityLockScreenEs lock_screen = _TranslationsSecurityLockScreenEs._(_root);
 }
 
 // Path: exchange_rates
@@ -702,6 +713,19 @@ class _TranslationsSeedAccountsEs extends TranslationsSeedAccountsEn {
 	@override String get bank_account => 'Cuenta de Banco';
 }
 
+// Path: security.lock_screen
+class _TranslationsSecurityLockScreenEs extends TranslationsSecurityLockScreenEn {
+	_TranslationsSecurityLockScreenEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get subtitle_authenticate => 'Autentícate para continuar';
+	@override String get subtitle_unavailable => 'Biometría no disponible en este dispositivo';
+	@override String get try_again => 'Intentar de nuevo';
+	@override String get reason => 'Verifica tu identidad para acceder a ExpenseLab';
+}
+
 // Path: settings.security.biometric_login
 class _TranslationsSettingsSecurityBiometricLoginEs extends TranslationsSettingsSecurityBiometricLoginEn {
 	_TranslationsSettingsSecurityBiometricLoginEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -711,6 +735,7 @@ class _TranslationsSettingsSecurityBiometricLoginEs extends TranslationsSettings
 	// Translations
 	@override String get title => 'Inicio biométrico';
 	@override String get subtitle => 'Usa Face ID o huella para desbloquear';
+	@override String get unavailable_snackbar => 'No hay biometría ni bloqueo de pantalla configurado en este dispositivo.';
 }
 
 // Path: settings.danger_zone.erase_data
@@ -782,6 +807,7 @@ extension on TranslationsEs {
 			'settings.security.title' => 'Seguridad',
 			'settings.security.biometric_login.title' => 'Inicio biométrico',
 			'settings.security.biometric_login.subtitle' => 'Usa Face ID o huella para desbloquear',
+			'settings.security.biometric_login.unavailable_snackbar' => 'No hay biometría ni bloqueo de pantalla configurado en este dispositivo.',
 			'settings.danger_zone.title' => 'Zona de peligro',
 			'settings.danger_zone.erase_data.title' => 'Borrar todos los datos',
 			'settings.danger_zone.erase_data.subtitle' => 'Elimina permanentemente todos tus datos',
@@ -1011,6 +1037,10 @@ extension on TranslationsEs {
 			'seed.categories.investment' => 'Inversiones',
 			'seed.accounts.cash' => 'Efectivo',
 			'seed.accounts.bank_account' => 'Cuenta de Banco',
+			'security.lock_screen.subtitle_authenticate' => 'Autentícate para continuar',
+			'security.lock_screen.subtitle_unavailable' => 'Biometría no disponible en este dispositivo',
+			'security.lock_screen.try_again' => 'Intentar de nuevo',
+			'security.lock_screen.reason' => 'Verifica tu identidad para acceder a ExpenseLab',
 			'exchange_rates.title' => 'Tasas de Cambio',
 			'exchange_rates.empty_state_title' => 'Sin tasas de cambio',
 			'exchange_rates.empty_state_subtitle' => 'Agrega tasas para convertir saldos y presupuestos entre monedas.',
