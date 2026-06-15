@@ -2,12 +2,14 @@ import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/core/routing/app_router.dart';
 import 'package:expenselab/core/seed/seed_data_provider.dart';
 import 'package:expenselab/core/theme/app_theme.dart';
+import 'package:expenselab/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:expenselab/features/security/lock_provider.dart';
 import 'package:expenselab/features/security/presentation/screens/lock_screen.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ExpenseLabApp extends ConsumerStatefulWidget {
   const ExpenseLabApp({super.key});
@@ -17,10 +19,15 @@ class ExpenseLabApp extends ConsumerStatefulWidget {
 }
 
 class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp> with WidgetsBindingObserver {
+  bool? _onboardingCompleted;
+
+  static const _onboardingKey = 'onboarding_completed';
+
   @override
   void initState() {
     super.initState();
     _initLocale();
+    _initOnboarding();
     ref.read(seedDataServiceProvider).seedIfNeeded();
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) => _initLockState());
@@ -30,6 +37,18 @@ class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp> with WidgetsBindi
     final settings = await ref.read(settingsProvider.future);
     final locale = settings.locale;
     LocaleSettings.setLocale(locale);
+  }
+
+  Future<void> _initOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    final done = prefs.getBool(_onboardingKey) ?? false;
+    if (mounted) setState(() => _onboardingCompleted = done);
+  }
+
+  Future<void> _completeOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_onboardingKey, true);
+    if (mounted) setState(() => _onboardingCompleted = true);
   }
 
   @override
@@ -75,6 +94,12 @@ class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp> with WidgetsBindi
       ],
       routerConfig: routerConfig,
       builder: (context, child) {
+        if (_onboardingCompleted == false) {
+          return OnboardingScreen(onComplete: _completeOnboarding);
+        }
+        if (_onboardingCompleted == null) {
+          return const SizedBox.shrink();
+        }
         if (biometricEnabled && isLocked) {
           return const LockScreen();
         }

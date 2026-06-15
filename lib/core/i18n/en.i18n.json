@@ -75,8 +75,36 @@
         "confirm_title": "Erase All Data?",
         "confirm_message": "This will permanently delete all your transactions, accounts, categories, and settings. This action cannot be undone.",
         "confirm_button": "Erase Everything",
-        "type_to_confirm": "Type \"ExpenseLab\" to confirm"
+        "type_to_confirm": "Type \"ExpenseLab\" to confirm",
+        "restart_title": "Restart Required",
+        "restart_message": "Your data has been erased. Close the app and reopen it to see the introduction.",
+        "close_app_button": "Close App"
       }
+    }
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next",
+    "get_started": "Get Started",
+    "step1": {
+      "title": "Welcome to ExpenseLab",
+      "description": "Your personal finance companion. Track spending, plan budgets, and reach your goals — all in one place."
+    },
+    "step2": {
+      "title": "Log Every Transaction",
+      "description": "Record expenses, income, and transfers in seconds. Attach receipts and add notes to stay organized."
+    },
+    "step3": {
+      "title": "Budget with Confidence",
+      "description": "Set monthly budgets by category and get instant feedback on where your money goes."
+    },
+    "step4": {
+      "title": "Build Your Savings",
+      "description": "Create savings goals, track contributions, and watch your progress toward what matters most."
+    },
+    "step5": {
+      "title": "You're All Set!",
+      "description": "Your accounts and categories are ready. Start tracking and take control of your finances today."
     }
   },
   "goals": {

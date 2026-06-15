@@ -45,6 +45,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsHomeEn home = TranslationsHomeEn.internal(_root);
 	late final TranslationsNavEn nav = TranslationsNavEn.internal(_root);
 	late final TranslationsSettingsEn settings = TranslationsSettingsEn.internal(_root);
+	late final TranslationsOnboardingEn onboarding = TranslationsOnboardingEn.internal(_root);
 	late final TranslationsGoalsEn goals = TranslationsGoalsEn.internal(_root);
 	late final TranslationsBudgetsEn budgets = TranslationsBudgetsEn.internal(_root);
 	late final TranslationsAnalyticsEn analytics = TranslationsAnalyticsEn.internal(_root);
@@ -217,6 +218,30 @@ class TranslationsSettingsEn {
 	late final TranslationsSettingsCategoriesEn categories = TranslationsSettingsCategoriesEn.internal(_root);
 	late final TranslationsSettingsSecurityEn security = TranslationsSettingsSecurityEn.internal(_root);
 	late final TranslationsSettingsDangerZoneEn danger_zone = TranslationsSettingsDangerZoneEn.internal(_root);
+}
+
+// Path: onboarding
+class TranslationsOnboardingEn {
+	TranslationsOnboardingEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Skip'
+	String get skip => 'Skip';
+
+	/// en: 'Next'
+	String get next => 'Next';
+
+	/// en: 'Get Started'
+	String get get_started => 'Get Started';
+
+	late final TranslationsOnboardingStep1En step1 = TranslationsOnboardingStep1En.internal(_root);
+	late final TranslationsOnboardingStep2En step2 = TranslationsOnboardingStep2En.internal(_root);
+	late final TranslationsOnboardingStep3En step3 = TranslationsOnboardingStep3En.internal(_root);
+	late final TranslationsOnboardingStep4En step4 = TranslationsOnboardingStep4En.internal(_root);
+	late final TranslationsOnboardingStep5En step5 = TranslationsOnboardingStep5En.internal(_root);
 }
 
 // Path: goals
@@ -750,6 +775,81 @@ class TranslationsSettingsDangerZoneEn {
 	late final TranslationsSettingsDangerZoneEraseDataEn erase_data = TranslationsSettingsDangerZoneEraseDataEn.internal(_root);
 }
 
+// Path: onboarding.step1
+class TranslationsOnboardingStep1En {
+	TranslationsOnboardingStep1En.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Welcome to ExpenseLab'
+	String get title => 'Welcome to ExpenseLab';
+
+	/// en: 'Your personal finance companion. Track spending, plan budgets, and reach your goals — all in one place.'
+	String get description => 'Your personal finance companion. Track spending, plan budgets, and reach your goals — all in one place.';
+}
+
+// Path: onboarding.step2
+class TranslationsOnboardingStep2En {
+	TranslationsOnboardingStep2En.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Log Every Transaction'
+	String get title => 'Log Every Transaction';
+
+	/// en: 'Record expenses, income, and transfers in seconds. Attach receipts and add notes to stay organized.'
+	String get description => 'Record expenses, income, and transfers in seconds. Attach receipts and add notes to stay organized.';
+}
+
+// Path: onboarding.step3
+class TranslationsOnboardingStep3En {
+	TranslationsOnboardingStep3En.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Budget with Confidence'
+	String get title => 'Budget with Confidence';
+
+	/// en: 'Set monthly budgets by category and get instant feedback on where your money goes.'
+	String get description => 'Set monthly budgets by category and get instant feedback on where your money goes.';
+}
+
+// Path: onboarding.step4
+class TranslationsOnboardingStep4En {
+	TranslationsOnboardingStep4En.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Build Your Savings'
+	String get title => 'Build Your Savings';
+
+	/// en: 'Create savings goals, track contributions, and watch your progress toward what matters most.'
+	String get description => 'Create savings goals, track contributions, and watch your progress toward what matters most.';
+}
+
+// Path: onboarding.step5
+class TranslationsOnboardingStep5En {
+	TranslationsOnboardingStep5En.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'You're All Set!'
+	String get title => 'You\'re All Set!';
+
+	/// en: 'Your accounts and categories are ready. Start tracking and take control of your finances today.'
+	String get description => 'Your accounts and categories are ready. Start tracking and take control of your finances today.';
+}
+
 // Path: goals.create
 class TranslationsGoalsCreateEn {
 	TranslationsGoalsCreateEn.internal(this._root);
@@ -1162,6 +1262,15 @@ class TranslationsSettingsDangerZoneEraseDataEn {
 
 	/// en: 'Type "ExpenseLab" to confirm'
 	String get type_to_confirm => 'Type "ExpenseLab" to confirm';
+
+	/// en: 'Restart Required'
+	String get restart_title => 'Restart Required';
+
+	/// en: 'Your data has been erased. Close the app and reopen it to see the introduction.'
+	String get restart_message => 'Your data has been erased. Close the app and reopen it to see the introduction.';
+
+	/// en: 'Close App'
+	String get close_app_button => 'Close App';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1222,6 +1331,22 @@ extension on Translations {
 			'settings.danger_zone.erase_data.confirm_message' => 'This will permanently delete all your transactions, accounts, categories, and settings. This action cannot be undone.',
 			'settings.danger_zone.erase_data.confirm_button' => 'Erase Everything',
 			'settings.danger_zone.erase_data.type_to_confirm' => 'Type "ExpenseLab" to confirm',
+			'settings.danger_zone.erase_data.restart_title' => 'Restart Required',
+			'settings.danger_zone.erase_data.restart_message' => 'Your data has been erased. Close the app and reopen it to see the introduction.',
+			'settings.danger_zone.erase_data.close_app_button' => 'Close App',
+			'onboarding.skip' => 'Skip',
+			'onboarding.next' => 'Next',
+			'onboarding.get_started' => 'Get Started',
+			'onboarding.step1.title' => 'Welcome to ExpenseLab',
+			'onboarding.step1.description' => 'Your personal finance companion. Track spending, plan budgets, and reach your goals — all in one place.',
+			'onboarding.step2.title' => 'Log Every Transaction',
+			'onboarding.step2.description' => 'Record expenses, income, and transfers in seconds. Attach receipts and add notes to stay organized.',
+			'onboarding.step3.title' => 'Budget with Confidence',
+			'onboarding.step3.description' => 'Set monthly budgets by category and get instant feedback on where your money goes.',
+			'onboarding.step4.title' => 'Build Your Savings',
+			'onboarding.step4.description' => 'Create savings goals, track contributions, and watch your progress toward what matters most.',
+			'onboarding.step5.title' => 'You\'re All Set!',
+			'onboarding.step5.description' => 'Your accounts and categories are ready. Start tracking and take control of your finances today.',
 			'goals.title' => 'Savings Goals',
 			'goals.subtitle' => 'Your progress toward financial freedom',
 			'goals.total_saved' => 'TOTAL SAVED',

@@ -44,6 +44,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsHomeEs home = _TranslationsHomeEs._(_root);
 	@override late final _TranslationsNavEs nav = _TranslationsNavEs._(_root);
 	@override late final _TranslationsSettingsEs settings = _TranslationsSettingsEs._(_root);
+	@override late final _TranslationsOnboardingEs onboarding = _TranslationsOnboardingEs._(_root);
 	@override late final _TranslationsGoalsEs goals = _TranslationsGoalsEs._(_root);
 	@override late final _TranslationsBudgetsEs budgets = _TranslationsBudgetsEs._(_root);
 	@override late final _TranslationsAnalyticsEs analytics = _TranslationsAnalyticsEs._(_root);
@@ -157,6 +158,23 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 	@override late final _TranslationsSettingsCategoriesEs categories = _TranslationsSettingsCategoriesEs._(_root);
 	@override late final _TranslationsSettingsSecurityEs security = _TranslationsSettingsSecurityEs._(_root);
 	@override late final _TranslationsSettingsDangerZoneEs danger_zone = _TranslationsSettingsDangerZoneEs._(_root);
+}
+
+// Path: onboarding
+class _TranslationsOnboardingEs extends TranslationsOnboardingEn {
+	_TranslationsOnboardingEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get skip => 'Omitir';
+	@override String get next => 'Siguiente';
+	@override String get get_started => 'Comenzar';
+	@override late final _TranslationsOnboardingStep1Es step1 = _TranslationsOnboardingStep1Es._(_root);
+	@override late final _TranslationsOnboardingStep2Es step2 = _TranslationsOnboardingStep2Es._(_root);
+	@override late final _TranslationsOnboardingStep3Es step3 = _TranslationsOnboardingStep3Es._(_root);
+	@override late final _TranslationsOnboardingStep4Es step4 = _TranslationsOnboardingStep4Es._(_root);
+	@override late final _TranslationsOnboardingStep5Es step5 = _TranslationsOnboardingStep5Es._(_root);
 }
 
 // Path: goals
@@ -445,6 +463,61 @@ class _TranslationsSettingsDangerZoneEs extends TranslationsSettingsDangerZoneEn
 	@override late final _TranslationsSettingsDangerZoneEraseDataEs erase_data = _TranslationsSettingsDangerZoneEraseDataEs._(_root);
 }
 
+// Path: onboarding.step1
+class _TranslationsOnboardingStep1Es extends TranslationsOnboardingStep1En {
+	_TranslationsOnboardingStep1Es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Bienvenido a ExpenseLab';
+	@override String get description => 'Tu compañero de finanzas personales. Registra gastos, planifica presupuestos y alcanza tus metas — todo en un solo lugar.';
+}
+
+// Path: onboarding.step2
+class _TranslationsOnboardingStep2Es extends TranslationsOnboardingStep2En {
+	_TranslationsOnboardingStep2Es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Registra cada transacción';
+	@override String get description => 'Anota gastos, ingresos y transferencias en segundos. Adjunta recibos y agrega notas para mantenerte organizado.';
+}
+
+// Path: onboarding.step3
+class _TranslationsOnboardingStep3Es extends TranslationsOnboardingStep3En {
+	_TranslationsOnboardingStep3Es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Presupuesta con confianza';
+	@override String get description => 'Establece presupuestos mensuales por categoría y obtén retroalimentación instantánea sobre a dónde va tu dinero.';
+}
+
+// Path: onboarding.step4
+class _TranslationsOnboardingStep4Es extends TranslationsOnboardingStep4En {
+	_TranslationsOnboardingStep4Es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Construye tus ahorros';
+	@override String get description => 'Crea metas de ahorro, registra contribuciones y sigue tu progreso hacia lo que más importa.';
+}
+
+// Path: onboarding.step5
+class _TranslationsOnboardingStep5Es extends TranslationsOnboardingStep5En {
+	_TranslationsOnboardingStep5Es._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '¡Todo listo!';
+	@override String get description => 'Tus cuentas y categorías están listas. Empieza a registrar y toma el control de tus finanzas hoy.';
+}
+
 // Path: goals.create
 class _TranslationsGoalsCreateEs extends TranslationsGoalsCreateEn {
 	_TranslationsGoalsCreateEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -653,6 +726,9 @@ class _TranslationsSettingsDangerZoneEraseDataEs extends TranslationsSettingsDan
 	@override String get confirm_message => 'Esto eliminará permanentemente todas tus transacciones, cuentas, categorías y configuración. Esta acción no se puede deshacer.';
 	@override String get confirm_button => 'Borrar todo';
 	@override String get type_to_confirm => 'Escribe "ExpenseLab" para confirmar';
+	@override String get restart_title => 'Reinicio requerido';
+	@override String get restart_message => 'Tus datos han sido borrados. Cierra la app y vuelve a abrirla para ver la introducción.';
+	@override String get close_app_button => 'Cerrar app';
 }
 
 /// The flat map containing all translations for locale <es>.
@@ -713,6 +789,22 @@ extension on TranslationsEs {
 			'settings.danger_zone.erase_data.confirm_message' => 'Esto eliminará permanentemente todas tus transacciones, cuentas, categorías y configuración. Esta acción no se puede deshacer.',
 			'settings.danger_zone.erase_data.confirm_button' => 'Borrar todo',
 			'settings.danger_zone.erase_data.type_to_confirm' => 'Escribe "ExpenseLab" para confirmar',
+			'settings.danger_zone.erase_data.restart_title' => 'Reinicio requerido',
+			'settings.danger_zone.erase_data.restart_message' => 'Tus datos han sido borrados. Cierra la app y vuelve a abrirla para ver la introducción.',
+			'settings.danger_zone.erase_data.close_app_button' => 'Cerrar app',
+			'onboarding.skip' => 'Omitir',
+			'onboarding.next' => 'Siguiente',
+			'onboarding.get_started' => 'Comenzar',
+			'onboarding.step1.title' => 'Bienvenido a ExpenseLab',
+			'onboarding.step1.description' => 'Tu compañero de finanzas personales. Registra gastos, planifica presupuestos y alcanza tus metas — todo en un solo lugar.',
+			'onboarding.step2.title' => 'Registra cada transacción',
+			'onboarding.step2.description' => 'Anota gastos, ingresos y transferencias en segundos. Adjunta recibos y agrega notas para mantenerte organizado.',
+			'onboarding.step3.title' => 'Presupuesta con confianza',
+			'onboarding.step3.description' => 'Establece presupuestos mensuales por categoría y obtén retroalimentación instantánea sobre a dónde va tu dinero.',
+			'onboarding.step4.title' => 'Construye tus ahorros',
+			'onboarding.step4.description' => 'Crea metas de ahorro, registra contribuciones y sigue tu progreso hacia lo que más importa.',
+			'onboarding.step5.title' => '¡Todo listo!',
+			'onboarding.step5.description' => 'Tus cuentas y categorías están listas. Empieza a registrar y toma el control de tus finanzas hoy.',
 			'goals.title' => 'Metas de ahorro',
 			'goals.subtitle' => 'Tu progreso hacia la libertad financiera',
 			'goals.total_saved' => 'TOTAL AHORRADO',

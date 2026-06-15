@@ -75,8 +75,36 @@
         "confirm_title": "¿Borrar todos los datos?",
         "confirm_message": "Esto eliminará permanentemente todas tus transacciones, cuentas, categorías y configuración. Esta acción no se puede deshacer.",
         "confirm_button": "Borrar todo",
-        "type_to_confirm": "Escribe \"ExpenseLab\" para confirmar"
+        "type_to_confirm": "Escribe \"ExpenseLab\" para confirmar",
+        "restart_title": "Reinicio requerido",
+        "restart_message": "Tus datos han sido borrados. Cierra la app y vuelve a abrirla para ver la introducción.",
+        "close_app_button": "Cerrar app"
       }
+    }
+  },
+  "onboarding": {
+    "skip": "Omitir",
+    "next": "Siguiente",
+    "get_started": "Comenzar",
+    "step1": {
+      "title": "Bienvenido a ExpenseLab",
+      "description": "Tu compañero de finanzas personales. Registra gastos, planifica presupuestos y alcanza tus metas — todo en un solo lugar."
+    },
+    "step2": {
+      "title": "Registra cada transacción",
+      "description": "Anota gastos, ingresos y transferencias en segundos. Adjunta recibos y agrega notas para mantenerte organizado."
+    },
+    "step3": {
+      "title": "Presupuesta con confianza",
+      "description": "Establece presupuestos mensuales por categoría y obtén retroalimentación instantánea sobre a dónde va tu dinero."
+    },
+    "step4": {
+      "title": "Construye tus ahorros",
+      "description": "Crea metas de ahorro, registra contribuciones y sigue tu progreso hacia lo que más importa."
+    },
+    "step5": {
+      "title": "¡Todo listo!",
+      "description": "Tus cuentas y categorías están listas. Empieza a registrar y toma el control de tus finanzas hoy."
     }
   },
   "goals": {

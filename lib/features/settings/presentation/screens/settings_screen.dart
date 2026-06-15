@@ -14,6 +14,7 @@ import 'package:expenselab/features/settings/presentation/widgets/settings_widge
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/widgets/scaffold/expense_lab_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -212,6 +213,21 @@ Future<void> _showEraseConfirmation(BuildContext context, WidgetRef ref, Transla
   );
   if (confirmed == true) {
     await ref.read(settingsProvider.notifier).eraseAllData();
+    if (!context.mounted) return;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: Text(t.settings.danger_zone.erase_data.restart_title),
+        content: Text(t.settings.danger_zone.erase_data.restart_message),
+        actions: [
+          FilledButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: Text(t.settings.danger_zone.erase_data.close_app_button),
+          ),
+        ],
+      ),
+    );
   }
 }
 
