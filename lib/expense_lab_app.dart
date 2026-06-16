@@ -6,6 +6,7 @@ import 'package:expenselab/features/onboarding/presentation/screens/onboarding_s
 import 'package:expenselab/features/security/lock_provider.dart';
 import 'package:expenselab/features/security/presentation/screens/lock_screen.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
+import 'package:expenselab/features/transactions/providers/transactions_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,6 +30,7 @@ class _ExpenseLabAppState extends ConsumerState<ExpenseLabApp> with WidgetsBindi
     _initLocale();
     _initOnboarding();
     ref.read(seedDataServiceProvider).seedIfNeeded();
+    ref.read(recurrenceServiceProvider).generateUpcoming();
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) => _initLockState());
   }

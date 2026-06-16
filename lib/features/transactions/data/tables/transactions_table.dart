@@ -35,4 +35,8 @@ class Transactions extends Table with SoftDeleteTable {
   /// Exchange rate from [accountId] currency to [toAccountId] currency.
   /// Only set on cross-currency transfers; null otherwise.
   RealColumn get exchangeRate => real().nullable()();
+
+  /// ID of the template transaction this occurrence was generated from.
+  /// Null for regular transactions and recurrence templates themselves.
+  TextColumn get recurrenceId => text().nullable().named('recurrence_id')();
 }

@@ -1360,6 +1360,17 @@ class $TransactionsTable extends Transactions
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _recurrenceIdMeta = const VerificationMeta(
+    'recurrenceId',
+  );
+  @override
+  late final GeneratedColumn<String> recurrenceId = GeneratedColumn<String>(
+    'recurrence_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1376,6 +1387,7 @@ class $TransactionsTable extends Transactions
     toAccountId,
     categoryId,
     exchangeRate,
+    recurrenceId,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1478,6 +1490,15 @@ class $TransactionsTable extends Transactions
         ),
       );
     }
+    if (data.containsKey('recurrence_id')) {
+      context.handle(
+        _recurrenceIdMeta,
+        recurrenceId.isAcceptableOrUnknown(
+          data['recurrence_id']!,
+          _recurrenceIdMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -1545,6 +1566,10 @@ class $TransactionsTable extends Transactions
         DriftSqlType.double,
         data['${effectivePrefix}exchange_rate'],
       ),
+      recurrenceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}recurrence_id'],
+      ),
     );
   }
 
@@ -1596,6 +1621,10 @@ class Transaction extends DataClass implements Insertable<Transaction> {
   /// Exchange rate from [accountId] currency to [toAccountId] currency.
   /// Only set on cross-currency transfers; null otherwise.
   final double? exchangeRate;
+
+  /// ID of the template transaction this occurrence was generated from.
+  /// Null for regular transactions and recurrence templates themselves.
+  final String? recurrenceId;
   const Transaction({
     required this.id,
     required this.createdAt,
@@ -1611,6 +1640,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     this.toAccountId,
     this.categoryId,
     this.exchangeRate,
+    this.recurrenceId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1645,6 +1675,9 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     if (!nullToAbsent || exchangeRate != null) {
       map['exchange_rate'] = Variable<double>(exchangeRate);
     }
+    if (!nullToAbsent || recurrenceId != null) {
+      map['recurrence_id'] = Variable<String>(recurrenceId);
+    }
     return map;
   }
 
@@ -1674,6 +1707,9 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       exchangeRate: exchangeRate == null && nullToAbsent
           ? const Value.absent()
           : Value(exchangeRate),
+      recurrenceId: recurrenceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(recurrenceId),
     );
   }
 
@@ -1699,6 +1735,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       toAccountId: serializer.fromJson<String?>(json['toAccountId']),
       categoryId: serializer.fromJson<String?>(json['categoryId']),
       exchangeRate: serializer.fromJson<double?>(json['exchangeRate']),
+      recurrenceId: serializer.fromJson<String?>(json['recurrenceId']),
     );
   }
   @override
@@ -1721,6 +1758,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       'toAccountId': serializer.toJson<String?>(toAccountId),
       'categoryId': serializer.toJson<String?>(categoryId),
       'exchangeRate': serializer.toJson<double?>(exchangeRate),
+      'recurrenceId': serializer.toJson<String?>(recurrenceId),
     };
   }
 
@@ -1739,6 +1777,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     Value<String?> toAccountId = const Value.absent(),
     Value<String?> categoryId = const Value.absent(),
     Value<double?> exchangeRate = const Value.absent(),
+    Value<String?> recurrenceId = const Value.absent(),
   }) => Transaction(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
@@ -1754,6 +1793,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     toAccountId: toAccountId.present ? toAccountId.value : this.toAccountId,
     categoryId: categoryId.present ? categoryId.value : this.categoryId,
     exchangeRate: exchangeRate.present ? exchangeRate.value : this.exchangeRate,
+    recurrenceId: recurrenceId.present ? recurrenceId.value : this.recurrenceId,
   );
   Transaction copyWithCompanion(TransactionsCompanion data) {
     return Transaction(
@@ -1777,6 +1817,9 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       exchangeRate: data.exchangeRate.present
           ? data.exchangeRate.value
           : this.exchangeRate,
+      recurrenceId: data.recurrenceId.present
+          ? data.recurrenceId.value
+          : this.recurrenceId,
     );
   }
 
@@ -1796,7 +1839,8 @@ class Transaction extends DataClass implements Insertable<Transaction> {
           ..write('accountId: $accountId, ')
           ..write('toAccountId: $toAccountId, ')
           ..write('categoryId: $categoryId, ')
-          ..write('exchangeRate: $exchangeRate')
+          ..write('exchangeRate: $exchangeRate, ')
+          ..write('recurrenceId: $recurrenceId')
           ..write(')'))
         .toString();
   }
@@ -1817,6 +1861,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     toAccountId,
     categoryId,
     exchangeRate,
+    recurrenceId,
   );
   @override
   bool operator ==(Object other) =>
@@ -1835,7 +1880,8 @@ class Transaction extends DataClass implements Insertable<Transaction> {
           other.accountId == this.accountId &&
           other.toAccountId == this.toAccountId &&
           other.categoryId == this.categoryId &&
-          other.exchangeRate == this.exchangeRate);
+          other.exchangeRate == this.exchangeRate &&
+          other.recurrenceId == this.recurrenceId);
 }
 
 class TransactionsCompanion extends UpdateCompanion<Transaction> {
@@ -1853,6 +1899,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
   final Value<String?> toAccountId;
   final Value<String?> categoryId;
   final Value<double?> exchangeRate;
+  final Value<String?> recurrenceId;
   final Value<int> rowid;
   const TransactionsCompanion({
     this.id = const Value.absent(),
@@ -1869,6 +1916,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     this.toAccountId = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.exchangeRate = const Value.absent(),
+    this.recurrenceId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   TransactionsCompanion.insert({
@@ -1886,6 +1934,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     this.toAccountId = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.exchangeRate = const Value.absent(),
+    this.recurrenceId = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        type = Value(type),
@@ -1907,6 +1956,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     Expression<String>? toAccountId,
     Expression<String>? categoryId,
     Expression<double>? exchangeRate,
+    Expression<String>? recurrenceId,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1924,6 +1974,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
       if (toAccountId != null) 'to_account_id': toAccountId,
       if (categoryId != null) 'category_id': categoryId,
       if (exchangeRate != null) 'exchange_rate': exchangeRate,
+      if (recurrenceId != null) 'recurrence_id': recurrenceId,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1943,6 +1994,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     Value<String?>? toAccountId,
     Value<String?>? categoryId,
     Value<double?>? exchangeRate,
+    Value<String?>? recurrenceId,
     Value<int>? rowid,
   }) {
     return TransactionsCompanion(
@@ -1960,6 +2012,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
       toAccountId: toAccountId ?? this.toAccountId,
       categoryId: categoryId ?? this.categoryId,
       exchangeRate: exchangeRate ?? this.exchangeRate,
+      recurrenceId: recurrenceId ?? this.recurrenceId,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2011,6 +2064,9 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     if (exchangeRate.present) {
       map['exchange_rate'] = Variable<double>(exchangeRate.value);
     }
+    if (recurrenceId.present) {
+      map['recurrence_id'] = Variable<String>(recurrenceId.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -2034,6 +2090,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
           ..write('toAccountId: $toAccountId, ')
           ..write('categoryId: $categoryId, ')
           ..write('exchangeRate: $exchangeRate, ')
+          ..write('recurrenceId: $recurrenceId, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -5979,6 +6036,7 @@ typedef $$TransactionsTableCreateCompanionBuilder =
       Value<String?> toAccountId,
       Value<String?> categoryId,
       Value<double?> exchangeRate,
+      Value<String?> recurrenceId,
       Value<int> rowid,
     });
 typedef $$TransactionsTableUpdateCompanionBuilder =
@@ -5997,6 +6055,7 @@ typedef $$TransactionsTableUpdateCompanionBuilder =
       Value<String?> toAccountId,
       Value<String?> categoryId,
       Value<double?> exchangeRate,
+      Value<String?> recurrenceId,
       Value<int> rowid,
     });
 
@@ -6148,6 +6207,11 @@ class $$TransactionsTableFilterComposer
 
   ColumnFilters<double> get exchangeRate => $composableBuilder(
     column: $table.exchangeRate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get recurrenceId => $composableBuilder(
+    column: $table.recurrenceId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -6310,6 +6374,11 @@ class $$TransactionsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get recurrenceId => $composableBuilder(
+    column: $table.recurrenceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$AccountsTableOrderingComposer get accountId {
     final $$AccountsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -6421,6 +6490,11 @@ class $$TransactionsTableAnnotationComposer
 
   GeneratedColumn<double> get exchangeRate => $composableBuilder(
     column: $table.exchangeRate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get recurrenceId => $composableBuilder(
+    column: $table.recurrenceId,
     builder: (column) => column,
   );
 
@@ -6567,6 +6641,7 @@ class $$TransactionsTableTableManager
                 Value<String?> toAccountId = const Value.absent(),
                 Value<String?> categoryId = const Value.absent(),
                 Value<double?> exchangeRate = const Value.absent(),
+                Value<String?> recurrenceId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TransactionsCompanion(
                 id: id,
@@ -6583,6 +6658,7 @@ class $$TransactionsTableTableManager
                 toAccountId: toAccountId,
                 categoryId: categoryId,
                 exchangeRate: exchangeRate,
+                recurrenceId: recurrenceId,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -6601,6 +6677,7 @@ class $$TransactionsTableTableManager
                 Value<String?> toAccountId = const Value.absent(),
                 Value<String?> categoryId = const Value.absent(),
                 Value<double?> exchangeRate = const Value.absent(),
+                Value<String?> recurrenceId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TransactionsCompanion.insert(
                 id: id,
@@ -6617,6 +6694,7 @@ class $$TransactionsTableTableManager
                 toAccountId: toAccountId,
                 categoryId: categoryId,
                 exchangeRate: exchangeRate,
+                recurrenceId: recurrenceId,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

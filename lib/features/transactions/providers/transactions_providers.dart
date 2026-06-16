@@ -7,6 +7,7 @@ import 'package:expenselab/features/transactions/data/datasources/transactions_l
 import 'package:expenselab/features/transactions/data/repositories/transaction_images_repository.dart';
 import 'package:expenselab/features/transactions/data/repositories/transactions_repository.dart';
 import 'package:expenselab/features/transactions/domain/models/transaction_image_model.dart';
+import 'package:expenselab/features/transactions/domain/services/recurrence_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ── Transactions ──────────────────────────────────────────────────────────────
@@ -70,4 +71,11 @@ final transactionImagesRepositoryProvider = Provider<TransactionImagesRepository
 /// Usage: `ref.watch(transactionImagesByTransactionProvider('tx-id'))`.
 final transactionImagesByTransactionProvider = StreamProvider.family<List<TransactionImageModel>, String>((ref, transactionId) {
   return ref.watch(transactionImagesRepositoryProvider).watchByTransactionId(transactionId);
+});
+
+// ── Recurrence ─────────────────────────────────────────────────────────────────
+
+/// Provides the [RecurrenceService] wired to [transactionsRepositoryProvider].
+final recurrenceServiceProvider = Provider<RecurrenceService>((ref) {
+  return RecurrenceService(ref.watch(transactionsRepositoryProvider));
 });

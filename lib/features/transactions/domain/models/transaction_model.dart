@@ -12,6 +12,7 @@ class TransactionModel {
     this.categoryId,
     this.note,
     this.rrule,
+    this.recurrenceId,
   });
 
   final String id;
@@ -23,10 +24,13 @@ class TransactionModel {
   final String? categoryId;
   final String? note;
   final String? rrule;
+  final String? recurrenceId;
 
   bool get isIncome => type == TransactionType.income;
   bool get isExpense => type == TransactionType.expense;
   bool get isTransfer => type == TransactionType.transfer;
+  bool get isRecurrenceTemplate => rrule != null;
+  bool get isOccurrence => recurrenceId != null;
 
   factory TransactionModel.fromTransaction(Transaction tx) => TransactionModel(
     id: tx.id,
@@ -38,5 +42,6 @@ class TransactionModel {
     categoryId: tx.categoryId,
     note: tx.note,
     rrule: tx.rrule,
+    recurrenceId: tx.recurrenceId,
   );
 }

@@ -13,6 +13,8 @@ import 'package:expenselab/features/settings/domain/models/supported_currencies.
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
 import 'package:expenselab/features/transactions/domain/models/transaction_image_model.dart';
+import 'package:expenselab/features/transactions/presentation/widgets/recurrence_config_sheet.dart';
+import 'package:expenselab/features/transactions/presentation/widgets/recurrence_scope_dialog.dart';
 import 'package:expenselab/features/transactions/providers/transactions_providers.dart';
 import 'package:expenselab/widgets/scaffold/expense_lab_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +58,9 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   final List<String> _pendingImagePaths = [];
   // Existing image records loaded in edit mode.
   List<TransactionImageModel> _existingImages = [];
+  // Recurrence state.
+  String? _rrule;
+  String? _recurrenceId;
 
   @override
   void initState() {
@@ -104,6 +109,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                 tx.exchangeRate != null ? tx.exchangeRate.toString() : '';
             _showNumpad = false;
             _existingImages = images;
+            _rrule = tx.rrule;
+            _recurrenceId = tx.recurrenceId;
           });
         }
       }
@@ -118,6 +125,24 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     _exchangeRateController.dispose();
     _notesFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _openRecurrenceConfig() async {
+    _closeNumpad();
+    final result = await showModalBottomSheet<String?>(
+      context: context,
+      backgroundColor: context.colorScheme.surface,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => RecurrenceConfigSheet(initialRrule: _rrule),
+    );
+    // result is null → cancelled (no change), empty string → removed
+    if (!mounted) return;
+    if (result != null) {
+      setState(() => _rrule = result.isEmpty ? null : result);
+    }
   }
 
   void _openNumpad() {
@@ -229,13 +254,61 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     );
     try {
       final repo = ref.read(transactionsRepositoryProvider);
+      final recurrenceService = ref.read(recurrenceServiceProvider);
       final imagesRepo = ref.read(transactionImagesRepositoryProvider);
       String txId;
+
       if (widget.isEditing) {
-        await repo.update(widget.transactionId!, companion);
-        txId = widget.transactionId!;
+        // ── Edit mode ────────────────────────────────────────────────────────
+        final isOccurrence = _recurrenceId != null;
+        final isTemplate = _rrule != null && !isOccurrence;
+
+        if (isOccurrence) {
+          // Ask user which scope to apply.
+          if (!mounted) return;
+          final scope = await showRecurrenceScopeDialog(context, isDelete: false);
+          if (scope == null || !mounted) return;
+
+          switch (scope) {
+            case RecurrenceScope.thisOnly:
+              await repo.update(widget.transactionId!, companion);
+              txId = widget.transactionId!;
+
+            case RecurrenceScope.thisAndFuture:
+              await repo.deleteOccurrencesFrom(_recurrenceId!, _selectedDate);
+              await repo.update(_recurrenceId!, companion.copyWith(rrule: drift.Value(_rrule)));
+              await recurrenceService.generateUpcoming();
+              txId = widget.transactionId!;
+
+            case RecurrenceScope.allOccurrences:
+              await repo.deleteAllOccurrences(_recurrenceId!);
+              final templateCompanion = companion.copyWith(rrule: drift.Value(_rrule));
+              final newTemplateId = await repo.create(templateCompanion);
+              await recurrenceService.generateUpcoming();
+              txId = newTemplateId;
+          }
+        } else if (isTemplate) {
+          // Editing a template: update it, delete future occurrences, regenerate.
+          final updatedTemplate = companion.copyWith(rrule: drift.Value(_rrule));
+          await repo.update(widget.transactionId!, updatedTemplate);
+          await repo.deleteOccurrencesFrom(widget.transactionId!, DateTime.now());
+          await recurrenceService.generateUpcoming();
+          txId = widget.transactionId!;
+        } else {
+          await repo.update(widget.transactionId!, companion);
+          txId = widget.transactionId!;
+        }
       } else {
-        txId = await repo.create(companion);
+        // ── Create mode ──────────────────────────────────────────────────────
+        if (_rrule != null) {
+          // Create the template (hidden from regular lists) and generate occurrences.
+          final templateCompanion = companion.copyWith(rrule: drift.Value(_rrule));
+          final templateId = await repo.create(templateCompanion);
+          await recurrenceService.generateUpcoming();
+          txId = templateId;
+        } else {
+          txId = await repo.create(companion);
+        }
       }
 
       for (final path in _pendingImagePaths) {
@@ -517,6 +590,18 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: cs.primary),
           onPressed: () => context.pop(),
         ),
+        actions: _recurrenceId == null
+            ? [
+                IconButton(
+                  tooltip: _rrule != null ? 'Edit recurrence' : 'Make recurring',
+                  icon: Icon(
+                    _rrule != null ? Icons.repeat_on_rounded : Icons.repeat_rounded,
+                    color: _rrule != null ? cs.primary : cs.onSurfaceVariant,
+                  ),
+                  onPressed: _openRecurrenceConfig,
+                ),
+              ]
+            : null,
       ),
       body: _isLoadingTransaction
           ? const Center(child: CircularProgressIndicator())
@@ -719,6 +804,16 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                             onTap: _pickDateTime,
                           ),
                           const SizedBox(height: 12),
+
+                          // Recurrence indicator (occurrence or template)
+                          if (_rrule != null || _recurrenceId != null) ...[
+                            const SizedBox(height: 12),
+                            _RecurrenceRow(
+                              isOccurrence: _recurrenceId != null,
+                              rrule: _rrule,
+                              onTap: _recurrenceId == null ? _openRecurrenceConfig : null,
+                            ),
+                          ],
 
                           // Notes card
                           _CardShell(
@@ -1422,6 +1517,73 @@ class _NumKey extends StatelessWidget {
                     ),
                   ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Recurrence row ────────────────────────────────────────────────────────────
+
+class _RecurrenceRow extends StatelessWidget {
+  const _RecurrenceRow({
+    required this.isOccurrence,
+    required this.rrule,
+    required this.onTap,
+  });
+
+  final bool isOccurrence;
+  final String? rrule;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = context.colorScheme;
+    final label = isOccurrence ? 'Part of a recurring series' : 'Recurring';
+    final subtitle = isOccurrence ? 'Edit to change scope' : '';
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: cs.primaryContainer,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.repeat_rounded, color: cs.primary, size: 20),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontFamily: 'Epilogue',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: cs.primary,
+                    ),
+                  ),
+                  if (subtitle.isNotEmpty)
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontSize: 11,
+                        color: cs.primary.withValues(alpha: 0.7),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                ],
+              ),
+            ),
+            if (onTap != null)
+              Icon(Icons.edit_outlined, color: cs.primary, size: 16),
+          ],
         ),
       ),
     );

@@ -41,6 +41,9 @@ class TransactionsRepository {
   /// Inserts a new transaction and returns its generated [id].
   Future<String> create(TransactionsCompanion data) => _local.create(data);
 
+  /// Inserts [rows] in a single database transaction (one stream emission).
+  Future<void> createBatch(List<TransactionsCompanion> rows) => _local.createBatch(rows);
+
   /// Overwrites the mutable fields of the transaction identified by [id].
   Future<void> update(String id, TransactionsCompanion data) => _local.update(id, data);
 
@@ -56,4 +59,16 @@ class TransactionsRepository {
     await _images.deleteByTransactionId(id);
     return _local.delete(id);
   }
+
+  // ── Recurrence ──────────────────────────────────────────────────────────────
+
+  Stream<List<Transaction>> watchTemplates() => _local.watchTemplates();
+
+  Future<List<Transaction>> getTemplates() => _local.getTemplates();
+
+  Future<DateTime?> getLastOccurrenceDate(String recurrenceId) => _local.getLastOccurrenceDate(recurrenceId);
+
+  Future<void> deleteOccurrencesFrom(String recurrenceId, DateTime from) => _local.deleteOccurrencesFrom(recurrenceId, from);
+
+  Future<void> deleteAllOccurrences(String recurrenceId) => _local.deleteAllOccurrences(recurrenceId);
 }
