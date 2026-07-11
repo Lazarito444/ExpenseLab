@@ -261,6 +261,7 @@
       "currency": "Currency",
       "select_currency_title": "Select Currency",
       "initial_balance": "Initial Balance",
+      "initial_balance_note": "Initial balance",
       "pro_tip_label": "Pro Tip",
       "pro_tip": "Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.",
       "create_button": "Create Account",
@@ -275,6 +276,7 @@
       "delete_title": "Delete Account",
       "delete_message": "Are you sure you want to delete this account? This action cannot be undone.",
       "error_loading": "Error loading account",
+      "balance_adjustment_note": "Balance adjustment",
       "success_update": "Account updated successfully",
       "success_delete": "Account deleted successfully"
     }

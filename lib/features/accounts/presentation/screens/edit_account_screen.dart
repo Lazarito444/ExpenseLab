@@ -134,7 +134,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
             amount: drift.Value(diff.abs()),
             date: drift.Value(DateTime.now()),
             accountId: drift.Value(widget.accountId),
-            note: const drift.Value('Balance adjustment'),
+            note: drift.Value(context.t.accounts.edit.balance_adjustment_note),
           ),
         );
       }

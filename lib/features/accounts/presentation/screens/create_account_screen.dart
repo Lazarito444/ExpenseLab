@@ -187,7 +187,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
             amount: drift.Value(balance),
             date: drift.Value(DateTime.now()),
             accountId: drift.Value(accountId),
-            note: const drift.Value('Initial balance'),
+            note: drift.Value(context.t.accounts.create.initial_balance_note),
           ),
         );
       }

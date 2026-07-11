@@ -1127,6 +1127,9 @@ class TranslationsAccountsCreateEn {
 	/// en: 'Initial Balance'
 	String get initial_balance => 'Initial Balance';
 
+	/// en: 'Initial balance'
+	String get initial_balance_note => 'Initial balance';
+
 	/// en: 'Pro Tip'
 	String get pro_tip_label => 'Pro Tip';
 
@@ -1171,6 +1174,9 @@ class TranslationsAccountsEditEn {
 
 	/// en: 'Error loading account'
 	String get error_loading => 'Error loading account';
+
+	/// en: 'Balance adjustment'
+	String get balance_adjustment_note => 'Balance adjustment';
 
 	/// en: 'Account updated successfully'
 	String get success_update => 'Account updated successfully';
@@ -1511,6 +1517,7 @@ extension on Translations {
 			'accounts.create.currency' => 'Currency',
 			'accounts.create.select_currency_title' => 'Select Currency',
 			'accounts.create.initial_balance' => 'Initial Balance',
+			'accounts.create.initial_balance_note' => 'Initial balance',
 			'accounts.create.pro_tip_label' => 'Pro Tip',
 			'accounts.create.pro_tip' => 'Grouping your savings into specific accounts helps you visualize progress toward long-term financial goals.',
 			'accounts.create.create_button' => 'Create Account',
@@ -1523,6 +1530,7 @@ extension on Translations {
 			'accounts.edit.delete_title' => 'Delete Account',
 			'accounts.edit.delete_message' => 'Are you sure you want to delete this account? This action cannot be undone.',
 			'accounts.edit.error_loading' => 'Error loading account',
+			'accounts.edit.balance_adjustment_note' => 'Balance adjustment',
 			'accounts.edit.success_update' => 'Account updated successfully',
 			'accounts.edit.success_delete' => 'Account deleted successfully',
 			'transactions.add_title' => 'Add Transaction',

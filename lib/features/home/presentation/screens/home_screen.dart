@@ -38,6 +38,14 @@ String _typeLabel(TransactionType type, Translations t) => switch (type) {
   TransactionType.transfer => t.transactions.tab_transfer,
 };
 
+String? _localizedSystemNote(String? note, Translations t) => switch (note) {
+  'Initial balance' => t.accounts.create.initial_balance_note,
+  'Balance adjustment' => t.accounts.edit.balance_adjustment_note,
+  'Saldo inicial' => t.accounts.create.initial_balance_note,
+  'Ajuste de saldo' => t.accounts.edit.balance_adjustment_note,
+  _ => note,
+};
+
 String _formatTime(DateTime date, Translations t) {
   final now = DateTime.now();
   final diff = now.difference(date);
@@ -464,7 +472,8 @@ class _TransactionTile extends StatelessWidget {
     final appColors = context.appColors;
     final cat = tx.categoryId != null ? categoryMap[tx.categoryId] : null;
 
-    final primaryText = (tx.note?.isNotEmpty ?? false) ? tx.note! : (cat?.name ?? _typeLabel(tx.type, t));
+    final note = _localizedSystemNote(tx.note, t);
+    final primaryText = (note?.isNotEmpty ?? false) ? note! : (cat?.name ?? _typeLabel(tx.type, t));
 
     final secondaryText = cat?.name ?? _typeLabel(tx.type, t);
 

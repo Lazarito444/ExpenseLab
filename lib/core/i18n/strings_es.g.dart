@@ -658,6 +658,7 @@ class _TranslationsAccountsCreateEs extends TranslationsAccountsCreateEn {
 	@override String get currency => 'Moneda';
 	@override String get select_currency_title => 'Seleccionar moneda';
 	@override String get initial_balance => 'Saldo inicial';
+	@override String get initial_balance_note => 'Saldo inicial';
 	@override String get pro_tip_label => 'Consejo profesional';
 	@override String get pro_tip => 'Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.';
 	@override String get create_button => 'Crear cuenta';
@@ -679,6 +680,7 @@ class _TranslationsAccountsEditEs extends TranslationsAccountsEditEn {
 	@override String get delete_title => 'Eliminar cuenta';
 	@override String get delete_message => '¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.';
 	@override String get error_loading => 'Error al cargar la cuenta';
+	@override String get balance_adjustment_note => 'Ajuste de saldo';
 	@override String get success_update => 'Cuenta actualizada con éxito';
 	@override String get success_delete => 'Cuenta eliminada con éxito';
 }
@@ -959,6 +961,7 @@ extension on TranslationsEs {
 			'accounts.create.currency' => 'Moneda',
 			'accounts.create.select_currency_title' => 'Seleccionar moneda',
 			'accounts.create.initial_balance' => 'Saldo inicial',
+			'accounts.create.initial_balance_note' => 'Saldo inicial',
 			'accounts.create.pro_tip_label' => 'Consejo profesional',
 			'accounts.create.pro_tip' => 'Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.',
 			'accounts.create.create_button' => 'Crear cuenta',
@@ -971,6 +974,7 @@ extension on TranslationsEs {
 			'accounts.edit.delete_title' => 'Eliminar cuenta',
 			'accounts.edit.delete_message' => '¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.',
 			'accounts.edit.error_loading' => 'Error al cargar la cuenta',
+			'accounts.edit.balance_adjustment_note' => 'Ajuste de saldo',
 			'accounts.edit.success_update' => 'Cuenta actualizada con éxito',
 			'accounts.edit.success_delete' => 'Cuenta eliminada con éxito',
 			'transactions.add_title' => 'Nuevo Movimiento',

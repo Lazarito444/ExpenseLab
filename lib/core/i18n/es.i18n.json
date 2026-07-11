@@ -261,6 +261,7 @@
       "currency": "Moneda",
       "select_currency_title": "Seleccionar moneda",
       "initial_balance": "Saldo inicial",
+      "initial_balance_note": "Saldo inicial",
       "pro_tip_label": "Consejo profesional",
       "pro_tip": "Agrupar tus ahorros en cuentas específicas te ayuda a visualizar el progreso hacia metas financieras a largo plazo.",
       "create_button": "Crear cuenta",
@@ -275,6 +276,7 @@
       "delete_title": "Eliminar cuenta",
       "delete_message": "¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.",
       "error_loading": "Error al cargar la cuenta",
+      "balance_adjustment_note": "Ajuste de saldo",
       "success_update": "Cuenta actualizada con éxito",
       "success_delete": "Cuenta eliminada con éxito"
     }
