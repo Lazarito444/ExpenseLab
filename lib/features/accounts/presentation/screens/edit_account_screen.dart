@@ -108,6 +108,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
 
     setState(() => _isLoading = true);
     try {
+      final t = context.t;
       final accountRepo = ref.read(accountsRepositoryProvider);
       final txRepo = ref.read(transactionsRepositoryProvider);
 
@@ -125,7 +126,8 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
           double.tryParse(_balanceController.text.replaceAll(',', '')) ??
           _originalBalance;
       final diff = newBalance - _originalBalance;
-      if (diff.abs() > 0.001) {
+      final hasAdjustment = diff.abs() > 0.001;
+      if (hasAdjustment) {
         await txRepo.create(
           TransactionsCompanion(
             type: drift.Value(
@@ -134,15 +136,21 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
             amount: drift.Value(diff.abs()),
             date: drift.Value(DateTime.now()),
             accountId: drift.Value(widget.accountId),
-            note: drift.Value(context.t.accounts.edit.balance_adjustment_note),
+            note: drift.Value(t.accounts.edit.balance_adjustment_note),
           ),
         );
       }
 
       if (!mounted) return;
+
+      if (hasAdjustment) {
+        await _showBalanceAdjustedSheet(context);
+      }
+
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(context.t.accounts.edit.success_update),
+          content: Text(t.accounts.edit.success_update),
           backgroundColor: context.colorScheme.primary,
         ),
       );
@@ -438,6 +446,79 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showBalanceAdjustedSheet(BuildContext context) async {
+    final t = context.t;
+    final appColors = context.appColors;
+    await showModalBottomSheet<void>(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      backgroundColor: appColors.cardSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => Padding(
+        padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _sheetHandle(context),
+            const SizedBox(height: 20),
+            Icon(
+              Icons.check_circle_rounded,
+              color: context.colorScheme.primary,
+              size: 48,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              t.accounts.edit.balance_adjusted_title,
+              style: TextStyle(
+                fontFamily: 'Epilogue',
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: appColors.primaryText,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              t.accounts.edit.balance_adjusted_message,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Epilogue',
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: appColors.secondaryLabel,
+              ),
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  t.common.got_it,
+                  style: const TextStyle(
+                    fontFamily: 'Epilogue',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

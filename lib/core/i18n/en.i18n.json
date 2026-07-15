@@ -10,7 +10,8 @@
     "error": "Error",
     "see_all": "See All",
     "preview": "Preview",
-    "yesterday": "Yesterday"
+    "yesterday": "Yesterday",
+    "got_it": "Got it"
   },
   "home": {
     "total_balance": "TOTAL BALANCE",
@@ -277,6 +278,8 @@
       "delete_message": "Are you sure you want to delete this account? This action cannot be undone.",
       "error_loading": "Error loading account",
       "balance_adjustment_note": "Balance adjustment",
+      "balance_adjusted_title": "Balance Adjusted",
+      "balance_adjusted_message": "This adjustment will be reflected across your Dashboard, Calendar, Budgets, and Analytics.",
       "success_update": "Account updated successfully",
       "success_delete": "Account deleted successfully"
     }

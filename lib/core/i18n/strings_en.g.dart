@@ -123,6 +123,9 @@ class TranslationsCommonEn {
 
 	/// en: 'Yesterday'
 	String get yesterday => 'Yesterday';
+
+	/// en: 'Got it'
+	String get got_it => 'Got it';
 }
 
 // Path: home
@@ -1178,6 +1181,12 @@ class TranslationsAccountsEditEn {
 	/// en: 'Balance adjustment'
 	String get balance_adjustment_note => 'Balance adjustment';
 
+	/// en: 'Balance Adjusted'
+	String get balance_adjusted_title => 'Balance Adjusted';
+
+	/// en: 'This adjustment will be reflected across your Dashboard, Calendar, Budgets, and Analytics.'
+	String get balance_adjusted_message => 'This adjustment will be reflected across your Dashboard, Calendar, Budgets, and Analytics.';
+
 	/// en: 'Account updated successfully'
 	String get success_update => 'Account updated successfully';
 
@@ -1331,6 +1340,7 @@ extension on Translations {
 			'common.see_all' => 'See All',
 			'common.preview' => 'Preview',
 			'common.yesterday' => 'Yesterday',
+			'common.got_it' => 'Got it',
 			'home.total_balance' => 'TOTAL BALANCE',
 			'home.monthly_summary' => 'Monthly Summary',
 			'home.income' => 'Income',
@@ -1531,6 +1541,8 @@ extension on Translations {
 			'accounts.edit.delete_message' => 'Are you sure you want to delete this account? This action cannot be undone.',
 			'accounts.edit.error_loading' => 'Error loading account',
 			'accounts.edit.balance_adjustment_note' => 'Balance adjustment',
+			'accounts.edit.balance_adjusted_title' => 'Balance Adjusted',
+			'accounts.edit.balance_adjusted_message' => 'This adjustment will be reflected across your Dashboard, Calendar, Budgets, and Analytics.',
 			'accounts.edit.success_update' => 'Account updated successfully',
 			'accounts.edit.success_delete' => 'Account deleted successfully',
 			'transactions.add_title' => 'Add Transaction',

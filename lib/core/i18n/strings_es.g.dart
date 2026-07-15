@@ -104,6 +104,7 @@ class _TranslationsCommonEs extends TranslationsCommonEn {
 	@override String get see_all => 'Ver Todo';
 	@override String get preview => 'Vista Previa';
 	@override String get yesterday => 'Ayer';
+	@override String get got_it => 'Entendido';
 }
 
 // Path: home
@@ -681,6 +682,8 @@ class _TranslationsAccountsEditEs extends TranslationsAccountsEditEn {
 	@override String get delete_message => '¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.';
 	@override String get error_loading => 'Error al cargar la cuenta';
 	@override String get balance_adjustment_note => 'Ajuste de saldo';
+	@override String get balance_adjusted_title => 'Saldo Ajustado';
+	@override String get balance_adjusted_message => 'Este ajuste se reflejará en tu Panel, Calendario, Presupuestos y Análisis.';
 	@override String get success_update => 'Cuenta actualizada con éxito';
 	@override String get success_delete => 'Cuenta eliminada con éxito';
 }
@@ -775,6 +778,7 @@ extension on TranslationsEs {
 			'common.see_all' => 'Ver Todo',
 			'common.preview' => 'Vista Previa',
 			'common.yesterday' => 'Ayer',
+			'common.got_it' => 'Entendido',
 			'home.total_balance' => 'SALDO TOTAL',
 			'home.monthly_summary' => 'Resumen mensual',
 			'home.income' => 'Ingresos',
@@ -975,6 +979,8 @@ extension on TranslationsEs {
 			'accounts.edit.delete_message' => '¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.',
 			'accounts.edit.error_loading' => 'Error al cargar la cuenta',
 			'accounts.edit.balance_adjustment_note' => 'Ajuste de saldo',
+			'accounts.edit.balance_adjusted_title' => 'Saldo Ajustado',
+			'accounts.edit.balance_adjusted_message' => 'Este ajuste se reflejará en tu Panel, Calendario, Presupuestos y Análisis.',
 			'accounts.edit.success_update' => 'Cuenta actualizada con éxito',
 			'accounts.edit.success_delete' => 'Cuenta eliminada con éxito',
 			'transactions.add_title' => 'Nuevo Movimiento',

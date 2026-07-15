@@ -10,7 +10,8 @@
     "error": "Error",
     "see_all": "Ver Todo",
     "preview": "Vista Previa",
-    "yesterday": "Ayer"
+    "yesterday": "Ayer",
+    "got_it": "Entendido"
   },
   "home": {
     "total_balance": "SALDO TOTAL",
@@ -277,6 +278,8 @@
       "delete_message": "¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer.",
       "error_loading": "Error al cargar la cuenta",
       "balance_adjustment_note": "Ajuste de saldo",
+      "balance_adjusted_title": "Saldo Ajustado",
+      "balance_adjusted_message": "Este ajuste se reflejará en tu Panel, Calendario, Presupuestos y Análisis.",
       "success_update": "Cuenta actualizada con éxito",
       "success_delete": "Cuenta eliminada con éxito"
     }
