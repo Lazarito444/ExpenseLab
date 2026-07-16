@@ -517,12 +517,6 @@ class _AddContributionSheetState extends ConsumerState<_AddContributionSheet> {
             ),
           );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.t.goals.contribution.success),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
         Navigator.pop(context);
       }
     } catch (e) {

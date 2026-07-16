@@ -60,12 +60,6 @@ class _CreateGoalScreenState extends ConsumerState<CreateGoalScreen> {
             ),
           );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(t.goals.create.success),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
         context.pop();
       }
     } catch (e) {

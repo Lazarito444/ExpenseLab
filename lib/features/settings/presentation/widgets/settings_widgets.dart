@@ -41,41 +41,45 @@ Widget buildToggleTile({
   required ValueChanged<bool> onChanged,
 }) {
   final appColors = context.appColors;
-  return ListTile(
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-    leading: Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: context.colorScheme.primary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+  return Material(
+    type: MaterialType.transparency,
+    child: ListTile(
+      tileColor: Colors.transparent,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: context.colorScheme.primary.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          icon,
+          color: context.colorScheme.primary,
+          size: 20,
+        ),
       ),
-      child: Icon(
-        icon,
-        color: context.colorScheme.primary,
-        size: 20,
+      title: Text(
+        label,
+        style: TextStyle(
+          fontFamily: 'Epilogue',
+          fontWeight: FontWeight.w500,
+          fontSize: 15,
+          color: appColors.primaryText,
+        ),
       ),
-    ),
-    title: Text(
-      label,
-      style: TextStyle(
-        fontFamily: 'Epilogue',
-        fontWeight: FontWeight.w500,
-        fontSize: 15,
-        color: appColors.primaryText,
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(
+          fontFamily: 'Epilogue',
+          fontSize: 12,
+          color: appColors.secondaryLabel,
+        ),
       ),
-    ),
-    subtitle: Text(
-      subtitle,
-      style: TextStyle(
-        fontFamily: 'Epilogue',
-        fontSize: 12,
-        color: appColors.secondaryLabel,
+      trailing: Switch(
+        value: value,
+        onChanged: onChanged,
       ),
-    ),
-    trailing: Switch(
-      value: value,
-      onChanged: onChanged,
     ),
   );
 }
@@ -88,44 +92,48 @@ Widget buildDangerTile({
   required VoidCallback onTap,
 }) {
   const dangerColor = Color(0xFFD9534F);
-  return ListTile(
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-    leading: Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: dangerColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+  return Material(
+    type: MaterialType.transparency,
+    child: ListTile(
+      tileColor: Colors.transparent,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: dangerColor.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          icon,
+          color: dangerColor,
+          size: 20,
+        ),
       ),
-      child: Icon(
-        icon,
+      title: Text(
+        label,
+        style: const TextStyle(
+          fontFamily: 'Epilogue',
+          fontWeight: FontWeight.w500,
+          fontSize: 15,
+          color: dangerColor,
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(
+          fontFamily: 'Epilogue',
+          fontSize: 12,
+          color: dangerColor.withValues(alpha: 0.6),
+        ),
+      ),
+      trailing: const Icon(
+        Icons.chevron_right_rounded,
         color: dangerColor,
         size: 20,
       ),
+      onTap: onTap,
     ),
-    title: Text(
-      label,
-      style: const TextStyle(
-        fontFamily: 'Epilogue',
-        fontWeight: FontWeight.w500,
-        fontSize: 15,
-        color: dangerColor,
-      ),
-    ),
-    subtitle: Text(
-      subtitle,
-      style: TextStyle(
-        fontFamily: 'Epilogue',
-        fontSize: 12,
-        color: dangerColor.withValues(alpha: 0.6),
-      ),
-    ),
-    trailing: const Icon(
-      Icons.chevron_right_rounded,
-      color: dangerColor,
-      size: 20,
-    ),
-    onTap: onTap,
   );
 }
 
@@ -138,37 +146,41 @@ Widget buildOptionTile({
   IconData? icon,
 }) {
   final appColors = context.appColors;
-  return ListTile(
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-    leading: Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: context.colorScheme.primary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+  return Material(
+    type: MaterialType.transparency,
+    child: ListTile(
+      tileColor: Colors.transparent,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: context.colorScheme.primary.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          icon ?? Icons.language_rounded,
+          color: context.colorScheme.primary,
+          size: 20,
+        ),
       ),
-      child: Icon(
-        icon ?? Icons.language_rounded,
-        color: context.colorScheme.primary,
-        size: 20,
+      title: Text(
+        label,
+        style: TextStyle(
+          fontFamily: 'Epilogue',
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+          fontSize: 15,
+          color: isSelected ? context.colorScheme.primary : appColors.primaryText,
+        ),
       ),
+      trailing: isSelected
+          ? Icon(Icons.check_circle_rounded, color: context.colorScheme.primary, size: 20)
+          : Icon(
+              Icons.circle_outlined,
+              color: appColors.secondaryLabel,
+              size: 20,
+            ),
+      onTap: onTap,
     ),
-    title: Text(
-      label,
-      style: TextStyle(
-        fontFamily: 'Epilogue',
-        fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-        fontSize: 15,
-        color: isSelected ? context.colorScheme.primary : appColors.primaryText,
-      ),
-    ),
-    trailing: isSelected
-        ? Icon(Icons.check_circle_rounded, color: context.colorScheme.primary, size: 20)
-        : Icon(
-            Icons.circle_outlined,
-            color: appColors.secondaryLabel,
-            size: 20,
-          ),
-    onTap: onTap,
   );
 }

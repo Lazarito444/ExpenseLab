@@ -62,6 +62,9 @@
     "categories": {
       "title": "Categories"
     },
+    "starred_transactions": {
+      "title": "Starred Transactions"
+    },
     "security": {
       "title": "Security",
       "biometric_login": {
@@ -375,6 +378,16 @@
       "try_again": "Try Again",
       "reason": "Verify your identity to access ExpenseLab"
     }
+  },
+  "starred_transactions": {
+    "title": "Starred Transactions",
+    "save_current": "Save current as template",
+    "saved": "Template saved",
+    "deleted": "Template deleted",
+    "delete_title": "Delete template?",
+    "delete_message": "This starred template will be permanently removed.",
+    "empty": "No starred templates yet",
+    "empty_subtitle": "Tap the ⭐ icon when creating a transaction to save a template"
   },
   "exchange_rates": {
     "title": "Exchange Rates",

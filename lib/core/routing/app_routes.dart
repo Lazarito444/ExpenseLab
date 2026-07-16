@@ -23,8 +23,10 @@ class AppRoutes {
   static const settingsLanguage = '/settings/language';
   static const settingsCurrency = '/settings/currency';
   static const settingsHomeView = '/settings/home-view';
+  static const settingsStarredTransactions = '/settings/starred-transactions';
   static const analytics = '/analytics';
   static const exchangeRates = '/exchange-rates';
   static const exchangeRatesCreate = '/exchange-rates/create';
   static String exchangeRateEdit(String id) => '/exchange-rates/$id/edit';
+  static String addTransactionWithStarred(String starredId) => '/add-transaction?starred=$starredId';
 }

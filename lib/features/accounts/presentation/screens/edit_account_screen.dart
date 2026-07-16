@@ -148,12 +148,6 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       }
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(t.accounts.edit.success_update),
-          backgroundColor: context.colorScheme.primary,
-        ),
-      );
       context.pop();
     } catch (e) {
       if (!mounted) return;
@@ -216,12 +210,6 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     try {
       await ref.read(accountsRepositoryProvider).delete(widget.accountId);
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(t.accounts.edit.success_delete),
-          backgroundColor: context.colorScheme.primary,
-        ),
-      );
       context.pop();
     } catch (e) {
       if (!context.mounted) return;

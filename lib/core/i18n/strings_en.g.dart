@@ -77,6 +77,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsCategoriesEn categories = TranslationsCategoriesEn.internal(_root);
 	late final TranslationsSeedEn seed = TranslationsSeedEn.internal(_root);
 	late final TranslationsSecurityEn security = TranslationsSecurityEn.internal(_root);
+	late final TranslationsStarredTransactionsEn starred_transactions = TranslationsStarredTransactionsEn.internal(_root);
 	late final TranslationsExchangeRatesEn exchange_rates = TranslationsExchangeRatesEn.internal(_root);
 }
 
@@ -223,6 +224,7 @@ class TranslationsSettingsEn {
 	late final TranslationsSettingsDefaultHomeViewEn default_home_view = TranslationsSettingsDefaultHomeViewEn.internal(_root);
 	late final TranslationsSettingsAccountsEn accounts = TranslationsSettingsAccountsEn.internal(_root);
 	late final TranslationsSettingsCategoriesEn categories = TranslationsSettingsCategoriesEn.internal(_root);
+	late final TranslationsSettingsStarredTransactionsEn starred_transactions = TranslationsSettingsStarredTransactionsEn.internal(_root);
 	late final TranslationsSettingsSecurityEn security = TranslationsSettingsSecurityEn.internal(_root);
 	late final TranslationsSettingsDangerZoneEn danger_zone = TranslationsSettingsDangerZoneEn.internal(_root);
 }
@@ -620,6 +622,39 @@ class TranslationsSecurityEn {
 	late final TranslationsSecurityLockScreenEn lock_screen = TranslationsSecurityLockScreenEn.internal(_root);
 }
 
+// Path: starred_transactions
+class TranslationsStarredTransactionsEn {
+	TranslationsStarredTransactionsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Starred Transactions'
+	String get title => 'Starred Transactions';
+
+	/// en: 'Save current as template'
+	String get save_current => 'Save current as template';
+
+	/// en: 'Template saved'
+	String get saved => 'Template saved';
+
+	/// en: 'Template deleted'
+	String get deleted => 'Template deleted';
+
+	/// en: 'Delete template?'
+	String get delete_title => 'Delete template?';
+
+	/// en: 'This starred template will be permanently removed.'
+	String get delete_message => 'This starred template will be permanently removed.';
+
+	/// en: 'No starred templates yet'
+	String get empty => 'No starred templates yet';
+
+	/// en: 'Tap the ⭐ icon when creating a transaction to save a template'
+	String get empty_subtitle => 'Tap the ⭐ icon when creating a transaction to save a template';
+}
+
 // Path: exchange_rates
 class TranslationsExchangeRatesEn {
 	TranslationsExchangeRatesEn.internal(this._root);
@@ -762,6 +797,18 @@ class TranslationsSettingsCategoriesEn {
 
 	/// en: 'Categories'
 	String get title => 'Categories';
+}
+
+// Path: settings.starred_transactions
+class TranslationsSettingsStarredTransactionsEn {
+	TranslationsSettingsStarredTransactionsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Starred Transactions'
+	String get title => 'Starred Transactions';
 }
 
 // Path: settings.security
@@ -1382,6 +1429,7 @@ extension on Translations {
 			'settings.default_home_view.calendar' => 'Calendar',
 			'settings.accounts.title' => 'Accounts',
 			'settings.categories.title' => 'Categories',
+			'settings.starred_transactions.title' => 'Starred Transactions',
 			'settings.security.title' => 'Security',
 			'settings.security.biometric_login.title' => 'Biometric Login',
 			'settings.security.biometric_login.subtitle' => 'Use Face ID or fingerprint to unlock',
@@ -1625,6 +1673,14 @@ extension on Translations {
 			'security.lock_screen.subtitle_unavailable' => 'Biometrics unavailable on this device',
 			'security.lock_screen.try_again' => 'Try Again',
 			'security.lock_screen.reason' => 'Verify your identity to access ExpenseLab',
+			'starred_transactions.title' => 'Starred Transactions',
+			'starred_transactions.save_current' => 'Save current as template',
+			'starred_transactions.saved' => 'Template saved',
+			'starred_transactions.deleted' => 'Template deleted',
+			'starred_transactions.delete_title' => 'Delete template?',
+			'starred_transactions.delete_message' => 'This starred template will be permanently removed.',
+			'starred_transactions.empty' => 'No starred templates yet',
+			'starred_transactions.empty_subtitle' => 'Tap the ⭐ icon when creating a transaction to save a template',
 			'exchange_rates.title' => 'Exchange Rates',
 			'exchange_rates.empty_state_title' => 'No exchange rates yet',
 			'exchange_rates.empty_state_subtitle' => 'Add rates to convert balances and budgets across currencies.',

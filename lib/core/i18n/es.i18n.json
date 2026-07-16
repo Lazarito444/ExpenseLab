@@ -62,6 +62,9 @@
     "categories": {
       "title": "Categorías"
     },
+    "starred_transactions": {
+      "title": "Transacciones destacadas"
+    },
     "security": {
       "title": "Seguridad",
       "biometric_login": {
@@ -375,6 +378,16 @@
       "try_again": "Intentar de nuevo",
       "reason": "Verifica tu identidad para acceder a ExpenseLab"
     }
+  },
+  "starred_transactions": {
+    "title": "Transacciones destacadas",
+    "save_current": "Guardar actual como plantilla",
+    "saved": "Plantilla guardada",
+    "deleted": "Plantilla eliminada",
+    "delete_title": "¿Eliminar plantilla?",
+    "delete_message": "Esta plantilla se eliminará de forma permanente.",
+    "empty": "Sin plantillas aún",
+    "empty_subtitle": "Toca el ícono ⭐ al crear una transacción para guardar una plantilla"
   },
   "exchange_rates": {
     "title": "Tasas de Cambio",

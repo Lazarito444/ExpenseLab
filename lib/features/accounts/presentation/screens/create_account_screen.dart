@@ -201,12 +201,6 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
       }
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(t.accounts.create.success),
-            backgroundColor: context.colorScheme.primary,
-          ),
-        );
         context.pop();
       }
     } catch (e) {

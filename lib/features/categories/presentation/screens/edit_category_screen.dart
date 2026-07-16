@@ -196,12 +196,6 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
             ),
           );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(context.t.categories.success_update),
-          backgroundColor: context.colorScheme.primary,
-        ),
-      );
       context.pop();
     } catch (e) {
       if (!mounted) return;
@@ -264,12 +258,6 @@ class _EditCategoryScreenState extends ConsumerState<EditCategoryScreen> {
     try {
       await ref.read(categoriesRepositoryProvider).delete(widget.categoryId);
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(t.categories.success_delete),
-          backgroundColor: context.colorScheme.primary,
-        ),
-      );
       context.pop('/categories');
     } catch (e) {
       if (!context.mounted) return;

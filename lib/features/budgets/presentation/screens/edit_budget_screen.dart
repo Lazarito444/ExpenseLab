@@ -115,12 +115,6 @@ class _EditBudgetFormState extends ConsumerState<_EditBudgetForm> {
             ),
           );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(t.budgets.edit.success_update),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
         context.pop();
       }
     } catch (e) {
@@ -165,12 +159,6 @@ class _EditBudgetFormState extends ConsumerState<_EditBudgetForm> {
     try {
       await ref.read(budgetsRepositoryProvider).delete(widget.budget.id);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(t.budgets.edit.success_delete),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
         context.pop();
       }
     } catch (e) {

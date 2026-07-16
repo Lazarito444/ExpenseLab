@@ -76,6 +76,7 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
       await db.transaction(() async {
         await db.delete(db.transactionImages).go();
         await db.delete(db.transactions).go();
+        await db.delete(db.starredTransactions).go();
         await db.delete(db.savingsContributions).go();
         await db.delete(db.savingsGoals).go();
         await db.delete(db.budgets).go();

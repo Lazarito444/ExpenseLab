@@ -122,6 +122,13 @@ class SettingsScreen extends ConsumerWidget {
                     buildDivider(context),
                     buildNavTile(
                       context: context,
+                      label: t.settings.starred_transactions.title,
+                      icon: Icons.star_outline_rounded,
+                      onTap: () => context.push(AppRoutes.settingsStarredTransactions),
+                    ),
+                    buildDivider(context),
+                    buildNavTile(
+                      context: context,
                       label: t.exchange_rates.title,
                       icon: Icons.currency_exchange_rounded,
                       onTap: () => context.push(AppRoutes.exchangeRates),
@@ -282,42 +289,46 @@ Widget buildNavTile({
   String? currentValue,
 }) {
   final appColors = context.appColors;
-  return ListTile(
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-    leading: Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: context.colorScheme.primary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+  return Material(
+    type: MaterialType.transparency,
+    child: ListTile(
+      tileColor: Colors.transparent,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: context.colorScheme.primary.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(icon, color: context.colorScheme.primary, size: 20),
       ),
-      child: Icon(icon, color: context.colorScheme.primary, size: 20),
-    ),
-    title: Text(
-      label,
-      style: TextStyle(
-        fontFamily: 'Epilogue',
-        fontWeight: FontWeight.w500,
-        fontSize: 15,
-        color: appColors.primaryText,
+      title: Text(
+        label,
+        style: TextStyle(
+          fontFamily: 'Epilogue',
+          fontWeight: FontWeight.w500,
+          fontSize: 15,
+          color: appColors.primaryText,
+        ),
       ),
-    ),
-    trailing: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (currentValue != null)
-          Text(
-            currentValue,
-            style: TextStyle(
-              fontFamily: 'Epilogue',
-              fontSize: 14,
-              color: appColors.secondaryLabel,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (currentValue != null)
+            Text(
+              currentValue,
+              style: TextStyle(
+                fontFamily: 'Epilogue',
+                fontSize: 14,
+                color: appColors.secondaryLabel,
+              ),
             ),
-          ),
-        const SizedBox(width: 4),
-        Icon(Icons.chevron_right_rounded, color: appColors.secondaryLabel, size: 20),
-      ],
+          const SizedBox(width: 4),
+          Icon(Icons.chevron_right_rounded, color: appColors.secondaryLabel, size: 20),
+        ],
+      ),
+      onTap: onTap,
     ),
-    onTap: onTap,
   );
 }

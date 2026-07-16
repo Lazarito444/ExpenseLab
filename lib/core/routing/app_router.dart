@@ -22,6 +22,7 @@ import 'package:expenselab/features/settings/presentation/screens/home_view_sele
 import 'package:expenselab/features/settings/presentation/screens/language_selection_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/settings_screen.dart';
 import 'package:expenselab/features/settings/presentation/screens/theme_selection_screen.dart';
+import 'package:expenselab/features/starred_transactions/presentation/screens/starred_transactions_screen.dart';
 import 'package:expenselab/features/transactions/presentation/screens/add_transaction_screen.dart';
 import 'package:expenselab/widgets/scaffold/main_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -92,6 +93,10 @@ final routerConfig = GoRouter(
           path: 'home-view',
           builder: (context, state) => const HomeViewSelectionScreen(),
         ),
+        GoRoute(
+          path: 'starred-transactions',
+          builder: (context, state) => const StarredTransactionsScreen(),
+        ),
       ],
     ),
     GoRoute(
@@ -116,8 +121,12 @@ final routerConfig = GoRouter(
       path: AppRoutes.addTransaction,
       builder: (context, state) {
         final dateStr = state.uri.queryParameters['date'];
+        final starredStr = state.uri.queryParameters['starred'];
         final initialDate = dateStr != null ? DateTime.tryParse(dateStr) : null;
-        return AddTransactionScreen(initialDate: initialDate);
+        return AddTransactionScreen(
+          initialDate: initialDate,
+          starredTransactionId: starredStr,
+        );
       },
     ),
     GoRoute(

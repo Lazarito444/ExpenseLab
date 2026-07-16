@@ -8,6 +8,7 @@ import 'package:expenselab/features/categories/data/tables/categories_table.dart
 import 'package:expenselab/features/exchange_rates/data/tables/exchange_rates_table.dart';
 import 'package:expenselab/features/savings/data/tables/savings_contributions_table.dart';
 import 'package:expenselab/features/savings/data/tables/savings_goals_table.dart';
+import 'package:expenselab/features/starred_transactions/data/tables/starred_transactions_table.dart';
 import 'package:expenselab/features/transactions/data/tables/transaction_images_table.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
 import 'package:path/path.dart' as p;
@@ -22,6 +23,7 @@ part 'app_database.g.dart';
     Categories,
     Transactions,
     TransactionImages,
+    StarredTransactions,
     Budgets,
     SavingsGoals,
     SavingsContributions,
@@ -32,7 +34,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -45,6 +47,9 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 3) {
         await m.addColumn(transactions, transactions.isVisible);
+      }
+      if (from < 4) {
+        await m.createTable(starredTransactions);
       }
     },
   );

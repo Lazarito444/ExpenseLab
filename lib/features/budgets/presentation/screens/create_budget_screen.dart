@@ -58,12 +58,6 @@ class _CreateBudgetScreenState extends ConsumerState<CreateBudgetScreen> {
         ),
       );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(t.budgets.create.success),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
         context.pop();
       }
     } catch (e) {

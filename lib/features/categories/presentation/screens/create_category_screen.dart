@@ -184,12 +184,6 @@ class _CreateCategoryScreenState extends ConsumerState<CreateCategoryScreen> {
             ),
           );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.t.categories.success_create),
-            backgroundColor: context.colorScheme.primary,
-          ),
-        );
         context.pop();
       }
     } catch (e) {

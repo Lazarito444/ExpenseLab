@@ -11,6 +11,8 @@ import 'package:expenselab/features/categories/domain/models/category_model.dart
 import 'package:expenselab/features/categories/providers/categories_providers.dart';
 import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
+import 'package:expenselab/features/starred_transactions/presentation/widgets/starred_select_sheet.dart';
+import 'package:expenselab/features/starred_transactions/providers/starred_transactions_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
 import 'package:expenselab/features/transactions/domain/models/transaction_image_model.dart';
 import 'package:expenselab/features/transactions/presentation/widgets/recurrence_config_sheet.dart';
@@ -26,13 +28,16 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 class AddTransactionScreen extends ConsumerStatefulWidget {
-  const AddTransactionScreen({this.transactionId, this.initialDate, super.key});
+  const AddTransactionScreen({this.transactionId, this.initialDate, this.starredTransactionId, super.key});
 
   /// When set, the screen loads this transaction and switches to edit mode.
   final String? transactionId;
 
   /// When set (and not editing), pre-selects this date for the new transaction.
   final DateTime? initialDate;
+
+  /// When set, loads a starred transaction and pre-fills the form (create mode).
+  final String? starredTransactionId;
 
   bool get isEditing => transactionId != null;
 
@@ -77,6 +82,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     });
     if (widget.isEditing) {
       _loadTransaction();
+    } else if (widget.starredTransactionId != null) {
+      _loadStarredTransaction();
     }
   }
 
@@ -143,6 +150,107 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     if (result != null) {
       setState(() => _rrule = result.isEmpty ? null : result);
     }
+  }
+
+  Future<void> _loadStarredTransaction() async {
+    setState(() => _isLoadingTransaction = true);
+    try {
+      final star = await ref.read(starredTransactionsRepositoryProvider).getById(widget.starredTransactionId!);
+      if (star != null && mounted) {
+        CategoryModel? categoryModel;
+        if (star.categoryId != null) {
+          final cat = await ref.read(categoriesRepositoryProvider).getById(star.categoryId!);
+          if (cat != null) categoryModel = CategoryModel.fromCategory(cat);
+        }
+        if (mounted) {
+          setState(() {
+            _type = star.type;
+            _amountString = star.amount.toStringAsFixed(
+              star.amount.truncateToDouble() == star.amount ? 0 : 2,
+            );
+            _selectedCategoryId = star.categoryId;
+            _selectedCategoryModel = categoryModel;
+            _selectedAccountId = star.accountId;
+            _selectedToAccountId = star.toAccountId;
+            _noteController.text = star.note ?? '';
+            _exchangeRateController.text =
+                star.exchangeRate != null ? star.exchangeRate.toString() : '';
+            _showNumpad = false;
+          });
+        }
+      }
+    } finally {
+      if (mounted) setState(() => _isLoadingTransaction = false);
+    }
+  }
+
+  Future<void> _showStarredSheet() async {
+    _closeNumpad();
+    final stars = await ref.read(starredTransactionsRepositoryProvider).getAll();
+    final accounts = ref.read(accountModelsProvider);
+    final allCategories = await ref.read(categoriesRepositoryProvider).getAll();
+
+    if (!mounted) return;
+    final result = await showModalBottomSheet<StarredTransaction>(
+      context: context,
+      backgroundColor: context.colorScheme.surface,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => StarredSelectSheet(
+        stars: stars,
+        accounts: accounts,
+        allCategories: allCategories,
+        currentType: _type,
+        currentAmount: _amount,
+        currentAccountId: _selectedAccountId,
+        currentToAccountId: _selectedToAccountId,
+        currentCategoryId: _selectedCategoryId,
+        currentNote: _noteController.text,
+        onSave: _saveStarredTemplate,
+      ),
+    );
+    if (result != null && mounted) {
+      CategoryModel? categoryModel;
+      if (result.categoryId != null) {
+        final cat = await ref.read(categoriesRepositoryProvider).getById(result.categoryId!);
+        if (cat != null) categoryModel = CategoryModel.fromCategory(cat);
+      }
+      setState(() {
+        _type = result.type;
+        _amountString = result.amount.toStringAsFixed(
+          result.amount.truncateToDouble() == result.amount ? 0 : 2,
+        );
+        _selectedCategoryId = result.categoryId;
+        _selectedCategoryModel = categoryModel;
+        _selectedAccountId = result.accountId;
+        _selectedToAccountId = result.toAccountId;
+        _noteController.text = result.note ?? '';
+        _exchangeRateController.text =
+            result.exchangeRate != null ? result.exchangeRate.toString() : '';
+      });
+    }
+  }
+
+  Future<void> _saveStarredTemplate() async {
+    if (_selectedAccountId == null) return;
+    final repo = ref.read(starredTransactionsRepositoryProvider);
+    final companion = StarredTransactionsCompanion(
+      type: drift.Value(_type),
+      amount: drift.Value(_amount),
+      accountId: drift.Value(_selectedAccountId!),
+      toAccountId: _selectedToAccountId != null
+          ? drift.Value(_selectedToAccountId)
+          : const drift.Value(null),
+      categoryId: _selectedCategoryId != null
+          ? drift.Value(_selectedCategoryId)
+          : const drift.Value(null),
+      note: _noteController.text.trim().isNotEmpty
+          ? drift.Value(_noteController.text.trim())
+          : const drift.Value(null),
+    );
+    await repo.create(companion);
   }
 
   void _openNumpad() {
@@ -321,10 +429,6 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       }
 
       if (mounted) {
-        _showSnack(
-          t.transactions.success,
-          backgroundColor: context.colorScheme.primary,
-        );
         context.pop();
       }
     } catch (e) {
@@ -590,18 +694,25 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: cs.primary),
           onPressed: () => context.pop(),
         ),
-        actions: _recurrenceId == null
-            ? [
-                IconButton(
-                  tooltip: _rrule != null ? 'Edit recurrence' : 'Make recurring',
-                  icon: Icon(
-                    _rrule != null ? Icons.repeat_on_rounded : Icons.repeat_rounded,
-                    color: _rrule != null ? cs.primary : cs.onSurfaceVariant,
-                  ),
-                  onPressed: _openRecurrenceConfig,
-                ),
-              ]
-            : null,
+        actions: [
+          IconButton(
+            tooltip: t.starred_transactions.title,
+            icon: Icon(
+              Icons.star_outline_rounded,
+              color: cs.onSurfaceVariant,
+            ),
+            onPressed: _showStarredSheet,
+          ),
+          if (_recurrenceId == null)
+            IconButton(
+              tooltip: _rrule != null ? 'Edit recurrence' : 'Make recurring',
+              icon: Icon(
+                _rrule != null ? Icons.repeat_on_rounded : Icons.repeat_rounded,
+                color: _rrule != null ? cs.primary : cs.onSurfaceVariant,
+              ),
+              onPressed: _openRecurrenceConfig,
+            ),
+        ],
       ),
       body: _isLoadingTransaction
           ? const Center(child: CircularProgressIndicator())

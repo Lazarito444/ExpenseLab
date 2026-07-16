@@ -107,14 +107,6 @@ class _FormState extends ConsumerState<_Form> {
       }
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(widget.existing != null
-                ? context.t.exchange_rates.success_update
-                : context.t.exchange_rates.success_add),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
         context.pop();
       }
     } catch (e) {

@@ -76,6 +76,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsCategoriesEs categories = _TranslationsCategoriesEs._(_root);
 	@override late final _TranslationsSeedEs seed = _TranslationsSeedEs._(_root);
 	@override late final _TranslationsSecurityEs security = _TranslationsSecurityEs._(_root);
+	@override late final _TranslationsStarredTransactionsEs starred_transactions = _TranslationsStarredTransactionsEs._(_root);
 	@override late final _TranslationsExchangeRatesEs exchange_rates = _TranslationsExchangeRatesEs._(_root);
 }
 
@@ -159,6 +160,7 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 	@override late final _TranslationsSettingsDefaultHomeViewEs default_home_view = _TranslationsSettingsDefaultHomeViewEs._(_root);
 	@override late final _TranslationsSettingsAccountsEs accounts = _TranslationsSettingsAccountsEs._(_root);
 	@override late final _TranslationsSettingsCategoriesEs categories = _TranslationsSettingsCategoriesEs._(_root);
+	@override late final _TranslationsSettingsStarredTransactionsEs starred_transactions = _TranslationsSettingsStarredTransactionsEs._(_root);
 	@override late final _TranslationsSettingsSecurityEs security = _TranslationsSettingsSecurityEs._(_root);
 	@override late final _TranslationsSettingsDangerZoneEs danger_zone = _TranslationsSettingsDangerZoneEs._(_root);
 }
@@ -364,6 +366,23 @@ class _TranslationsSecurityEs extends TranslationsSecurityEn {
 	@override late final _TranslationsSecurityLockScreenEs lock_screen = _TranslationsSecurityLockScreenEs._(_root);
 }
 
+// Path: starred_transactions
+class _TranslationsStarredTransactionsEs extends TranslationsStarredTransactionsEn {
+	_TranslationsStarredTransactionsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Transacciones destacadas';
+	@override String get save_current => 'Guardar actual como plantilla';
+	@override String get saved => 'Plantilla guardada';
+	@override String get deleted => 'Plantilla eliminada';
+	@override String get delete_title => '¿Eliminar plantilla?';
+	@override String get delete_message => 'Esta plantilla se eliminará de forma permanente.';
+	@override String get empty => 'Sin plantillas aún';
+	@override String get empty_subtitle => 'Toca el ícono ⭐ al crear una transacción para guardar una plantilla';
+}
+
 // Path: exchange_rates
 class _TranslationsExchangeRatesEs extends TranslationsExchangeRatesEn {
 	_TranslationsExchangeRatesEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -452,6 +471,16 @@ class _TranslationsSettingsCategoriesEs extends TranslationsSettingsCategoriesEn
 
 	// Translations
 	@override String get title => 'Categorías';
+}
+
+// Path: settings.starred_transactions
+class _TranslationsSettingsStarredTransactionsEs extends TranslationsSettingsStarredTransactionsEn {
+	_TranslationsSettingsStarredTransactionsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Transacciones destacadas';
 }
 
 // Path: settings.security
@@ -814,6 +843,7 @@ extension on TranslationsEs {
 			'settings.default_home_view.calendar' => 'Calendario',
 			'settings.accounts.title' => 'Cuentas',
 			'settings.categories.title' => 'Categorías',
+			'settings.starred_transactions.title' => 'Transacciones destacadas',
 			'settings.security.title' => 'Seguridad',
 			'settings.security.biometric_login.title' => 'Inicio biométrico',
 			'settings.security.biometric_login.subtitle' => 'Usa Face ID o huella para desbloquear',
@@ -1057,6 +1087,14 @@ extension on TranslationsEs {
 			'security.lock_screen.subtitle_unavailable' => 'Biometría no disponible en este dispositivo',
 			'security.lock_screen.try_again' => 'Intentar de nuevo',
 			'security.lock_screen.reason' => 'Verifica tu identidad para acceder a ExpenseLab',
+			'starred_transactions.title' => 'Transacciones destacadas',
+			'starred_transactions.save_current' => 'Guardar actual como plantilla',
+			'starred_transactions.saved' => 'Plantilla guardada',
+			'starred_transactions.deleted' => 'Plantilla eliminada',
+			'starred_transactions.delete_title' => '¿Eliminar plantilla?',
+			'starred_transactions.delete_message' => 'Esta plantilla se eliminará de forma permanente.',
+			'starred_transactions.empty' => 'Sin plantillas aún',
+			'starred_transactions.empty_subtitle' => 'Toca el ícono ⭐ al crear una transacción para guardar una plantilla',
 			'exchange_rates.title' => 'Tasas de Cambio',
 			'exchange_rates.empty_state_title' => 'Sin tasas de cambio',
 			'exchange_rates.empty_state_subtitle' => 'Agrega tasas para convertir saldos y presupuestos entre monedas.',

@@ -117,12 +117,6 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
             ),
           );
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(t.goals.edit.success_update),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
         context.pop();
       }
     } catch (e) {
@@ -167,12 +161,6 @@ class _EditGoalFormState extends ConsumerState<_EditGoalForm> {
     try {
       await ref.read(savingsGoalsRepositoryProvider).delete(widget.goal.id);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(t.goals.edit.success_delete),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
         context.pop();
         context.pop();
       }
