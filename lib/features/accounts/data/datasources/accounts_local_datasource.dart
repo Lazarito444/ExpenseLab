@@ -35,4 +35,9 @@ abstract class AccountsLocalDataSource {
   /// Soft-deletes the account: sets `isDeleted = true` and stamps `deletedAt`
   /// and `updatedAt` to the current time. The row is retained in the database.
   Future<void> delete(String id);
+
+  /// Reorders the account from [oldIndex] to [newIndex] within its type group.
+  /// All accounts of the same [AccountType] are re-indexed atomically so their
+  /// [sortOrder] values remain contiguous.
+  Future<void> reorderAccount(String id, int oldIndex, int newIndex);
 }

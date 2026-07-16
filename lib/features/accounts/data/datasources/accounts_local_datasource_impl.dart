@@ -14,13 +14,19 @@ class AccountsLocalDataSourceImpl implements AccountsLocalDataSource {
   final AppDatabase _db;
 
   @override
-  Stream<List<Account>> watchAll() => (_db.select(_db.accounts)..where((t) => t.isDeleted.equals(false))).watch();
+  Stream<List<Account>> watchAll() => (_db.select(_db.accounts)
+    ..where((t) => t.isDeleted.equals(false))
+    ..orderBy([(t) => OrderingTerm.asc(t.sortOrder)])
+  ).watch();
 
   @override
   Stream<Account?> watchById(String id) => (_db.select(_db.accounts)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).watchSingleOrNull();
 
   @override
-  Future<List<Account>> getAll() => (_db.select(_db.accounts)..where((t) => t.isDeleted.equals(false))).get();
+  Future<List<Account>> getAll() => (_db.select(_db.accounts)
+    ..where((t) => t.isDeleted.equals(false))
+    ..orderBy([(t) => OrderingTerm.asc(t.sortOrder)])
+  ).get();
 
   @override
   Future<Account?> getById(String id) => (_db.select(_db.accounts)..where((t) => t.id.equals(id) & t.isDeleted.equals(false))).getSingleOrNull();
@@ -28,7 +34,8 @@ class AccountsLocalDataSourceImpl implements AccountsLocalDataSource {
   @override
   Future<String> create(AccountsCompanion data) async {
     final id = newId();
-    await _db.into(_db.accounts).insert(data.copyWith(id: Value(id)));
+    final count = await (_db.select(_db.accounts)..where((t) => t.isDeleted.equals(false))).get().then((r) => r.length);
+    await _db.into(_db.accounts).insert(data.copyWith(id: Value(id), sortOrder: Value(count)));
     return id;
   }
 
@@ -56,5 +63,24 @@ class AccountsLocalDataSourceImpl implements AccountsLocalDataSource {
         updatedAt: Value(now),
       ),
     );
+  });
+
+  @override
+  Future<void> reorderAccount(String id, int oldIndex, int newIndex) => _db.transaction(() async {
+    final all = await (_db.select(_db.accounts)
+      ..where((t) => t.isDeleted.equals(false))
+      ..orderBy([(t) => OrderingTerm.asc(t.sortOrder)])
+    ).get();
+
+    final moved = all.firstWhere((a) => a.id == id);
+    final sameType = all.where((a) => a.type == moved.type).toList();
+    final item = sameType.removeAt(oldIndex);
+    sameType.insert(newIndex, item);
+
+    for (var i = 0; i < sameType.length; i++) {
+      await (_db.update(_db.accounts)..where((t) => t.id.equals(sameType[i].id))).write(
+        AccountsCompanion(sortOrder: Value(i), updatedAt: Value(DateTime.now().toUtc())),
+      );
+    }
   });
 }

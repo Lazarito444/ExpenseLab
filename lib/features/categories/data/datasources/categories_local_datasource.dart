@@ -45,4 +45,9 @@ abstract class CategoriesLocalDataSource {
   /// Soft-deletes the category: sets `isDeleted = true` and stamps `deletedAt`
   /// and `updatedAt` to the current time. The row is retained in the database.
   Future<void> delete(String id);
+
+  /// Reorders the top-level category from [oldIndex] to [newIndex] within its
+  /// [CategoryType] group. All top-level categories of the same type are
+  /// re-indexed atomically so their [sortOrder] values remain contiguous.
+  Future<void> reorderCategory(String id, int oldIndex, int newIndex);
 }

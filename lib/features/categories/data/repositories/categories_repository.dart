@@ -40,4 +40,9 @@ class CategoriesRepository {
 
   /// Soft-deletes the category identified by [id].
   Future<void> delete(String id) => _local.delete(id);
+
+  /// Reorders the top-level category from [oldIndex] to [newIndex] within
+  /// its type group.
+  Future<void> reorderCategory(String id, int oldIndex, int newIndex) =>
+      _local.reorderCategory(id, oldIndex, newIndex);
 }

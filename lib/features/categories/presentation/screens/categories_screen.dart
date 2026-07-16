@@ -1,3 +1,4 @@
+import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
@@ -10,14 +11,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class CategoriesScreen extends ConsumerWidget {
+class CategoriesScreen extends ConsumerStatefulWidget {
   const CategoriesScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CategoriesScreen> createState() => _CategoriesScreenState();
+}
+
+class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
+  List<CategoryModel> _income = [];
+  List<CategoryModel> _expenses = [];
+
+  static bool _idOrderMatches(List<CategoryModel> a, List<CategoryModel> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i].id != b[i].id) return false;
+    }
+    return true;
+  }
+
+  void _syncIncome(List<Category> cats) {
+    final models = cats.map(CategoryModel.fromCategory).toList();
+    if (!_idOrderMatches(_income, models)) {
+      setState(() => _income = models);
+    }
+  }
+
+  void _syncExpenses(List<Category> cats) {
+    final models = cats.map(CategoryModel.fromCategory).toList();
+    if (!_idOrderMatches(_expenses, models)) {
+      setState(() => _expenses = models);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final t = context.t;
+
+    ref.listen(categoriesByTypeProvider(CategoryType.income), (prev, next) {
+      next.whenData(_syncIncome);
+    });
+    ref.listen(categoriesByTypeProvider(CategoryType.expense), (prev, next) {
+      next.whenData(_syncExpenses);
+    });
+
     final incomeAsync = ref.watch(categoriesByTypeProvider(CategoryType.income));
     final expenseAsync = ref.watch(categoriesByTypeProvider(CategoryType.expense));
+
+    if (_income.isEmpty) {
+      incomeAsync.whenData((cats) {
+        if (_income.isEmpty) _income = cats.map(CategoryModel.fromCategory).toList();
+      });
+    }
+    if (_expenses.isEmpty) {
+      expenseAsync.whenData((cats) {
+        if (_expenses.isEmpty) _expenses = cats.map(CategoryModel.fromCategory).toList();
+      });
+    }
 
     return Scaffold(
       backgroundColor: context.appColors.scaffoldBackground,
@@ -49,10 +99,7 @@ class CategoriesScreen extends ConsumerWidget {
             return Center(child: Text(expenseAsync.error.toString()));
           }
 
-          final income = (incomeAsync.value ?? []).map(CategoryModel.fromCategory).toList();
-          final expenses = (expenseAsync.value ?? []).map(CategoryModel.fromCategory).toList();
-
-          if (income.isEmpty && expenses.isEmpty) {
+          if (_income.isEmpty && _expenses.isEmpty) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(32),
@@ -73,33 +120,63 @@ class CategoriesScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             children: [
               const SizedBox(height: 12),
-              if (income.isNotEmpty) ...[
+              if (_income.isNotEmpty) ...[
                 _SectionHeader(
                   title: t.categories.income,
-                  count: income.length,
+                  count: _income.length,
                   isIncome: true,
                 ),
                 const SizedBox(height: 12),
-                ...income.map(
-                  (model) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _CategoryCard(model: model),
-                  ),
+                ReorderableListView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  buildDefaultDragHandles: false,
+                  onReorderItem: (oldIndex, newIndex) {
+                    final item = _income.removeAt(oldIndex);
+                    _income.insert(newIndex, item);
+                    setState(() {});
+                    ref.read(categoriesRepositoryProvider).reorderCategory(
+                      item.id, oldIndex, newIndex,
+                    );
+                  },
+                  children: [
+                    for (var i = 0; i < _income.length; i++)
+                      Padding(
+                        key: ValueKey(_income[i].id),
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _CategoryCard(model: _income[i], index: i),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 12),
               ],
-              if (expenses.isNotEmpty) ...[
+              if (_expenses.isNotEmpty) ...[
                 _SectionHeader(
                   title: t.categories.expenses,
-                  count: expenses.length,
+                  count: _expenses.length,
                   isIncome: false,
                 ),
                 const SizedBox(height: 12),
-                ...expenses.map(
-                  (model) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _CategoryCard(model: model),
-                  ),
+                ReorderableListView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  buildDefaultDragHandles: false,
+                  onReorderItem: (oldIndex, newIndex) {
+                    final item = _expenses.removeAt(oldIndex);
+                    _expenses.insert(newIndex, item);
+                    setState(() {});
+                    ref.read(categoriesRepositoryProvider).reorderCategory(
+                      item.id, oldIndex, newIndex,
+                    );
+                  },
+                  children: [
+                    for (var i = 0; i < _expenses.length; i++)
+                      Padding(
+                        key: ValueKey(_expenses[i].id),
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _CategoryCard(model: _expenses[i], index: i),
+                      ),
+                  ],
                 ),
               ],
             ],
@@ -163,9 +240,10 @@ class _SectionHeader extends StatelessWidget {
 }
 
 class _CategoryCard extends ConsumerWidget {
-  const _CategoryCard({required this.model});
+  const _CategoryCard({required this.model, required this.index});
 
   final CategoryModel model;
+  final int index;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -218,6 +296,17 @@ class _CategoryCard extends ConsumerWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+            ReorderableDragStartListener(
+              index: index,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: Icon(
+                  Icons.drag_indicator,
+                  color: Colors.grey.shade400,
+                  size: 20,
+                ),
               ),
             ),
             Icon(Icons.chevron_right_rounded, color: Colors.grey.shade400),

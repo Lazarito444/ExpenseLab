@@ -18,4 +18,6 @@ class Categories extends Table with SoftDeleteTable {
 
   /// Type of the category (income, expense).
   IntColumn get type => intEnum<CategoryType>()();
+
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
 }

@@ -18,4 +18,6 @@ class Accounts extends Table with SoftDeleteTable {
 
   /// Icon name from [Icons] class.
   TextColumn get icon => text()();
+
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
 }

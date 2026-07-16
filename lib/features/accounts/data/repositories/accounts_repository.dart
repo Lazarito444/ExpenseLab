@@ -33,4 +33,8 @@ class AccountsRepository {
 
   /// Soft-deletes the account identified by [id].
   Future<void> delete(String id) => _local.delete(id);
+
+  /// Reorders the account from [oldIndex] to [newIndex] within its type group.
+  Future<void> reorderAccount(String id, int oldIndex, int newIndex) =>
+      _local.reorderAccount(id, oldIndex, newIndex);
 }

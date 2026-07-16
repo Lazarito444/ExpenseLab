@@ -13,16 +13,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class AccountsScreen extends ConsumerWidget {
+class AccountsScreen extends ConsumerStatefulWidget {
   const AccountsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AccountsScreen> createState() => _AccountsScreenState();
+}
+
+class _AccountsScreenState extends ConsumerState<AccountsScreen> {
+  List<AccountModel> _cashAccounts = [];
+  List<AccountModel> _bankAccounts = [];
+  List<AccountModel> _creditCards = [];
+
+  static bool _idOrderMatches(List<AccountModel> a, List<AccountModel> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i].id != b[i].id) return false;
+    }
+    return true;
+  }
+
+  void _syncModels(List<AccountModel> models) {
+    final cash = models.where((a) => a.type == AccountType.cash).toList();
+    final bank = models.where((a) => a.type == AccountType.bankAccount).toList();
+    final credit = models.where((a) => a.type == AccountType.creditCard).toList();
+
+    if (!_idOrderMatches(_cashAccounts, cash) ||
+        !_idOrderMatches(_bankAccounts, bank) ||
+        !_idOrderMatches(_creditCards, credit)) {
+      setState(() {
+        _cashAccounts = cash;
+        _bankAccounts = bank;
+        _creditCards = credit;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final t = context.t;
     final accountsAsync = ref.watch(accountsProvider);
     final models = ref.watch(accountModelsProvider);
     final totalNetWorth = ref.watch(totalNetWorthProvider);
     final currency = ref.watch(currencyProvider);
+
+    ref.listen(accountModelsProvider, (prev, next) {
+      _syncModels(next);
+    });
+
+    if (_cashAccounts.isEmpty && _bankAccounts.isEmpty && _creditCards.isEmpty) {
+      _syncModels(models);
+    }
 
     return Scaffold(
       backgroundColor: context.appColors.scaffoldBackground,
@@ -46,11 +87,7 @@ class AccountsScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text(e.toString())),
         data: (_) {
-          final cashAccounts = models.where((a) => a.type == AccountType.cash).toList();
-          final bankAccounts = models.where((a) => a.type == AccountType.bankAccount).toList();
-          final creditCards = models.where((a) => a.type == AccountType.creditCard).toList();
-
-          if (cashAccounts.isEmpty && bankAccounts.isEmpty && creditCards.isEmpty) {
+          if (_cashAccounts.isEmpty && _bankAccounts.isEmpty && _creditCards.isEmpty) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(32),
@@ -72,36 +109,81 @@ class AccountsScreen extends ConsumerWidget {
             children: [
               _NetWorthCard(totalNetWorth: totalNetWorth, currency: currency),
               const SizedBox(height: 28),
-              if (cashAccounts.isNotEmpty) ...[
+              if (_cashAccounts.isNotEmpty) ...[
                 _SectionHeader(title: t.accounts.cash_accounts),
                 const SizedBox(height: 12),
-                ...cashAccounts.map(
-                  (model) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _AccountCard(model: model),
-                  ),
+                ReorderableListView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  buildDefaultDragHandles: false,
+                  onReorderItem: (oldIndex, newIndex) {
+                    final item = _cashAccounts.removeAt(oldIndex);
+                    _cashAccounts.insert(newIndex, item);
+                    setState(() {});
+                    ref.read(accountsRepositoryProvider).reorderAccount(
+                      item.id, oldIndex, newIndex,
+                    );
+                  },
+                  children: [
+                    for (var i = 0; i < _cashAccounts.length; i++)
+                      Padding(
+                        key: ValueKey(_cashAccounts[i].id),
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _AccountCard(model: _cashAccounts[i], index: i),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 12),
               ],
-              if (bankAccounts.isNotEmpty) ...[
+              if (_bankAccounts.isNotEmpty) ...[
                 _SectionHeader(title: t.accounts.bank_accounts),
                 const SizedBox(height: 12),
-                ...bankAccounts.map(
-                  (model) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _AccountCard(model: model),
-                  ),
+                ReorderableListView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  buildDefaultDragHandles: false,
+                  onReorderItem: (oldIndex, newIndex) {
+                    final item = _bankAccounts.removeAt(oldIndex);
+                    _bankAccounts.insert(newIndex, item);
+                    setState(() {});
+                    ref.read(accountsRepositoryProvider).reorderAccount(
+                      item.id, oldIndex, newIndex,
+                    );
+                  },
+                  children: [
+                    for (var i = 0; i < _bankAccounts.length; i++)
+                      Padding(
+                        key: ValueKey(_bankAccounts[i].id),
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _AccountCard(model: _bankAccounts[i], index: i),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 12),
               ],
-              if (creditCards.isNotEmpty) ...[
+              if (_creditCards.isNotEmpty) ...[
                 _SectionHeader(title: t.accounts.credit_cards),
                 const SizedBox(height: 12),
-                ...creditCards.map(
-                  (model) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _AccountCard(model: model),
-                  ),
+                ReorderableListView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  buildDefaultDragHandles: false,
+                  onReorderItem: (oldIndex, newIndex) {
+                    final item = _creditCards.removeAt(oldIndex);
+                    _creditCards.insert(newIndex, item);
+                    setState(() {});
+                    ref.read(accountsRepositoryProvider).reorderAccount(
+                      item.id, oldIndex, newIndex,
+                    );
+                  },
+                  children: [
+                    for (var i = 0; i < _creditCards.length; i++)
+                      Padding(
+                        key: ValueKey(_creditCards[i].id),
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _AccountCard(model: _creditCards[i], index: i),
+                      ),
+                  ],
                 ),
               ],
             ],
@@ -227,9 +309,10 @@ class _SectionHeader extends StatelessWidget {
 }
 
 class _AccountCard extends StatelessWidget {
-  const _AccountCard({required this.model});
+  const _AccountCard({required this.model, required this.index});
 
   final AccountModel model;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -314,21 +397,37 @@ class _AccountCard extends StatelessWidget {
                     color: context.colorScheme.outline,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => context.push(AppRoutes.accountEdit(model.id)),
-                  child: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: context.colorScheme.primary.withValues(alpha: 0.10),
-                      shape: BoxShape.circle,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ReorderableDragStartListener(
+                      index: index,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Icon(
+                          Icons.drag_indicator,
+                          color: context.colorScheme.outline,
+                          size: 20,
+                        ),
+                      ),
                     ),
-                    child: Icon(
-                      Icons.edit_outlined,
-                      size: 16,
-                      color: context.colorScheme.primary,
+                    GestureDetector(
+                      onTap: () => context.push(AppRoutes.accountEdit(model.id)),
+                      child: Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.primary.withValues(alpha: 0.10),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.edit_outlined,
+                          size: 16,
+                          color: context.colorScheme.primary,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),

@@ -45,42 +45,49 @@ List<CategoriesCompanion> _expenseCategories(TranslationsSeedEn s) => [
         icon: const Value('restaurant'),
         color: const Value(0xFFFF9800),
         type: const Value(CategoryType.expense),
+        sortOrder: const Value(0),
       ),
       CategoriesCompanion(
         name: Value(s.categories.housing),
         icon: const Value('home'),
         color: const Value(0xFF607D8B),
         type: const Value(CategoryType.expense),
+        sortOrder: const Value(1),
       ),
       CategoriesCompanion(
         name: Value(s.categories.transportation),
         icon: const Value('directions_car'),
         color: const Value(0xFF2196F3),
         type: const Value(CategoryType.expense),
+        sortOrder: const Value(2),
       ),
       CategoriesCompanion(
         name: Value(s.categories.health),
         icon: const Value('medical_services'),
         color: const Value(0xFFF44336),
         type: const Value(CategoryType.expense),
+        sortOrder: const Value(3),
       ),
       CategoriesCompanion(
         name: Value(s.categories.entertainment),
         icon: const Value('movie'),
         color: const Value(0xFF9C27B0),
         type: const Value(CategoryType.expense),
+        sortOrder: const Value(4),
       ),
       CategoriesCompanion(
         name: Value(s.categories.shopping),
         icon: const Value('shopping_bag'),
         color: const Value(0xFFE91E63),
         type: const Value(CategoryType.expense),
+        sortOrder: const Value(5),
       ),
       CategoriesCompanion(
         name: Value(s.categories.education),
         icon: const Value('school'),
         color: const Value(0xFF3F51B5),
         type: const Value(CategoryType.expense),
+        sortOrder: const Value(6),
       ),
     ];
 
@@ -90,18 +97,21 @@ List<CategoriesCompanion> _incomeCategories(TranslationsSeedEn s) => [
         icon: const Value('work'),
         color: const Value(0xFF4CAF50),
         type: const Value(CategoryType.income),
+        sortOrder: const Value(0),
       ),
       CategoriesCompanion(
         name: Value(s.categories.freelance),
         icon: const Value('computer'),
         color: const Value(0xFF009688),
         type: const Value(CategoryType.income),
+        sortOrder: const Value(1),
       ),
       CategoriesCompanion(
         name: Value(s.categories.investment),
         icon: const Value('trending_up'),
         color: const Value(0xFF2196F3),
         type: const Value(CategoryType.income),
+        sortOrder: const Value(2),
       ),
     ];
 
@@ -110,6 +120,7 @@ AccountsCompanion _cashAccount(TranslationsSeedEn s) => AccountsCompanion(
       type: const Value(AccountType.cash),
       currencyCode: const Value('USD'),
       icon: const Value('account_balance_wallet'),
+      sortOrder: const Value(0),
     );
 
 AccountsCompanion _bankAccount(TranslationsSeedEn s) => AccountsCompanion(
@@ -117,4 +128,5 @@ AccountsCompanion _bankAccount(TranslationsSeedEn s) => AccountsCompanion(
       type: const Value(AccountType.bankAccount),
       currencyCode: const Value('USD'),
       icon: const Value('account_balance'),
+      sortOrder: const Value(1),
     );
