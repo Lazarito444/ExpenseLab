@@ -11,7 +11,8 @@
     "see_all": "See All",
     "preview": "Preview",
     "yesterday": "Yesterday",
-    "got_it": "Got it"
+    "show_as_transaction": "Show as transaction",
+    "update_silently": "Update silently"
   },
   "home": {
     "total_balance": "TOTAL BALANCE",
@@ -268,7 +269,9 @@
       "create_button": "Create Account",
       "name_required": "Please enter an account name",
       "balance_invalid": "Please enter a valid balance",
-      "success": "Account created successfully"
+      "success": "Account created successfully",
+      "balance_adjusted_title": "Initial Balance",
+      "balance_adjusted_message": "How should we record this initial balance?"
     },
     "edit": {
       "title": "Edit Account",
@@ -279,7 +282,7 @@
       "error_loading": "Error loading account",
       "balance_adjustment_note": "Balance adjustment",
       "balance_adjusted_title": "Balance Adjusted",
-      "balance_adjusted_message": "This adjustment will be reflected across your Dashboard, Calendar, Budgets, and Analytics.",
+      "balance_adjusted_message": "How should we record this adjustment?",
       "success_update": "Account updated successfully",
       "success_delete": "Account deleted successfully"
     }

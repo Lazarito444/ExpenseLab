@@ -29,7 +29,7 @@ class BudgetsScreen extends ConsumerWidget {
 
     final budgets = ref.watch(budgetsProvider).value ?? [];
     final allCategories = ref.watch(categoriesProvider).value ?? [];
-    final transactions = ref.watch(transactionsProvider).value ?? [];
+    final transactions = ref.watch(visibleTransactionsProvider);
     final isLoading = ref.watch(budgetsProvider).isLoading;
     final accounts = ref.watch(accountModelsProvider);
     final allRates = ref.watch(exchangeRateModelsProvider);

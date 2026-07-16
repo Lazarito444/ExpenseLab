@@ -51,6 +51,31 @@ final transactionsByAccountProvider = StreamProvider.family<List<Transaction>, S
   return ref.watch(transactionsRepositoryProvider).watchByAccountId(accountId);
 });
 
+// ── Visible-only providers ─────────────────────────────────────────────────────
+
+/// All non-deleted transactions that are marked as visible ([Transaction.isVisible]
+/// is `true`). Invisible transactions are excluded from all UI lists, charts,
+/// budgets, analytics, and reports but still affect account balances.
+///
+/// Usage: `ref.watch(visibleTransactionsProvider)`.
+final visibleTransactionsProvider = Provider<List<Transaction>>((ref) {
+  return ref.watch(transactionsProvider).maybeWhen(
+    data: (txs) => txs.where((t) => t.isVisible).toList(),
+    orElse: () => [],
+  );
+});
+
+/// All visible transactions whose source *or* destination account matches
+/// [accountId].
+///
+/// Usage: `ref.watch(visibleTransactionsByAccountProvider('account-id'))`.
+final visibleTransactionsByAccountProvider = Provider.family<List<Transaction>, String>((ref, accountId) {
+  return ref.watch(transactionsByAccountProvider(accountId)).maybeWhen(
+    data: (txs) => txs.where((t) => t.isVisible).toList(),
+    orElse: () => [],
+  );
+});
+
 // ── TransactionImages ─────────────────────────────────────────────────────────
 
 /// Provides [TransactionImagesLocalDataSourceImpl] bound to the

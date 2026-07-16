@@ -1371,6 +1371,21 @@ class $TransactionsTable extends Transactions
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _isVisibleMeta = const VerificationMeta(
+    'isVisible',
+  );
+  @override
+  late final GeneratedColumn<bool> isVisible = GeneratedColumn<bool>(
+    'is_visible',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_visible" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1388,6 +1403,7 @@ class $TransactionsTable extends Transactions
     categoryId,
     exchangeRate,
     recurrenceId,
+    isVisible,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1499,6 +1515,12 @@ class $TransactionsTable extends Transactions
         ),
       );
     }
+    if (data.containsKey('is_visible')) {
+      context.handle(
+        _isVisibleMeta,
+        isVisible.isAcceptableOrUnknown(data['is_visible']!, _isVisibleMeta),
+      );
+    }
     return context;
   }
 
@@ -1570,6 +1592,10 @@ class $TransactionsTable extends Transactions
         DriftSqlType.string,
         data['${effectivePrefix}recurrence_id'],
       ),
+      isVisible: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_visible'],
+      )!,
     );
   }
 
@@ -1625,6 +1651,11 @@ class Transaction extends DataClass implements Insertable<Transaction> {
   /// ID of the template transaction this occurrence was generated from.
   /// Null for regular transactions and recurrence templates themselves.
   final String? recurrenceId;
+
+  /// Whether this transaction is visible in the UI. Invisible transactions
+  /// still affect account balances but are hidden from all lists, charts,
+  /// budgets, analytics, and reports.
+  final bool isVisible;
   const Transaction({
     required this.id,
     required this.createdAt,
@@ -1641,6 +1672,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     this.categoryId,
     this.exchangeRate,
     this.recurrenceId,
+    required this.isVisible,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1678,6 +1710,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     if (!nullToAbsent || recurrenceId != null) {
       map['recurrence_id'] = Variable<String>(recurrenceId);
     }
+    map['is_visible'] = Variable<bool>(isVisible);
     return map;
   }
 
@@ -1710,6 +1743,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       recurrenceId: recurrenceId == null && nullToAbsent
           ? const Value.absent()
           : Value(recurrenceId),
+      isVisible: Value(isVisible),
     );
   }
 
@@ -1736,6 +1770,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       categoryId: serializer.fromJson<String?>(json['categoryId']),
       exchangeRate: serializer.fromJson<double?>(json['exchangeRate']),
       recurrenceId: serializer.fromJson<String?>(json['recurrenceId']),
+      isVisible: serializer.fromJson<bool>(json['isVisible']),
     );
   }
   @override
@@ -1759,6 +1794,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       'categoryId': serializer.toJson<String?>(categoryId),
       'exchangeRate': serializer.toJson<double?>(exchangeRate),
       'recurrenceId': serializer.toJson<String?>(recurrenceId),
+      'isVisible': serializer.toJson<bool>(isVisible),
     };
   }
 
@@ -1778,6 +1814,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     Value<String?> categoryId = const Value.absent(),
     Value<double?> exchangeRate = const Value.absent(),
     Value<String?> recurrenceId = const Value.absent(),
+    bool? isVisible,
   }) => Transaction(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
@@ -1794,6 +1831,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     categoryId: categoryId.present ? categoryId.value : this.categoryId,
     exchangeRate: exchangeRate.present ? exchangeRate.value : this.exchangeRate,
     recurrenceId: recurrenceId.present ? recurrenceId.value : this.recurrenceId,
+    isVisible: isVisible ?? this.isVisible,
   );
   Transaction copyWithCompanion(TransactionsCompanion data) {
     return Transaction(
@@ -1820,6 +1858,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
       recurrenceId: data.recurrenceId.present
           ? data.recurrenceId.value
           : this.recurrenceId,
+      isVisible: data.isVisible.present ? data.isVisible.value : this.isVisible,
     );
   }
 
@@ -1840,7 +1879,8 @@ class Transaction extends DataClass implements Insertable<Transaction> {
           ..write('toAccountId: $toAccountId, ')
           ..write('categoryId: $categoryId, ')
           ..write('exchangeRate: $exchangeRate, ')
-          ..write('recurrenceId: $recurrenceId')
+          ..write('recurrenceId: $recurrenceId, ')
+          ..write('isVisible: $isVisible')
           ..write(')'))
         .toString();
   }
@@ -1862,6 +1902,7 @@ class Transaction extends DataClass implements Insertable<Transaction> {
     categoryId,
     exchangeRate,
     recurrenceId,
+    isVisible,
   );
   @override
   bool operator ==(Object other) =>
@@ -1881,7 +1922,8 @@ class Transaction extends DataClass implements Insertable<Transaction> {
           other.toAccountId == this.toAccountId &&
           other.categoryId == this.categoryId &&
           other.exchangeRate == this.exchangeRate &&
-          other.recurrenceId == this.recurrenceId);
+          other.recurrenceId == this.recurrenceId &&
+          other.isVisible == this.isVisible);
 }
 
 class TransactionsCompanion extends UpdateCompanion<Transaction> {
@@ -1900,6 +1942,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
   final Value<String?> categoryId;
   final Value<double?> exchangeRate;
   final Value<String?> recurrenceId;
+  final Value<bool> isVisible;
   final Value<int> rowid;
   const TransactionsCompanion({
     this.id = const Value.absent(),
@@ -1917,6 +1960,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     this.categoryId = const Value.absent(),
     this.exchangeRate = const Value.absent(),
     this.recurrenceId = const Value.absent(),
+    this.isVisible = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   TransactionsCompanion.insert({
@@ -1935,6 +1979,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     this.categoryId = const Value.absent(),
     this.exchangeRate = const Value.absent(),
     this.recurrenceId = const Value.absent(),
+    this.isVisible = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        type = Value(type),
@@ -1957,6 +2002,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     Expression<String>? categoryId,
     Expression<double>? exchangeRate,
     Expression<String>? recurrenceId,
+    Expression<bool>? isVisible,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1975,6 +2021,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
       if (categoryId != null) 'category_id': categoryId,
       if (exchangeRate != null) 'exchange_rate': exchangeRate,
       if (recurrenceId != null) 'recurrence_id': recurrenceId,
+      if (isVisible != null) 'is_visible': isVisible,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1995,6 +2042,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     Value<String?>? categoryId,
     Value<double?>? exchangeRate,
     Value<String?>? recurrenceId,
+    Value<bool>? isVisible,
     Value<int>? rowid,
   }) {
     return TransactionsCompanion(
@@ -2013,6 +2061,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
       categoryId: categoryId ?? this.categoryId,
       exchangeRate: exchangeRate ?? this.exchangeRate,
       recurrenceId: recurrenceId ?? this.recurrenceId,
+      isVisible: isVisible ?? this.isVisible,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2067,6 +2116,9 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
     if (recurrenceId.present) {
       map['recurrence_id'] = Variable<String>(recurrenceId.value);
     }
+    if (isVisible.present) {
+      map['is_visible'] = Variable<bool>(isVisible.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -2091,6 +2143,7 @@ class TransactionsCompanion extends UpdateCompanion<Transaction> {
           ..write('categoryId: $categoryId, ')
           ..write('exchangeRate: $exchangeRate, ')
           ..write('recurrenceId: $recurrenceId, ')
+          ..write('isVisible: $isVisible, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -6037,6 +6090,7 @@ typedef $$TransactionsTableCreateCompanionBuilder =
       Value<String?> categoryId,
       Value<double?> exchangeRate,
       Value<String?> recurrenceId,
+      Value<bool> isVisible,
       Value<int> rowid,
     });
 typedef $$TransactionsTableUpdateCompanionBuilder =
@@ -6056,6 +6110,7 @@ typedef $$TransactionsTableUpdateCompanionBuilder =
       Value<String?> categoryId,
       Value<double?> exchangeRate,
       Value<String?> recurrenceId,
+      Value<bool> isVisible,
       Value<int> rowid,
     });
 
@@ -6212,6 +6267,11 @@ class $$TransactionsTableFilterComposer
 
   ColumnFilters<String> get recurrenceId => $composableBuilder(
     column: $table.recurrenceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isVisible => $composableBuilder(
+    column: $table.isVisible,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -6379,6 +6439,11 @@ class $$TransactionsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get isVisible => $composableBuilder(
+    column: $table.isVisible,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$AccountsTableOrderingComposer get accountId {
     final $$AccountsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -6497,6 +6562,9 @@ class $$TransactionsTableAnnotationComposer
     column: $table.recurrenceId,
     builder: (column) => column,
   );
+
+  GeneratedColumn<bool> get isVisible =>
+      $composableBuilder(column: $table.isVisible, builder: (column) => column);
 
   $$AccountsTableAnnotationComposer get accountId {
     final $$AccountsTableAnnotationComposer composer = $composerBuilder(
@@ -6642,6 +6710,7 @@ class $$TransactionsTableTableManager
                 Value<String?> categoryId = const Value.absent(),
                 Value<double?> exchangeRate = const Value.absent(),
                 Value<String?> recurrenceId = const Value.absent(),
+                Value<bool> isVisible = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TransactionsCompanion(
                 id: id,
@@ -6659,6 +6728,7 @@ class $$TransactionsTableTableManager
                 categoryId: categoryId,
                 exchangeRate: exchangeRate,
                 recurrenceId: recurrenceId,
+                isVisible: isVisible,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -6678,6 +6748,7 @@ class $$TransactionsTableTableManager
                 Value<String?> categoryId = const Value.absent(),
                 Value<double?> exchangeRate = const Value.absent(),
                 Value<String?> recurrenceId = const Value.absent(),
+                Value<bool> isVisible = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TransactionsCompanion.insert(
                 id: id,
@@ -6695,6 +6766,7 @@ class $$TransactionsTableTableManager
                 categoryId: categoryId,
                 exchangeRate: exchangeRate,
                 recurrenceId: recurrenceId,
+                isVisible: isVisible,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

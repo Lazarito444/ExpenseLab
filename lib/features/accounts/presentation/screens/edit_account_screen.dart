@@ -127,7 +127,12 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
           _originalBalance;
       final diff = newBalance - _originalBalance;
       final hasAdjustment = diff.abs() > 0.001;
+
       if (hasAdjustment) {
+        if (!mounted) return;
+        final showAsTransaction = await _showBalanceAdjustedSheet(context);
+        if (!mounted) return;
+
         await txRepo.create(
           TransactionsCompanion(
             type: drift.Value(
@@ -137,14 +142,9 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
             date: drift.Value(DateTime.now()),
             accountId: drift.Value(widget.accountId),
             note: drift.Value(t.accounts.edit.balance_adjustment_note),
+            isVisible: drift.Value(showAsTransaction),
           ),
         );
-      }
-
-      if (!mounted) return;
-
-      if (hasAdjustment) {
-        await _showBalanceAdjustedSheet(context);
       }
 
       if (!mounted) return;
@@ -451,10 +451,10 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     );
   }
 
-  Future<void> _showBalanceAdjustedSheet(BuildContext context) async {
+  Future<bool> _showBalanceAdjustedSheet(BuildContext context) async {
     final t = context.t;
     final appColors = context.appColors;
-    await showModalBottomSheet<void>(
+    final result = await showModalBottomSheet<bool>(
       context: context,
       isDismissible: false,
       enableDrag: false,
@@ -470,7 +470,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
             _sheetHandle(context),
             const SizedBox(height: 20),
             Icon(
-              Icons.check_circle_rounded,
+              Icons.info_outline_rounded,
               color: context.colorScheme.primary,
               size: 48,
             ),
@@ -500,7 +500,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.pop(context, true),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: context.colorScheme.primary,
                   foregroundColor: Colors.white,
@@ -509,7 +509,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                   ),
                 ),
                 child: Text(
-                  t.common.got_it,
+                  t.common.show_as_transaction,
                   style: const TextStyle(
                     fontFamily: 'Epilogue',
                     fontSize: 15,
@@ -518,10 +518,33 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                style: TextButton.styleFrom(
+                  foregroundColor: appColors.secondaryLabel,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  t.common.update_silently,
+                  style: const TextStyle(
+                    fontFamily: 'Epilogue',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+    return result ?? true;
   }
 
   // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

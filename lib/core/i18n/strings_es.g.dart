@@ -104,7 +104,8 @@ class _TranslationsCommonEs extends TranslationsCommonEn {
 	@override String get see_all => 'Ver Todo';
 	@override String get preview => 'Vista Previa';
 	@override String get yesterday => 'Ayer';
-	@override String get got_it => 'Entendido';
+	@override String get show_as_transaction => 'Mostrar como movimiento';
+	@override String get update_silently => 'Actualizar sin mostrar';
 }
 
 // Path: home
@@ -666,6 +667,8 @@ class _TranslationsAccountsCreateEs extends TranslationsAccountsCreateEn {
 	@override String get name_required => 'Por favor ingresa un nombre de cuenta';
 	@override String get balance_invalid => 'Por favor ingresa un saldo válido';
 	@override String get success => 'Cuenta creada con éxito';
+	@override String get balance_adjusted_title => 'Saldo Inicial';
+	@override String get balance_adjusted_message => '¿Cómo debemos registrar este saldo inicial?';
 }
 
 // Path: accounts.edit
@@ -683,7 +686,7 @@ class _TranslationsAccountsEditEs extends TranslationsAccountsEditEn {
 	@override String get error_loading => 'Error al cargar la cuenta';
 	@override String get balance_adjustment_note => 'Ajuste de saldo';
 	@override String get balance_adjusted_title => 'Saldo Ajustado';
-	@override String get balance_adjusted_message => 'Este ajuste se reflejará en tu Panel, Calendario, Presupuestos y Análisis.';
+	@override String get balance_adjusted_message => '¿Cómo debemos registrar este ajuste?';
 	@override String get success_update => 'Cuenta actualizada con éxito';
 	@override String get success_delete => 'Cuenta eliminada con éxito';
 }
@@ -778,7 +781,8 @@ extension on TranslationsEs {
 			'common.see_all' => 'Ver Todo',
 			'common.preview' => 'Vista Previa',
 			'common.yesterday' => 'Ayer',
-			'common.got_it' => 'Entendido',
+			'common.show_as_transaction' => 'Mostrar como movimiento',
+			'common.update_silently' => 'Actualizar sin mostrar',
 			'home.total_balance' => 'SALDO TOTAL',
 			'home.monthly_summary' => 'Resumen mensual',
 			'home.income' => 'Ingresos',
@@ -972,6 +976,8 @@ extension on TranslationsEs {
 			'accounts.create.name_required' => 'Por favor ingresa un nombre de cuenta',
 			'accounts.create.balance_invalid' => 'Por favor ingresa un saldo válido',
 			'accounts.create.success' => 'Cuenta creada con éxito',
+			'accounts.create.balance_adjusted_title' => 'Saldo Inicial',
+			'accounts.create.balance_adjusted_message' => '¿Cómo debemos registrar este saldo inicial?',
 			'accounts.edit.title' => 'Editar cuenta',
 			'accounts.edit.edit_button' => 'Editar cuenta',
 			'accounts.edit.delete_button' => 'Eliminar cuenta',
@@ -980,7 +986,7 @@ extension on TranslationsEs {
 			'accounts.edit.error_loading' => 'Error al cargar la cuenta',
 			'accounts.edit.balance_adjustment_note' => 'Ajuste de saldo',
 			'accounts.edit.balance_adjusted_title' => 'Saldo Ajustado',
-			'accounts.edit.balance_adjusted_message' => 'Este ajuste se reflejará en tu Panel, Calendario, Presupuestos y Análisis.',
+			'accounts.edit.balance_adjusted_message' => '¿Cómo debemos registrar este ajuste?',
 			'accounts.edit.success_update' => 'Cuenta actualizada con éxito',
 			'accounts.edit.success_delete' => 'Cuenta eliminada con éxito',
 			'transactions.add_title' => 'Nuevo Movimiento',

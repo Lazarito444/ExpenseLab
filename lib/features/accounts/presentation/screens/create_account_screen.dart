@@ -182,7 +182,12 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
 
       final balance = double.tryParse(_balanceController.text.replaceAll(',', '')) ?? 0.0;
       final hasInitialBalance = balance > 0;
+
       if (hasInitialBalance) {
+        if (!mounted) return;
+        final showAsTransaction = await _showBalanceAdjustedSheet(context);
+        if (!mounted) return;
+
         await txRepo.create(
           TransactionsCompanion(
             type: const drift.Value(TransactionType.income),
@@ -190,14 +195,9 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
             date: drift.Value(DateTime.now()),
             accountId: drift.Value(accountId),
             note: drift.Value(t.accounts.create.initial_balance_note),
+            isVisible: drift.Value(showAsTransaction),
           ),
         );
-      }
-
-      if (!mounted) return;
-
-      if (hasInitialBalance) {
-        await _showBalanceAdjustedSheet(context);
       }
 
       if (mounted) {
@@ -438,10 +438,10 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
     );
   }
 
-  Future<void> _showBalanceAdjustedSheet(BuildContext context) async {
+  Future<bool> _showBalanceAdjustedSheet(BuildContext context) async {
     final t = context.t;
     final appColors = context.appColors;
-    await showModalBottomSheet<void>(
+    final result = await showModalBottomSheet<bool>(
       context: context,
       isDismissible: false,
       enableDrag: false,
@@ -457,13 +457,13 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
             _sheetHandle(context),
             const SizedBox(height: 20),
             Icon(
-              Icons.check_circle_rounded,
+              Icons.info_outline_rounded,
               color: context.colorScheme.primary,
               size: 48,
             ),
             const SizedBox(height: 16),
             Text(
-              t.accounts.edit.balance_adjusted_title,
+              t.accounts.create.balance_adjusted_title,
               style: TextStyle(
                 fontFamily: 'Epilogue',
                 fontSize: 18,
@@ -473,7 +473,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              t.accounts.edit.balance_adjusted_message,
+              t.accounts.create.balance_adjusted_message,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Epilogue',
@@ -487,7 +487,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.pop(context, true),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: context.colorScheme.primary,
                   foregroundColor: Colors.white,
@@ -496,7 +496,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                   ),
                 ),
                 child: Text(
-                  t.common.got_it,
+                  t.common.show_as_transaction,
                   style: const TextStyle(
                     fontFamily: 'Epilogue',
                     fontSize: 15,
@@ -505,10 +505,33 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                style: TextButton.styleFrom(
+                  foregroundColor: appColors.secondaryLabel,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  t.common.update_silently,
+                  style: const TextStyle(
+                    fontFamily: 'Epilogue',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+    return result ?? true;
   }
 
   // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

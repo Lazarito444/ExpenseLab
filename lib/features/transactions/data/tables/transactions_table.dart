@@ -39,4 +39,9 @@ class Transactions extends Table with SoftDeleteTable {
   /// ID of the template transaction this occurrence was generated from.
   /// Null for regular transactions and recurrence templates themselves.
   TextColumn get recurrenceId => text().nullable().named('recurrence_id')();
+
+  /// Whether this transaction is visible in the UI. Invisible transactions
+  /// still affect account balances but are hidden from all lists, charts,
+  /// budgets, analytics, and reports.
+  BoolColumn get isVisible => boolean().withDefault(const Constant(true))();
 }

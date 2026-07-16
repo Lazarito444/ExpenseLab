@@ -124,8 +124,11 @@ class TranslationsCommonEn {
 	/// en: 'Yesterday'
 	String get yesterday => 'Yesterday';
 
-	/// en: 'Got it'
-	String get got_it => 'Got it';
+	/// en: 'Show as transaction'
+	String get show_as_transaction => 'Show as transaction';
+
+	/// en: 'Update silently'
+	String get update_silently => 'Update silently';
 }
 
 // Path: home
@@ -1150,6 +1153,12 @@ class TranslationsAccountsCreateEn {
 
 	/// en: 'Account created successfully'
 	String get success => 'Account created successfully';
+
+	/// en: 'Initial Balance'
+	String get balance_adjusted_title => 'Initial Balance';
+
+	/// en: 'How should we record this initial balance?'
+	String get balance_adjusted_message => 'How should we record this initial balance?';
 }
 
 // Path: accounts.edit
@@ -1184,8 +1193,8 @@ class TranslationsAccountsEditEn {
 	/// en: 'Balance Adjusted'
 	String get balance_adjusted_title => 'Balance Adjusted';
 
-	/// en: 'This adjustment will be reflected across your Dashboard, Calendar, Budgets, and Analytics.'
-	String get balance_adjusted_message => 'This adjustment will be reflected across your Dashboard, Calendar, Budgets, and Analytics.';
+	/// en: 'How should we record this adjustment?'
+	String get balance_adjusted_message => 'How should we record this adjustment?';
 
 	/// en: 'Account updated successfully'
 	String get success_update => 'Account updated successfully';
@@ -1340,7 +1349,8 @@ extension on Translations {
 			'common.see_all' => 'See All',
 			'common.preview' => 'Preview',
 			'common.yesterday' => 'Yesterday',
-			'common.got_it' => 'Got it',
+			'common.show_as_transaction' => 'Show as transaction',
+			'common.update_silently' => 'Update silently',
 			'home.total_balance' => 'TOTAL BALANCE',
 			'home.monthly_summary' => 'Monthly Summary',
 			'home.income' => 'Income',
@@ -1534,6 +1544,8 @@ extension on Translations {
 			'accounts.create.name_required' => 'Please enter an account name',
 			'accounts.create.balance_invalid' => 'Please enter a valid balance',
 			'accounts.create.success' => 'Account created successfully',
+			'accounts.create.balance_adjusted_title' => 'Initial Balance',
+			'accounts.create.balance_adjusted_message' => 'How should we record this initial balance?',
 			'accounts.edit.title' => 'Edit Account',
 			'accounts.edit.edit_button' => 'Edit Account',
 			'accounts.edit.delete_button' => 'Delete Account',
@@ -1542,7 +1554,7 @@ extension on Translations {
 			'accounts.edit.error_loading' => 'Error loading account',
 			'accounts.edit.balance_adjustment_note' => 'Balance adjustment',
 			'accounts.edit.balance_adjusted_title' => 'Balance Adjusted',
-			'accounts.edit.balance_adjusted_message' => 'This adjustment will be reflected across your Dashboard, Calendar, Budgets, and Analytics.',
+			'accounts.edit.balance_adjusted_message' => 'How should we record this adjustment?',
 			'accounts.edit.success_update' => 'Account updated successfully',
 			'accounts.edit.success_delete' => 'Account deleted successfully',
 			'transactions.add_title' => 'Add Transaction',

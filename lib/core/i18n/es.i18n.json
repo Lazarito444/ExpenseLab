@@ -11,7 +11,8 @@
     "see_all": "Ver Todo",
     "preview": "Vista Previa",
     "yesterday": "Ayer",
-    "got_it": "Entendido"
+    "show_as_transaction": "Mostrar como movimiento",
+    "update_silently": "Actualizar sin mostrar"
   },
   "home": {
     "total_balance": "SALDO TOTAL",
@@ -268,7 +269,9 @@
       "create_button": "Crear cuenta",
       "name_required": "Por favor ingresa un nombre de cuenta",
       "balance_invalid": "Por favor ingresa un saldo válido",
-      "success": "Cuenta creada con éxito"
+      "success": "Cuenta creada con éxito",
+      "balance_adjusted_title": "Saldo Inicial",
+      "balance_adjusted_message": "¿Cómo debemos registrar este saldo inicial?"
     },
     "edit": {
       "title": "Editar cuenta",
@@ -279,7 +282,7 @@
       "error_loading": "Error al cargar la cuenta",
       "balance_adjustment_note": "Ajuste de saldo",
       "balance_adjusted_title": "Saldo Ajustado",
-      "balance_adjusted_message": "Este ajuste se reflejará en tu Panel, Calendario, Presupuestos y Análisis.",
+      "balance_adjusted_message": "¿Cómo debemos registrar este ajuste?",
       "success_update": "Cuenta actualizada con éxito",
       "success_delete": "Cuenta eliminada con éxito"
     }

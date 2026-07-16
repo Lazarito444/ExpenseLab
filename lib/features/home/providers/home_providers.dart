@@ -37,111 +37,81 @@ final homeIsCalendarProvider =
   );
 }
 
-/// Sum of all income transactions in the current calendar month.
+/// Sum of all visible income transactions in the current calendar month.
 final monthlyIncomeProvider = Provider<double>((ref) {
-  return ref.watch(transactionsProvider).when(
-    data: (txs) {
-      final r = _thisMonthRange();
-      return txs
-          .where((t) =>
-              t.type == TransactionType.income &&
-              !t.date.isBefore(r.start) &&
-              !t.date.isAfter(r.end))
-          .fold(0.0, (sum, t) => sum + t.amount);
-    },
-    loading: () => 0.0,
-    error: (_, _) => 0.0,
-  );
+  final txs = ref.watch(visibleTransactionsProvider);
+  final r = _thisMonthRange();
+  return txs
+      .where((t) =>
+          t.type == TransactionType.income &&
+          !t.date.isBefore(r.start) &&
+          !t.date.isAfter(r.end))
+      .fold(0.0, (sum, t) => sum + t.amount);
 });
 
-/// Sum of all expense transactions in the current calendar month.
+/// Sum of all visible expense transactions in the current calendar month.
 final monthlyExpenseProvider = Provider<double>((ref) {
-  return ref.watch(transactionsProvider).when(
-    data: (txs) {
-      final r = _thisMonthRange();
-      return txs
-          .where((t) =>
-              t.type == TransactionType.expense &&
-              !t.date.isBefore(r.start) &&
-              !t.date.isAfter(r.end))
-          .fold(0.0, (sum, t) => sum + t.amount);
-    },
-    loading: () => 0.0,
-    error: (_, _) => 0.0,
-  );
+  final txs = ref.watch(visibleTransactionsProvider);
+  final r = _thisMonthRange();
+  return txs
+      .where((t) =>
+          t.type == TransactionType.expense &&
+          !t.date.isBefore(r.start) &&
+          !t.date.isAfter(r.end))
+      .fold(0.0, (sum, t) => sum + t.amount);
 });
 
 /// Savings rate = (income − expense) / income, clamped to [0, 1].
 /// Returns 0 when there is no income this month.
-/// Watches transactionsProvider directly to avoid diamond dependency via
+/// Watches visibleTransactionsProvider directly to avoid diamond dependency via
 /// monthlyIncomeProvider + monthlyExpenseProvider both coming from the same stream.
 final savingsRateProvider = Provider<double>((ref) {
-  return ref.watch(transactionsProvider).when(
-    data: (txs) {
-      final r = _thisMonthRange();
-      double income = 0.0, expense = 0.0;
-      for (final t in txs) {
-        if (t.date.isBefore(r.start) || t.date.isAfter(r.end)) continue;
-        if (t.type == TransactionType.income) income += t.amount;
-        if (t.type == TransactionType.expense) expense += t.amount;
-      }
-      if (income <= 0) return 0.0;
-      return ((income - expense) / income).clamp(0.0, 1.0);
-    },
-    loading: () => 0.0,
-    error: (_, _) => 0.0,
-  );
+  final txs = ref.watch(visibleTransactionsProvider);
+  final r = _thisMonthRange();
+  double income = 0.0, expense = 0.0;
+  for (final t in txs) {
+    if (t.date.isBefore(r.start) || t.date.isAfter(r.end)) continue;
+    if (t.type == TransactionType.income) income += t.amount;
+    if (t.type == TransactionType.expense) expense += t.amount;
+  }
+  if (income <= 0) return 0.0;
+  return ((income - expense) / income).clamp(0.0, 1.0);
 });
 
-/// The 5 most recent transactions across all accounts, sorted newest-first.
+/// The 5 most recent visible transactions across all accounts, sorted newest-first.
 final recentTransactionsProvider = Provider<List<Transaction>>((ref) {
-  return ref.watch(transactionsProvider).when(
-    data: (txs) {
-      final sorted = [...txs]..sort((a, b) => b.date.compareTo(a.date));
-      return sorted.take(5).toList();
-    },
-    loading: () => [],
-    error: (_, _) => [],
-  );
+  final txs = ref.watch(visibleTransactionsProvider);
+  final sorted = [...txs]..sort((a, b) => b.date.compareTo(a.date));
+  return sorted.take(5).toList();
 });
 
 /// Approximate monthly balance change as a fraction of total net worth.
 /// e.g. 0.024 means +2.4%. Returns null when net worth is zero.
-/// Computes income/expense inline from transactionsProvider to avoid the
+/// Computes income/expense inline from visibleTransactionsProvider to avoid the
 /// diamond dependency that occurred when watching monthlyIncomeProvider and
 /// monthlyExpenseProvider separately alongside totalNetWorthProvider.
 final monthlyBalanceChangePctProvider = Provider<double?>((ref) {
   final netWorth = ref.watch(totalNetWorthProvider);
   if (netWorth == 0) return null;
-  return ref.watch(transactionsProvider).when(
-    data: (txs) {
-      final r = _thisMonthRange();
-      double income = 0.0, expense = 0.0;
-      for (final t in txs) {
-        if (t.date.isBefore(r.start) || t.date.isAfter(r.end)) continue;
-        if (t.type == TransactionType.income) income += t.amount;
-        if (t.type == TransactionType.expense) expense += t.amount;
-      }
-      return (income - expense) / netWorth.abs();
-    },
-    loading: () => null,
-    error: (_, _) => null,
-  );
+  final txs = ref.watch(visibleTransactionsProvider);
+  final r = _thisMonthRange();
+  double income = 0.0, expense = 0.0;
+  for (final t in txs) {
+    if (t.date.isBefore(r.start) || t.date.isAfter(r.end)) continue;
+    if (t.type == TransactionType.income) income += t.amount;
+    if (t.type == TransactionType.expense) expense += t.amount;
+  }
+  return (income - expense) / netWorth.abs();
 });
 
-/// All transactions grouped by their calendar day (time stripped).
+/// All visible transactions grouped by their calendar day (time stripped).
 /// Used by the calendar view to mark days that have transactions.
 final transactionsByDateProvider = Provider<Map<DateTime, List<Transaction>>>((ref) {
-  return ref.watch(transactionsProvider).when(
-    data: (txs) {
-      final map = <DateTime, List<Transaction>>{};
-      for (final tx in txs) {
-        final day = DateTime(tx.date.year, tx.date.month, tx.date.day);
-        map.putIfAbsent(day, () => []).add(tx);
-      }
-      return map;
-    },
-    loading: () => {},
-    error: (_, _) => {},
-  );
+  final txs = ref.watch(visibleTransactionsProvider);
+  final map = <DateTime, List<Transaction>>{};
+  for (final tx in txs) {
+    final day = DateTime(tx.date.year, tx.date.month, tx.date.day);
+    map.putIfAbsent(day, () => []).add(tx);
+  }
+  return map;
 });
