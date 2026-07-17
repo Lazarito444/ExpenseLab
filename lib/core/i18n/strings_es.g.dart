@@ -162,6 +162,7 @@ class _TranslationsSettingsEs extends TranslationsSettingsEn {
 	@override late final _TranslationsSettingsCategoriesEs categories = _TranslationsSettingsCategoriesEs._(_root);
 	@override late final _TranslationsSettingsStarredTransactionsEs starred_transactions = _TranslationsSettingsStarredTransactionsEs._(_root);
 	@override late final _TranslationsSettingsSecurityEs security = _TranslationsSettingsSecurityEs._(_root);
+	@override late final _TranslationsSettingsDataManagementEs data_management = _TranslationsSettingsDataManagementEs._(_root);
 	@override late final _TranslationsSettingsDangerZoneEs danger_zone = _TranslationsSettingsDangerZoneEs._(_root);
 }
 
@@ -492,6 +493,50 @@ class _TranslationsSettingsSecurityEs extends TranslationsSettingsSecurityEn {
 	// Translations
 	@override String get title => 'Seguridad';
 	@override late final _TranslationsSettingsSecurityBiometricLoginEs biometric_login = _TranslationsSettingsSecurityBiometricLoginEs._(_root);
+}
+
+// Path: settings.data_management
+class _TranslationsSettingsDataManagementEs extends TranslationsSettingsDataManagementEn {
+	_TranslationsSettingsDataManagementEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Gestión de Datos';
+	@override String get export_title => 'Exportar Datos';
+	@override String get export_subtitle => 'Guarda todos tus datos como un archivo JSON de respaldo';
+	@override String get export_button => 'Exportar Datos';
+	@override String get export_include_images => 'Incluir imágenes de recibos';
+	@override String get export_image_warning => 'Los archivos de exportación con imágenes son mucho más grandes y pueden tardar más en generarse.';
+	@override String get export_in_progress => 'Exportando...';
+	@override String get export_success => 'Datos exportados con éxito';
+	@override String get export_error => 'Error al exportar datos';
+	@override String get import_title => 'Importar Datos';
+	@override String get import_subtitle => 'Restaurar datos desde un archivo de respaldo';
+	@override String get import_recent => 'Respaldos recientes';
+	@override String get import_no_backups => 'No se encontraron respaldos recientes';
+	@override String get import_browse => 'Buscar archivos...';
+	@override String get import_tap_restore => 'Toca un respaldo para restaurarlo';
+	@override String get import_button => 'Importar Datos';
+	@override String get import_in_progress => 'Importando...';
+	@override String get import_confirm_title => '¿Importar Datos?';
+	@override String get import_summary => 'Esto importará:';
+	@override String get import_accounts_count => '{count} cuentas';
+	@override String get import_categories_count => '{count} categorías';
+	@override String get import_transactions_count => '{count} transacciones';
+	@override String get import_images_count => '{count} imágenes de recibos';
+	@override String get import_starred_count => '{count} plantillas destacadas';
+	@override String get import_budgets_count => '{count} presupuestos';
+	@override String get import_goals_count => '{count} metas de ahorro';
+	@override String get import_contributions_count => '{count} contribuciones de ahorro';
+	@override String get import_rates_count => '{count} tasas de cambio';
+	@override String get import_settings => 'Configuración de la app';
+	@override String get import_images_included => 'Incluye imágenes de recibos';
+	@override String get import_confirm_message => 'Esto reemplazará TODOS tus datos existentes. Esta acción no se puede deshacer.';
+	@override String get import_confirm_button => 'Importar Datos';
+	@override String get import_success => 'Datos importados con éxito. Algunos ajustes se aplicarán al reiniciar la app.';
+	@override String get import_error => 'Error al importar datos';
+	@override String get import_invalid_file => 'El archivo seleccionado no contiene datos o no es una copia de seguridad válida.';
 }
 
 // Path: settings.danger_zone
@@ -848,6 +893,41 @@ extension on TranslationsEs {
 			'settings.security.biometric_login.title' => 'Inicio biométrico',
 			'settings.security.biometric_login.subtitle' => 'Usa Face ID o huella para desbloquear',
 			'settings.security.biometric_login.unavailable_snackbar' => 'No hay biometría ni bloqueo de pantalla configurado en este dispositivo.',
+			'settings.data_management.title' => 'Gestión de Datos',
+			'settings.data_management.export_title' => 'Exportar Datos',
+			'settings.data_management.export_subtitle' => 'Guarda todos tus datos como un archivo JSON de respaldo',
+			'settings.data_management.export_button' => 'Exportar Datos',
+			'settings.data_management.export_include_images' => 'Incluir imágenes de recibos',
+			'settings.data_management.export_image_warning' => 'Los archivos de exportación con imágenes son mucho más grandes y pueden tardar más en generarse.',
+			'settings.data_management.export_in_progress' => 'Exportando...',
+			'settings.data_management.export_success' => 'Datos exportados con éxito',
+			'settings.data_management.export_error' => 'Error al exportar datos',
+			'settings.data_management.import_title' => 'Importar Datos',
+			'settings.data_management.import_subtitle' => 'Restaurar datos desde un archivo de respaldo',
+			'settings.data_management.import_recent' => 'Respaldos recientes',
+			'settings.data_management.import_no_backups' => 'No se encontraron respaldos recientes',
+			'settings.data_management.import_browse' => 'Buscar archivos...',
+			'settings.data_management.import_tap_restore' => 'Toca un respaldo para restaurarlo',
+			'settings.data_management.import_button' => 'Importar Datos',
+			'settings.data_management.import_in_progress' => 'Importando...',
+			'settings.data_management.import_confirm_title' => '¿Importar Datos?',
+			'settings.data_management.import_summary' => 'Esto importará:',
+			'settings.data_management.import_accounts_count' => '{count} cuentas',
+			'settings.data_management.import_categories_count' => '{count} categorías',
+			'settings.data_management.import_transactions_count' => '{count} transacciones',
+			'settings.data_management.import_images_count' => '{count} imágenes de recibos',
+			'settings.data_management.import_starred_count' => '{count} plantillas destacadas',
+			'settings.data_management.import_budgets_count' => '{count} presupuestos',
+			'settings.data_management.import_goals_count' => '{count} metas de ahorro',
+			'settings.data_management.import_contributions_count' => '{count} contribuciones de ahorro',
+			'settings.data_management.import_rates_count' => '{count} tasas de cambio',
+			'settings.data_management.import_settings' => 'Configuración de la app',
+			'settings.data_management.import_images_included' => 'Incluye imágenes de recibos',
+			'settings.data_management.import_confirm_message' => 'Esto reemplazará TODOS tus datos existentes. Esta acción no se puede deshacer.',
+			'settings.data_management.import_confirm_button' => 'Importar Datos',
+			'settings.data_management.import_success' => 'Datos importados con éxito. Algunos ajustes se aplicarán al reiniciar la app.',
+			'settings.data_management.import_error' => 'Error al importar datos',
+			'settings.data_management.import_invalid_file' => 'El archivo seleccionado no contiene datos o no es una copia de seguridad válida.',
 			'settings.danger_zone.title' => 'Zona de peligro',
 			'settings.danger_zone.erase_data.title' => 'Borrar todos los datos',
 			'settings.danger_zone.erase_data.subtitle' => 'Elimina permanentemente todos tus datos',

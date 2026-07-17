@@ -24,6 +24,7 @@ class AppRoutes {
   static const settingsCurrency = '/settings/currency';
   static const settingsHomeView = '/settings/home-view';
   static const settingsStarredTransactions = '/settings/starred-transactions';
+  static const settingsDataManagement = '/settings/data-management';
   static const analytics = '/analytics';
   static const exchangeRates = '/exchange-rates';
   static const exchangeRatesCreate = '/exchange-rates/create';

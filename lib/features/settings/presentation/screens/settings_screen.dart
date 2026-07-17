@@ -151,6 +151,18 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 24),
+              buildSectionHeader(t.settings.data_management.title, context),
+              const SizedBox(height: 12),
+              buildSettingsCard(
+                context,
+                child: buildNavTile(
+                  context: context,
+                  label: t.settings.data_management.export_title,
+                  icon: Icons.file_upload_outlined,
+                  onTap: () => context.push(AppRoutes.settingsDataManagement),
+                ),
+              ),
+              const SizedBox(height: 24),
               buildSectionHeader(t.settings.danger_zone.title, context),
               const SizedBox(height: 12),
               buildSettingsCard(

@@ -226,6 +226,7 @@ class TranslationsSettingsEn {
 	late final TranslationsSettingsCategoriesEn categories = TranslationsSettingsCategoriesEn.internal(_root);
 	late final TranslationsSettingsStarredTransactionsEn starred_transactions = TranslationsSettingsStarredTransactionsEn.internal(_root);
 	late final TranslationsSettingsSecurityEn security = TranslationsSettingsSecurityEn.internal(_root);
+	late final TranslationsSettingsDataManagementEn data_management = TranslationsSettingsDataManagementEn.internal(_root);
 	late final TranslationsSettingsDangerZoneEn danger_zone = TranslationsSettingsDangerZoneEn.internal(_root);
 }
 
@@ -823,6 +824,120 @@ class TranslationsSettingsSecurityEn {
 	String get title => 'Security';
 
 	late final TranslationsSettingsSecurityBiometricLoginEn biometric_login = TranslationsSettingsSecurityBiometricLoginEn.internal(_root);
+}
+
+// Path: settings.data_management
+class TranslationsSettingsDataManagementEn {
+	TranslationsSettingsDataManagementEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Data Management'
+	String get title => 'Data Management';
+
+	/// en: 'Export Data'
+	String get export_title => 'Export Data';
+
+	/// en: 'Save all your data as a JSON backup file'
+	String get export_subtitle => 'Save all your data as a JSON backup file';
+
+	/// en: 'Export Data'
+	String get export_button => 'Export Data';
+
+	/// en: 'Include receipt images'
+	String get export_include_images => 'Include receipt images';
+
+	/// en: 'Export files with images are much larger and may take longer to generate.'
+	String get export_image_warning => 'Export files with images are much larger and may take longer to generate.';
+
+	/// en: 'Exporting...'
+	String get export_in_progress => 'Exporting...';
+
+	/// en: 'Data exported successfully'
+	String get export_success => 'Data exported successfully';
+
+	/// en: 'Failed to export data'
+	String get export_error => 'Failed to export data';
+
+	/// en: 'Import Data'
+	String get import_title => 'Import Data';
+
+	/// en: 'Restore data from a backup file'
+	String get import_subtitle => 'Restore data from a backup file';
+
+	/// en: 'Recent backups'
+	String get import_recent => 'Recent backups';
+
+	/// en: 'No recent backups found'
+	String get import_no_backups => 'No recent backups found';
+
+	/// en: 'Browse files...'
+	String get import_browse => 'Browse files...';
+
+	/// en: 'Tap a backup to restore it'
+	String get import_tap_restore => 'Tap a backup to restore it';
+
+	/// en: 'Import Data'
+	String get import_button => 'Import Data';
+
+	/// en: 'Importing...'
+	String get import_in_progress => 'Importing...';
+
+	/// en: 'Import Data?'
+	String get import_confirm_title => 'Import Data?';
+
+	/// en: 'This will import:'
+	String get import_summary => 'This will import:';
+
+	/// en: '{count} accounts'
+	String get import_accounts_count => '{count} accounts';
+
+	/// en: '{count} categories'
+	String get import_categories_count => '{count} categories';
+
+	/// en: '{count} transactions'
+	String get import_transactions_count => '{count} transactions';
+
+	/// en: '{count} receipt images'
+	String get import_images_count => '{count} receipt images';
+
+	/// en: '{count} starred templates'
+	String get import_starred_count => '{count} starred templates';
+
+	/// en: '{count} budgets'
+	String get import_budgets_count => '{count} budgets';
+
+	/// en: '{count} savings goals'
+	String get import_goals_count => '{count} savings goals';
+
+	/// en: '{count} savings contributions'
+	String get import_contributions_count => '{count} savings contributions';
+
+	/// en: '{count} exchange rates'
+	String get import_rates_count => '{count} exchange rates';
+
+	/// en: 'App settings'
+	String get import_settings => 'App settings';
+
+	/// en: 'Includes receipt images'
+	String get import_images_included => 'Includes receipt images';
+
+	/// en: 'This will replace ALL your existing data. This action cannot be undone.'
+	String get import_confirm_message => 'This will replace ALL your existing data. This action cannot be undone.';
+
+	/// en: 'Import Data'
+	String get import_confirm_button => 'Import Data';
+
+	/// en: 'Data imported successfully. Some settings may apply on next restart.'
+	String get import_success => 'Data imported successfully. Some settings may apply on next restart.';
+
+	/// en: 'Failed to import data'
+	String get import_error => 'Failed to import data';
+
+	/// en: 'The selected file contains no data or is not a valid backup.'
+	String get import_invalid_file => 'The selected file contains no data or is not a valid backup.';
 }
 
 // Path: settings.danger_zone
@@ -1434,6 +1549,41 @@ extension on Translations {
 			'settings.security.biometric_login.title' => 'Biometric Login',
 			'settings.security.biometric_login.subtitle' => 'Use Face ID or fingerprint to unlock',
 			'settings.security.biometric_login.unavailable_snackbar' => 'No biometrics or screen lock set up on this device.',
+			'settings.data_management.title' => 'Data Management',
+			'settings.data_management.export_title' => 'Export Data',
+			'settings.data_management.export_subtitle' => 'Save all your data as a JSON backup file',
+			'settings.data_management.export_button' => 'Export Data',
+			'settings.data_management.export_include_images' => 'Include receipt images',
+			'settings.data_management.export_image_warning' => 'Export files with images are much larger and may take longer to generate.',
+			'settings.data_management.export_in_progress' => 'Exporting...',
+			'settings.data_management.export_success' => 'Data exported successfully',
+			'settings.data_management.export_error' => 'Failed to export data',
+			'settings.data_management.import_title' => 'Import Data',
+			'settings.data_management.import_subtitle' => 'Restore data from a backup file',
+			'settings.data_management.import_recent' => 'Recent backups',
+			'settings.data_management.import_no_backups' => 'No recent backups found',
+			'settings.data_management.import_browse' => 'Browse files...',
+			'settings.data_management.import_tap_restore' => 'Tap a backup to restore it',
+			'settings.data_management.import_button' => 'Import Data',
+			'settings.data_management.import_in_progress' => 'Importing...',
+			'settings.data_management.import_confirm_title' => 'Import Data?',
+			'settings.data_management.import_summary' => 'This will import:',
+			'settings.data_management.import_accounts_count' => '{count} accounts',
+			'settings.data_management.import_categories_count' => '{count} categories',
+			'settings.data_management.import_transactions_count' => '{count} transactions',
+			'settings.data_management.import_images_count' => '{count} receipt images',
+			'settings.data_management.import_starred_count' => '{count} starred templates',
+			'settings.data_management.import_budgets_count' => '{count} budgets',
+			'settings.data_management.import_goals_count' => '{count} savings goals',
+			'settings.data_management.import_contributions_count' => '{count} savings contributions',
+			'settings.data_management.import_rates_count' => '{count} exchange rates',
+			'settings.data_management.import_settings' => 'App settings',
+			'settings.data_management.import_images_included' => 'Includes receipt images',
+			'settings.data_management.import_confirm_message' => 'This will replace ALL your existing data. This action cannot be undone.',
+			'settings.data_management.import_confirm_button' => 'Import Data',
+			'settings.data_management.import_success' => 'Data imported successfully. Some settings may apply on next restart.',
+			'settings.data_management.import_error' => 'Failed to import data',
+			'settings.data_management.import_invalid_file' => 'The selected file contains no data or is not a valid backup.',
 			'settings.danger_zone.title' => 'Danger Zone',
 			'settings.danger_zone.erase_data.title' => 'Erase All Data',
 			'settings.danger_zone.erase_data.subtitle' => 'Permanently delete all your data',

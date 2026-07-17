@@ -10,6 +10,7 @@ import 'package:expenselab/features/categories/presentation/screens/categories_s
 import 'package:expenselab/features/categories/presentation/screens/category_details_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/create_category_screen.dart';
 import 'package:expenselab/features/categories/presentation/screens/edit_category_screen.dart';
+import 'package:expenselab/features/data_manager/presentation/screens/import_export_screen.dart';
 import 'package:expenselab/features/exchange_rates/presentation/screens/add_edit_exchange_rate_screen.dart';
 import 'package:expenselab/features/exchange_rates/presentation/screens/exchange_rates_screen.dart';
 import 'package:expenselab/features/home/presentation/screens/home_screen.dart';
@@ -96,6 +97,10 @@ final routerConfig = GoRouter(
         GoRoute(
           path: 'starred-transactions',
           builder: (context, state) => const StarredTransactionsScreen(),
+        ),
+        GoRoute(
+          path: 'data-management',
+          builder: (context, state) => const ImportExportScreen(),
         ),
       ],
     ),
