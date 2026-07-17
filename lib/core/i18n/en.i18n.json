@@ -249,6 +249,14 @@
       "success_delete": "Budget deleted successfully"
     }
   },
+  "reports": {
+    "title": "Reports",
+    "no_reports": "No reports yet",
+    "category_breakdown": "Category Breakdown",
+    "charts": "Charts",
+    "savings_goals": "Savings Goals",
+    "budgets": "Budgets"
+  },
   "analytics": {
     "title": "Analytics",
     "insights_for": "Insights for {period}",

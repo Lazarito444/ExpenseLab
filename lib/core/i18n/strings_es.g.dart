@@ -47,6 +47,7 @@ class TranslationsEs extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _TranslationsOnboardingEs onboarding = _TranslationsOnboardingEs._(_root);
 	@override late final _TranslationsGoalsEs goals = _TranslationsGoalsEs._(_root);
 	@override late final _TranslationsBudgetsEs budgets = _TranslationsBudgetsEs._(_root);
+	@override late final _TranslationsReportsEs reports = _TranslationsReportsEs._(_root);
 	@override late final _TranslationsAnalyticsEs analytics = _TranslationsAnalyticsEs._(_root);
 	@override Map<String, String> get currencies => {
 		'USD': 'Dólar estadounidense',
@@ -231,6 +232,21 @@ class _TranslationsBudgetsEs extends TranslationsBudgetsEn {
 	);
 	@override late final _TranslationsBudgetsCreateEs create = _TranslationsBudgetsCreateEs._(_root);
 	@override late final _TranslationsBudgetsEditEs edit = _TranslationsBudgetsEditEs._(_root);
+}
+
+// Path: reports
+class _TranslationsReportsEs extends TranslationsReportsEn {
+	_TranslationsReportsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Informes';
+	@override String get no_reports => 'Sin informes aún';
+	@override String get category_breakdown => 'Desglose por Categoría';
+	@override String get charts => 'Gráficos';
+	@override String get savings_goals => 'Metas de Ahorro';
+	@override String get budgets => 'Presupuestos';
 }
 
 // Path: analytics
@@ -1031,6 +1047,12 @@ extension on TranslationsEs {
 			'budgets.edit.error_loading' => 'Error al cargar el presupuesto',
 			'budgets.edit.success_update' => '¡Presupuesto actualizado con éxito!',
 			'budgets.edit.success_delete' => '¡Presupuesto eliminado con éxito!',
+			'reports.title' => 'Informes',
+			'reports.no_reports' => 'Sin informes aún',
+			'reports.category_breakdown' => 'Desglose por Categoría',
+			'reports.charts' => 'Gráficos',
+			'reports.savings_goals' => 'Metas de Ahorro',
+			'reports.budgets' => 'Presupuestos',
 			'analytics.title' => 'Análisis',
 			'analytics.insights_for' => 'Perspectivas de {period}',
 			'analytics.cash_flow' => 'Flujo de Caja',

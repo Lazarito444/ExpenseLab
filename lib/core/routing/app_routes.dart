@@ -30,4 +30,6 @@ class AppRoutes {
   static const exchangeRatesCreate = '/exchange-rates/create';
   static String exchangeRateEdit(String id) => '/exchange-rates/$id/edit';
   static String addTransactionWithStarred(String starredId) => '/add-transaction?starred=$starredId';
+  static const settingsReports = '/settings/reports';
+  static String reportDetails(String id) => '/settings/reports/$id';
 }

@@ -101,6 +101,13 @@ class SettingsScreen extends ConsumerWidget {
                   children: [
                     buildNavTile(
                       context: context,
+                      label: t.reports.title,
+                      icon: Icons.description_rounded,
+                      onTap: () => context.push(AppRoutes.settingsReports),
+                    ),
+                    buildDivider(context),
+                    buildNavTile(
+                      context: context,
                       label: t.analytics.title,
                       icon: Icons.bar_chart_rounded,
                       onTap: () => context.push(AppRoutes.analytics),

@@ -14,6 +14,8 @@ import 'package:expenselab/features/data_manager/presentation/screens/import_exp
 import 'package:expenselab/features/exchange_rates/presentation/screens/add_edit_exchange_rate_screen.dart';
 import 'package:expenselab/features/exchange_rates/presentation/screens/exchange_rates_screen.dart';
 import 'package:expenselab/features/home/presentation/screens/home_screen.dart';
+import 'package:expenselab/features/reports/presentation/screens/report_detail_screen.dart';
+import 'package:expenselab/features/reports/presentation/screens/reports_list_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/create_goal_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/edit_goal_screen.dart';
 import 'package:expenselab/features/savings/presentation/screens/goal_details_screen.dart';
@@ -101,6 +103,18 @@ final routerConfig = GoRouter(
         GoRoute(
           path: 'data-management',
           builder: (context, state) => const ImportExportScreen(),
+        ),
+        GoRoute(
+          path: 'reports',
+          builder: (context, state) => const ReportsListScreen(),
+          routes: [
+            GoRoute(
+              path: ':id',
+              builder: (context, state) => ReportDetailScreen(
+                reportId: state.pathParameters['id']!,
+              ),
+            ),
+          ],
         ),
       ],
     ),

@@ -249,6 +249,14 @@
       "success_delete": "¡Presupuesto eliminado con éxito!"
     }
   },
+  "reports": {
+    "title": "Informes",
+    "no_reports": "Sin informes aún",
+    "category_breakdown": "Desglose por Categoría",
+    "charts": "Gráficos",
+    "savings_goals": "Metas de Ahorro",
+    "budgets": "Presupuestos"
+  },
   "analytics": {
     "title": "Análisis",
     "insights_for": "Perspectivas de {period}",

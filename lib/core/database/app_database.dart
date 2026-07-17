@@ -6,6 +6,7 @@ import 'package:expenselab/features/accounts/data/tables/accounts_table.dart';
 import 'package:expenselab/features/budgets/data/tables/budgets_table.dart';
 import 'package:expenselab/features/categories/data/tables/categories_table.dart';
 import 'package:expenselab/features/exchange_rates/data/tables/exchange_rates_table.dart';
+import 'package:expenselab/features/reports/data/tables/reports_table.dart';
 import 'package:expenselab/features/savings/data/tables/savings_contributions_table.dart';
 import 'package:expenselab/features/savings/data/tables/savings_goals_table.dart';
 import 'package:expenselab/features/starred_transactions/data/tables/starred_transactions_table.dart';
@@ -28,13 +29,14 @@ part 'app_database.g.dart';
     SavingsGoals,
     SavingsContributions,
     ExchangeRates,
+    Reports,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -54,6 +56,9 @@ class AppDatabase extends _$AppDatabase {
       if (from < 5) {
         await m.addColumn(accounts, accounts.sortOrder);
         await m.addColumn(categories, categories.sortOrder);
+      }
+      if (from < 6) {
+        await m.createTable(reports);
       }
     },
   );

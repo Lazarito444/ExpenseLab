@@ -48,6 +48,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsOnboardingEn onboarding = TranslationsOnboardingEn.internal(_root);
 	late final TranslationsGoalsEn goals = TranslationsGoalsEn.internal(_root);
 	late final TranslationsBudgetsEn budgets = TranslationsBudgetsEn.internal(_root);
+	late final TranslationsReportsEn reports = TranslationsReportsEn.internal(_root);
 	late final TranslationsAnalyticsEn analytics = TranslationsAnalyticsEn.internal(_root);
 	Map<String, String> get currencies => {
 		'USD': 'US Dollar',
@@ -350,6 +351,33 @@ class TranslationsBudgetsEn {
 
 	late final TranslationsBudgetsCreateEn create = TranslationsBudgetsCreateEn.internal(_root);
 	late final TranslationsBudgetsEditEn edit = TranslationsBudgetsEditEn.internal(_root);
+}
+
+// Path: reports
+class TranslationsReportsEn {
+	TranslationsReportsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Reports'
+	String get title => 'Reports';
+
+	/// en: 'No reports yet'
+	String get no_reports => 'No reports yet';
+
+	/// en: 'Category Breakdown'
+	String get category_breakdown => 'Category Breakdown';
+
+	/// en: 'Charts'
+	String get charts => 'Charts';
+
+	/// en: 'Savings Goals'
+	String get savings_goals => 'Savings Goals';
+
+	/// en: 'Budgets'
+	String get budgets => 'Budgets';
 }
 
 // Path: analytics
@@ -1687,6 +1715,12 @@ extension on Translations {
 			'budgets.edit.error_loading' => 'Error loading budget',
 			'budgets.edit.success_update' => 'Budget updated successfully',
 			'budgets.edit.success_delete' => 'Budget deleted successfully',
+			'reports.title' => 'Reports',
+			'reports.no_reports' => 'No reports yet',
+			'reports.category_breakdown' => 'Category Breakdown',
+			'reports.charts' => 'Charts',
+			'reports.savings_goals' => 'Savings Goals',
+			'reports.budgets' => 'Budgets',
 			'analytics.title' => 'Analytics',
 			'analytics.insights_for' => 'Insights for {period}',
 			'analytics.cash_flow' => 'Cash Flow',

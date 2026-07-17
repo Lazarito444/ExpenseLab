@@ -27,6 +27,7 @@ dependencies:
   local_auth: ^2.3.0
   path: ^1.9.1
   path_provider: ^2.1.5
+  pdf: ^3.11.3
   rrule: ^0.2.9
   share_plus: ^10.0.0
   shared_preferences: ^2.5.5
