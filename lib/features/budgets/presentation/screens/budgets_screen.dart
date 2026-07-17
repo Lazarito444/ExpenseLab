@@ -2,10 +2,10 @@ import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/core/routing/app_routes.dart';
+import 'package:expenselab/core/services/currency_converter.dart';
 import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
 import 'package:expenselab/features/budgets/providers/budgets_providers.dart';
 import 'package:expenselab/features/categories/providers/categories_providers.dart';
-import 'package:expenselab/features/exchange_rates/domain/models/exchange_rate_model.dart';
 import 'package:expenselab/features/exchange_rates/providers/exchange_rates_providers.dart';
 import 'package:expenselab/features/settings/domain/models/currency.dart';
 import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
@@ -53,7 +53,7 @@ class BudgetsScreen extends ConsumerWidget {
         final cid = tx.categoryId!;
         final targetCode = budgetCurrency[cid] ?? defaultCurrencyCode;
         final txCurrencyCode = accountMap[tx.accountId]?.currencyCode ?? defaultCurrencyCode;
-        final converted = _convertSync(tx.amount, txCurrencyCode, targetCode, allRates, tx.date);
+        final converted = convertSync(tx.amount, txCurrencyCode, targetCode, allRates, tx.date);
         monthlySpending[cid] = (monthlySpending[cid] ?? 0) + converted;
         monthlyCount[cid] = (monthlyCount[cid] ?? 0) + 1;
       }
@@ -588,37 +588,4 @@ class _BudgetCard extends StatelessWidget {
   }
 }
 
-// ── Currency conversion helper ────────────────────────────────────────────────
 
-double _convertSync(
-  double amount,
-  String from,
-  String to,
-  List<ExchangeRateModel> rates,
-  DateTime date,
-) {
-  if (from == to) return amount;
-
-  final direct = rates
-      .where((r) => r.fromCurrencyCode == from && r.toCurrencyCode == to)
-      .toList()
-    ..sort((a, b) => b.date.compareTo(a.date));
-
-  if (direct.isNotEmpty) {
-    final onOrBefore = direct.where((r) => !r.date.isAfter(date)).firstOrNull;
-    return amount * (onOrBefore ?? direct.first).rate;
-  }
-
-  final inverse = rates
-      .where((r) => r.fromCurrencyCode == to && r.toCurrencyCode == from)
-      .toList()
-    ..sort((a, b) => b.date.compareTo(a.date));
-
-  if (inverse.isNotEmpty) {
-    final onOrBefore = inverse.where((r) => !r.date.isAfter(date)).firstOrNull;
-    final rate = (onOrBefore ?? inverse.first).rate;
-    if (rate != 0) return amount / rate;
-  }
-
-  return amount;
-}

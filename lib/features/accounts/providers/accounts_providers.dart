@@ -1,10 +1,10 @@
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/database/database_providers.dart';
+import 'package:expenselab/core/services/currency_converter.dart';
 import 'package:expenselab/features/accounts/data/datasources/accounts_local_datasource.dart';
 import 'package:expenselab/features/accounts/data/datasources/accounts_local_datasource_impl.dart';
 import 'package:expenselab/features/accounts/data/repositories/accounts_repository.dart';
 import 'package:expenselab/features/accounts/domain/models/account_model.dart';
-import 'package:expenselab/features/exchange_rates/domain/models/exchange_rate_model.dart';
 import 'package:expenselab/features/exchange_rates/providers/exchange_rates_providers.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
@@ -85,51 +85,9 @@ final totalNetWorthProvider = Provider<double>((ref) {
   final defaultCode = ref.watch(currencyProvider).code;
   final rates = ref.watch(exchangeRateModelsProvider);
   return accounts.fold(0.0, (sum, a) {
-    return sum + _convertSync(a.balance, a.currencyCode, defaultCode, rates);
+    return sum + convertSync(a.balance, a.currencyCode, defaultCode, rates, DateTime.now());
   });
 });
-
-/// Synchronously converts [amount] using the in-memory [rates] list.
-/// Looks for the most recent rate on or before today for the pair, then falls
-/// back to the latest available rate, then tries the inverse, then returns
-/// [amount] unchanged if no rate is found.
-double _convertSync(
-  double amount,
-  String from,
-  String to,
-  List<ExchangeRateModel> rates,
-) {
-  if (from == to) return amount;
-  final today = DateTime.now();
-
-  // Direct rates for the pair, sorted newest first.
-  final direct = rates
-      .where((r) => r.fromCurrencyCode == from && r.toCurrencyCode == to)
-      .toList()
-    ..sort((a, b) => b.date.compareTo(a.date));
-
-  if (direct.isNotEmpty) {
-    final onOrBefore =
-        direct.where((r) => !r.date.isAfter(today)).firstOrNull;
-    final rate = (onOrBefore ?? direct.first).rate;
-    return amount * rate;
-  }
-
-  // Inverse rates.
-  final inverse = rates
-      .where((r) => r.fromCurrencyCode == to && r.toCurrencyCode == from)
-      .toList()
-    ..sort((a, b) => b.date.compareTo(a.date));
-
-  if (inverse.isNotEmpty) {
-    final onOrBefore =
-        inverse.where((r) => !r.date.isAfter(today)).firstOrNull;
-    final rate = (onOrBefore ?? inverse.first).rate;
-    if (rate != 0) return amount / rate;
-  }
-
-  return amount;
-}
 
 /// Computes balance for every account from all transactions in one pass.
 /// Watching a single provider avoids the variable-watch-count issue that

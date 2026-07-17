@@ -82,6 +82,7 @@ class SettingsNotifier extends AsyncNotifier<AppSettings> {
         await db.delete(db.budgets).go();
         await db.delete(db.categories).go();
         await db.delete(db.accounts).go();
+        await db.delete(db.exchangeRates).go();
       });
     } catch (e) {
       debugPrint('Error clearing database tables: $e');
