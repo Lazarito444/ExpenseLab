@@ -138,7 +138,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
   final _balanceController = TextEditingController();
 
   String _selectedIcon = _kIconCategories.first.$2.first;
-  AccountType _selectedType = AccountType.bankAccount;
+  AccountType _selectedType = AccountType.cash;
   late String _selectedCurrencyCode;
   bool _isLoading = false;
 
