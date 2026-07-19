@@ -249,7 +249,6 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
 
   Future<void> _handleExport() async {
     final messenger = ScaffoldMessenger.of(context);
-    final successMsg = context.t.settings.data_management.export_success;
     final errorMsg = context.t.settings.data_management.export_error;
 
     setState(() => _isExporting = true);
@@ -260,9 +259,6 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
       await Share.shareXFiles([XFile(filePath)]);
       await _loadBackups();
 
-      if (mounted) {
-        messenger.showSnackBar(SnackBar(content: Text(successMsg)));
-      }
     } catch (e) {
       if (mounted) {
         messenger.showSnackBar(SnackBar(content: Text('$errorMsg: $e')));
@@ -320,9 +316,6 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
       if (!mounted) return;
       await service.importData(filePath);
 
-      if (mounted) {
-        messenger.showSnackBar(SnackBar(content: Text(tsdm.import_success)));
-      }
     } catch (e) {
       if (mounted) {
         messenger.showSnackBar(SnackBar(content: Text('$tsdm.import_error: $e')));
