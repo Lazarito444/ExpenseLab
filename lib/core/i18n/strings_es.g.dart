@@ -129,7 +129,10 @@ class _TranslationsHomeEs extends TranslationsHomeEn {
 	@override String get no_transactions_day => 'Sin transacciones este día';
 	@override String get add_transaction_on_day => 'Agregar una transacción en este día';
 	@override String get financial_schedule => 'AGENDA FINANCIERA';
+	@override String get minutes_ago => 'hace {minutes} min';
+	@override String get hours_ago => 'hace {hours} h';
 	@override String get transactions_for => 'Transacciones – {date}';
+	@override String get upcoming_payments => 'Próximos pagos';
 }
 
 // Path: nav
@@ -283,6 +286,9 @@ class _TranslationsAccountsEs extends TranslationsAccountsEn {
 	@override String get monthly_change => '{percentage} este mes';
 	@override late final _TranslationsAccountsCreateEs create = _TranslationsAccountsCreateEs._(_root);
 	@override late final _TranslationsAccountsEditEs edit = _TranslationsAccountsEditEs._(_root);
+	@override late final _TranslationsAccountsCreditCardFieldsEs credit_card_fields = _TranslationsAccountsCreditCardFieldsEs._(_root);
+	@override late final _TranslationsAccountsCreditCardCardEs credit_card_card = _TranslationsAccountsCreditCardCardEs._(_root);
+	@override late final _TranslationsAccountsPayCreditCardEs pay_credit_card = _TranslationsAccountsPayCreditCardEs._(_root);
 }
 
 // Path: transactions
@@ -781,6 +787,65 @@ class _TranslationsAccountsEditEs extends TranslationsAccountsEditEn {
 	@override String get success_delete => 'Cuenta eliminada con éxito';
 }
 
+// Path: accounts.credit_card_fields
+class _TranslationsAccountsCreditCardFieldsEs extends TranslationsAccountsCreditCardFieldsEn {
+	_TranslationsAccountsCreditCardFieldsEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get header => 'Configuración de tarjeta';
+	@override String get credit_limit => 'Límite de crédito';
+	@override String get statement_day => 'Día de cierre';
+	@override String get due_day => 'Día de pago';
+	@override String get apr => 'Tasa APR (%)';
+	@override String get minimum_payment => 'Pago mínimo';
+	@override String get min_fixed => 'Monto fijo';
+	@override String get min_percent => 'Porcentaje del saldo';
+	@override String get rewards_type => 'Tipo de recompensa';
+	@override String get rewards_rate => 'Tasa de recompensa';
+	@override String get no_rewards => 'Ninguna';
+	@override String get cashback => 'Cashback';
+	@override String get points => 'Puntos';
+	@override String get miles => 'Millas';
+	@override String get day_of_month => 'Día del mes';
+}
+
+// Path: accounts.credit_card_card
+class _TranslationsAccountsCreditCardCardEs extends TranslationsAccountsCreditCardCardEn {
+	_TranslationsAccountsCreditCardCardEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get outstanding => 'Pendiente';
+	@override String get available => 'Disponible';
+	@override String get limit => 'Límite';
+	@override String get due => 'Vence';
+	@override String get minimum_payment => 'Mínimo';
+	@override String get utilization => 'Uso';
+	@override String get rewards_earned => 'Recompensas';
+	@override String get pay => 'Pagar';
+}
+
+// Path: accounts.pay_credit_card
+class _TranslationsAccountsPayCreditCardEs extends TranslationsAccountsPayCreditCardEn {
+	_TranslationsAccountsPayCreditCardEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Pagar tarjeta';
+	@override String get pay_from => 'Pagar desde';
+	@override String get amount_to_pay => 'Monto a pagar';
+	@override String get minimum => 'Mínimo';
+	@override String get current_balance => 'Saldo actual';
+	@override String get custom => 'Personalizado';
+	@override String get pay_button => 'Pagar';
+	@override String get success => 'Pago exitoso';
+	@override String get no_source_accounts => 'No hay cuentas bancarias o de efectivo disponibles';
+}
+
 // Path: seed.categories
 class _TranslationsSeedCategoriesEs extends TranslationsSeedCategoriesEn {
 	_TranslationsSeedCategoriesEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -809,6 +874,7 @@ class _TranslationsSeedAccountsEs extends TranslationsSeedAccountsEn {
 	// Translations
 	@override String get cash => 'Efectivo';
 	@override String get bank_account => 'Cuenta de Banco';
+	@override String get credit_card => 'Tarjeta de crédito';
 }
 
 // Path: security.lock_screen
@@ -885,7 +951,10 @@ extension on TranslationsEs {
 			'home.no_transactions_day' => 'Sin transacciones este día',
 			'home.add_transaction_on_day' => 'Agregar una transacción en este día',
 			'home.financial_schedule' => 'AGENDA FINANCIERA',
+			'home.minutes_ago' => 'hace {minutes} min',
+			'home.hours_ago' => 'hace {hours} h',
 			'home.transactions_for' => 'Transacciones – {date}',
+			'home.upcoming_payments' => 'Próximos pagos',
 			'nav.home' => 'Inicio',
 			'nav.budgets' => 'Presupuestos',
 			'nav.goals' => 'Metas',
@@ -1121,6 +1190,38 @@ extension on TranslationsEs {
 			'accounts.edit.balance_adjusted_message' => '¿Cómo debemos registrar este ajuste?',
 			'accounts.edit.success_update' => 'Cuenta actualizada con éxito',
 			'accounts.edit.success_delete' => 'Cuenta eliminada con éxito',
+			'accounts.credit_card_fields.header' => 'Configuración de tarjeta',
+			'accounts.credit_card_fields.credit_limit' => 'Límite de crédito',
+			'accounts.credit_card_fields.statement_day' => 'Día de cierre',
+			'accounts.credit_card_fields.due_day' => 'Día de pago',
+			'accounts.credit_card_fields.apr' => 'Tasa APR (%)',
+			'accounts.credit_card_fields.minimum_payment' => 'Pago mínimo',
+			'accounts.credit_card_fields.min_fixed' => 'Monto fijo',
+			'accounts.credit_card_fields.min_percent' => 'Porcentaje del saldo',
+			'accounts.credit_card_fields.rewards_type' => 'Tipo de recompensa',
+			'accounts.credit_card_fields.rewards_rate' => 'Tasa de recompensa',
+			'accounts.credit_card_fields.no_rewards' => 'Ninguna',
+			'accounts.credit_card_fields.cashback' => 'Cashback',
+			'accounts.credit_card_fields.points' => 'Puntos',
+			'accounts.credit_card_fields.miles' => 'Millas',
+			'accounts.credit_card_fields.day_of_month' => 'Día del mes',
+			'accounts.credit_card_card.outstanding' => 'Pendiente',
+			'accounts.credit_card_card.available' => 'Disponible',
+			'accounts.credit_card_card.limit' => 'Límite',
+			'accounts.credit_card_card.due' => 'Vence',
+			'accounts.credit_card_card.minimum_payment' => 'Mínimo',
+			'accounts.credit_card_card.utilization' => 'Uso',
+			'accounts.credit_card_card.rewards_earned' => 'Recompensas',
+			'accounts.credit_card_card.pay' => 'Pagar',
+			'accounts.pay_credit_card.title' => 'Pagar tarjeta',
+			'accounts.pay_credit_card.pay_from' => 'Pagar desde',
+			'accounts.pay_credit_card.amount_to_pay' => 'Monto a pagar',
+			'accounts.pay_credit_card.minimum' => 'Mínimo',
+			'accounts.pay_credit_card.current_balance' => 'Saldo actual',
+			'accounts.pay_credit_card.custom' => 'Personalizado',
+			'accounts.pay_credit_card.pay_button' => 'Pagar',
+			'accounts.pay_credit_card.success' => 'Pago exitoso',
+			'accounts.pay_credit_card.no_source_accounts' => 'No hay cuentas bancarias o de efectivo disponibles',
 			'transactions.add_title' => 'Nuevo Movimiento',
 			'transactions.edit_title' => 'Editar Movimiento',
 			'transactions.enter_amount' => '¿CUÁNTO FUE?',
@@ -1185,6 +1286,7 @@ extension on TranslationsEs {
 			'seed.categories.investment' => 'Inversiones',
 			'seed.accounts.cash' => 'Efectivo',
 			'seed.accounts.bank_account' => 'Cuenta de Banco',
+			'seed.accounts.credit_card' => 'Tarjeta de crédito',
 			'security.lock_screen.subtitle_authenticate' => 'Autentícate para continuar',
 			'security.lock_screen.subtitle_unavailable' => 'Biometría no disponible en este dispositivo',
 			'security.lock_screen.try_again' => 'Intentar de nuevo',

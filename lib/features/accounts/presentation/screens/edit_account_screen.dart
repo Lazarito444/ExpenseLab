@@ -5,6 +5,7 @@ import 'package:expenselab/core/formatters/currency_input_formatter.dart';
 import 'package:expenselab/core/helpers/icon_mapper.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/accounts/data/tables/accounts_table.dart';
+import 'package:expenselab/features/accounts/presentation/widgets/credit_card_fields_section.dart';
 import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
 import 'package:expenselab/features/settings/domain/models/currency.dart';
 import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
@@ -77,10 +78,26 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   bool _initialized = false;
   bool _isLoading = false;
 
+  // ── Credit-card-specific fields ──
+  final _creditLimitController = TextEditingController();
+  final _aprController = TextEditingController();
+  final _minPaymentController = TextEditingController();
+  final _rewardRateController = TextEditingController();
+  int? _statementDay;
+  int? _dueDay;
+  String _minPaymentType = 'percent';
+  String _rewardType = 'none';
+
+  bool get _isCreditCard => _selectedType == AccountType.creditCard;
+
   @override
   void dispose() {
     _nameController.dispose();
     _balanceController.dispose();
+    _creditLimitController.dispose();
+    _aprController.dispose();
+    _minPaymentController.dispose();
+    _rewardRateController.dispose();
     super.dispose();
   }
 
@@ -94,6 +111,33 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
     _selectedType = account.type;
     _selectedCurrencyCode = account.currencyCode;
     _originalBalance = balance;
+
+    // Credit card fields
+    if (account.type == AccountType.creditCard) {
+      if (account.creditLimit != null) {
+        _creditLimitController.text = CurrencyInputFormatter.formatForDisplay(account.creditLimit!);
+      }
+      if (account.apr != null) {
+        _aprController.text = account.apr.toString();
+      }
+      _statementDay = account.statementDay;
+      _dueDay = account.dueDay;
+
+      if (account.minPaymentFixed != null) {
+        _minPaymentType = 'fixed';
+        _minPaymentController.text = CurrencyInputFormatter.formatForDisplay(account.minPaymentFixed!);
+      } else if (account.minPaymentPercent != null) {
+        _minPaymentType = 'percent';
+        _minPaymentController.text = account.minPaymentPercent.toString();
+      }
+
+      if (account.rewardType != null) {
+        _rewardType = account.rewardType!;
+        if (account.rewardRate != null) {
+          _rewardRateController.text = account.rewardRate.toString();
+        }
+      }
+    }
   }
 
   Currency get _currency => kSupportedCurrencies.firstWhere(
@@ -112,6 +156,11 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       final accountRepo = ref.read(accountsRepositoryProvider);
       final txRepo = ref.read(transactionsRepositoryProvider);
 
+      final creditLimitText = _creditLimitController.text.replaceAll(',', '');
+      final aprText = _aprController.text.replaceAll(',', '');
+      final minPayText = _minPaymentController.text.replaceAll(',', '');
+      final rewardRateText = _rewardRateController.text.replaceAll(',', '');
+
       await accountRepo.update(
         widget.accountId,
         AccountsCompanion(
@@ -119,6 +168,36 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
           type: drift.Value(_selectedType),
           currencyCode: drift.Value(_selectedCurrencyCode),
           icon: drift.Value(_selectedIcon),
+          creditLimit: drift.Value(
+            _isCreditCard && creditLimitText.isNotEmpty
+                ? double.tryParse(creditLimitText)
+                : null,
+          ),
+          statementDay: drift.Value(_isCreditCard ? _statementDay : null),
+          dueDay: drift.Value(_isCreditCard ? _dueDay : null),
+          apr: drift.Value(
+            _isCreditCard && aprText.isNotEmpty
+                ? double.tryParse(aprText)
+                : null,
+          ),
+          minPaymentFixed: drift.Value(
+            _isCreditCard && _minPaymentType == 'fixed' && minPayText.isNotEmpty
+                ? double.tryParse(minPayText)
+                : null,
+          ),
+          minPaymentPercent: drift.Value(
+            _isCreditCard && _minPaymentType == 'percent' && minPayText.isNotEmpty
+                ? double.tryParse(minPayText)
+                : null,
+          ),
+          rewardType: drift.Value(
+            _isCreditCard && _rewardType != 'none' ? _rewardType : null,
+          ),
+          rewardRate: drift.Value(
+            _isCreditCard && _rewardType != 'none' && rewardRateText.isNotEmpty
+                ? double.tryParse(rewardRateText)
+                : null,
+          ),
         ),
       );
 
@@ -814,6 +893,25 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                               ],
                             ),
                           ),
+                          if (_isCreditCard) ...[
+                            const SizedBox(height: 24),
+                            CreditCardFieldsSection(
+                              creditLimitController: _creditLimitController,
+                              aprController: _aprController,
+                              minPaymentController: _minPaymentController,
+                              rewardRateController: _rewardRateController,
+                              statementDay: _statementDay,
+                              dueDay: _dueDay,
+                              minPaymentType: _minPaymentType,
+                              rewardType: _rewardType,
+                              onStatementDayChanged: (v) => setState(() => _statementDay = v),
+                              onDueDayChanged: (v) => setState(() => _dueDay = v),
+                              onMinPaymentTypeChanged: (v) => setState(() => _minPaymentType = v),
+                              onRewardTypeChanged: (v) => setState(() => _rewardType = v),
+                              currency: _currency,
+                              t: t,
+                            ),
+                          ],
                           const SizedBox(height: 20),
                         ],
                       ),

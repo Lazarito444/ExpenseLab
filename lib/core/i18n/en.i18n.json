@@ -27,7 +27,10 @@
     "no_transactions_day": "No transactions on this day",
     "add_transaction_on_day": "Add a transaction on this day",
     "financial_schedule": "FINANCIAL SCHEDULE",
-    "transactions_for": "Transactions – {date}"
+    "minutes_ago": "{minutes}m ago",
+    "hours_ago": "{hours}h ago",
+    "transactions_for": "Transactions – {date}",
+    "upcoming_payments": "Upcoming Payments"
   },
   "nav": {
     "home": "Home",
@@ -333,6 +336,44 @@
       "balance_adjusted_message": "How should we record this adjustment?",
       "success_update": "Account updated successfully",
       "success_delete": "Account deleted successfully"
+    },
+    "credit_card_fields": {
+      "header": "Credit Card Settings",
+      "credit_limit": "Credit Limit",
+      "statement_day": "Statement Closing Day",
+      "due_day": "Payment Due Day",
+      "apr": "APR (%)",
+      "minimum_payment": "Minimum Payment",
+      "min_fixed": "Fixed Amount",
+      "min_percent": "Percentage of Balance",
+      "rewards_type": "Rewards Type",
+      "rewards_rate": "Rewards Rate",
+      "no_rewards": "None",
+      "cashback": "Cashback",
+      "points": "Points",
+      "miles": "Miles",
+      "day_of_month": "Day of Month"
+    },
+    "credit_card_card": {
+      "outstanding": "Outstanding",
+      "available": "Available",
+      "limit": "Limit",
+      "due": "Due",
+      "minimum_payment": "Min. Payment",
+      "utilization": "Utilization",
+      "rewards_earned": "Rewards Earned",
+      "pay": "Pay"
+    },
+    "pay_credit_card": {
+      "title": "Pay Credit Card",
+      "pay_from": "Pay From",
+      "amount_to_pay": "Amount to Pay",
+      "minimum": "Minimum",
+      "current_balance": "Current Balance",
+      "custom": "Custom",
+      "pay_button": "Pay",
+      "success": "Payment successful",
+      "no_source_accounts": "No bank or cash accounts available to pay from"
     }
   },
   "transactions": {
@@ -413,7 +454,8 @@
     },
     "accounts": {
       "cash": "Cash",
-      "bank_account": "Bank Account"
+      "bank_account": "Bank Account",
+      "credit_card": "Credit Card"
     }
   },
   "security": {

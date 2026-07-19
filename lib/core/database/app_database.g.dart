@@ -117,6 +117,91 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, Account> {
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
+  static const VerificationMeta _creditLimitMeta = const VerificationMeta(
+    'creditLimit',
+  );
+  @override
+  late final GeneratedColumn<double> creditLimit = GeneratedColumn<double>(
+    'credit_limit',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statementDayMeta = const VerificationMeta(
+    'statementDay',
+  );
+  @override
+  late final GeneratedColumn<int> statementDay = GeneratedColumn<int>(
+    'statement_day',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dueDayMeta = const VerificationMeta('dueDay');
+  @override
+  late final GeneratedColumn<int> dueDay = GeneratedColumn<int>(
+    'due_day',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _aprMeta = const VerificationMeta('apr');
+  @override
+  late final GeneratedColumn<double> apr = GeneratedColumn<double>(
+    'apr',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _minPaymentFixedMeta = const VerificationMeta(
+    'minPaymentFixed',
+  );
+  @override
+  late final GeneratedColumn<double> minPaymentFixed = GeneratedColumn<double>(
+    'min_payment_fixed',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _minPaymentPercentMeta = const VerificationMeta(
+    'minPaymentPercent',
+  );
+  @override
+  late final GeneratedColumn<double> minPaymentPercent =
+      GeneratedColumn<double>(
+        'min_payment_percent',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _rewardTypeMeta = const VerificationMeta(
+    'rewardType',
+  );
+  @override
+  late final GeneratedColumn<String> rewardType = GeneratedColumn<String>(
+    'reward_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _rewardRateMeta = const VerificationMeta(
+    'rewardRate',
+  );
+  @override
+  late final GeneratedColumn<double> rewardRate = GeneratedColumn<double>(
+    'reward_rate',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -129,6 +214,14 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, Account> {
     currencyCode,
     icon,
     sortOrder,
+    creditLimit,
+    statementDay,
+    dueDay,
+    apr,
+    minPaymentFixed,
+    minPaymentPercent,
+    rewardType,
+    rewardRate,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -204,6 +297,66 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, Account> {
         sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta),
       );
     }
+    if (data.containsKey('credit_limit')) {
+      context.handle(
+        _creditLimitMeta,
+        creditLimit.isAcceptableOrUnknown(
+          data['credit_limit']!,
+          _creditLimitMeta,
+        ),
+      );
+    }
+    if (data.containsKey('statement_day')) {
+      context.handle(
+        _statementDayMeta,
+        statementDay.isAcceptableOrUnknown(
+          data['statement_day']!,
+          _statementDayMeta,
+        ),
+      );
+    }
+    if (data.containsKey('due_day')) {
+      context.handle(
+        _dueDayMeta,
+        dueDay.isAcceptableOrUnknown(data['due_day']!, _dueDayMeta),
+      );
+    }
+    if (data.containsKey('apr')) {
+      context.handle(
+        _aprMeta,
+        apr.isAcceptableOrUnknown(data['apr']!, _aprMeta),
+      );
+    }
+    if (data.containsKey('min_payment_fixed')) {
+      context.handle(
+        _minPaymentFixedMeta,
+        minPaymentFixed.isAcceptableOrUnknown(
+          data['min_payment_fixed']!,
+          _minPaymentFixedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('min_payment_percent')) {
+      context.handle(
+        _minPaymentPercentMeta,
+        minPaymentPercent.isAcceptableOrUnknown(
+          data['min_payment_percent']!,
+          _minPaymentPercentMeta,
+        ),
+      );
+    }
+    if (data.containsKey('reward_type')) {
+      context.handle(
+        _rewardTypeMeta,
+        rewardType.isAcceptableOrUnknown(data['reward_type']!, _rewardTypeMeta),
+      );
+    }
+    if (data.containsKey('reward_rate')) {
+      context.handle(
+        _rewardRateMeta,
+        rewardRate.isAcceptableOrUnknown(data['reward_rate']!, _rewardRateMeta),
+      );
+    }
     return context;
   }
 
@@ -255,6 +408,38 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, Account> {
         DriftSqlType.int,
         data['${effectivePrefix}sort_order'],
       )!,
+      creditLimit: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}credit_limit'],
+      ),
+      statementDay: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}statement_day'],
+      ),
+      dueDay: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}due_day'],
+      ),
+      apr: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}apr'],
+      ),
+      minPaymentFixed: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}min_payment_fixed'],
+      ),
+      minPaymentPercent: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}min_payment_percent'],
+      ),
+      rewardType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reward_type'],
+      ),
+      rewardRate: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}reward_rate'],
+      ),
     );
   }
 
@@ -289,6 +474,30 @@ class Account extends DataClass implements Insertable<Account> {
   /// Icon name from [Icons] class.
   final String icon;
   final int sortOrder;
+
+  /// Credit limit amount (e.g. 5000.00). Null if not set.
+  final double? creditLimit;
+
+  /// Statement closing day of month (1–28). Null for non-credit-card accounts.
+  final int? statementDay;
+
+  /// Payment due day of month (1–28). Null for non-credit-card accounts.
+  final int? dueDay;
+
+  /// Annual percentage rate (e.g. 24.99). Null if not set.
+  final double? apr;
+
+  /// Fixed minimum payment amount. Null if using percentage-based minimum.
+  final double? minPaymentFixed;
+
+  /// Minimum payment as a percentage of the outstanding balance (e.g. 2.0 for 2%).
+  final double? minPaymentPercent;
+
+  /// Reward type: 'cashback', 'points', 'miles', or null.
+  final String? rewardType;
+
+  /// Reward rate (e.g. 0.02 for 2% cashback, 1.0 for 1 point per dollar).
+  final double? rewardRate;
   const Account({
     required this.id,
     required this.createdAt,
@@ -300,6 +509,14 @@ class Account extends DataClass implements Insertable<Account> {
     required this.currencyCode,
     required this.icon,
     required this.sortOrder,
+    this.creditLimit,
+    this.statementDay,
+    this.dueDay,
+    this.apr,
+    this.minPaymentFixed,
+    this.minPaymentPercent,
+    this.rewardType,
+    this.rewardRate,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -318,6 +535,30 @@ class Account extends DataClass implements Insertable<Account> {
     map['currency_code'] = Variable<String>(currencyCode);
     map['icon'] = Variable<String>(icon);
     map['sort_order'] = Variable<int>(sortOrder);
+    if (!nullToAbsent || creditLimit != null) {
+      map['credit_limit'] = Variable<double>(creditLimit);
+    }
+    if (!nullToAbsent || statementDay != null) {
+      map['statement_day'] = Variable<int>(statementDay);
+    }
+    if (!nullToAbsent || dueDay != null) {
+      map['due_day'] = Variable<int>(dueDay);
+    }
+    if (!nullToAbsent || apr != null) {
+      map['apr'] = Variable<double>(apr);
+    }
+    if (!nullToAbsent || minPaymentFixed != null) {
+      map['min_payment_fixed'] = Variable<double>(minPaymentFixed);
+    }
+    if (!nullToAbsent || minPaymentPercent != null) {
+      map['min_payment_percent'] = Variable<double>(minPaymentPercent);
+    }
+    if (!nullToAbsent || rewardType != null) {
+      map['reward_type'] = Variable<String>(rewardType);
+    }
+    if (!nullToAbsent || rewardRate != null) {
+      map['reward_rate'] = Variable<double>(rewardRate);
+    }
     return map;
   }
 
@@ -335,6 +576,28 @@ class Account extends DataClass implements Insertable<Account> {
       currencyCode: Value(currencyCode),
       icon: Value(icon),
       sortOrder: Value(sortOrder),
+      creditLimit: creditLimit == null && nullToAbsent
+          ? const Value.absent()
+          : Value(creditLimit),
+      statementDay: statementDay == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statementDay),
+      dueDay: dueDay == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dueDay),
+      apr: apr == null && nullToAbsent ? const Value.absent() : Value(apr),
+      minPaymentFixed: minPaymentFixed == null && nullToAbsent
+          ? const Value.absent()
+          : Value(minPaymentFixed),
+      minPaymentPercent: minPaymentPercent == null && nullToAbsent
+          ? const Value.absent()
+          : Value(minPaymentPercent),
+      rewardType: rewardType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rewardType),
+      rewardRate: rewardRate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(rewardRate),
     );
   }
 
@@ -356,6 +619,16 @@ class Account extends DataClass implements Insertable<Account> {
       currencyCode: serializer.fromJson<String>(json['currencyCode']),
       icon: serializer.fromJson<String>(json['icon']),
       sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      creditLimit: serializer.fromJson<double?>(json['creditLimit']),
+      statementDay: serializer.fromJson<int?>(json['statementDay']),
+      dueDay: serializer.fromJson<int?>(json['dueDay']),
+      apr: serializer.fromJson<double?>(json['apr']),
+      minPaymentFixed: serializer.fromJson<double?>(json['minPaymentFixed']),
+      minPaymentPercent: serializer.fromJson<double?>(
+        json['minPaymentPercent'],
+      ),
+      rewardType: serializer.fromJson<String?>(json['rewardType']),
+      rewardRate: serializer.fromJson<double?>(json['rewardRate']),
     );
   }
   @override
@@ -374,6 +647,14 @@ class Account extends DataClass implements Insertable<Account> {
       'currencyCode': serializer.toJson<String>(currencyCode),
       'icon': serializer.toJson<String>(icon),
       'sortOrder': serializer.toJson<int>(sortOrder),
+      'creditLimit': serializer.toJson<double?>(creditLimit),
+      'statementDay': serializer.toJson<int?>(statementDay),
+      'dueDay': serializer.toJson<int?>(dueDay),
+      'apr': serializer.toJson<double?>(apr),
+      'minPaymentFixed': serializer.toJson<double?>(minPaymentFixed),
+      'minPaymentPercent': serializer.toJson<double?>(minPaymentPercent),
+      'rewardType': serializer.toJson<String?>(rewardType),
+      'rewardRate': serializer.toJson<double?>(rewardRate),
     };
   }
 
@@ -388,6 +669,14 @@ class Account extends DataClass implements Insertable<Account> {
     String? currencyCode,
     String? icon,
     int? sortOrder,
+    Value<double?> creditLimit = const Value.absent(),
+    Value<int?> statementDay = const Value.absent(),
+    Value<int?> dueDay = const Value.absent(),
+    Value<double?> apr = const Value.absent(),
+    Value<double?> minPaymentFixed = const Value.absent(),
+    Value<double?> minPaymentPercent = const Value.absent(),
+    Value<String?> rewardType = const Value.absent(),
+    Value<double?> rewardRate = const Value.absent(),
   }) => Account(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
@@ -399,6 +688,18 @@ class Account extends DataClass implements Insertable<Account> {
     currencyCode: currencyCode ?? this.currencyCode,
     icon: icon ?? this.icon,
     sortOrder: sortOrder ?? this.sortOrder,
+    creditLimit: creditLimit.present ? creditLimit.value : this.creditLimit,
+    statementDay: statementDay.present ? statementDay.value : this.statementDay,
+    dueDay: dueDay.present ? dueDay.value : this.dueDay,
+    apr: apr.present ? apr.value : this.apr,
+    minPaymentFixed: minPaymentFixed.present
+        ? minPaymentFixed.value
+        : this.minPaymentFixed,
+    minPaymentPercent: minPaymentPercent.present
+        ? minPaymentPercent.value
+        : this.minPaymentPercent,
+    rewardType: rewardType.present ? rewardType.value : this.rewardType,
+    rewardRate: rewardRate.present ? rewardRate.value : this.rewardRate,
   );
   Account copyWithCompanion(AccountsCompanion data) {
     return Account(
@@ -414,6 +715,26 @@ class Account extends DataClass implements Insertable<Account> {
           : this.currencyCode,
       icon: data.icon.present ? data.icon.value : this.icon,
       sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      creditLimit: data.creditLimit.present
+          ? data.creditLimit.value
+          : this.creditLimit,
+      statementDay: data.statementDay.present
+          ? data.statementDay.value
+          : this.statementDay,
+      dueDay: data.dueDay.present ? data.dueDay.value : this.dueDay,
+      apr: data.apr.present ? data.apr.value : this.apr,
+      minPaymentFixed: data.minPaymentFixed.present
+          ? data.minPaymentFixed.value
+          : this.minPaymentFixed,
+      minPaymentPercent: data.minPaymentPercent.present
+          ? data.minPaymentPercent.value
+          : this.minPaymentPercent,
+      rewardType: data.rewardType.present
+          ? data.rewardType.value
+          : this.rewardType,
+      rewardRate: data.rewardRate.present
+          ? data.rewardRate.value
+          : this.rewardRate,
     );
   }
 
@@ -429,7 +750,15 @@ class Account extends DataClass implements Insertable<Account> {
           ..write('type: $type, ')
           ..write('currencyCode: $currencyCode, ')
           ..write('icon: $icon, ')
-          ..write('sortOrder: $sortOrder')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('creditLimit: $creditLimit, ')
+          ..write('statementDay: $statementDay, ')
+          ..write('dueDay: $dueDay, ')
+          ..write('apr: $apr, ')
+          ..write('minPaymentFixed: $minPaymentFixed, ')
+          ..write('minPaymentPercent: $minPaymentPercent, ')
+          ..write('rewardType: $rewardType, ')
+          ..write('rewardRate: $rewardRate')
           ..write(')'))
         .toString();
   }
@@ -446,6 +775,14 @@ class Account extends DataClass implements Insertable<Account> {
     currencyCode,
     icon,
     sortOrder,
+    creditLimit,
+    statementDay,
+    dueDay,
+    apr,
+    minPaymentFixed,
+    minPaymentPercent,
+    rewardType,
+    rewardRate,
   );
   @override
   bool operator ==(Object other) =>
@@ -460,7 +797,15 @@ class Account extends DataClass implements Insertable<Account> {
           other.type == this.type &&
           other.currencyCode == this.currencyCode &&
           other.icon == this.icon &&
-          other.sortOrder == this.sortOrder);
+          other.sortOrder == this.sortOrder &&
+          other.creditLimit == this.creditLimit &&
+          other.statementDay == this.statementDay &&
+          other.dueDay == this.dueDay &&
+          other.apr == this.apr &&
+          other.minPaymentFixed == this.minPaymentFixed &&
+          other.minPaymentPercent == this.minPaymentPercent &&
+          other.rewardType == this.rewardType &&
+          other.rewardRate == this.rewardRate);
 }
 
 class AccountsCompanion extends UpdateCompanion<Account> {
@@ -474,6 +819,14 @@ class AccountsCompanion extends UpdateCompanion<Account> {
   final Value<String> currencyCode;
   final Value<String> icon;
   final Value<int> sortOrder;
+  final Value<double?> creditLimit;
+  final Value<int?> statementDay;
+  final Value<int?> dueDay;
+  final Value<double?> apr;
+  final Value<double?> minPaymentFixed;
+  final Value<double?> minPaymentPercent;
+  final Value<String?> rewardType;
+  final Value<double?> rewardRate;
   final Value<int> rowid;
   const AccountsCompanion({
     this.id = const Value.absent(),
@@ -486,6 +839,14 @@ class AccountsCompanion extends UpdateCompanion<Account> {
     this.currencyCode = const Value.absent(),
     this.icon = const Value.absent(),
     this.sortOrder = const Value.absent(),
+    this.creditLimit = const Value.absent(),
+    this.statementDay = const Value.absent(),
+    this.dueDay = const Value.absent(),
+    this.apr = const Value.absent(),
+    this.minPaymentFixed = const Value.absent(),
+    this.minPaymentPercent = const Value.absent(),
+    this.rewardType = const Value.absent(),
+    this.rewardRate = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   AccountsCompanion.insert({
@@ -499,6 +860,14 @@ class AccountsCompanion extends UpdateCompanion<Account> {
     required String currencyCode,
     required String icon,
     this.sortOrder = const Value.absent(),
+    this.creditLimit = const Value.absent(),
+    this.statementDay = const Value.absent(),
+    this.dueDay = const Value.absent(),
+    this.apr = const Value.absent(),
+    this.minPaymentFixed = const Value.absent(),
+    this.minPaymentPercent = const Value.absent(),
+    this.rewardType = const Value.absent(),
+    this.rewardRate = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
@@ -516,6 +885,14 @@ class AccountsCompanion extends UpdateCompanion<Account> {
     Expression<String>? currencyCode,
     Expression<String>? icon,
     Expression<int>? sortOrder,
+    Expression<double>? creditLimit,
+    Expression<int>? statementDay,
+    Expression<int>? dueDay,
+    Expression<double>? apr,
+    Expression<double>? minPaymentFixed,
+    Expression<double>? minPaymentPercent,
+    Expression<String>? rewardType,
+    Expression<double>? rewardRate,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -529,6 +906,14 @@ class AccountsCompanion extends UpdateCompanion<Account> {
       if (currencyCode != null) 'currency_code': currencyCode,
       if (icon != null) 'icon': icon,
       if (sortOrder != null) 'sort_order': sortOrder,
+      if (creditLimit != null) 'credit_limit': creditLimit,
+      if (statementDay != null) 'statement_day': statementDay,
+      if (dueDay != null) 'due_day': dueDay,
+      if (apr != null) 'apr': apr,
+      if (minPaymentFixed != null) 'min_payment_fixed': minPaymentFixed,
+      if (minPaymentPercent != null) 'min_payment_percent': minPaymentPercent,
+      if (rewardType != null) 'reward_type': rewardType,
+      if (rewardRate != null) 'reward_rate': rewardRate,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -544,6 +929,14 @@ class AccountsCompanion extends UpdateCompanion<Account> {
     Value<String>? currencyCode,
     Value<String>? icon,
     Value<int>? sortOrder,
+    Value<double?>? creditLimit,
+    Value<int?>? statementDay,
+    Value<int?>? dueDay,
+    Value<double?>? apr,
+    Value<double?>? minPaymentFixed,
+    Value<double?>? minPaymentPercent,
+    Value<String?>? rewardType,
+    Value<double?>? rewardRate,
     Value<int>? rowid,
   }) {
     return AccountsCompanion(
@@ -557,6 +950,14 @@ class AccountsCompanion extends UpdateCompanion<Account> {
       currencyCode: currencyCode ?? this.currencyCode,
       icon: icon ?? this.icon,
       sortOrder: sortOrder ?? this.sortOrder,
+      creditLimit: creditLimit ?? this.creditLimit,
+      statementDay: statementDay ?? this.statementDay,
+      dueDay: dueDay ?? this.dueDay,
+      apr: apr ?? this.apr,
+      minPaymentFixed: minPaymentFixed ?? this.minPaymentFixed,
+      minPaymentPercent: minPaymentPercent ?? this.minPaymentPercent,
+      rewardType: rewardType ?? this.rewardType,
+      rewardRate: rewardRate ?? this.rewardRate,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -596,6 +997,30 @@ class AccountsCompanion extends UpdateCompanion<Account> {
     if (sortOrder.present) {
       map['sort_order'] = Variable<int>(sortOrder.value);
     }
+    if (creditLimit.present) {
+      map['credit_limit'] = Variable<double>(creditLimit.value);
+    }
+    if (statementDay.present) {
+      map['statement_day'] = Variable<int>(statementDay.value);
+    }
+    if (dueDay.present) {
+      map['due_day'] = Variable<int>(dueDay.value);
+    }
+    if (apr.present) {
+      map['apr'] = Variable<double>(apr.value);
+    }
+    if (minPaymentFixed.present) {
+      map['min_payment_fixed'] = Variable<double>(minPaymentFixed.value);
+    }
+    if (minPaymentPercent.present) {
+      map['min_payment_percent'] = Variable<double>(minPaymentPercent.value);
+    }
+    if (rewardType.present) {
+      map['reward_type'] = Variable<String>(rewardType.value);
+    }
+    if (rewardRate.present) {
+      map['reward_rate'] = Variable<double>(rewardRate.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -615,6 +1040,14 @@ class AccountsCompanion extends UpdateCompanion<Account> {
           ..write('currencyCode: $currencyCode, ')
           ..write('icon: $icon, ')
           ..write('sortOrder: $sortOrder, ')
+          ..write('creditLimit: $creditLimit, ')
+          ..write('statementDay: $statementDay, ')
+          ..write('dueDay: $dueDay, ')
+          ..write('apr: $apr, ')
+          ..write('minPaymentFixed: $minPaymentFixed, ')
+          ..write('minPaymentPercent: $minPaymentPercent, ')
+          ..write('rewardType: $rewardType, ')
+          ..write('rewardRate: $rewardRate, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -6122,6 +6555,14 @@ typedef $$AccountsTableCreateCompanionBuilder =
       required String currencyCode,
       required String icon,
       Value<int> sortOrder,
+      Value<double?> creditLimit,
+      Value<int?> statementDay,
+      Value<int?> dueDay,
+      Value<double?> apr,
+      Value<double?> minPaymentFixed,
+      Value<double?> minPaymentPercent,
+      Value<String?> rewardType,
+      Value<double?> rewardRate,
       Value<int> rowid,
     });
 typedef $$AccountsTableUpdateCompanionBuilder =
@@ -6136,6 +6577,14 @@ typedef $$AccountsTableUpdateCompanionBuilder =
       Value<String> currencyCode,
       Value<String> icon,
       Value<int> sortOrder,
+      Value<double?> creditLimit,
+      Value<int?> statementDay,
+      Value<int?> dueDay,
+      Value<double?> apr,
+      Value<double?> minPaymentFixed,
+      Value<double?> minPaymentPercent,
+      Value<String?> rewardType,
+      Value<double?> rewardRate,
       Value<int> rowid,
     });
 
@@ -6263,6 +6712,46 @@ class $$AccountsTableFilterComposer
 
   ColumnFilters<int> get sortOrder => $composableBuilder(
     column: $table.sortOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get creditLimit => $composableBuilder(
+    column: $table.creditLimit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get statementDay => $composableBuilder(
+    column: $table.statementDay,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get dueDay => $composableBuilder(
+    column: $table.dueDay,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get apr => $composableBuilder(
+    column: $table.apr,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get minPaymentFixed => $composableBuilder(
+    column: $table.minPaymentFixed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get minPaymentPercent => $composableBuilder(
+    column: $table.minPaymentPercent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get rewardType => $composableBuilder(
+    column: $table.rewardType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get rewardRate => $composableBuilder(
+    column: $table.rewardRate,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -6400,6 +6889,46 @@ class $$AccountsTableOrderingComposer
     column: $table.sortOrder,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<double> get creditLimit => $composableBuilder(
+    column: $table.creditLimit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get statementDay => $composableBuilder(
+    column: $table.statementDay,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get dueDay => $composableBuilder(
+    column: $table.dueDay,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get apr => $composableBuilder(
+    column: $table.apr,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get minPaymentFixed => $composableBuilder(
+    column: $table.minPaymentFixed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get minPaymentPercent => $composableBuilder(
+    column: $table.minPaymentPercent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get rewardType => $composableBuilder(
+    column: $table.rewardType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get rewardRate => $composableBuilder(
+    column: $table.rewardRate,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AccountsTableAnnotationComposer
@@ -6442,6 +6971,42 @@ class $$AccountsTableAnnotationComposer
 
   GeneratedColumn<int> get sortOrder =>
       $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  GeneratedColumn<double> get creditLimit => $composableBuilder(
+    column: $table.creditLimit,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get statementDay => $composableBuilder(
+    column: $table.statementDay,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get dueDay =>
+      $composableBuilder(column: $table.dueDay, builder: (column) => column);
+
+  GeneratedColumn<double> get apr =>
+      $composableBuilder(column: $table.apr, builder: (column) => column);
+
+  GeneratedColumn<double> get minPaymentFixed => $composableBuilder(
+    column: $table.minPaymentFixed,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get minPaymentPercent => $composableBuilder(
+    column: $table.minPaymentPercent,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get rewardType => $composableBuilder(
+    column: $table.rewardType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get rewardRate => $composableBuilder(
+    column: $table.rewardRate,
+    builder: (column) => column,
+  );
 
   Expression<T> transactions<T extends Object>(
     Expression<T> Function($$TransactionsTableAnnotationComposer a) f,
@@ -6561,6 +7126,14 @@ class $$AccountsTableTableManager
                 Value<String> currencyCode = const Value.absent(),
                 Value<String> icon = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
+                Value<double?> creditLimit = const Value.absent(),
+                Value<int?> statementDay = const Value.absent(),
+                Value<int?> dueDay = const Value.absent(),
+                Value<double?> apr = const Value.absent(),
+                Value<double?> minPaymentFixed = const Value.absent(),
+                Value<double?> minPaymentPercent = const Value.absent(),
+                Value<String?> rewardType = const Value.absent(),
+                Value<double?> rewardRate = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => AccountsCompanion(
                 id: id,
@@ -6573,6 +7146,14 @@ class $$AccountsTableTableManager
                 currencyCode: currencyCode,
                 icon: icon,
                 sortOrder: sortOrder,
+                creditLimit: creditLimit,
+                statementDay: statementDay,
+                dueDay: dueDay,
+                apr: apr,
+                minPaymentFixed: minPaymentFixed,
+                minPaymentPercent: minPaymentPercent,
+                rewardType: rewardType,
+                rewardRate: rewardRate,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -6587,6 +7168,14 @@ class $$AccountsTableTableManager
                 required String currencyCode,
                 required String icon,
                 Value<int> sortOrder = const Value.absent(),
+                Value<double?> creditLimit = const Value.absent(),
+                Value<int?> statementDay = const Value.absent(),
+                Value<int?> dueDay = const Value.absent(),
+                Value<double?> apr = const Value.absent(),
+                Value<double?> minPaymentFixed = const Value.absent(),
+                Value<double?> minPaymentPercent = const Value.absent(),
+                Value<String?> rewardType = const Value.absent(),
+                Value<double?> rewardRate = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => AccountsCompanion.insert(
                 id: id,
@@ -6599,6 +7188,14 @@ class $$AccountsTableTableManager
                 currencyCode: currencyCode,
                 icon: icon,
                 sortOrder: sortOrder,
+                creditLimit: creditLimit,
+                statementDay: statementDay,
+                dueDay: dueDay,
+                apr: apr,
+                minPaymentFixed: minPaymentFixed,
+                minPaymentPercent: minPaymentPercent,
+                rewardType: rewardType,
+                rewardRate: rewardRate,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

@@ -27,10 +27,12 @@ class ReportsLocalDataSourceImpl implements ReportsLocalDataSource {
           .getSingleOrNull();
 
   @override
-  Future<Report?> findByYearMonth(int year, int month) =>
-      (_db.select(_db.reports)
-            ..where((t) => t.isDeleted.equals(false) & t.year.equals(year) & t.month.equals(month)))
-          .getSingleOrNull();
+  Future<Report?> findByYearMonth(int year, int month) async {
+    final results = await (_db.select(_db.reports)
+          ..where((t) => t.isDeleted.equals(false) & t.year.equals(year) & t.month.equals(month)))
+        .get();
+    return results.isNotEmpty ? results.first : null;
+  }
 
   @override
   Future<String> create(ReportsCompanion data) async {

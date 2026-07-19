@@ -177,8 +177,17 @@ class TranslationsHomeEn {
 	/// en: 'FINANCIAL SCHEDULE'
 	String get financial_schedule => 'FINANCIAL SCHEDULE';
 
+	/// en: '{minutes}m ago'
+	String get minutes_ago => '{minutes}m ago';
+
+	/// en: '{hours}h ago'
+	String get hours_ago => '{hours}h ago';
+
 	/// en: 'Transactions – {date}'
 	String get transactions_for => 'Transactions – {date}';
+
+	/// en: 'Upcoming Payments'
+	String get upcoming_payments => 'Upcoming Payments';
 }
 
 // Path: nav
@@ -447,6 +456,9 @@ class TranslationsAccountsEn {
 
 	late final TranslationsAccountsCreateEn create = TranslationsAccountsCreateEn.internal(_root);
 	late final TranslationsAccountsEditEn edit = TranslationsAccountsEditEn.internal(_root);
+	late final TranslationsAccountsCreditCardFieldsEn credit_card_fields = TranslationsAccountsCreditCardFieldsEn.internal(_root);
+	late final TranslationsAccountsCreditCardCardEn credit_card_card = TranslationsAccountsCreditCardCardEn.internal(_root);
+	late final TranslationsAccountsPayCreditCardEn pay_credit_card = TranslationsAccountsPayCreditCardEn.internal(_root);
 }
 
 // Path: transactions
@@ -1393,6 +1405,129 @@ class TranslationsAccountsEditEn {
 	String get success_delete => 'Account deleted successfully';
 }
 
+// Path: accounts.credit_card_fields
+class TranslationsAccountsCreditCardFieldsEn {
+	TranslationsAccountsCreditCardFieldsEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Credit Card Settings'
+	String get header => 'Credit Card Settings';
+
+	/// en: 'Credit Limit'
+	String get credit_limit => 'Credit Limit';
+
+	/// en: 'Statement Closing Day'
+	String get statement_day => 'Statement Closing Day';
+
+	/// en: 'Payment Due Day'
+	String get due_day => 'Payment Due Day';
+
+	/// en: 'APR (%)'
+	String get apr => 'APR (%)';
+
+	/// en: 'Minimum Payment'
+	String get minimum_payment => 'Minimum Payment';
+
+	/// en: 'Fixed Amount'
+	String get min_fixed => 'Fixed Amount';
+
+	/// en: 'Percentage of Balance'
+	String get min_percent => 'Percentage of Balance';
+
+	/// en: 'Rewards Type'
+	String get rewards_type => 'Rewards Type';
+
+	/// en: 'Rewards Rate'
+	String get rewards_rate => 'Rewards Rate';
+
+	/// en: 'None'
+	String get no_rewards => 'None';
+
+	/// en: 'Cashback'
+	String get cashback => 'Cashback';
+
+	/// en: 'Points'
+	String get points => 'Points';
+
+	/// en: 'Miles'
+	String get miles => 'Miles';
+
+	/// en: 'Day of Month'
+	String get day_of_month => 'Day of Month';
+}
+
+// Path: accounts.credit_card_card
+class TranslationsAccountsCreditCardCardEn {
+	TranslationsAccountsCreditCardCardEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Outstanding'
+	String get outstanding => 'Outstanding';
+
+	/// en: 'Available'
+	String get available => 'Available';
+
+	/// en: 'Limit'
+	String get limit => 'Limit';
+
+	/// en: 'Due'
+	String get due => 'Due';
+
+	/// en: 'Min. Payment'
+	String get minimum_payment => 'Min. Payment';
+
+	/// en: 'Utilization'
+	String get utilization => 'Utilization';
+
+	/// en: 'Rewards Earned'
+	String get rewards_earned => 'Rewards Earned';
+
+	/// en: 'Pay'
+	String get pay => 'Pay';
+}
+
+// Path: accounts.pay_credit_card
+class TranslationsAccountsPayCreditCardEn {
+	TranslationsAccountsPayCreditCardEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Pay Credit Card'
+	String get title => 'Pay Credit Card';
+
+	/// en: 'Pay From'
+	String get pay_from => 'Pay From';
+
+	/// en: 'Amount to Pay'
+	String get amount_to_pay => 'Amount to Pay';
+
+	/// en: 'Minimum'
+	String get minimum => 'Minimum';
+
+	/// en: 'Current Balance'
+	String get current_balance => 'Current Balance';
+
+	/// en: 'Custom'
+	String get custom => 'Custom';
+
+	/// en: 'Pay'
+	String get pay_button => 'Pay';
+
+	/// en: 'Payment successful'
+	String get success => 'Payment successful';
+
+	/// en: 'No bank or cash accounts available to pay from'
+	String get no_source_accounts => 'No bank or cash accounts available to pay from';
+}
+
 // Path: seed.categories
 class TranslationsSeedCategoriesEn {
 	TranslationsSeedCategoriesEn.internal(this._root);
@@ -1445,6 +1580,9 @@ class TranslationsSeedAccountsEn {
 
 	/// en: 'Bank Account'
 	String get bank_account => 'Bank Account';
+
+	/// en: 'Credit Card'
+	String get credit_card => 'Credit Card';
 }
 
 // Path: security.lock_screen
@@ -1553,7 +1691,10 @@ extension on Translations {
 			'home.no_transactions_day' => 'No transactions on this day',
 			'home.add_transaction_on_day' => 'Add a transaction on this day',
 			'home.financial_schedule' => 'FINANCIAL SCHEDULE',
+			'home.minutes_ago' => '{minutes}m ago',
+			'home.hours_ago' => '{hours}h ago',
 			'home.transactions_for' => 'Transactions – {date}',
+			'home.upcoming_payments' => 'Upcoming Payments',
 			'nav.home' => 'Home',
 			'nav.budgets' => 'Budgets',
 			'nav.goals' => 'Goals',
@@ -1789,6 +1930,38 @@ extension on Translations {
 			'accounts.edit.balance_adjusted_message' => 'How should we record this adjustment?',
 			'accounts.edit.success_update' => 'Account updated successfully',
 			'accounts.edit.success_delete' => 'Account deleted successfully',
+			'accounts.credit_card_fields.header' => 'Credit Card Settings',
+			'accounts.credit_card_fields.credit_limit' => 'Credit Limit',
+			'accounts.credit_card_fields.statement_day' => 'Statement Closing Day',
+			'accounts.credit_card_fields.due_day' => 'Payment Due Day',
+			'accounts.credit_card_fields.apr' => 'APR (%)',
+			'accounts.credit_card_fields.minimum_payment' => 'Minimum Payment',
+			'accounts.credit_card_fields.min_fixed' => 'Fixed Amount',
+			'accounts.credit_card_fields.min_percent' => 'Percentage of Balance',
+			'accounts.credit_card_fields.rewards_type' => 'Rewards Type',
+			'accounts.credit_card_fields.rewards_rate' => 'Rewards Rate',
+			'accounts.credit_card_fields.no_rewards' => 'None',
+			'accounts.credit_card_fields.cashback' => 'Cashback',
+			'accounts.credit_card_fields.points' => 'Points',
+			'accounts.credit_card_fields.miles' => 'Miles',
+			'accounts.credit_card_fields.day_of_month' => 'Day of Month',
+			'accounts.credit_card_card.outstanding' => 'Outstanding',
+			'accounts.credit_card_card.available' => 'Available',
+			'accounts.credit_card_card.limit' => 'Limit',
+			'accounts.credit_card_card.due' => 'Due',
+			'accounts.credit_card_card.minimum_payment' => 'Min. Payment',
+			'accounts.credit_card_card.utilization' => 'Utilization',
+			'accounts.credit_card_card.rewards_earned' => 'Rewards Earned',
+			'accounts.credit_card_card.pay' => 'Pay',
+			'accounts.pay_credit_card.title' => 'Pay Credit Card',
+			'accounts.pay_credit_card.pay_from' => 'Pay From',
+			'accounts.pay_credit_card.amount_to_pay' => 'Amount to Pay',
+			'accounts.pay_credit_card.minimum' => 'Minimum',
+			'accounts.pay_credit_card.current_balance' => 'Current Balance',
+			'accounts.pay_credit_card.custom' => 'Custom',
+			'accounts.pay_credit_card.pay_button' => 'Pay',
+			'accounts.pay_credit_card.success' => 'Payment successful',
+			'accounts.pay_credit_card.no_source_accounts' => 'No bank or cash accounts available to pay from',
 			'transactions.add_title' => 'Add Transaction',
 			'transactions.edit_title' => 'Edit Transaction',
 			'transactions.enter_amount' => 'ENTER AMOUNT',
@@ -1853,6 +2026,7 @@ extension on Translations {
 			'seed.categories.investment' => 'Investment',
 			'seed.accounts.cash' => 'Cash',
 			'seed.accounts.bank_account' => 'Bank Account',
+			'seed.accounts.credit_card' => 'Credit Card',
 			'security.lock_screen.subtitle_authenticate' => 'Authenticate to continue',
 			'security.lock_screen.subtitle_unavailable' => 'Biometrics unavailable on this device',
 			'security.lock_screen.try_again' => 'Try Again',

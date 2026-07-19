@@ -27,7 +27,10 @@
     "no_transactions_day": "Sin transacciones este día",
     "add_transaction_on_day": "Agregar una transacción en este día",
     "financial_schedule": "AGENDA FINANCIERA",
-    "transactions_for": "Transacciones – {date}"
+    "minutes_ago": "hace {minutes} min",
+    "hours_ago": "hace {hours} h",
+    "transactions_for": "Transacciones – {date}",
+    "upcoming_payments": "Próximos pagos"
   },
   "nav": {
     "home": "Inicio",
@@ -333,6 +336,44 @@
       "balance_adjusted_message": "¿Cómo debemos registrar este ajuste?",
       "success_update": "Cuenta actualizada con éxito",
       "success_delete": "Cuenta eliminada con éxito"
+    },
+    "credit_card_fields": {
+      "header": "Configuración de tarjeta",
+      "credit_limit": "Límite de crédito",
+      "statement_day": "Día de cierre",
+      "due_day": "Día de pago",
+      "apr": "Tasa APR (%)",
+      "minimum_payment": "Pago mínimo",
+      "min_fixed": "Monto fijo",
+      "min_percent": "Porcentaje del saldo",
+      "rewards_type": "Tipo de recompensa",
+      "rewards_rate": "Tasa de recompensa",
+      "no_rewards": "Ninguna",
+      "cashback": "Cashback",
+      "points": "Puntos",
+      "miles": "Millas",
+      "day_of_month": "Día del mes"
+    },
+    "credit_card_card": {
+      "outstanding": "Pendiente",
+      "available": "Disponible",
+      "limit": "Límite",
+      "due": "Vence",
+      "minimum_payment": "Mínimo",
+      "utilization": "Uso",
+      "rewards_earned": "Recompensas",
+      "pay": "Pagar"
+    },
+    "pay_credit_card": {
+      "title": "Pagar tarjeta",
+      "pay_from": "Pagar desde",
+      "amount_to_pay": "Monto a pagar",
+      "minimum": "Mínimo",
+      "current_balance": "Saldo actual",
+      "custom": "Personalizado",
+      "pay_button": "Pagar",
+      "success": "Pago exitoso",
+      "no_source_accounts": "No hay cuentas bancarias o de efectivo disponibles"
     }
   },
   "transactions": {
@@ -413,7 +454,8 @@
     },
     "accounts": {
       "cash": "Efectivo",
-      "bank_account": "Cuenta de Banco"
+      "bank_account": "Cuenta de Banco",
+      "credit_card": "Tarjeta de crédito"
     }
   },
   "security": {

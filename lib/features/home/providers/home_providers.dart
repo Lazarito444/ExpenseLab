@@ -1,4 +1,6 @@
 import 'package:expenselab/core/database/app_database.dart';
+import 'package:expenselab/features/accounts/data/tables/accounts_table.dart';
+import 'package:expenselab/features/accounts/domain/models/account_model.dart';
 import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
@@ -114,4 +116,23 @@ final transactionsByDateProvider = Provider<Map<DateTime, List<Transaction>>>((r
     map.putIfAbsent(day, () => []).add(tx);
   }
   return map;
+});
+
+/// Upcoming credit card payments, sorted by due date ascending.
+/// Returns a list of (AccountModel, dueDate, minimumPayment) tuples.
+final upcomingCreditCardPaymentsProvider = Provider<List<(AccountModel, DateTime, double?)>>((ref) {
+  final models = ref.watch(accountModelsProvider);
+  final payments = <(AccountModel, DateTime, double?)>[];
+
+  for (final model in models) {
+    if (model.type != AccountType.creditCard) continue;
+    final dueDate = model.nextPaymentDate;
+    if (dueDate == null) continue;
+    final outstanding = model.displayBalance;
+    if (outstanding <= 0) continue;
+    payments.add((model, dueDate, model.minimumPayment));
+  }
+
+  payments.sort((a, b) => a.$2.compareTo(b.$2));
+  return payments;
 });

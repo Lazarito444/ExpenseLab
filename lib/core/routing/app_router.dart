@@ -2,6 +2,7 @@ import 'package:expenselab/core/routing/app_routes.dart';
 import 'package:expenselab/features/accounts/presentation/screens/accounts_screen.dart';
 import 'package:expenselab/features/accounts/presentation/screens/create_account_screen.dart';
 import 'package:expenselab/features/accounts/presentation/screens/edit_account_screen.dart';
+import 'package:expenselab/features/accounts/presentation/screens/pay_credit_card_screen.dart';
 import 'package:expenselab/features/analytics/presentation/screens/analytics_screen.dart';
 import 'package:expenselab/features/budgets/presentation/screens/budgets_screen.dart';
 import 'package:expenselab/features/budgets/presentation/screens/create_budget_screen.dart';
@@ -165,6 +166,12 @@ final routerConfig = GoRouter(
         GoRoute(
           path: ':id/edit',
           builder: (context, state) => EditAccountScreen(
+            accountId: state.pathParameters['id']!,
+          ),
+        ),
+        GoRoute(
+          path: ':id/pay',
+          builder: (context, state) => PayCreditCardScreen(
             accountId: state.pathParameters['id']!,
           ),
         ),

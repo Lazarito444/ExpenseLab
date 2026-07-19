@@ -181,7 +181,7 @@ class _AccountsScreenState extends ConsumerState<AccountsScreen> {
                       Padding(
                         key: ValueKey(_creditCards[i].id),
                         padding: const EdgeInsets.only(bottom: 12),
-                        child: _AccountCard(model: _creditCards[i], index: i),
+                        child: _CreditCardCard(model: _creditCards[i], index: i),
                       ),
                   ],
                 ),
@@ -435,5 +435,293 @@ class _AccountCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _CreditCardCard extends StatelessWidget {
+  const _CreditCardCard({required this.model, required this.index});
+
+  final AccountModel model;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    final appColors = context.appColors;
+    final iconData = iconFromName(model.icon);
+    final outstanding = model.displayBalance;
+    final util = model.utilization;
+    final avail = model.availableCredit;
+    final minPay = model.minimumPayment;
+    final nextDue = model.nextPaymentDate;
+
+    return GestureDetector(
+      onTap: () => context.push(AppRoutes.creditCardPay(model.id)),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: appColors.cardSurface,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Header row ──
+            Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.primary.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(iconData, color: context.colorScheme.primary, size: 22),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        model.name,
+                        style: TextStyle(
+                          fontFamily: 'Epilogue',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: context.colorScheme.scrim,
+                        ),
+                      ),
+                      if (model.apr != null)
+                        Text(
+                          'APR ${model.apr!.toStringAsFixed(2)}%',
+                          style: TextStyle(
+                            fontFamily: 'Epilogue',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                            color: appColors.secondaryLabel,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                // Pay button
+                GestureDetector(
+                  onTap: () => context.push(AppRoutes.creditCardPay(model.id)),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: context.colorScheme.primary,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      t.accounts.credit_card_card.pay,
+                      style: const TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // ── Outstanding balance ──
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  t.accounts.credit_card_card.outstanding,
+                  style: TextStyle(
+                    fontFamily: 'Epilogue',
+                    fontSize: 12,
+                    color: appColors.secondaryLabel,
+                  ),
+                ),
+                Text(
+                  formatCurrency(outstanding, model.currencyCode),
+                  style: TextStyle(
+                    fontFamily: 'Epilogue',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 22,
+                    color: outstanding > 0
+                        ? context.colorScheme.error
+                        : context.colorScheme.outline,
+                  ),
+                ),
+              ],
+            ),
+
+            // ── Utilization bar ──
+            if (util != null) ...[
+              const SizedBox(height: 10),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(
+                  value: util,
+                  minHeight: 6,
+                  backgroundColor: appColors.inputFill,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    util < 0.3
+                        ? const Color(0xFF34C759)
+                        : util < 0.7
+                            ? const Color(0xFFFF9500)
+                            : const Color(0xFFFF3B30),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${(util * 100).toStringAsFixed(1)}% ${t.accounts.credit_card_card.utilization}',
+                    style: TextStyle(
+                      fontFamily: 'Epilogue',
+                      fontSize: 11,
+                      color: appColors.secondaryLabel,
+                    ),
+                  ),
+                  if (avail != null)
+                    Text(
+                      '${formatCurrency(avail, model.currencyCode)} ${t.accounts.credit_card_card.available}',
+                      style: TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontSize: 11,
+                        color: appColors.secondaryLabel,
+                      ),
+                    ),
+                ],
+              ),
+            ],
+
+            // ── Due date & minimum payment row ──
+            if (nextDue != null || minPay != null) ...[
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  if (nextDue != null) ...[
+                    Icon(Icons.calendar_today_rounded, size: 14, color: appColors.secondaryLabel),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${t.accounts.credit_card_card.due} ${_formatDate(nextDue)}',
+                      style: TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontSize: 12,
+                        fontWeight: _isUrgent(nextDue) ? FontWeight.w600 : FontWeight.w400,
+                        color: _isUrgent(nextDue)
+                            ? context.colorScheme.error
+                            : appColors.secondaryLabel,
+                      ),
+                    ),
+                  ],
+                  if (nextDue != null && minPay != null) ...[
+                    const SizedBox(width: 16),
+                  ],
+                  if (minPay != null) ...[
+                    Icon(Icons.payments_rounded, size: 14, color: appColors.secondaryLabel),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${t.accounts.credit_card_card.minimum_payment} ${formatCurrency(minPay, model.currencyCode)}',
+                      style: TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontSize: 12,
+                        color: appColors.secondaryLabel,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ],
+
+            // ── Rewards line ──
+            if (model.rewardType != null && model.rewardRate != null) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.card_giftcard_rounded, size: 14, color: appColors.secondaryLabel),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${t.accounts.credit_card_card.rewards_earned}: ${_rewardLabel(model)}',
+                    style: TextStyle(
+                      fontFamily: 'Epilogue',
+                      fontSize: 12,
+                      color: appColors.secondaryLabel,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+
+            const SizedBox(height: 12),
+
+            // ── Bottom row: drag handle + edit ──
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ReorderableDragStartListener(
+                  index: index,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Icon(Icons.drag_indicator, color: context.colorScheme.outline, size: 20),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => context.push(AppRoutes.accountEdit(model.id)),
+                  child: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: context.colorScheme.primary.withValues(alpha: 0.10),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.edit_outlined, size: 16, color: context.colorScheme.primary),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool _isUrgent(DateTime date) {
+    final diff = date.difference(DateTime.now()).inDays;
+    return diff <= 7 && diff >= 0;
+  }
+
+  String _formatDate(DateTime date) {
+    final months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    ];
+    return '${months[date.month - 1]} ${date.day}';
+  }
+
+  String _rewardLabel(AccountModel model) {
+    final outstanding = model.displayBalance;
+    if (outstanding <= 0 || model.rewardRate == null) return '--';
+    final earned = outstanding * model.rewardRate!;
+    switch (model.rewardType) {
+      case 'cashback':
+        return formatCurrency(earned, model.currencyCode);
+      case 'points':
+        return '${earned.round().toString()} pts';
+      case 'miles':
+        return '${earned.round().toString()} mi';
+      default:
+        return earned.toStringAsFixed(2);
+    }
   }
 }

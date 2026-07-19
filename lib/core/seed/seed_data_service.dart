@@ -36,6 +36,7 @@ class SeedDataService {
     }
     await _accounts.create(_cashAccount(s));
     await _accounts.create(_bankAccount(s));
+    await _accounts.create(_creditCardAccount(s));
   }
 }
 
@@ -129,4 +130,19 @@ AccountsCompanion _bankAccount(TranslationsSeedEn s) => AccountsCompanion(
       currencyCode: const Value('USD'),
       icon: const Value('account_balance'),
       sortOrder: const Value(1),
+    );
+
+AccountsCompanion _creditCardAccount(TranslationsSeedEn s) => AccountsCompanion(
+      name: Value(s.accounts.credit_card),
+      type: const Value(AccountType.creditCard),
+      currencyCode: const Value('USD'),
+      icon: const Value('credit_card'),
+      creditLimit: const Value(5000.0),
+      dueDay: const Value(15),
+      statementDay: const Value(5),
+      apr: const Value(24.99),
+      minPaymentPercent: const Value(2.0),
+      rewardType: const Value('cashback'),
+      rewardRate: const Value(0.02),
+      sortOrder: const Value(2),
     );

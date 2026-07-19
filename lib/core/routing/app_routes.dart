@@ -14,6 +14,7 @@ class AppRoutes {
   static const accounts = '/accounts';
   static const accountsCreate = '/accounts/create';
   static String accountEdit(String id) => '/accounts/$id/edit';
+  static String creditCardPay(String id) => '/accounts/$id/pay';
   static const categories = '/categories';
   static const categoriesCreate = '/categories/create';
   static String categoryDetails(String id) => '/categories/$id';
