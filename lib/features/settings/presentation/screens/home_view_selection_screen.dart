@@ -2,8 +2,10 @@ import 'package:expenselab/core/extensions/context_extensions.dart';
 import 'package:expenselab/core/i18n/strings.g.dart';
 import 'package:expenselab/features/settings/presentation/widgets/settings_widgets.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
+import 'package:expenselab/widgets/scaffold/expense_lab_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeViewSelectionScreen extends ConsumerWidget {
   const HomeViewSelectionScreen({super.key});
@@ -20,21 +22,11 @@ class HomeViewSelectionScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: context.appColors.scaffoldBackground,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          t.settings.default_home_view.title,
-          style: TextStyle(
-            fontFamily: 'Epilogue',
-            fontWeight: FontWeight.w700,
-            fontSize: 18,
-            color: context.appColors.primaryText,
-          ),
-        ),
+      appBar: ExpenseLabAppBar(
+        title: t.settings.default_home_view.title,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.appColors.primaryText, size: 20),
-          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: context.colorScheme.primary, size: 20),
+          onPressed: () => context.pop(),
         ),
       ),
       body: SafeArea(
