@@ -2739,6 +2739,39 @@ class $TransactionImagesTable extends TransactionImages
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _ocrTextMeta = const VerificationMeta(
+    'ocrText',
+  );
+  @override
+  late final GeneratedColumn<String> ocrText = GeneratedColumn<String>(
+    'ocr_text',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _parsedAmountMeta = const VerificationMeta(
+    'parsedAmount',
+  );
+  @override
+  late final GeneratedColumn<double> parsedAmount = GeneratedColumn<double>(
+    'parsed_amount',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _parsedMerchantMeta = const VerificationMeta(
+    'parsedMerchant',
+  );
+  @override
+  late final GeneratedColumn<String> parsedMerchant = GeneratedColumn<String>(
+    'parsed_merchant',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -2746,6 +2779,9 @@ class $TransactionImagesTable extends TransactionImages
     updatedAt,
     transactionId,
     localPath,
+    ocrText,
+    parsedAmount,
+    parsedMerchant,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2795,6 +2831,30 @@ class $TransactionImagesTable extends TransactionImages
     } else if (isInserting) {
       context.missing(_localPathMeta);
     }
+    if (data.containsKey('ocr_text')) {
+      context.handle(
+        _ocrTextMeta,
+        ocrText.isAcceptableOrUnknown(data['ocr_text']!, _ocrTextMeta),
+      );
+    }
+    if (data.containsKey('parsed_amount')) {
+      context.handle(
+        _parsedAmountMeta,
+        parsedAmount.isAcceptableOrUnknown(
+          data['parsed_amount']!,
+          _parsedAmountMeta,
+        ),
+      );
+    }
+    if (data.containsKey('parsed_merchant')) {
+      context.handle(
+        _parsedMerchantMeta,
+        parsedMerchant.isAcceptableOrUnknown(
+          data['parsed_merchant']!,
+          _parsedMerchantMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -2824,6 +2884,18 @@ class $TransactionImagesTable extends TransactionImages
         DriftSqlType.string,
         data['${effectivePrefix}local_path'],
       )!,
+      ocrText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ocr_text'],
+      ),
+      parsedAmount: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}parsed_amount'],
+      ),
+      parsedMerchant: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}parsed_merchant'],
+      ),
     );
   }
 
@@ -2849,12 +2921,24 @@ class TransactionImage extends DataClass
 
   /// Local path to the image.
   final String localPath;
+
+  /// Raw OCR text extracted from the receipt image, if scanned.
+  final String? ocrText;
+
+  /// Parsed amount from OCR (best candidate), if detected.
+  final double? parsedAmount;
+
+  /// Parsed merchant name from OCR, if detected.
+  final String? parsedMerchant;
   const TransactionImage({
     required this.id,
     required this.createdAt,
     required this.updatedAt,
     required this.transactionId,
     required this.localPath,
+    this.ocrText,
+    this.parsedAmount,
+    this.parsedMerchant,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2864,6 +2948,15 @@ class TransactionImage extends DataClass
     map['updated_at'] = Variable<DateTime>(updatedAt);
     map['transaction_id'] = Variable<String>(transactionId);
     map['local_path'] = Variable<String>(localPath);
+    if (!nullToAbsent || ocrText != null) {
+      map['ocr_text'] = Variable<String>(ocrText);
+    }
+    if (!nullToAbsent || parsedAmount != null) {
+      map['parsed_amount'] = Variable<double>(parsedAmount);
+    }
+    if (!nullToAbsent || parsedMerchant != null) {
+      map['parsed_merchant'] = Variable<String>(parsedMerchant);
+    }
     return map;
   }
 
@@ -2874,6 +2967,15 @@ class TransactionImage extends DataClass
       updatedAt: Value(updatedAt),
       transactionId: Value(transactionId),
       localPath: Value(localPath),
+      ocrText: ocrText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ocrText),
+      parsedAmount: parsedAmount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(parsedAmount),
+      parsedMerchant: parsedMerchant == null && nullToAbsent
+          ? const Value.absent()
+          : Value(parsedMerchant),
     );
   }
 
@@ -2888,6 +2990,9 @@ class TransactionImage extends DataClass
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       transactionId: serializer.fromJson<String>(json['transactionId']),
       localPath: serializer.fromJson<String>(json['localPath']),
+      ocrText: serializer.fromJson<String?>(json['ocrText']),
+      parsedAmount: serializer.fromJson<double?>(json['parsedAmount']),
+      parsedMerchant: serializer.fromJson<String?>(json['parsedMerchant']),
     );
   }
   @override
@@ -2899,6 +3004,9 @@ class TransactionImage extends DataClass
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'transactionId': serializer.toJson<String>(transactionId),
       'localPath': serializer.toJson<String>(localPath),
+      'ocrText': serializer.toJson<String?>(ocrText),
+      'parsedAmount': serializer.toJson<double?>(parsedAmount),
+      'parsedMerchant': serializer.toJson<String?>(parsedMerchant),
     };
   }
 
@@ -2908,12 +3016,20 @@ class TransactionImage extends DataClass
     DateTime? updatedAt,
     String? transactionId,
     String? localPath,
+    Value<String?> ocrText = const Value.absent(),
+    Value<double?> parsedAmount = const Value.absent(),
+    Value<String?> parsedMerchant = const Value.absent(),
   }) => TransactionImage(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     transactionId: transactionId ?? this.transactionId,
     localPath: localPath ?? this.localPath,
+    ocrText: ocrText.present ? ocrText.value : this.ocrText,
+    parsedAmount: parsedAmount.present ? parsedAmount.value : this.parsedAmount,
+    parsedMerchant: parsedMerchant.present
+        ? parsedMerchant.value
+        : this.parsedMerchant,
   );
   TransactionImage copyWithCompanion(TransactionImagesCompanion data) {
     return TransactionImage(
@@ -2924,6 +3040,13 @@ class TransactionImage extends DataClass
           ? data.transactionId.value
           : this.transactionId,
       localPath: data.localPath.present ? data.localPath.value : this.localPath,
+      ocrText: data.ocrText.present ? data.ocrText.value : this.ocrText,
+      parsedAmount: data.parsedAmount.present
+          ? data.parsedAmount.value
+          : this.parsedAmount,
+      parsedMerchant: data.parsedMerchant.present
+          ? data.parsedMerchant.value
+          : this.parsedMerchant,
     );
   }
 
@@ -2934,14 +3057,25 @@ class TransactionImage extends DataClass
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('transactionId: $transactionId, ')
-          ..write('localPath: $localPath')
+          ..write('localPath: $localPath, ')
+          ..write('ocrText: $ocrText, ')
+          ..write('parsedAmount: $parsedAmount, ')
+          ..write('parsedMerchant: $parsedMerchant')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, createdAt, updatedAt, transactionId, localPath);
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    transactionId,
+    localPath,
+    ocrText,
+    parsedAmount,
+    parsedMerchant,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2950,7 +3084,10 @@ class TransactionImage extends DataClass
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.transactionId == this.transactionId &&
-          other.localPath == this.localPath);
+          other.localPath == this.localPath &&
+          other.ocrText == this.ocrText &&
+          other.parsedAmount == this.parsedAmount &&
+          other.parsedMerchant == this.parsedMerchant);
 }
 
 class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
@@ -2959,6 +3096,9 @@ class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
   final Value<DateTime> updatedAt;
   final Value<String> transactionId;
   final Value<String> localPath;
+  final Value<String?> ocrText;
+  final Value<double?> parsedAmount;
+  final Value<String?> parsedMerchant;
   final Value<int> rowid;
   const TransactionImagesCompanion({
     this.id = const Value.absent(),
@@ -2966,6 +3106,9 @@ class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
     this.updatedAt = const Value.absent(),
     this.transactionId = const Value.absent(),
     this.localPath = const Value.absent(),
+    this.ocrText = const Value.absent(),
+    this.parsedAmount = const Value.absent(),
+    this.parsedMerchant = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   TransactionImagesCompanion.insert({
@@ -2974,6 +3117,9 @@ class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
     this.updatedAt = const Value.absent(),
     required String transactionId,
     required String localPath,
+    this.ocrText = const Value.absent(),
+    this.parsedAmount = const Value.absent(),
+    this.parsedMerchant = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        transactionId = Value(transactionId),
@@ -2984,6 +3130,9 @@ class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
     Expression<DateTime>? updatedAt,
     Expression<String>? transactionId,
     Expression<String>? localPath,
+    Expression<String>? ocrText,
+    Expression<double>? parsedAmount,
+    Expression<String>? parsedMerchant,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -2992,6 +3141,9 @@ class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
       if (updatedAt != null) 'updated_at': updatedAt,
       if (transactionId != null) 'transaction_id': transactionId,
       if (localPath != null) 'local_path': localPath,
+      if (ocrText != null) 'ocr_text': ocrText,
+      if (parsedAmount != null) 'parsed_amount': parsedAmount,
+      if (parsedMerchant != null) 'parsed_merchant': parsedMerchant,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -3002,6 +3154,9 @@ class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
     Value<DateTime>? updatedAt,
     Value<String>? transactionId,
     Value<String>? localPath,
+    Value<String?>? ocrText,
+    Value<double?>? parsedAmount,
+    Value<String?>? parsedMerchant,
     Value<int>? rowid,
   }) {
     return TransactionImagesCompanion(
@@ -3010,6 +3165,9 @@ class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
       updatedAt: updatedAt ?? this.updatedAt,
       transactionId: transactionId ?? this.transactionId,
       localPath: localPath ?? this.localPath,
+      ocrText: ocrText ?? this.ocrText,
+      parsedAmount: parsedAmount ?? this.parsedAmount,
+      parsedMerchant: parsedMerchant ?? this.parsedMerchant,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -3032,6 +3190,15 @@ class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
     if (localPath.present) {
       map['local_path'] = Variable<String>(localPath.value);
     }
+    if (ocrText.present) {
+      map['ocr_text'] = Variable<String>(ocrText.value);
+    }
+    if (parsedAmount.present) {
+      map['parsed_amount'] = Variable<double>(parsedAmount.value);
+    }
+    if (parsedMerchant.present) {
+      map['parsed_merchant'] = Variable<String>(parsedMerchant.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -3046,6 +3213,9 @@ class TransactionImagesCompanion extends UpdateCompanion<TransactionImage> {
           ..write('updatedAt: $updatedAt, ')
           ..write('transactionId: $transactionId, ')
           ..write('localPath: $localPath, ')
+          ..write('ocrText: $ocrText, ')
+          ..write('parsedAmount: $parsedAmount, ')
+          ..write('parsedMerchant: $parsedMerchant, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -8782,6 +8952,9 @@ typedef $$TransactionImagesTableCreateCompanionBuilder =
       Value<DateTime> updatedAt,
       required String transactionId,
       required String localPath,
+      Value<String?> ocrText,
+      Value<double?> parsedAmount,
+      Value<String?> parsedMerchant,
       Value<int> rowid,
     });
 typedef $$TransactionImagesTableUpdateCompanionBuilder =
@@ -8791,6 +8964,9 @@ typedef $$TransactionImagesTableUpdateCompanionBuilder =
       Value<DateTime> updatedAt,
       Value<String> transactionId,
       Value<String> localPath,
+      Value<String?> ocrText,
+      Value<double?> parsedAmount,
+      Value<String?> parsedMerchant,
       Value<int> rowid,
     });
 
@@ -8859,6 +9035,21 @@ class $$TransactionImagesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get ocrText => $composableBuilder(
+    column: $table.ocrText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get parsedAmount => $composableBuilder(
+    column: $table.parsedAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get parsedMerchant => $composableBuilder(
+    column: $table.parsedMerchant,
+    builder: (column) => ColumnFilters(column),
+  );
+
   $$TransactionsTableFilterComposer get transactionId {
     final $$TransactionsTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -8912,6 +9103,21 @@ class $$TransactionImagesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get ocrText => $composableBuilder(
+    column: $table.ocrText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get parsedAmount => $composableBuilder(
+    column: $table.parsedAmount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get parsedMerchant => $composableBuilder(
+    column: $table.parsedMerchant,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$TransactionsTableOrderingComposer get transactionId {
     final $$TransactionsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -8956,6 +9162,19 @@ class $$TransactionImagesTableAnnotationComposer
 
   GeneratedColumn<String> get localPath =>
       $composableBuilder(column: $table.localPath, builder: (column) => column);
+
+  GeneratedColumn<String> get ocrText =>
+      $composableBuilder(column: $table.ocrText, builder: (column) => column);
+
+  GeneratedColumn<double> get parsedAmount => $composableBuilder(
+    column: $table.parsedAmount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get parsedMerchant => $composableBuilder(
+    column: $table.parsedMerchant,
+    builder: (column) => column,
+  );
 
   $$TransactionsTableAnnotationComposer get transactionId {
     final $$TransactionsTableAnnotationComposer composer = $composerBuilder(
@@ -9019,6 +9238,9 @@ class $$TransactionImagesTableTableManager
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<String> transactionId = const Value.absent(),
                 Value<String> localPath = const Value.absent(),
+                Value<String?> ocrText = const Value.absent(),
+                Value<double?> parsedAmount = const Value.absent(),
+                Value<String?> parsedMerchant = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TransactionImagesCompanion(
                 id: id,
@@ -9026,6 +9248,9 @@ class $$TransactionImagesTableTableManager
                 updatedAt: updatedAt,
                 transactionId: transactionId,
                 localPath: localPath,
+                ocrText: ocrText,
+                parsedAmount: parsedAmount,
+                parsedMerchant: parsedMerchant,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -9035,6 +9260,9 @@ class $$TransactionImagesTableTableManager
                 Value<DateTime> updatedAt = const Value.absent(),
                 required String transactionId,
                 required String localPath,
+                Value<String?> ocrText = const Value.absent(),
+                Value<double?> parsedAmount = const Value.absent(),
+                Value<String?> parsedMerchant = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TransactionImagesCompanion.insert(
                 id: id,
@@ -9042,6 +9270,9 @@ class $$TransactionImagesTableTableManager
                 updatedAt: updatedAt,
                 transactionId: transactionId,
                 localPath: localPath,
+                ocrText: ocrText,
+                parsedAmount: parsedAmount,
+                parsedMerchant: parsedMerchant,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

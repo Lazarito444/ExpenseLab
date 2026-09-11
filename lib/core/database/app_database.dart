@@ -36,7 +36,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -69,6 +69,11 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(accounts, accounts.minPaymentPercent);
         await m.addColumn(accounts, accounts.rewardType);
         await m.addColumn(accounts, accounts.rewardRate);
+      }
+      if (from < 8) {
+        await m.addColumn(transactionImages, transactionImages.ocrText);
+        await m.addColumn(transactionImages, transactionImages.parsedAmount);
+        await m.addColumn(transactionImages, transactionImages.parsedMerchant);
       }
     },
   );

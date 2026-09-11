@@ -401,7 +401,23 @@
     "success": "¡Movimiento guardado!",
     "select_category": "Elige una Categoría",
     "select_account": "¿Qué Cuenta?",
-    "select_to_account": "¿Adónde Va?"
+    "select_to_account": "¿Adónde Va?",
+    "ocr": {
+      "scan_receipt": "Escanear recibo",
+      "scanning": "Escaneando...",
+      "use_values": "Usar valores",
+      "retake": "Repetir",
+      "low_confidence": "Por favor revisa",
+      "no_text_found": "No se encontró texto — ingresa manualmente",
+      "review_title": "Revisar valores escaneados",
+      "amount_label": "Monto",
+      "date_label": "Fecha",
+      "merchant_label": "Comercio",
+      "suggested_category": "Categoría sugerida",
+      "raw_text_label": "Texto detectado",
+      "confidence_high": "Alta confianza",
+      "confidence_review": "Revisar sugerencia"
+    }
   },
   "categories": {
     "title": "Mis Categorías",

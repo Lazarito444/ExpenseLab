@@ -8,4 +8,13 @@ class TransactionImages extends Table with TimestampedTable {
 
   /// Local path to the image.
   TextColumn get localPath => text()();
+
+  /// Raw OCR text extracted from the receipt image, if scanned.
+  TextColumn get ocrText => text().nullable()();
+
+  /// Parsed amount from OCR (best candidate), if detected.
+  RealColumn get parsedAmount => real().nullable()();
+
+  /// Parsed merchant name from OCR, if detected.
+  TextColumn get parsedMerchant => text().nullable()();
 }

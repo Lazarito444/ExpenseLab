@@ -401,7 +401,23 @@
     "success": "Transaction dropped!",
     "select_category": "Pick Your Category",
     "select_account": "Which Account?",
-    "select_to_account": "Where's It Going?"
+    "select_to_account": "Where's It Going?",
+    "ocr": {
+      "scan_receipt": "Scan receipt",
+      "scanning": "Scanning...",
+      "use_values": "Use values",
+      "retake": "Retake",
+      "low_confidence": "Please review",
+      "no_text_found": "No text found — enter manually",
+      "review_title": "Review scanned values",
+      "amount_label": "Amount",
+      "date_label": "Date",
+      "merchant_label": "Merchant",
+      "suggested_category": "Suggested category",
+      "raw_text_label": "Raw text",
+      "confidence_high": "High confidence",
+      "confidence_review": "Review suggested"
+    }
   },
   "categories": {
     "title": "My Categories",

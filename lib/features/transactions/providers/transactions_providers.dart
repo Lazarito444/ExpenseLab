@@ -1,5 +1,7 @@
 import 'package:expenselab/core/database/app_database.dart';
 import 'package:expenselab/core/database/database_providers.dart';
+import 'package:expenselab/core/ocr/ocr_parser.dart';
+import 'package:expenselab/core/ocr/ocr_service.dart';
 import 'package:expenselab/features/transactions/data/datasources/transaction_images_local_datasource.dart';
 import 'package:expenselab/features/transactions/data/datasources/transaction_images_local_datasource_impl.dart';
 import 'package:expenselab/features/transactions/data/datasources/transactions_local_datasource.dart';
@@ -103,4 +105,14 @@ final transactionImagesByTransactionProvider = StreamProvider.family<List<Transa
 /// Provides the [RecurrenceService] wired to [transactionsRepositoryProvider].
 final recurrenceServiceProvider = Provider<RecurrenceService>((ref) {
   return RecurrenceService(ref.watch(transactionsRepositoryProvider));
+});
+
+// ── OCR ──────────────────────────────────────────────────────────────────────
+
+/// Pure parser for receipt text (no Flutter dep, unit-testable).
+final ocrParserProvider = Provider<OcrParser>((ref) => const OcrParser());
+
+/// On-device ML Kit OCR service.
+final ocrServiceProvider = Provider<OcrService>((ref) {
+  return OcrService(parser: ref.watch(ocrParserProvider));
 });

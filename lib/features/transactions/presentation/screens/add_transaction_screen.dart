@@ -9,12 +9,14 @@ import 'package:expenselab/features/accounts/providers/accounts_providers.dart';
 import 'package:expenselab/features/categories/data/tables/categories_table.dart';
 import 'package:expenselab/features/categories/domain/models/category_model.dart';
 import 'package:expenselab/features/categories/providers/categories_providers.dart';
+import 'package:expenselab/core/ocr/ocr_result.dart';
 import 'package:expenselab/features/settings/domain/models/supported_currencies.dart';
 import 'package:expenselab/features/settings/providers/settings_providers.dart';
 import 'package:expenselab/features/starred_transactions/presentation/widgets/starred_select_sheet.dart';
 import 'package:expenselab/features/starred_transactions/providers/starred_transactions_providers.dart';
 import 'package:expenselab/features/transactions/data/tables/transactions_table.dart';
 import 'package:expenselab/features/transactions/domain/models/transaction_image_model.dart';
+import 'package:expenselab/features/transactions/presentation/widgets/ocr_preview_sheet.dart';
 import 'package:expenselab/features/transactions/presentation/widgets/recurrence_config_sheet.dart';
 import 'package:expenselab/features/transactions/presentation/widgets/recurrence_scope_dialog.dart';
 import 'package:expenselab/features/transactions/providers/transactions_providers.dart';
@@ -61,6 +63,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   bool _isLoadingTransaction = false;
   // Pending local paths for new images; populated before save.
   final List<String> _pendingImagePaths = [];
+  // Per-image OCR results (per-image storage as per plan).
+  final Map<String, OcrResult> _ocrByPath = {};
   // Existing image records loaded in edit mode.
   List<TransactionImageModel> _existingImages = [];
   // Recurrence state.
@@ -420,10 +424,14 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       }
 
       for (final path in _pendingImagePaths) {
+        final ocr = _ocrByPath[path];
         await imagesRepo.create(
           TransactionImagesCompanion(
             transactionId: drift.Value(txId),
             localPath: drift.Value(path),
+            ocrText: ocr != null && ocr.rawText.isNotEmpty ? drift.Value(ocr.rawText) : const drift.Value.absent(),
+            parsedAmount: ocr?.bestAmount != null ? drift.Value(ocr!.bestAmount!) : const drift.Value.absent(),
+            parsedMerchant: ocr?.merchant != null ? drift.Value(ocr!.merchant!) : const drift.Value.absent(),
           ),
         );
       }
@@ -633,6 +641,10 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
           Navigator.pop(ctx);
           await _pickImage(ImageSource.gallery);
         },
+        onScanReceipt: () async {
+          Navigator.pop(ctx);
+          await _showScanOptions();
+        },
         onRemoveExisting: (img) async {
           await ref.read(transactionImagesRepositoryProvider).delete(img.id);
           final file = File(img.localPath);
@@ -640,10 +652,165 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
           if (mounted) setState(() => _existingImages.remove(img));
         },
         onRemovePending: (path) {
-          if (mounted) setState(() => _pendingImagePaths.remove(path));
+          if (mounted) {
+            setState(() {
+              _pendingImagePaths.remove(path);
+              _ocrByPath.remove(path);
+            });
+          }
         },
       ),
     );
+  }
+
+  Future<void> _showScanOptions() async {
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      backgroundColor: context.colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: context.colorScheme.outlineVariant,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.photo_camera_rounded),
+              title: Text(context.t.common.preview), // fallback, will use ocr scan label below
+              subtitle: const Text('Camera'),
+              onTap: () {
+                Navigator.pop(ctx, ImageSource.camera);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_rounded),
+              title: const Text('Gallery'),
+              onTap: () {
+                Navigator.pop(ctx, ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+    if (source != null && mounted) {
+      await _scanReceipt(source);
+    }
+  }
+
+  Future<void> _scanReceipt(ImageSource source) async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: source, imageQuality: 85);
+    if (picked == null || !mounted) return;
+
+    final saved = await _copyImageToAppDir(picked.path);
+    if (!mounted) return;
+    setState(() {
+      _pendingImagePaths.add(saved);
+    });
+
+    // Show scanning indicator
+    if (!mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    final tOcr = context.t.transactions.ocr;
+
+    // Run OCR (8s timeout inside service)
+    OcrResult result;
+    try {
+      // Show transient snackbar while scanning
+      messenger.showSnackBar(SnackBar(content: Text(tOcr.scanning), duration: const Duration(seconds: 8)));
+      result = await ref.read(ocrServiceProvider).recognize(saved);
+      messenger.hideCurrentSnackBar();
+    } catch (e) {
+      messenger.hideCurrentSnackBar();
+      messenger.showSnackBar(SnackBar(content: Text('${tOcr.no_text_found}: $e')));
+      return;
+    }
+
+    if (!mounted) {
+      _ocrByPath[saved] = result;
+      return;
+    }
+    _ocrByPath[saved] = result;
+
+    if (result.rawText.trim().isEmpty && result.bestAmount == null && result.merchant == null) {
+      messenger.showSnackBar(SnackBar(content: Text(tOcr.no_text_found)));
+    }
+
+    // Suggest category chip-only: find best matching category by merchant token
+    CategoryModel? suggested;
+    if (result.merchant != null && result.merchant!.isNotEmpty) {
+      final categories = ref.read(categoriesProvider).value ?? [];
+      final merchantLower = result.merchant!.toLowerCase();
+      final tokens = merchantLower.split(RegExp(r'\s+')).where((w) => w.length >= 3).toList();
+      CategoryModel? best;
+      int bestScore = 0;
+      for (final cat in categories) {
+        final nameLower = cat.name.toLowerCase();
+        int score = 0;
+        for (final token in tokens) {
+          if (nameLower.contains(token)) score += 2;
+        }
+        // Also check merchant contains category name token
+        for (final word in nameLower.split(RegExp(r'\s+'))) {
+          if (word.length >= 3 && merchantLower.contains(word)) score += 1;
+        }
+        if (score > bestScore) {
+          bestScore = score;
+          best = CategoryModel.fromCategory(cat);
+        }
+      }
+      if (bestScore > 0) suggested = best;
+    }
+
+    if (!mounted) return;
+    final confirmed = await showModalBottomSheet<OcrConfirmedValues>(
+      context: context,
+      backgroundColor: context.colorScheme.surface,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => OcrPreviewSheet(
+        result: result,
+        imagePath: saved,
+        suggestedCategory: suggested,
+      ),
+    );
+
+    if (confirmed != null && mounted) {
+      setState(() {
+        if (confirmed.amount != null && confirmed.amount! > 0) {
+          _amountString = confirmed.amount!.toStringAsFixed(
+            confirmed.amount!.truncateToDouble() == confirmed.amount! ? 0 : 2,
+          );
+        }
+        if (confirmed.date != null) {
+          _selectedDate = confirmed.date!;
+        }
+        if (confirmed.merchant != null && confirmed.merchant!.isNotEmpty) {
+          _noteController.text = confirmed.merchant!;
+        }
+        if (confirmed.suggestedCategoryId != null) {
+          final cats = ref.read(categoriesProvider).value ?? [];
+          final cat = cats.where((c) => c.id == confirmed.suggestedCategoryId).firstOrNull;
+          if (cat != null) {
+            _selectedCategoryId = cat.id;
+            _selectedCategoryModel = CategoryModel.fromCategory(cat);
+          }
+        }
+      });
+    }
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -1864,6 +2031,7 @@ class _AttachmentsSheet extends StatelessWidget {
     required this.pendingPaths,
     required this.onPickCamera,
     required this.onPickGallery,
+    required this.onScanReceipt,
     required this.onRemoveExisting,
     required this.onRemovePending,
   });
@@ -1872,6 +2040,7 @@ class _AttachmentsSheet extends StatelessWidget {
   final List<String> pendingPaths;
   final VoidCallback onPickCamera;
   final VoidCallback onPickGallery;
+  final VoidCallback onScanReceipt;
   final void Function(TransactionImageModel) onRemoveExisting;
   final void Function(String) onRemovePending;
 
@@ -1905,6 +2074,14 @@ class _AttachmentsSheet extends StatelessWidget {
                   icon: Icons.photo_library_outlined,
                   label: 'Gallery',
                   onTap: onPickGallery,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _AttachOption(
+                  icon: Icons.document_scanner_rounded,
+                  label: 'Scan receipt',
+                  onTap: onScanReceipt,
                 ),
               ),
             ],

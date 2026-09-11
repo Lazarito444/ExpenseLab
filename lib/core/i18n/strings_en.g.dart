@@ -543,6 +543,8 @@ class TranslationsTransactionsEn {
 
 	/// en: 'Where's It Going?'
 	String get select_to_account => 'Where\'s It Going?';
+
+	late final TranslationsTransactionsOcrEn ocr = TranslationsTransactionsOcrEn.internal(_root);
 }
 
 // Path: categories
@@ -1528,6 +1530,57 @@ class TranslationsAccountsPayCreditCardEn {
 	String get no_source_accounts => 'No bank or cash accounts available to pay from';
 }
 
+// Path: transactions.ocr
+class TranslationsTransactionsOcrEn {
+	TranslationsTransactionsOcrEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Scan receipt'
+	String get scan_receipt => 'Scan receipt';
+
+	/// en: 'Scanning...'
+	String get scanning => 'Scanning...';
+
+	/// en: 'Use values'
+	String get use_values => 'Use values';
+
+	/// en: 'Retake'
+	String get retake => 'Retake';
+
+	/// en: 'Please review'
+	String get low_confidence => 'Please review';
+
+	/// en: 'No text found — enter manually'
+	String get no_text_found => 'No text found — enter manually';
+
+	/// en: 'Review scanned values'
+	String get review_title => 'Review scanned values';
+
+	/// en: 'Amount'
+	String get amount_label => 'Amount';
+
+	/// en: 'Date'
+	String get date_label => 'Date';
+
+	/// en: 'Merchant'
+	String get merchant_label => 'Merchant';
+
+	/// en: 'Suggested category'
+	String get suggested_category => 'Suggested category';
+
+	/// en: 'Raw text'
+	String get raw_text_label => 'Raw text';
+
+	/// en: 'High confidence'
+	String get confidence_high => 'High confidence';
+
+	/// en: 'Review suggested'
+	String get confidence_review => 'Review suggested';
+}
+
 // Path: seed.categories
 class TranslationsSeedCategoriesEn {
 	TranslationsSeedCategoriesEn.internal(this._root);
@@ -1987,6 +2040,20 @@ extension on Translations {
 			'transactions.select_category' => 'Pick Your Category',
 			'transactions.select_account' => 'Which Account?',
 			'transactions.select_to_account' => 'Where\'s It Going?',
+			'transactions.ocr.scan_receipt' => 'Scan receipt',
+			'transactions.ocr.scanning' => 'Scanning...',
+			'transactions.ocr.use_values' => 'Use values',
+			'transactions.ocr.retake' => 'Retake',
+			'transactions.ocr.low_confidence' => 'Please review',
+			'transactions.ocr.no_text_found' => 'No text found — enter manually',
+			'transactions.ocr.review_title' => 'Review scanned values',
+			'transactions.ocr.amount_label' => 'Amount',
+			'transactions.ocr.date_label' => 'Date',
+			'transactions.ocr.merchant_label' => 'Merchant',
+			'transactions.ocr.suggested_category' => 'Suggested category',
+			'transactions.ocr.raw_text_label' => 'Raw text',
+			'transactions.ocr.confidence_high' => 'High confidence',
+			'transactions.ocr.confidence_review' => 'Review suggested',
 			'categories.title' => 'My Categories',
 			'categories.expenses' => 'Expenses',
 			'categories.income' => 'Income',

@@ -81,25 +81,10 @@ class BudgetsScreen extends ConsumerWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          t.budgets.title,
-                          style: TextStyle(
-                            fontFamily: 'Epilogue',
-                            fontWeight: FontWeight.w800,
-                            fontSize: 28,
-                            color: context.colorScheme.primary,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        _MonthSelector(
-                          selectedMonth: selectedMonth,
-                          onPrev: () => ref.read(selectedBudgetMonthProvider.notifier).previous(),
-                          onNext: () => ref.read(selectedBudgetMonthProvider.notifier).next(),
-                        ),
-                      ],
+                    child: _MonthSelector(
+                      selectedMonth: selectedMonth,
+                      onPrev: () => ref.read(selectedBudgetMonthProvider.notifier).previous(),
+                      onNext: () => ref.read(selectedBudgetMonthProvider.notifier).next(),
                     ),
                   ),
                   if (budgets.isEmpty) ...[
@@ -200,13 +185,13 @@ class _MonthSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
         color: context.colorScheme.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
             onTap: onPrev,
@@ -215,8 +200,7 @@ class _MonthSelector extends StatelessWidget {
               child: Icon(Icons.chevron_left_rounded, size: 18, color: context.colorScheme.primary),
             ),
           ),
-          SizedBox(
-            width: 100,
+          Expanded(
             child: Text(
               toBeginningOfSentenceCase(DateFormat('MMMM yyyy', LocaleSettings.currentLocale.languageTag).format(selectedMonth)),
               textAlign: TextAlign.center,

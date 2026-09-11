@@ -323,6 +323,7 @@ class _TranslationsTransactionsEs extends TranslationsTransactionsEn {
 	@override String get select_category => 'Elige una Categoría';
 	@override String get select_account => '¿Qué Cuenta?';
 	@override String get select_to_account => '¿Adónde Va?';
+	@override late final _TranslationsTransactionsOcrEs ocr = _TranslationsTransactionsOcrEs._(_root);
 }
 
 // Path: categories
@@ -846,6 +847,29 @@ class _TranslationsAccountsPayCreditCardEs extends TranslationsAccountsPayCredit
 	@override String get no_source_accounts => 'No hay cuentas bancarias o de efectivo disponibles';
 }
 
+// Path: transactions.ocr
+class _TranslationsTransactionsOcrEs extends TranslationsTransactionsOcrEn {
+	_TranslationsTransactionsOcrEs._(TranslationsEs root) : this._root = root, super.internal(root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get scan_receipt => 'Escanear recibo';
+	@override String get scanning => 'Escaneando...';
+	@override String get use_values => 'Usar valores';
+	@override String get retake => 'Repetir';
+	@override String get low_confidence => 'Por favor revisa';
+	@override String get no_text_found => 'No se encontró texto — ingresa manualmente';
+	@override String get review_title => 'Revisar valores escaneados';
+	@override String get amount_label => 'Monto';
+	@override String get date_label => 'Fecha';
+	@override String get merchant_label => 'Comercio';
+	@override String get suggested_category => 'Categoría sugerida';
+	@override String get raw_text_label => 'Texto detectado';
+	@override String get confidence_high => 'Alta confianza';
+	@override String get confidence_review => 'Revisar sugerencia';
+}
+
 // Path: seed.categories
 class _TranslationsSeedCategoriesEs extends TranslationsSeedCategoriesEn {
 	_TranslationsSeedCategoriesEs._(TranslationsEs root) : this._root = root, super.internal(root);
@@ -1247,6 +1271,20 @@ extension on TranslationsEs {
 			'transactions.select_category' => 'Elige una Categoría',
 			'transactions.select_account' => '¿Qué Cuenta?',
 			'transactions.select_to_account' => '¿Adónde Va?',
+			'transactions.ocr.scan_receipt' => 'Escanear recibo',
+			'transactions.ocr.scanning' => 'Escaneando...',
+			'transactions.ocr.use_values' => 'Usar valores',
+			'transactions.ocr.retake' => 'Repetir',
+			'transactions.ocr.low_confidence' => 'Por favor revisa',
+			'transactions.ocr.no_text_found' => 'No se encontró texto — ingresa manualmente',
+			'transactions.ocr.review_title' => 'Revisar valores escaneados',
+			'transactions.ocr.amount_label' => 'Monto',
+			'transactions.ocr.date_label' => 'Fecha',
+			'transactions.ocr.merchant_label' => 'Comercio',
+			'transactions.ocr.suggested_category' => 'Categoría sugerida',
+			'transactions.ocr.raw_text_label' => 'Texto detectado',
+			'transactions.ocr.confidence_high' => 'Alta confianza',
+			'transactions.ocr.confidence_review' => 'Revisar sugerencia',
 			'categories.title' => 'Mis Categorías',
 			'categories.expenses' => 'Gastos',
 			'categories.income' => 'Ingresos',
